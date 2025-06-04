@@ -1,4 +1,4 @@
-﻿namespace Ord.Plugin.Contract.Mailing
+﻿namespace Ord.Plugin.Contract.Features.Mailing
 {
     public class MailSettings
     {

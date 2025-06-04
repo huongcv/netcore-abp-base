@@ -1,13 +1,11 @@
 ﻿using MailKit.Security;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using Ord.Plugin.Contract.Mailing;
+using Ord.Plugin.Contract.Features.Mailing;
 using Ord.Plugin.Contract.Setting;
 using Ord.Plugin.Contract.Utils;
-using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
 
-namespace Ord.Plugin.Core.Mailing
+namespace Ord.Plugin.Core.Features.Mailing
 {
     public class SendMailService : ISendMailService
     {
@@ -100,8 +98,8 @@ namespace Ord.Plugin.Core.Mailing
         {
             try
             {
-                var Host = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.Host", "smtp.gmail.com");
-                var Port = await _settingService.GetForApp<int>("App:Setting:Mailing.Smtp.Port", 587);
+                var Host = await _settingService.GetForApp("App:Setting:Mailing.Smtp.Host", "smtp.gmail.com");
+                var Port = await _settingService.GetForApp("App:Setting:Mailing.Smtp.Port", 587);
                 var Mail = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.UserName");
                 var Password = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.Password");
                 var DisplayName = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.DisplayName");

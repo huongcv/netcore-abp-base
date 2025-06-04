@@ -2,7 +2,7 @@
 using FlexCel.XlsAdapter;
 using MediatR;
 
-namespace Ord.Plugin.Core.DataExporting
+namespace Ord.Plugin.Core.Features.DataExporting
 {
     public class FlexCelExportExcelQuery : IRequest<byte[]>
     {

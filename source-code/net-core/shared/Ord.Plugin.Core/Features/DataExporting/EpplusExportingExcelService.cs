@@ -6,7 +6,7 @@ using Ord.Plugin.Core.Utils;
 using System.Drawing;
 using Volo.Abp.Application.Dtos;
 
-namespace Ord.Plugin.Core.DataExporting
+namespace Ord.Plugin.Core.Features.DataExporting
 {
     public class EpplusExportingExcelService : IEpplusExportingExcelService
     {
@@ -21,7 +21,7 @@ namespace Ord.Plugin.Core.DataExporting
             Action<OrdExportExtend> funcExportInput,
             params OrdExportColumnData<TData>[] cells) where TData : class
         {
-            pagedInput.MaxResultCount = Int32.MaxValue;
+            pagedInput.MaxResultCount = int.MaxValue;
             pagedInput.SkipCount = 0;
             var pagedResult = await funcGetPaged.Invoke(pagedInput);
             var export = new OrdExportExtend(pagedInput);
@@ -29,7 +29,7 @@ namespace Ord.Plugin.Core.DataExporting
             {
                 funcExportInput.Invoke(export);
             }
-            return await ExportDataTable<TData>(pagedResult.Items, export, cells);
+            return await ExportDataTable(pagedResult.Items, export, cells);
         }
 
         public async Task<byte[]> ExportDataTable<TData>(IEnumerable<TData> dataItems, OrdExportExtend exportExtend, params OrdExportColumnData<TData>[] cells)
@@ -47,7 +47,7 @@ namespace Ord.Plugin.Core.DataExporting
                     && exportExtend.ListColumnName.Count > idxHeadr
                      && !string.IsNullOrEmpty(exportExtend.ListColumnName[idxHeadr]))
                 {
-                    if ((headerItem == null || string.IsNullOrEmpty(headerItem.HeaderName)))
+                    if (headerItem == null || string.IsNullOrEmpty(headerItem.HeaderName))
                     {
                         headerItem = new OrdExportTableHeader()
                         {
@@ -169,11 +169,11 @@ namespace Ord.Plugin.Core.DataExporting
                     ep_HeaderCell.Style.Font.Bold = true;
                     ep_HeaderCell.Worksheet.Row(ep_HeaderCell.Start.Row).Height = 26;
                     // Căn giữa theo chiều ngang
-                    ep_HeaderCell.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    ep_HeaderCell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     // Căn giữa theo chiều dọc
-                    ep_HeaderCell.Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    ep_HeaderCell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     ep_HeaderCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    ep_HeaderCell.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#FFFFCC"));
+                    ep_HeaderCell.Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFFFCC"));
                     // ep_HeaderCell.Style.Font.Color.SetColor(Color.ForestGreen);
                     ep_HeaderCell.Style.Font.Size = 13;
                     ep_HeaderCell.Style.WrapText = true;

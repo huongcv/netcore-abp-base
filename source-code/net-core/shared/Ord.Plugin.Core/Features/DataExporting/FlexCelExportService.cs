@@ -2,7 +2,7 @@
 using FlexCel.XlsAdapter;
 using Volo.Abp.Domain.Services;
 
-namespace Ord.Plugin.Core.DataExporting
+namespace Ord.Plugin.Core.Features.DataExporting
 {
     public abstract class FlexCelExportService : DomainService
     {
