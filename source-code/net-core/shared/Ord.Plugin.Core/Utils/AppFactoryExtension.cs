@@ -133,7 +133,7 @@ namespace Ord.Plugin.Core.Utils
             var isGranted = false;
             if (factory.CurrentUserId.HasValue == true)
             {
-                var checker = factory.GetServiceDependency<IOrdPermissionCheckerService>();
+                var checker = factory.GetServiceDependency<IPermissionSharedManger>();
                 isGranted = await checker.IsGranted(factory.CurrentUserId.Value, permissionName);
             }
             if (throwEx && !isGranted)

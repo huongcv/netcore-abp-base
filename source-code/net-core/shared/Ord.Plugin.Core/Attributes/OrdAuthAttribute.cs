@@ -49,7 +49,7 @@ namespace Ord.Plugin
                 return;
             }
 
-            var permissionChecker = factory.GetServiceDependency<IOrdPermissionCheckerService>();
+            var permissionChecker = factory.GetServiceDependency<IPermissionSharedManger>();
             var authorized = await permissionChecker.IsGranted(factory.CurrentUserId.Value, PermissionName);
             if (!authorized)
             {

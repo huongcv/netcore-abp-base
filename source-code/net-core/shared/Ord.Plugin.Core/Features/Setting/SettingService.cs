@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Contract.Enums;
@@ -16,13 +17,18 @@ namespace Ord.Plugin.Core.Setting
     {
         private readonly IDistributedCache<string> _cache;
         private readonly IAppFactory _appFactory;
+        private readonly ILogger<SettingService> _logger;
         private bool _isJsonValue = false;
+      
 
-        public SettingService(IDistributedCache<string> cache, IAppFactory appFactory,
-            IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider) : base(dbContextProvider)
+        public SettingService(IDistributedCache<string> cache,
+            IAppFactory appFactory,
+            IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider, 
+            ILogger<SettingService> logger) : base(dbContextProvider)
         {
             _cache = cache;
             _appFactory = appFactory;
+            _logger = logger;
         }
 
         public Task<T> GetForApp<T>(string nameSetting, T defaultValue = default)
@@ -67,12 +73,12 @@ namespace Ord.Plugin.Core.Setting
                     break;
                 }
             }
-            return (T)ParserSettingValue(valueSetting, defaultValue);
+            return (T)ConvertValue(valueSetting, defaultValue);
         }
         protected async Task<T> GetForLevel<T>(string nameSetting, SettingType type, T defaultValue = default)
         {
             var valueSetting = await GetValueSetting(nameSetting, type);
-            return (T)ParserSettingValue(valueSetting, defaultValue);
+            return (T)ConvertValue(valueSetting, defaultValue);
         }
         protected async Task<string> GetValueSetting(string nameSetting, SettingType type)
         {
@@ -137,50 +143,36 @@ namespace Ord.Plugin.Core.Setting
             }
             return settingValue;
         }
-        protected object ParserSettingValue<T>(string value, T defaultValue = default(T))
+        private T ConvertValue<T>(string value, T defaultValue = default(T))
         {
             if (string.IsNullOrEmpty(value))
             {
                 return defaultValue;
             }
-            var targetType = typeof(T);
-            if (targetType == typeof(int))
+            try
             {
-                if (int.TryParse(value, out int intValue))
-                    return intValue;
-                else
-                    return defaultValue;
+                var targetType = typeof(T);
+                var underlyingType = Nullable.GetUnderlyingType(targetType) ?? targetType;
+
+                return underlyingType.Name switch
+                {
+                    nameof(Int32) => (T)(object)int.Parse(value),
+                    nameof(Boolean) => (T)(object)bool.Parse(value),
+                    nameof(Int64) => (T)(object)long.Parse(value),
+                    nameof(Single) => (T)(object)float.Parse(value),
+                    nameof(Double) => (T)(object)double.Parse(value),
+                    nameof(Decimal) => (T)(object)decimal.Parse(value),
+                    nameof(String) => (T)(object)value,
+                    _ => JsonConvert.DeserializeObject<T>(value) ?? defaultValue
+                };
             }
-            else if (targetType == typeof(bool))
+            catch (Exception ex)
             {
-                if (bool.TryParse(value, out bool output))
-                    return output;
-                else
-                    return defaultValue;
+                _logger.LogWarning(ex, "Failed to convert setting value '{Value}' to type {Type}, returning default", value, typeof(T).Name);
+                return defaultValue;
             }
-            else if (targetType == typeof(long))
-            {
-                if (long.TryParse(value, out long output))
-                    return output;
-                else
-                    return defaultValue;
-            }
-            else if (targetType == typeof(float))
-            {
-                if (float.TryParse(value, out float floatValue))
-                    return floatValue;
-                else
-                    return defaultValue;
-            }
-            else if (targetType == typeof(string))
-            {
-                return value;
-            }
-            else
-            {
-                return JsonConvert.DeserializeObject<T>(value);
-            }
-            return defaultValue;
         }
+
+        
     }
 }
