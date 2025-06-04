@@ -1,6 +1,7 @@
 {
   "culture": "vi",
   "texts": {
+    "access_denied": "Tài khoản không có quyền truy cập nội dung",
     "CommonError": "Có lỗi xảy ra",
     "SaveSuccess": "Lưu thành công",
     "MessageWithParam": "Thông báo với tham số: {0}",

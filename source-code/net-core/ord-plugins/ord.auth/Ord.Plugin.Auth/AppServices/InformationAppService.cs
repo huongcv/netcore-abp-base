@@ -26,5 +26,12 @@ namespace Ord.Plugin.Auth.AppServices
         {
             return appFactory.GetUserSessionAsync();
         }
+
+        [HttpGet]
+        [OrdAuth("test_permission")]
+        public Task<string> Ping()
+        {
+            return Task.FromResult("pong");
+        }
     }
 }
