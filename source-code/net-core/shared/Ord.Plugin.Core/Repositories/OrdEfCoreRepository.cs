@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Ord.Plugin.Contract.Base;
+﻿using Ord.Plugin.Contract.Base;
+using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Core.Data;
 using System.Data;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
@@ -17,20 +17,12 @@ namespace Ord
 
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
         public IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
+        public IDapperDbContext DapperHelper { get; }
         public OrdEfCoreRepository(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
+            DapperHelper = new DapperDbcontext<TDbContext>(dbContextProvider);
         }
-        [Obsolete("Use GetDbConnectionAsync method.")]
-        public IDbConnection DbConnection => _dbContextProvider.GetDbContext().Database.GetDbConnection();
-
-        public virtual async Task<IDbConnection> GetDbConnectionAsync() => (await _dbContextProvider.GetDbContextAsync()).Database.GetDbConnection();
-
-        [Obsolete("Use GetDbTransactionAsync method.")]
-        public IDbTransaction? DbTransaction => _dbContextProvider.GetDbContext().Database.CurrentTransaction?.GetDbTransaction();
-
-        public virtual async Task<IDbTransaction?> GetDbTransactionAsync() => (await _dbContextProvider.GetDbContextAsync()).Database.CurrentTransaction?.GetDbTransaction();
-
         protected async Task<IQueryable<T>> GetQueryableEntity<T>(bool isNoTracking = true)
             where T : class, IEntity
         {
@@ -60,5 +52,7 @@ namespace Ord
             updateAction(entity);
             await UpdateAsync(entity);
         }
+
+       
     }
 }
