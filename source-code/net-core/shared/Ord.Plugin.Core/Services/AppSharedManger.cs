@@ -11,6 +11,7 @@ namespace Ord.Plugin.Core.Services
     public class AppSharedManger : OrdManagerBase, IAppSharedManger
     {
         private IUserSharedRepository UserSharedRepository => AppFactory.GetServiceDependency<IUserSharedRepository>();
+        private IPermissionSharedManger PermissionSharedManger => AppFactory.GetServiceDependency<IPermissionSharedManger>();
         public async Task<UserInformationDto?> GetUserCurrentAsync()
         {
             var userId = AppFactory.CurrentUserId;
@@ -29,6 +30,10 @@ namespace Ord.Plugin.Core.Services
         protected async Task<UserInformationDto?> DoGetUserAsync(Guid userId)
         {
             var user = await UserSharedRepository.GetById(userId);
+            if (user != null)
+            {
+                user.ListPermission = await PermissionSharedManger.GetPermissionsAsync(userId);
+            }
             return user;
         }
 

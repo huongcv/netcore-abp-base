@@ -1,73 +1,84 @@
-﻿using Microsoft.Extensions.Configuration;
-using Ord.Plugin.Contract.Factories;
+﻿using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services;
 using Volo.Abp.Caching;
 
 namespace Ord.Plugin.Core.Services
 {
-    public class PermissionSharedManger : IPermissionSharedManger
+    public class PermissionSharedManger(
+        IDistributedCache<IEnumerable<string>> cache,
+        IAppFactory appFactory)
+        : IPermissionSharedManger
     {
-        private readonly string _connString;
-        private readonly IDistributedCache<IEnumerable<string>> _cache;
-        private readonly IAppFactory _appFactory;
-        public PermissionSharedManger(IConfiguration configuration,
-            IDistributedCache<IEnumerable<string>> cache, IAppFactory appFactory)
+        public Task<IEnumerable<string>> GetPermissionsAsync(Guid userId)
         {
-            _cache = cache;
-            _appFactory = appFactory;
-            _connString = configuration.GetConnectionString("Default");
+            var cacheKey = GetCacheKey(userId);
+            return cache.GetOrAddAsync(cacheKey, () => DoGetPermissionsGranted(userId));
+        }
+
+        public async Task<IEnumerable<string>> GetCurrentUserPermissionsAsync()
+        {
+            var userId = appFactory.CurrentUserId;
+            if (!userId.HasValue)
+            {
+                return new List<string>();
+            }
+            return await GetPermissionsAsync(userId.Value);
         }
 
         public async Task<bool> IsGranted(Guid userId, string permissionName, bool isForce = false)
         {
-            if (string.IsNullOrEmpty(permissionName))
+            if (string.IsNullOrWhiteSpace(permissionName))
             {
                 return true;
             }
-
             if (isForce)
             {
-                await _cache.RemoveAsync("AllPermissionGrantedUser:" + userId);
+                await ClearCacheAsync(userId);
             }
-            var allPermissionGranted = await GetListPermissionGranted(userId);
-            return allPermissionGranted?.Any(x => string.Equals(x, permissionName, StringComparison.CurrentCultureIgnoreCase)) == true;
+
+            var permissions = await GetPermissionsAsync(userId);
+            return permissions?.Contains(permissionName, StringComparer.OrdinalIgnoreCase) == true;
         }
 
-        private Task<IEnumerable<string>?> GetListPermissionGranted(Guid userId)
+        public Task ClearCacheAsync(Guid userId)
         {
-            return _cache.GetOrAddAsync("AllPermissionGrantedUser:" + userId, async () =>
-            {
-                return await DoGetPermissionsGranted(userId);
-            });
-
+            var cacheKey = GetCacheKey(userId);
+            return cache.RemoveAsync(cacheKey);
         }
 
-        private async Task<IEnumerable<string>?> DoGetPermissionsGranted(Guid userId)
+        private async Task<IEnumerable<string>> DoGetPermissionsGranted(Guid userId)
         {
-            var repos = _appFactory.GetServiceDependency<IPermissionSharedRepository>();
-            var permissionsGranted = (await repos.GetRoleBasedPermissionsAsync(userId)).ToList() ?? new List<string>();
-            var userGranted = await repos.GetDirectUserPermissionsAsync(userId);
-            if (userGranted?.Any() == true)
+            var repo = appFactory.GetServiceDependency<IPermissionSharedRepository>();
+
+            var grantedPermissions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var rolePermissions = await repo.GetRoleBasedPermissionsAsync(userId);
+            if (rolePermissions != null)
             {
-                foreach (var itemUserPermission in userGranted)
+                foreach (var perm in rolePermissions)
+                    grantedPermissions.Add(perm);
+            }
+
+            var userPermissions = await repo.GetDirectUserPermissionsAsync(userId);
+            if (userPermissions != null)
+            {
+                foreach (var userPerm in userPermissions)
                 {
-                    var permissionName = itemUserPermission.PermissionName;
-                    if (string.IsNullOrEmpty(permissionName)) continue;
-                    if (itemUserPermission.IsGrant == true)
-                    {
-                        permissionsGranted.Add(permissionName);
-                    }
+                    var name = userPerm.PermissionName;
+                    if (string.IsNullOrWhiteSpace(name))
+                        continue;
+
+                    if (userPerm.IsGrant)
+                        grantedPermissions.Add(name);
                     else
-                    {
-                        permissionsGranted = permissionsGranted.Where(x => !string.Equals(x, permissionName, StringComparison.OrdinalIgnoreCase)).ToList();
-                    }
+                        grantedPermissions.Remove(name);
                 }
             }
 
-            return permissionsGranted.Distinct().OrderByDescending(x => x).ToList();
+            return grantedPermissions.OrderBy(x => x);
         }
 
-
+        private static string GetCacheKey(Guid userId) => $"AllPermissionGrantedUser:{userId}";
     }
 }
