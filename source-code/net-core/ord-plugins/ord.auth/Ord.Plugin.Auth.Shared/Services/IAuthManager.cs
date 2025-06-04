@@ -7,5 +7,6 @@ namespace Ord.Plugin.Auth.Shared.Services
     public interface IAuthManager : IDomainService
     {
         Task<CommonResultDto<JwtDto>> LoginAsync(LoginInputDto loginInput);
+        Task LogoutAsync();
     }
 }

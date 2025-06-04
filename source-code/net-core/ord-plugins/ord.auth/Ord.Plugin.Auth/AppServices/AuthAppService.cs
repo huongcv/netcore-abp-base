@@ -3,7 +3,6 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Validation;
 namespace Ord.Plugin.Auth.AppServices
 {
     public class AuthAppService(IAppFactory appFactory) : ApplicationService
@@ -12,6 +11,11 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<JwtDto>> Login(LoginInputDto input)
         {
             return await AuthManager.LoginAsync(input);
+        }
+        [OrdAuth]
+        public  Task Logout()
+        {
+            return AuthManager.LogoutAsync();
         }
     }
 }

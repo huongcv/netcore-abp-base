@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
@@ -6,6 +8,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Setting;
+using Ord.Plugin.Core.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Caching;
 using Volo.Abp.Timing;
@@ -79,6 +82,29 @@ namespace Ord.Plugin.Auth.Services
                 return CreateSuccessResult(jwtDto);
             }
         }
+
+        public async Task LogoutAsync()
+        {
+            await AppFactory.ClearCacheUser();
+            var checkRevokeTokenEnabled = AppFactory.Configuration["Authentication:IsCheckRevokeToken"];
+            if (!string.IsNullOrEmpty(checkRevokeTokenEnabled) && bool.Parse(checkRevokeTokenEnabled))
+            {
+                var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
+                if (claims?.Any() == true)
+                {
+                    var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+                    if (!string.IsNullOrEmpty(tokenId))
+                    {
+                        var cache = AppFactory.GetServiceDependency<IDistributedCache<string>>();
+                        await cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+                        });
+                    }
+                }
+            }
+        }
+
         protected bool IsCheckPassword(UserLoginDto? userLoginDto, string password)
         {
             if (userLoginDto == null)
