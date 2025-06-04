@@ -1,0 +1,9 @@
+{
+  "culture": "en",
+  "texts": {
+    "CommonError": "An error occurred",
+    "null_or_empty_password": "Password cannot be null or empty",
+    "SaveSuccess": "Save successfully",
+    "MessageWithParam": "Message with param: {0}"
+  }
+}

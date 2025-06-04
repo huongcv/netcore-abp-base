@@ -1,0 +1,14 @@
+{
+  "culture": "en",
+  "texts": {
+    "null_or_empty_username": "Username cannot be null or empty",
+    "login_username_minlength": "Username must be at least {0} characters",
+    "null_or_empty_password": "Password cannot be null or empty",
+    "invalid_email_format": "Invalid email format",
+    "invalid_phone_format": "Invalid phone number format",
+    "password_too_short": "Password must be at least {0} characters",
+    "username_already_exists": "Username '{0}' already exists",
+    "login_failed": "Login failed. Please check your credentials",
+    "validation_error": "Validation error occurred"
+  }
+}

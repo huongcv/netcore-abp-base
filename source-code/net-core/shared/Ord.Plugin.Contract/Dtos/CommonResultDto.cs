@@ -1,0 +1,84 @@
+﻿using FluentValidation.Results;
+using Volo.Abp.Validation;
+
+namespace Ord.Plugin.Contract.Dtos
+{
+    public class CommonResultErrorDto
+    {
+        /// <summary>
+        /// 00: Success
+        /// 400:bad request
+        /// 500:error server - business
+        /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyOrder(1)]
+        public string? Code { get; set; }
+        /// <summary>
+        /// Thông báo lỗi/ hoặc thành công đều chung 
+        /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyOrder(2)]
+        public string? Message { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool IsSuccessful => string.Equals(CommonResultCode.Success, Code);
+
+
+    }
+    public class CommonResultDto<T> : CommonResultErrorDto
+    {
+        /// <summary>
+        /// Kết quả chính của api
+        /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyOrder(3)]
+        public T Data { get; set; }
+        /// <summary>
+        /// Thông tin bổ sung...
+        /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyOrder(100)]
+        public object? Extend { get; set; }
+        public static CommonResultDto<T> Failed(string errorMessage, string errorCode = "")
+        {
+            return new CommonResultDto<T>()
+            {
+                Message = errorMessage,
+                Code = string.IsNullOrEmpty(errorCode) ? CommonResultCode.BadRequest : errorCode
+            };
+        }
+        public static CommonResultDto<T> Failed(Exception ex)
+        {
+            return new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.InternalServerError,
+                Message = ""
+            };
+        }
+        public static CommonResultDto<T> Failed(List<ValidationFailure> errorValid)
+        {
+            return new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.BadRequest,
+                Message = errorValid?.FirstOrDefault()?.ErrorMessage,
+                Extend = errorValid
+            };
+        }
+        public static CommonResultDto<T> Failed(AbpValidationException invalidEx)
+        {
+            return new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.BadRequest,
+                Message = invalidEx?.ValidationErrors?.FirstOrDefault()?.ErrorMessage,
+                Extend = invalidEx?.ValidationErrors
+            };
+        }
+        public static CommonResultDto<T> Ok(T dataSuccess, string message = "")
+        {
+            var ret = new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.Success,
+                Data = dataSuccess,
+                Message = message
+            };
+            return ret;
+        }
+    }
+}

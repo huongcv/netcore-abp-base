@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	
+	<PropertyGroup>
+		<TargetFramework>$(NetVersion)</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<ServerGarbageCollection>true</ServerGarbageCollection>
+		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<PreserveCompilationReferences>true</PreserveCompilationReferences>
+		<UserSecretsId>OrdPluginDevHpst-4681b4fd-151f-4221-84a4-929d86723e4c</UserSecretsId>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Logs\**" />
+		<Content Remove="Logs\**" />
+		<EmbeddedResource Remove="Logs\**" />
+		<None Remove="Logs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="Pages\Account\Login.cshtml" />
+	  <Content Remove="Pages\Account\_Layout.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Pages\Account\Login.cshtml" />
+	  <None Include="Pages\Account\_Layout.cshtml" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="$(AbpVersion)" />
+		<PackageReference Include="Volo.Abp.BlobStoring.Minio" Version="$(AbpVersion)" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\ord-plugins\ord.auth\Ord.Plugin.Auth\Ord.Plugin.Auth.csproj" />
+		<ProjectReference Include="..\..\shared\Ord.Plugin.HostBase\Ord.Plugin.HostBase.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Contents\**" CopyToPublishDirectory="PreserveNewest" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+</Project>

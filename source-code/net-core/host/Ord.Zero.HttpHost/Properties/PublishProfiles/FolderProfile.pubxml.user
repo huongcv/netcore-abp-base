@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>E:\1.ORD\ord-fw\1.ord-fw-net-core\source-code\net-core\host\Ord.Pos.HttpHost\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2025-06-03T07:05:12.1976360Z||;True|2025-06-03T14:04:07.9093663+07:00||;True|2025-06-03T14:02:40.9582279+07:00||;True|2025-06-03T14:02:34.2119455+07:00||;True|2025-06-03T13:37:54.1952649+07:00||;True|2025-06-03T13:34:27.8886806+07:00||;False|2025-06-03T13:07:53.6844638+07:00||;True|2024-10-11T12:37:31.6771663+07:00||;True|2024-10-11T12:36:12.8238337+07:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

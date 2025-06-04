@@ -1,0 +1,6 @@
+<Project>
+    <PropertyGroup>
+        <AbpVersion>8.2.0</AbpVersion>
+		<NetVersion>net8.0</NetVersion>
+    </PropertyGroup>
+</Project>

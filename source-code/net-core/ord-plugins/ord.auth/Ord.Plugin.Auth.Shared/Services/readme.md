@@ -1,0 +1,1 @@
+﻿Các file domain service đặt tên có hậu tố Manager
