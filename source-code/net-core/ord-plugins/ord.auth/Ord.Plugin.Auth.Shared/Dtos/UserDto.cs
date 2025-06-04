@@ -8,7 +8,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class UserDto : UserBaseDto, IEntityDto<Guid>
     {
         public Guid Id { get; set; }
-        [IgnoreColumnName]
         public long? EmployeeId { get; set; } 
     }
 
@@ -21,7 +20,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public virtual bool IsLockoutEnabled { get; set; }
         public virtual DateTimeOffset? LockoutEnd { get; set; }
         public virtual DateTime? ChangePasswordDateTime { get; set; }
-        [IgnoreColumnName]
         public bool IsAdminTenancy => !string.IsNullOrEmpty(Level) && Level == UserConst.AdminTenantLevel;
     }
 }

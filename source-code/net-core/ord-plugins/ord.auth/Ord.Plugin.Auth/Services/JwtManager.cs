@@ -73,7 +73,7 @@ namespace Ord.Plugin.Auth.Services
 
             if (loginUser.Level == UserConst.SaLevel)
             {
-                claims.Add(new Claim(OrdClaimsTypes.IsSuperAdmin, "true"));
+                claims.Add(new Claim(OrdClaimsTypes.IsSuperAdmin, "1"));
             }
 
             AddDateTimeClaim(claims, OrdClaimsTypes.LastModificationTime, loginUser.LastModificationTime);
