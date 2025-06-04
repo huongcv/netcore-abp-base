@@ -9,7 +9,7 @@ namespace Ord.Plugin.Auth.AppServices
     public class InformationAppService(IAppFactory appFactory) : ApplicationService
     {
         [HttpGet]
-        public async Task<AppBootstrapDto?> GetBoostrap()
+        public async Task<AppBootstrapDto?> GetBootstrap()
         {
             var appBootstrapDto = new AppBootstrapDto();
             if (!appFactory.CurrentUserId.HasValue)
