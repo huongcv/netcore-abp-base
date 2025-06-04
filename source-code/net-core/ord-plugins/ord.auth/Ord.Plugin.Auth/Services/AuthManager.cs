@@ -86,22 +86,9 @@ namespace Ord.Plugin.Auth.Services
         public async Task LogoutAsync()
         {
             await AppFactory.ClearCacheUser();
-            var checkRevokeTokenEnabled = AppFactory.Configuration["Authentication:IsCheckRevokeToken"];
-            if (!string.IsNullOrEmpty(checkRevokeTokenEnabled) && bool.Parse(checkRevokeTokenEnabled))
+            if (IsRevokeTokenEnabled())
             {
-                var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
-                if (claims?.Any() == true)
-                {
-                    var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-                    if (!string.IsNullOrEmpty(tokenId))
-                    {
-                        var cache = AppFactory.GetServiceDependency<IDistributedCache<string>>();
-                        await cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
-                        });
-                    }
-                }
+                await RevokeCurrentTokenAsync();
             }
         }
 
@@ -133,5 +120,28 @@ namespace Ord.Plugin.Auth.Services
             await cache.RemoveAsync(userId.ToString());
             await AppFactory.ClearCacheUser(userId);
         }
+        private bool IsRevokeTokenEnabled()
+        {
+            var setting = AppFactory.Configuration["Authentication:IsCheckRevokeToken"];
+            return !string.IsNullOrEmpty(setting) && bool.Parse(setting);
+        }
+        private async Task RevokeCurrentTokenAsync()
+        {
+            var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
+            if (claims?.Any() != true)
+            {
+                return;
+            }
+            var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            if (!string.IsNullOrEmpty(tokenId))
+            {
+                var cache = AppFactory.GetServiceDependency<IDistributedCache<string>>();
+                await cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+                });
+            }
+        }
+
     }
 }
