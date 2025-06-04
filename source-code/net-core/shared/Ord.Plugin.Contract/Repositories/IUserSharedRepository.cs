@@ -9,5 +9,6 @@ namespace Ord.Plugin.Contract.Repositories
     public interface IUserSharedRepository : IScopedDependency
     {
         Task<UserInformationDto?> GetById(Guid userId);
+        Task<IEnumerable<Guid>> GetUsersGrantedRole(Guid roleId);
     }
 }

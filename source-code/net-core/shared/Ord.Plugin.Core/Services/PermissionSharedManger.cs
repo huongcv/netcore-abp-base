@@ -47,6 +47,18 @@ namespace Ord.Plugin.Core.Services
             return cache.RemoveAsync(cacheKey);
         }
 
+        public async Task ClearCacheWhenRoleChangePermissions(Guid roleId)
+        {
+            var listUserId = await appFactory.GetServiceDependency<IUserSharedRepository>().GetUsersGrantedRole(roleId);
+            if (listUserId?.Any() == true)
+            {
+                foreach (var userId in listUserId)
+                {
+                    await ClearCacheAsync(userId);
+                }
+            }
+        }
+
         private async Task<IEnumerable<string>> DoGetPermissionsGranted(Guid userId)
         {
             var repo = appFactory.GetServiceDependency<IPermissionSharedRepository>();

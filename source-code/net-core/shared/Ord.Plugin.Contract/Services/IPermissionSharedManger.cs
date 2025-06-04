@@ -8,5 +8,6 @@ namespace Ord.Plugin.Contract.Services
         Task<IEnumerable<string>> GetCurrentUserPermissionsAsync();
         Task<bool> IsGranted(Guid userId, string permissionName, bool isForce = false);
         Task ClearCacheAsync(Guid userId);
+        Task ClearCacheWhenRoleChangePermissions(Guid roleId);
     }
 }
