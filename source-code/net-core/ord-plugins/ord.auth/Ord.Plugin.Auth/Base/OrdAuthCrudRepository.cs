@@ -1,5 +1,5 @@
 ﻿using Ord.Plugin.Auth.Data;
-using Ord.Plugin.Contract.Dtos.Base;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
@@ -12,10 +12,10 @@ namespace Ord.Plugin.Auth.Base
         OrdCrudRepository<OrdPluginAuthDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(dbContextProvider) where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
-        where TGetPagedItemDto : BasePagedDto<TKey>
+        where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
         where TGetByIdDto : class
         where TCreateInputDto : class
-        where TUpdateInputDto : class
+        where TUpdateInputDto : class, IHasEncodedId
     {
 
     }

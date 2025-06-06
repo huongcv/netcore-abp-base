@@ -23,8 +23,7 @@ namespace Ord.Plugin.Core.Services.Security
                 var payload = new IdPayload<T>
                 {
                     EntityType = _entityType,
-                    Id = id,
-                    Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                    Id = id
                 };
 
                 var jsonString = JsonConvert.SerializeObject(payload);
@@ -57,12 +56,6 @@ namespace Ord.Plugin.Core.Services.Security
                     throw new IdDecodeException(encodedId, _entityType);
                 }
 
-                var createdAt = DateTimeOffset.FromUnixTimeSeconds(payload.Timestamp);
-                if (DateTime.UtcNow - createdAt > TimeSpan.FromDays(30))
-                {
-                    throw new IdDecodeException(encodedId, _entityType);
-                }
-
                 return payload.Id;
             }
             catch (Exception ex)
@@ -89,7 +82,6 @@ namespace Ord.Plugin.Core.Services.Security
         {
             public string EntityType { get; set; }
             public T Id { get; set; }
-            public long Timestamp { get; set; }
         }
 
         private static string Base64UrlEncode(string input)

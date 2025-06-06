@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Data;
-using Ord.Plugin.Contract.Dtos.Base;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
@@ -28,10 +28,10 @@ namespace Ord.Plugin.Core.Data
         where TDbContext : IEfCoreDbContext
         where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
-        where TGetPagedItemDto : BasePagedDto<TKey>
+        where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
         where TGetByIdDto : class
         where TCreateInputDto : class
-        where TUpdateInputDto : class
+        where TUpdateInputDto : class, IHasEncodedId
 
     {
         protected IIdEncoderService<TEntity> IdEncoderService =>

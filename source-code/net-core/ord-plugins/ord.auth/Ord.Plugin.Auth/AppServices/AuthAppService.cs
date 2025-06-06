@@ -21,7 +21,7 @@ namespace Ord.Plugin.Auth.AppServices
             return result;
         }
         [OrdAuth]
-        public  Task Logout()
+        public Task Logout()
         {
             // Xóa cookie
             ClearJwtCookie();

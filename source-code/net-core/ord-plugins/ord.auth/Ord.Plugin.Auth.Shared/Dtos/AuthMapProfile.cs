@@ -9,6 +9,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public AuthMapProfile()
         {
             CreateMap<UserDto, UserEntity>().ReverseMap();
+            CreateMap<UserPagedDto, UserEntity>().ReverseMap();
             CreateMap<UserLoginDto, UserEntity>().ReverseMap();
             CreateMap<TenantDto, TenantEntity>().ReverseMap();
         }

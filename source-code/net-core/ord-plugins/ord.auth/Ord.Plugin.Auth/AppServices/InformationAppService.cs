@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ord.Plugin.Auth.Base;
+using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace Ord.Plugin.Auth.AppServices
 {
-    public class InformationAppService(IAppFactory appFactory) : ApplicationService
+    public class InformationAppService(IAppFactory appFactory) : OrdAuthAppService
     {
         [HttpGet]
         public async Task<AppBootstrapDto?> GetBootstrap()
@@ -32,6 +36,12 @@ namespace Ord.Plugin.Auth.AppServices
         public Task<string> Ping()
         {
             return Task.FromResult("pong");
+        }
+        [HttpPost]
+        public Task<PagedResultDto<UserPagedDto>> GetUsers(UserPagedInput input)
+        {
+            var repo = Factory.GetServiceDependency<IUserCrudRepository>();
+            return repo.GetPagedListAsync(input);
         }
     }
 }

@@ -21,10 +21,10 @@ namespace Ord.Plugin.Contract.DataExporting
 
         }
 
-        public OrdExportExtend(OrdPagedRequestDto pagedInput) : this(pagedInput?.Export?.Title)
-        {
-            ListColumnName = pagedInput?.Export?.ColumnNames;
-        }
+        //public OrdExportExtend(OrdPagedRequestDto pagedInput) : this(pagedInput?.Export?.Title)
+        //{
+        //    // ListColumnName = pagedInput?.Export?.ColumnNames;
+        //}
         public OrdExportExtend(string? title)
         {
             WorksheetName = title;

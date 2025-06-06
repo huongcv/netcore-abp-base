@@ -24,12 +24,13 @@ namespace Ord.Plugin.Core.Features.DataExporting
             pagedInput.MaxResultCount = int.MaxValue;
             pagedInput.SkipCount = 0;
             var pagedResult = await funcGetPaged.Invoke(pagedInput);
-            var export = new OrdExportExtend(pagedInput);
-            if (funcExportInput != null)
-            {
-                funcExportInput.Invoke(export);
-            }
-            return await ExportDataTable(pagedResult.Items, export, cells);
+            return null;
+            // var export = new OrdExportExtend(pagedInput);
+            //if (funcExportInput != null)
+            //{
+            //    funcExportInput.Invoke(export);
+            //}
+            //return await ExportDataTable(pagedResult.Items, export, cells);
         }
 
         public async Task<byte[]> ExportDataTable<TData>(IEnumerable<TData> dataItems, OrdExportExtend exportExtend, params OrdExportColumnData<TData>[] cells)

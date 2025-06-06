@@ -80,5 +80,31 @@ namespace Ord.Plugin.Contract.Dtos
             };
             return ret;
         }
+        /// <summary>
+        /// Tạo kết quả với trạng thái Unauthorized (401)
+        /// </summary>
+        /// <param name="message">Thông báo lỗi không có quyền</param>
+        /// <returns>CommonResultDto với trạng thái Unauthorized</returns>
+        public static CommonResultDto<T> Unauthorized(string message = "")
+        {
+            return new CommonResultDto<T>
+            {
+                Code = CommonResultCode.Unauthorized,
+                Message = string.IsNullOrWhiteSpace(message) ? "Unauthorized access" : message,
+            };
+        }
+        /// <summary>
+        /// Tạo kết quả với trạng thái Forbidden (403)
+        /// </summary>
+        /// <param name="message">Thông báo lỗi bị cấm truy cập</param>
+        /// <returns>CommonResultDto với trạng thái Forbidden</returns>
+        public static CommonResultDto<T> Forbidden(string message = "")
+        {
+            return new CommonResultDto<T>
+            {
+                Code = CommonResultCode.Forbidden,
+                Message = string.IsNullOrWhiteSpace(message) ? "Access forbidden" : message
+            };
+        }
     }
 }

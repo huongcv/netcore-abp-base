@@ -8,7 +8,6 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Setting;
-using Ord.Plugin.Core.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Caching;
 using Volo.Abp.Timing;

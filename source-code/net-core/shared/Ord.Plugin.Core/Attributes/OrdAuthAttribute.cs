@@ -9,6 +9,7 @@ using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Contract.Services;
+using Ord.Plugin.Core.Utils;
 
 namespace Ord.Plugin
 {
@@ -46,19 +47,17 @@ namespace Ord.Plugin
             }
             var services = context.HttpContext.RequestServices;
             var logger = services.GetService<ILogger<OrdAuthAttribute>>();
-            if (IsSuperAdmin(context.HttpContext))
-            {
-                logger?.LogDebug("Super admin access granted for permission: {PermissionName}", PermissionName);
-                return;
-            }
-
             var factory = services.GetRequiredService<IAppFactory>();
             var currentUserId = factory.CurrentUserId;
-
             if (!currentUserId.HasValue)
             {
                 logger?.LogWarning("No current user ID found for permission check: {PermissionName}", PermissionName);
                 HandleUnauthorized(context);
+                return;
+            }
+            if (factory.IsSuperAdminLevel())
+            {
+                logger?.LogDebug("Super admin access granted for permission: {PermissionName}", PermissionName);
                 return;
             }
             var permissionChecker = factory.GetServiceDependency<IPermissionSharedManger>();
@@ -78,14 +77,6 @@ namespace Ord.Plugin
         private static bool HasAllowAnonymousAttribute(AuthorizationFilterContext context)
         {
             return context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
-        }
-
-        private static bool IsSuperAdmin(HttpContext httpContext)
-        {
-            var isSuperAdminClaim = httpContext.User?.Claims
-                .FirstOrDefault(x => x.Type == OrdClaimsTypes.IsSuperAdmin)?.Value;
-
-            return isSuperAdminClaim == "1";
         }
         private static void HandleUnauthorized(AuthorizationFilterContext context)
         {
