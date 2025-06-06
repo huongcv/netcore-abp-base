@@ -1,0 +1,121 @@
+﻿using Newtonsoft.Json;
+using Ord.Plugin.Contract.Exceptions;
+using Ord.Plugin.Contract.Services.Security;
+using System.Text;
+using Volo.Abp.Security.Encryption;
+
+namespace Ord.Plugin.Core.Services.Security
+{
+    public class IdEncoderService<TEntity>(IStringEncryptionService stringEncryptionService) : IIdEncoderService<TEntity>
+        where TEntity : class
+    {
+        private readonly string _entityType = typeof(TEntity).Name;
+
+        public string? EncodeId<T>(T id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var payload = new IdPayload<T>
+                {
+                    EntityType = _entityType,
+                    Id = id,
+                    Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                };
+
+                var jsonString = JsonConvert.SerializeObject(payload);
+                var encrypted = stringEncryptionService.Encrypt(jsonString);
+
+                // Base64 URL-safe encoding
+                return Base64UrlEncode(encrypted);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to encode ID for entity '{_entityType}': {ex.Message}", ex);
+            }
+        }
+
+        public T DecodeId<T>(string encodedId)
+        {
+            if (string.IsNullOrEmpty(encodedId))
+                return default;
+
+            try
+            {
+                // Base64 URL-safe decoding
+                var encrypted = Base64UrlDecode(encodedId);
+
+                var decryptedJson = stringEncryptionService.Decrypt(encrypted);
+                var payload = JsonConvert.DeserializeObject<IdPayload<T>>(decryptedJson);
+
+                if (payload.EntityType != _entityType)
+                {
+                    throw new IdDecodeException(encodedId, _entityType);
+                }
+
+                var createdAt = DateTimeOffset.FromUnixTimeSeconds(payload.Timestamp);
+                if (DateTime.UtcNow - createdAt > TimeSpan.FromDays(30))
+                {
+                    throw new IdDecodeException(encodedId, _entityType);
+                }
+
+                return payload.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new IdDecodeException(encodedId, _entityType);
+            }
+        }
+
+        public bool TryDecodeId<T>(string encodedId, out T id)
+        {
+            id = default;
+            try
+            {
+                id = DecodeId<T>(encodedId);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private class IdPayload<T>
+        {
+            public string EntityType { get; set; }
+            public T Id { get; set; }
+            public long Timestamp { get; set; }
+        }
+
+        private static string Base64UrlEncode(string input)
+        {
+            var bytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(bytes)
+                .Replace("+", "-")
+                .Replace("/", "_")
+                .Replace("=", "");
+        }
+
+        private static string Base64UrlDecode(string input)
+        {
+            string base64 = input
+                .Replace("-", "+")
+                .Replace("_", "/");
+
+            // Add padding if needed
+            int padding = 4 - (base64.Length % 4);
+            if (padding != 4)
+            {
+                base64 += new string('=', padding);
+            }
+
+            var bytes = Convert.FromBase64String(base64);
+            return Encoding.UTF8.GetString(bytes);
+        }
+    }
+}

@@ -10,8 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using Ord.Plugin.Contract;
 using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Services.Auth;
+using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Data;
 using Ord.Plugin.Core.Middlewares;
+using Ord.Plugin.Core.Services.Security;
 using Ord.Plugin.HostBase.Middlewares;
 using System.Text;
 using Volo.Abp;
@@ -48,6 +50,7 @@ namespace Ord.Plugin.Core
             });
             services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckPasswordChangeTokenMiddlewareService>();
             services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckTokenRevokeMiddlewareService>();
+            services.AddScoped(typeof(IIdEncoderService<>), typeof(IdEncoderService<>));
             services.AddHttpContextAccessor();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginCoreModule).Assembly));
             context.Services.AddControllersWithViews(options =>

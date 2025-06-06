@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Data;
+using Ord.Plugin.Contract.Dtos.Base;
+using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
@@ -26,12 +28,14 @@ namespace Ord.Plugin.Core.Data
         where TDbContext : IEfCoreDbContext
         where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
-        where TGetPagedItemDto : class
+        where TGetPagedItemDto : BasePagedDto<TKey>
         where TGetByIdDto : class
         where TCreateInputDto : class
         where TUpdateInputDto : class
 
     {
+        protected IIdEncoderService<TEntity> IdEncoderService =>
+            AppFactory.GetServiceDependency<IIdEncoderService<TEntity>>();
         #region Abstract Methods - Must be implemented by derived classes
 
         /// <summary>
@@ -158,6 +162,13 @@ namespace Ord.Plugin.Core.Data
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
             var items = await dtoQueryable.ToListAsync();
+            if (items?.Any() == true)
+            {
+                foreach (var item in items)
+                {
+                    item.EncodedId = IdEncoderService.EncodeId(item.Id);
+                }
+            }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
         }
         /// <summary>
@@ -190,10 +201,15 @@ namespace Ord.Plugin.Core.Data
         /// <param name="id">ID của entity</param>
         /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>DTO chi tiết entity</returns>
-        public virtual async Task<TGetByIdDto> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
+        public virtual async Task<TGetByIdDto> GetByIdAsync(TKey id)
         {
-            var entity = await GetByIdRequiredAsync(id, cancellationToken: cancellationToken);
+            var entity = await GetByIdRequiredAsync(id);
             return MapToGetByIdDto(entity);
+        }
+
+        public Task<TGetByIdDto> GetByEncodedIdAsync(string encodedId)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -233,6 +249,11 @@ namespace Ord.Plugin.Core.Data
             return updatedEntity;
         }
 
+        public Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Xóa entity theo ID
         /// </summary>
@@ -249,7 +270,10 @@ namespace Ord.Plugin.Core.Data
             await DeleteAsync(entity, autoSave: true);
         }
 
-        
+        public Task DeleteByEncodedIdAsync(string encodedId)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

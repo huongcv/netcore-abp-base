@@ -1,6 +1,8 @@
 {
   "culture": "vi",
   "texts": {
+    "id_encode_invalid": "Id {0} không tồn tại",
+    "of": "của",
     "access_denied": "Tài khoản không có quyền truy cập nội dung",
     "CommonError": "Có lỗi xảy ra",
     "SaveSuccess": "Lưu thành công",
