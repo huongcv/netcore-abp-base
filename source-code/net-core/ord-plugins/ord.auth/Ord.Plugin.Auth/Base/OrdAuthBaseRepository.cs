@@ -11,7 +11,9 @@ namespace Ord.Plugin.Auth.Base
     {
         public OrdAuthBaseRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider) : base(dbContextProvider)
         {
-        }
+           var _dbContextProvider = LazyServiceProvider.LazyGetRequiredService<IDbContextProvider<OrdPluginAuthDbContext>>();
+        } 
+        
         protected  Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)
         {
             return GetQueryableEntity<TenantEntity>();
