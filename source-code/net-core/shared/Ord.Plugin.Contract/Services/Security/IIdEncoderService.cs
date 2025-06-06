@@ -2,11 +2,11 @@
 
 namespace Ord.Plugin.Contract.Services.Security
 {
-    public interface IIdEncoderService<TEntity> : IScopedDependency
+    public interface IIdEncoderService<TEntity,TKey> : IScopedDependency
     where TEntity : class
     {
-        string? EncodeId<T>(T id);
-        T DecodeId<T>(string encodedId);
-        bool TryDecodeId<T>(string encodedId, out T id);
+        string? EncodeId(TKey id);
+        TKey DecodeId(string encodedId);
+        bool TryDecodeId(string encodedId, out TKey id);
     }
 }

@@ -14,14 +14,15 @@ namespace Ord.Plugin.Contract.Data
         where TUpdateInputDto : class
     {
         Task<PagedResultDto<TGetPagedItemDto>> GetPagedListAsync(TGetPagedInputDto input);
-
-        Task<TGetByIdDto> GetByIdAsync(TKey id);
-        Task<TGetByIdDto> GetByEncodedIdAsync(string encodedId);
+        Task<TEntity> GetByIdAsync(TKey id, bool isNoTracking = false);
+        Task<TEntity> GetByEncodedId(string encodedId, bool isAsNoTracking = true);
+        Task<TGetByIdDto> GetDetailByIdAsync(TKey id);
+        Task<TGetByIdDto> GetDetailByEncodedIdAsync(string encodedId);
         Task<TEntity> CreateAsync(TCreateInputDto createInput, bool autoSave = true);
         Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true);
         Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true);
-        Task DeleteAsync(TKey id);
-        Task DeleteByEncodedIdAsync(string encodedId);
+        Task<bool> DeleteAsync(TKey id, bool autoSave = true);
+        Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true);
 
         Task<List<TGetByIdDto>> CreateManyAsync(IEnumerable<TCreateInputDto> createInputs, CancellationToken cancellationToken = default);
 

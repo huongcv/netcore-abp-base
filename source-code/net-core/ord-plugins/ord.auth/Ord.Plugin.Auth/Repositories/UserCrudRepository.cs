@@ -5,6 +5,7 @@ using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Repositories
 {
@@ -27,6 +28,7 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override Task ValidateBeforeCreateAsync(CreateUserDto createInput)
         {
+            throw new AbpValidationException("");
             throw new NotImplementedException();
         }
 

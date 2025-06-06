@@ -6,12 +6,12 @@ using Volo.Abp.Security.Encryption;
 
 namespace Ord.Plugin.Core.Services.Security
 {
-    public class IdEncoderService<TEntity>(IStringEncryptionService stringEncryptionService) : IIdEncoderService<TEntity>
+    public class IdEncoderService<TEntity, TKey>(IStringEncryptionService stringEncryptionService) : IIdEncoderService<TEntity, TKey>
         where TEntity : class
     {
         private readonly string _entityType = typeof(TEntity).Name;
 
-        public string? EncodeId<T>(T id)
+        public string? EncodeId(TKey id)
         {
             if (id == null)
             {
@@ -20,7 +20,7 @@ namespace Ord.Plugin.Core.Services.Security
 
             try
             {
-                var payload = new IdPayload<T>
+                var payload = new IdPayload<TKey>
                 {
                     EntityType = _entityType,
                     Id = id
@@ -38,7 +38,7 @@ namespace Ord.Plugin.Core.Services.Security
             }
         }
 
-        public T DecodeId<T>(string encodedId)
+        public TKey DecodeId(string encodedId)
         {
             if (string.IsNullOrEmpty(encodedId))
                 return default;
@@ -49,7 +49,7 @@ namespace Ord.Plugin.Core.Services.Security
                 var encrypted = Base64UrlDecode(encodedId);
 
                 var decryptedJson = stringEncryptionService.Decrypt(encrypted);
-                var payload = JsonConvert.DeserializeObject<IdPayload<T>>(decryptedJson);
+                var payload = JsonConvert.DeserializeObject<IdPayload<TKey>>(decryptedJson);
 
                 if (payload.EntityType != _entityType)
                 {
@@ -64,12 +64,12 @@ namespace Ord.Plugin.Core.Services.Security
             }
         }
 
-        public bool TryDecodeId<T>(string encodedId, out T id)
+        public bool TryDecodeId(string encodedId, out TKey id)
         {
             id = default;
             try
             {
-                id = DecodeId<T>(encodedId);
+                id = DecodeId(encodedId);
                 return true;
             }
             catch
@@ -77,10 +77,11 @@ namespace Ord.Plugin.Core.Services.Security
                 return false;
             }
         }
-
         private class IdPayload<T>
         {
+            [JsonProperty("e")]
             public string EntityType { get; set; }
+            [JsonProperty("i")]
             public T Id { get; set; }
         }
 

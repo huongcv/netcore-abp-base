@@ -16,6 +16,7 @@ using Ord.Plugin.HostBase.Filters;
 using Ord.Plugin.HostBase.Middlewares;
 using Ord.Plugin.HostBase.Util;
 using System.IO.Compression;
+using System.Text.Json.Serialization;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Serilog;
@@ -68,6 +69,11 @@ namespace Ord.Plugin.HostBase
             ConfigureCache(configuration);
             ConfigureLanguage(services);
             services.ConfigureHangfire();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
         }
 
         void ConfigureMvcFilter(IServiceCollection services)

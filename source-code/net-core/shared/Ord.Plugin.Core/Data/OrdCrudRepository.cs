@@ -34,8 +34,8 @@ namespace Ord.Plugin.Core.Data
         where TUpdateInputDto : class, IHasEncodedId
 
     {
-        protected IIdEncoderService<TEntity> IdEncoderService =>
-            AppFactory.GetServiceDependency<IIdEncoderService<TEntity>>();
+        protected IIdEncoderService<TEntity, TKey> IdEncoderService =>
+            AppFactory.GetServiceDependency<IIdEncoderService<TEntity, TKey>>();
         #region Abstract Methods - Must be implemented by derived classes
 
         /// <summary>
@@ -108,10 +108,10 @@ namespace Ord.Plugin.Core.Data
         /// <param name="queryable">Queryable gốc</param>
         /// <param name="sorting">Sorting string</param>
         /// <returns>Queryable đã được sort</returns>
-        protected virtual async Task<IQueryable<TGetPagedItemDto>> ApplySortingAsync(IQueryable<TGetPagedItemDto> queryable, TGetPagedInputDto input)
+        protected virtual Task<IQueryable<TGetPagedItemDto>> ApplySortingAsync(IQueryable<TGetPagedItemDto> queryable, TGetPagedInputDto input)
         {
             // Base implementation - derived classes should override for specific sorting logic
-            return await Task.FromResult(queryable);
+            return Task.FromResult(queryable);
         }
 
         #endregion
@@ -194,22 +194,40 @@ namespace Ord.Plugin.Core.Data
                    type == typeof(float);
         }
 
+        public virtual async Task<TEntity> GetByEncodedId(string encodedId, bool isAsNoTracking = true)
+        {
+            if (IdEncoderService.TryDecodeId(encodedId, out var id))
+            {
+                return await GetByIdAsync(id, isAsNoTracking);
+            }
 
+            return null;
+        }
         /// <summary>
         /// Lấy chi tiết entity theo ID
         /// </summary>
         /// <param name="id">ID của entity</param>
         /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>DTO chi tiết entity</returns>
-        public virtual async Task<TGetByIdDto> GetByIdAsync(TKey id)
+        public virtual async Task<TGetByIdDto> GetDetailByIdAsync(TKey id)
         {
-            var entity = await GetByIdRequiredAsync(id);
+            var queryable = (await GetQueryableAsync()).AsNoTracking();
+            var entity = await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (entity == null)
+            {
+                return null;
+            }
             return MapToGetByIdDto(entity);
         }
 
-        public Task<TGetByIdDto> GetByEncodedIdAsync(string encodedId)
+        public virtual async Task<TGetByIdDto> GetDetailByEncodedIdAsync(string encodedId)
         {
-            throw new NotImplementedException();
+            if (IdEncoderService.TryDecodeId(encodedId, out var id))
+            {
+                return await GetDetailByIdAsync(id);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -239,19 +257,26 @@ namespace Ord.Plugin.Core.Data
         public virtual async Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true)
         {
             // Lấy entity hiện tại
-            var entity = await GetByIdRequiredAsync(id);
+            var entity = await GetByIdAsync(id);
+            if (entity == null)
+            {
+                return null;
+            }
             // Validate đầu vào
             await ValidateBeforeUpdateAsync(updateInput, entity);
             entity = MapToEntity(updateInput, entity);
-            // Update entity
             var updatedEntity = await UpdateAsync(entity, autoSave: autoSave);
-            // Map và trả về DTO
             return updatedEntity;
         }
 
-        public Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
+        public async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
         {
-            throw new NotImplementedException();
+            if (IdEncoderService.TryDecodeId(encodedId, out var id))
+            {
+                return await UpdateAsync(id, updateInput, autoSave);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -260,19 +285,28 @@ namespace Ord.Plugin.Core.Data
         /// <param name="id">ID của entity</param>
         /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>Task hoàn thành</returns>
-        public virtual async Task DeleteAsync(TKey id)
+        public virtual async Task<bool> DeleteAsync(TKey id, bool autoSave = true)
         {
             // Lấy entity hiện tại
-            var entity = await GetByIdRequiredAsync(id);
+            var entity = await GetByIdAsync(id);
+            if (entity == null)
+            {
+                return false;
+            }
             // Logic trước khi xóa
             await ValidateBeforeDeleteAsync(entity);
             // Xóa entity
-            await DeleteAsync(entity, autoSave: true);
+            await DeleteAsync(entity, autoSave);
+            return true;
         }
 
-        public Task DeleteByEncodedIdAsync(string encodedId)
+        public async Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true)
         {
-            throw new NotImplementedException();
+            if (IdEncoderService.TryDecodeId(encodedId, out var id))
+            {
+                return await DeleteAsync(id);
+            }
+            return false;
         }
 
         #endregion
@@ -342,9 +376,13 @@ namespace Ord.Plugin.Core.Data
         {
             foreach (var id in ids)
             {
-                var entity = await GetByIdRequiredAsync(id, cancellationToken: cancellationToken);
-                await ValidateBeforeDeleteAsync(entity);
-                await DeleteAsync(entity, autoSave: false, cancellationToken);
+                var entity = await GetByIdAsync(id);
+                if (entity != null)
+                {
+                    await ValidateBeforeDeleteAsync(entity);
+                    await DeleteAsync(entity, autoSave: false, cancellationToken);
+                }
+
             }
 
             // Save tất cả changes cùng lúc

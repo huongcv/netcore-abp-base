@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
@@ -52,34 +53,11 @@ namespace Ord
             updateAction(entity);
             await UpdateAsync(entity);
         }
-        /// <summary>
-        /// Lấy entity theo ID, ném exception nếu không tìm thấy
-        /// </summary>
-        /// <param name="id">ID của entity</param>
-        /// <param name="includeDetails">Có include các thông tin chi tiết hay không</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
-        /// <returns>Entity</returns>
-        /// <exception cref="EntityNotFoundException">Khi không tìm thấy entity</exception>
-        public virtual async Task<TEntity> GetByIdRequiredAsync(TKey id, bool includeDetails = true, CancellationToken cancellationToken = default)
-        {
-            var entity = await GetByIdAsync(id, includeDetails, cancellationToken);
-            if (entity == null)
-            {
-                throw new EntityNotFoundException($"Entity with ID {id} not found");
-            }
-            return entity;
-        }
-        /// <summary>
-        /// Lấy entity theo ID
-        /// </summary>
-        /// <param name="id">ID của entity</param>
-        /// <param name="includeDetails">Có include các thông tin chi tiết hay không</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
-        /// <returns>Entity hoặc null nếu không tìm thấy</returns>
-        public virtual async Task<TEntity> GetByIdAsync(TKey id, bool includeDetails = true, CancellationToken cancellationToken = default)
-        {
-            return await GetAsync(id, includeDetails, cancellationToken);
-        }
 
+        public async Task<TEntity> GetByIdAsync(TKey id, bool isNoTracking = false)
+        {
+            var queryable = (await GetQueryableAsync()).AsNoTrackingIf(isNoTracking);
+            return await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        }
     }
 }

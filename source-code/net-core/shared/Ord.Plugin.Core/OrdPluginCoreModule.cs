@@ -50,7 +50,7 @@ namespace Ord.Plugin.Core
             });
             services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckPasswordChangeTokenMiddlewareService>();
             services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckTokenRevokeMiddlewareService>();
-            services.AddScoped(typeof(IIdEncoderService<>), typeof(IdEncoderService<>));
+            services.AddScoped(typeof(IIdEncoderService<,>), typeof(IdEncoderService<,>));
             services.AddHttpContextAccessor();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginCoreModule).Assembly));
             context.Services.AddControllersWithViews(options =>

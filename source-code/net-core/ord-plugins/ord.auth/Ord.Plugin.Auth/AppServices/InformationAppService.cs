@@ -43,5 +43,10 @@ namespace Ord.Plugin.Auth.AppServices
             var repo = Factory.GetServiceDependency<IUserCrudRepository>();
             return repo.GetPagedListAsync(input);
         }
+        public Task<UserDetailDto> GetById(string encodeId)
+        {
+            var repo = Factory.GetServiceDependency<IUserCrudRepository>();
+            return repo.GetDetailByEncodedIdAsync(encodeId);
+        }
     }
 }

@@ -63,11 +63,19 @@ namespace Ord.Plugin.Contract.Dtos
         }
         public static CommonResultDto<T> Failed(AbpValidationException invalidEx)
         {
+            if (invalidEx?.ValidationErrors?.Any() == true)
+            {
+                return new CommonResultDto<T>()
+                {
+                    Code = CommonResultCode.BadRequest,
+                    Message = invalidEx?.ValidationErrors?.FirstOrDefault()?.ErrorMessage,
+                    Extend = invalidEx?.ValidationErrors
+                };
+            }
             return new CommonResultDto<T>()
             {
                 Code = CommonResultCode.BadRequest,
-                Message = invalidEx?.ValidationErrors?.FirstOrDefault()?.ErrorMessage,
-                Extend = invalidEx?.ValidationErrors
+                Message = invalidEx?.Message
             };
         }
         public static CommonResultDto<T> Ok(T dataSuccess, string message = "")

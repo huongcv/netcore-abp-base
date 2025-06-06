@@ -50,13 +50,7 @@ namespace Ord.Plugin.Core.Base
 
         protected string GetLocalizedMessage(string key, params object[] formatArgs)
         {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                return string.Empty;
-            }
-            return formatArgs?.Length > 0
-                ? L[key, formatArgs].Value
-                : L[key].Value;
+            return L.GetLocalizedMessage(key, formatArgs);
         }
         protected string GetLocalizedMessageOrDefault(string key, string defaultValue = "", params object[] formatArgs)
         {
