@@ -1,10 +1,11 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
-using AutoMapper;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
@@ -44,8 +45,7 @@ namespace Ord.Plugin.Core.Data
         /// Tạo queryable cho danh sách phân trang với mapping sang DTO
         /// </summary>
         /// <param name="queryable">Queryable gốc của entity</param>
-        /// <returns>Queryable đã được map sang DTO</returns>
-        protected abstract Task<IQueryable<TGetPagedItemDto>> GetPagedQueryableAsync(IQueryable<TEntity> queryable, TGetPagedInputDto input);
+        protected abstract Task<IQueryable<TEntity>> GetPagedQueryableAsync(IQueryable<TEntity> queryable, TGetPagedInputDto input);
 
         /// <summary>
         /// Validate dữ liệu trước khi tạo mới
@@ -150,7 +150,8 @@ namespace Ord.Plugin.Core.Data
                     queryable = queryable.OrderBy(e => e.Id);
                 }
             }
-            var dtoQueryable = await GetPagedQueryableAsync(queryable, input);
+            queryable = await GetPagedQueryableAsync(queryable, input);
+            var dtoQueryable = await MapToDtoQueryableAsync(queryable, input);
             // Đếm tổng số record
             var totalCount = await dtoQueryable.CountAsync();
             if (totalCount == 0)
@@ -173,6 +174,43 @@ namespace Ord.Plugin.Core.Data
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
         }
+
+        protected virtual async Task<IQueryable<TGetPagedItemDto>> MapToDtoQueryableAsync(IQueryable<TEntity> entityQueryable, TGetPagedInputDto input)
+        {
+            var mapper = AppFactory.GetServiceDependency<IMapper>();
+            return entityQueryable.ProjectTo<TGetPagedItemDto>(mapper.ConfigurationProvider);
+        }
+        public async Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input)
+        {
+
+            if (!typeof(IHasActived).IsAssignableFrom(typeof(TEntity)))
+            {
+                return new CounterByIsActivedDto();
+
+            }
+            var queryable = (await GetQueryableAsync()).AsNoTracking();
+            var isActivedProp = typeof(TGetPagedInputDto).GetProperty("IsActived");
+            if (isActivedProp != null && isActivedProp.PropertyType == typeof(bool?) && isActivedProp.CanWrite)
+            {
+                var currentValue = isActivedProp.GetValue(input) as bool?;
+                if (currentValue.HasValue)
+                {
+                    isActivedProp.SetValue(input, null);
+                }
+            }
+            var queryableDto = await GetPagedQueryableAsync(queryable, input);
+            var groupByQuery = await queryableDto.GroupBy(e => ((IHasActived)e).IsActived)
+                .Select(x => new CounterByIsActivedItemDto()
+                {
+                    IsActived = x.Key,
+                    TotalCount = x.Count()
+                }).ToListAsync();
+            return new CounterByIsActivedDto()
+            {
+                Items = groupByQuery
+            };
+        }
+
         /// <summary>
         /// Kiểm tra xem type có phải là numeric type hay không
         /// </summary>
@@ -222,7 +260,7 @@ namespace Ord.Plugin.Core.Data
             {
                 if (dto is IHasEncodedId encodedDto and IEntityDto<TKey> entityDto)
                 {
-                   encodedDto.EncodedId = IdEncoderService.EncodeId(entityDto.Id);
+                    encodedDto.EncodedId = IdEncoderService.EncodeId(entityDto.Id);
                 }
 
             }

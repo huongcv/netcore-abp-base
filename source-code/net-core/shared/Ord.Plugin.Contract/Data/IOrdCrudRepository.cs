@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Ord.Plugin.Contract.Dtos;
+using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 
@@ -13,11 +14,17 @@ namespace Ord.Plugin.Contract.Data
         where TCreateInputDto : class
         where TUpdateInputDto : class
     {
+        #region Get function
+
         Task<PagedResultDto<TGetPagedItemDto>> GetPagedListAsync(TGetPagedInputDto input);
+        Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input);
         Task<TEntity> GetByIdAsync(TKey id, bool isNoTracking = false);
         Task<TEntity> GetByEncodedId(string encodedId, bool isAsNoTracking = true);
         Task<TGetByIdDto> GetDetailByIdAsync(TKey id);
         Task<TGetByIdDto> GetDetailByEncodedIdAsync(string encodedId);
+
+        #endregion
+
         Task<TEntity> CreateAsync(TCreateInputDto createInput, bool autoSave = true);
         Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true);
         Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true);

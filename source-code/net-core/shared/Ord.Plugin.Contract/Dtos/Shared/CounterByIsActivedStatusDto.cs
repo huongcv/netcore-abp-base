@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ord.Plugin.Contract.Dtos
+﻿namespace Ord.Plugin.Contract.Dtos
 {
     public class CounterByIsActivedDto
     {
-        public int TotalTrue => Items?.Count(x => x.IsActived == true) ?? 0;
-        public int TotalFalse => Items?.Count(x => x.IsActived != true) ?? 0;
+        public int TotalTrue => Items?.Where(x => x.IsActived == true)?.Sum(x => x.TotalCount) ?? 0;
+        public int TotalFalse => Items?.Where(x => x.IsActived != true)?.Sum(x => x.TotalCount) ?? 0;
         public int Total => TotalFalse + TotalTrue;
         public IEnumerable<CounterByIsActivedItemDto> Items { get; set; }
     }

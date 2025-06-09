@@ -22,6 +22,12 @@ namespace Ord.Plugin.Auth.AppServices
             return CreateSuccessResult(paged);
         }
         [HttpPost]
+        public async Task<CommonResultDto<CounterByIsActivedDto>> GetCountByIsActived(UserPagedInput input)
+        {
+            return CreateSuccessResult(await UserCrudRepository.GetCountGroupByIsActived(input));
+        }
+
+        [HttpPost]
         public async Task<CommonResultDto<UserDetailDto>> GetById(GetByEncodeIdDto input)
         {
             var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();

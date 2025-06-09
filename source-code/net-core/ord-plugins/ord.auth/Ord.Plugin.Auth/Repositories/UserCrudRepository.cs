@@ -13,7 +13,7 @@ namespace Ord.Plugin.Auth.Repositories
         : OrdAuthCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(dbContextProvider),
             IUserCrudRepository
     {
-        protected override async Task<IQueryable<UserPagedDto>> GetPagedQueryableAsync(IQueryable<UserEntity> queryable,
+        protected override async Task<IQueryable<UserEntity>> GetPagedQueryableAsync(IQueryable<UserEntity> queryable,
             UserPagedInput input)
         {
             queryable = queryable.WhereLikeText(input.TextSearch, x => new
@@ -23,7 +23,7 @@ namespace Ord.Plugin.Auth.Repositories
                 x.Email,
             })
                 .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
-            return queryable.Select(x => AppFactory.ObjectMap<UserEntity, UserPagedDto>(x));
+            return queryable;
         }
 
         protected override Task ValidateBeforeCreateAsync(CreateUserDto createInput)
@@ -41,5 +41,7 @@ namespace Ord.Plugin.Auth.Repositories
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }
