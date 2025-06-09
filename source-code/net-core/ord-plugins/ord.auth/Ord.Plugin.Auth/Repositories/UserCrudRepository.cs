@@ -5,6 +5,7 @@ using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -39,7 +40,7 @@ namespace Ord.Plugin.Auth.Repositories
         protected override async Task<UserEntity> MapToCreateEntityAsync(CreateUserDto createInput)
         {
             var entity = AppFactory.ObjectMap<CreateUserDto, UserEntity>(createInput);
-            entity.PasswordHash = HashPassword(entity, createInput.Password);
+            entity.PasswordHash = UserUtil.HashPassword(entity, createInput.Password);
             return entity;
         }
 
@@ -48,7 +49,7 @@ namespace Ord.Plugin.Auth.Repositories
             // must change pwd
             if (!string.IsNullOrEmpty(updateInput.Password))
             {
-                entityUpdate.PasswordHash = HashPassword(entityUpdate, updateInput.Password);
+                entityUpdate.PasswordHash = UserUtil.HashPassword(entityUpdate, updateInput.Password);
             }
         }
 
@@ -74,10 +75,6 @@ namespace Ord.Plugin.Auth.Repositories
 
             return !await query.AnyAsync();
         }
-        public static string HashPassword(UserEntity user, string password)
-        {
-            var passwordHasher = new PasswordHasher<UserEntity>();
-            return passwordHasher.HashPassword(user, password);
-        }
+       
     }
 }

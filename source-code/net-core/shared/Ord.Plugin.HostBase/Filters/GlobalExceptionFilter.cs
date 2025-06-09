@@ -32,6 +32,7 @@ namespace Ord.Plugin.HostBase.Filters
                 AbpValidationException validationEx => HandleValidationException(validationEx),
                 BusinessException businessEx => HandleBusinessException(businessEx),
                 IdDecodeException idDecodeEx => HandleIdDecodeException(idDecodeEx),
+                EntityNotFoundException entityNotFoundEx => HandleEntityNotFoundException(entityNotFoundEx),
                 _ => HandleGeneralException(context.Exception)
             };
 
@@ -71,6 +72,20 @@ namespace Ord.Plugin.HostBase.Filters
             );
         }
 
+        private CommonResultDto<object> HandleEntityNotFoundException(EntityNotFoundException ex)
+        {
+            _logger.LogWarning(ex, "Not found entity");
+            var message = ex.Message;
+            if (ex.IsMustGetLocalized)
+            {
+                message = L.GetLocalizedMessage(ex.Message);
+            }
+
+            return CommonResultDto<object>.Failed(
+                ex.Message,
+                errorCode: "404"
+            );
+        }
 
         private CommonResultDto<object> HandleGeneralException(Exception ex)
         {

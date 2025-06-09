@@ -4,6 +4,7 @@ using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Services.Security;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
@@ -59,6 +60,11 @@ namespace Ord.Plugin.Auth.AppServices
                 return CreateNotFoundResult<bool>(GetLocalizedMessage("crud_user_not_found"));
             }
             return CreateSuccessResult(ret);
+        }
+        protected Guid ConvertEncodeId(string encodeId)
+        {
+            var ser = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();
+            return ser.DecodeId(encodeId);
         }
     }
 }
