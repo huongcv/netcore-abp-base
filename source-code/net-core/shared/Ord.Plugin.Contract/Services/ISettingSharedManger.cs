@@ -3,7 +3,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Contract.Setting
 {
-    public interface ISettingService : IScopedDependency
+    public interface ISettingSharedManger : IScopedDependency
     {
         Task<T> GetForApp<T>(string nameSetting, T defaultValue = default);
         Task<T> GetForTenant<T>(string nameSetting, T defaultValue = default);

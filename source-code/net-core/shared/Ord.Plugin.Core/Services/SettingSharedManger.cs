@@ -1,9 +1,8 @@
-﻿using Dapper;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Contract.Enums;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Setting;
 using Ord.Plugin.Core.Data;
 using System.Text;
@@ -13,23 +12,16 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Setting
 {
-    public class SettingService : DapperRepository<OrdPluginCoreDbContext>, ISettingService
+    public class SettingSharedManger(
+        IDistributedCache<string> cache,
+        IAppFactory appFactory,
+        IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider,
+        ILogger<SettingSharedManger> logger)
+        : DapperRepository<OrdPluginCoreDbContext>(dbContextProvider), ISettingSharedManger
     {
-        private readonly IDistributedCache<string> _cache;
-        private readonly IAppFactory _appFactory;
-        private readonly ILogger<SettingService> _logger;
+        protected ISettingSharedRepository SettingRepos => appFactory.GetServiceDependency<ISettingSharedRepository>();
         private bool _isJsonValue = false;
-      
 
-        public SettingService(IDistributedCache<string> cache,
-            IAppFactory appFactory,
-            IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider, 
-            ILogger<SettingService> logger) : base(dbContextProvider)
-        {
-            _cache = cache;
-            _appFactory = appFactory;
-            _logger = logger;
-        }
 
         public Task<T> GetForApp<T>(string nameSetting, T defaultValue = default)
         {
@@ -85,56 +77,19 @@ namespace Ord.Plugin.Core.Setting
             var keyCache = new StringBuilder($@"Setting:Type_{type}:Name_{nameSetting}_{_isJsonValue}");
             if (type == SettingType.ForTenant)
             {
-                keyCache.Append($"Tenant_{_appFactory.CurrentTenantId}");
+                keyCache.Append($"Tenant_{appFactory.CurrentTenantId}");
             }
             if (type == SettingType.ForUser)
             {
-                keyCache.Append($"User_{_appFactory.CurrentUserId}");
+                keyCache.Append($"User_{appFactory.CurrentUserId}");
             }
-            var settingValue = await _cache.GetOrAddAsync(keyCache.ToString(), async () =>
-            {
-                var sql = new StringBuilder($@"SELECT {(_isJsonValue==true? "JObjectValue" : "Value")} as Value,MustEncrypt from settings where IsDeleted = 0 and Type = @Type and IsActived = 1 ");
-                sql.Append(" and Name = @Name ");
-                if (type == SettingType.ForTenant)
-                {
-                    sql.Append(" and TenantId = @TenantId ");
-                }
-                if (type == SettingType.ForUser)
-                {
-                    sql.Append(" and UserId = @UserId ");
-                }
-                var connection = await GetDbConnectionAsync();
-                var transaction = await GetDbTransactionAsync();
-                var settingDto = await connection.QueryFirstOrDefaultAsync<SettingDto>(sql.ToString(), new
-                {
-                    Name = nameSetting,
-                    Type = type,
-                    TenantId = _appFactory.CurrentTenantId,
-                    UserId = _appFactory.CurrentUserId
-                }, transaction: transaction);
-                if (settingDto == null)
-                {
-                    return string.Empty;
-                }
-                if (settingDto?.MustEncrypt == true)
-                {
-                    try
-                    {
-                        return _appFactory.StringEncryption.Decrypt(settingDto?.Value);
-                    }
-                    catch
-                    {
-                        return settingDto?.Value;
-                    }
-                }
-                return settingDto?.Value;
-            });
+            var settingValue = await cache.GetOrAddAsync(keyCache.ToString(), async () => await DoGetValueSettingAsync(nameSetting, type));
             // lấy mặc định trong Configuration json
             if (string.IsNullOrEmpty(settingValue) && type == SettingType.ForApp)
             {
                 try
                 {
-                    return _appFactory.Configuration[nameSetting];
+                    return appFactory.Configuration[nameSetting];
                 }
                 catch
                 {
@@ -142,6 +97,27 @@ namespace Ord.Plugin.Core.Setting
                 }
             }
             return settingValue;
+        }
+
+        protected async Task<string> DoGetValueSettingAsync(string nameSetting, SettingType type)
+        {
+            var settingDto = await SettingRepos.GetSettingAsync(nameSetting, type, _isJsonValue);
+            if (settingDto == null)
+            {
+                return string.Empty;
+            }
+            if (settingDto?.MustEncrypt == true)
+            {
+                try
+                {
+                    return appFactory.StringEncryption.Decrypt(settingDto?.Value);
+                }
+                catch
+                {
+                    return settingDto?.Value;
+                }
+            }
+            return settingDto?.Value;
         }
         private T ConvertValue<T>(string value, T defaultValue = default(T))
         {
@@ -168,11 +144,11 @@ namespace Ord.Plugin.Core.Setting
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Failed to convert setting value '{Value}' to type {Type}, returning default", value, typeof(T).Name);
+                logger.LogWarning(ex, "Failed to convert setting value '{Value}' to type {Type}, returning default", value, typeof(T).Name);
                 return defaultValue;
             }
         }
 
-        
+
     }
 }

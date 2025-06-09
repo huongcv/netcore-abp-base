@@ -9,13 +9,13 @@ namespace Ord.Plugin.Core.Features.Mailing
 {
     public class SendMailService : ISendMailService
     {
-        private readonly ISettingService _settingService;
+        private readonly ISettingSharedManger _settingSharedManger;
         private readonly ILogger<SendMailService> _logger;
         private MailSettings _mailSettings;
-        public SendMailService(ISettingService settingService,
+        public SendMailService(ISettingSharedManger settingSharedManger,
             ILogger<SendMailService> logger)
         {
-            _settingService = settingService;
+            _settingSharedManger = settingSharedManger;
             _logger = logger;
         }
 
@@ -98,11 +98,11 @@ namespace Ord.Plugin.Core.Features.Mailing
         {
             try
             {
-                var Host = await _settingService.GetForApp("App:Setting:Mailing.Smtp.Host", "smtp.gmail.com");
-                var Port = await _settingService.GetForApp("App:Setting:Mailing.Smtp.Port", 587);
-                var Mail = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.UserName");
-                var Password = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.Password");
-                var DisplayName = await _settingService.GetForApp<string>("App:Setting:Mailing.Smtp.DisplayName");
+                var Host = await _settingSharedManger.GetForApp("App:Setting:Mailing.Smtp.Host", "smtp.gmail.com");
+                var Port = await _settingSharedManger.GetForApp("App:Setting:Mailing.Smtp.Port", 587);
+                var Mail = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.UserName");
+                var Password = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.Password");
+                var DisplayName = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.DisplayName");
 
                 Console.WriteLine($"Password: {Password}, Mail: {Mail}");
                 _mailSettings = new MailSettings

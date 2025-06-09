@@ -63,7 +63,7 @@ namespace Ord.Plugin.Auth.Services
                     if (userLoginDto?.IsLockoutEnabled == true)
                     {
                         await UserRepos.IncreaseAccessFailedCount(userLoginDto.Id);
-                        var settingRepo = AppFactory.LazyService<ISettingService>();
+                        var settingRepo = AppFactory.LazyService<ISettingSharedManger>();
                         var maxCountFailed = await settingRepo.GetForApp(SettingNameConst.MaxAccessFailedCount, 5);
                         if (maxCountFailed <= userLoginDto.AccessFailedCount)
                         {

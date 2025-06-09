@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Contract.Repositories;
@@ -12,6 +13,7 @@ namespace Ord.Plugin.Core.Services
     {
         private IUserSharedRepository UserSharedRepository => AppFactory.GetServiceDependency<IUserSharedRepository>();
         private IPermissionSharedManger PermissionSharedManger => AppFactory.GetServiceDependency<IPermissionSharedManger>();
+        private ITenantSharedRepository TenantSharedRepos => AppFactory.GetServiceDependency<ITenantSharedRepository>();
         public async Task<UserInformationDto?> GetUserCurrentAsync()
         {
             var userId = AppFactory.CurrentUserId;
@@ -33,6 +35,10 @@ namespace Ord.Plugin.Core.Services
             if (user != null)
             {
                 user.ListPermission = await PermissionSharedManger.GetPermissionsAsync(userId);
+                if (user.TenantId.HasValue)
+                {
+                    user.TenantDto = await TenantSharedRepos.GetById(user.TenantId.Value);
+                }
             }
             return user;
         }
