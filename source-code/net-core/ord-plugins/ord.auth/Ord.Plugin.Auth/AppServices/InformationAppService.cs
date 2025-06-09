@@ -6,7 +6,6 @@ using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -40,12 +39,12 @@ namespace Ord.Plugin.Auth.AppServices
         [HttpPost]
         public Task<PagedResultDto<UserPagedDto>> GetUsers(UserPagedInput input)
         {
-            var repo = Factory.GetServiceDependency<IUserCrudRepository>();
+            var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();
             return repo.GetPagedListAsync(input);
         }
         public Task<UserDetailDto> GetById(string encodeId)
         {
-            var repo = Factory.GetServiceDependency<IUserCrudRepository>();
+            var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();
             return repo.GetDetailByEncodedIdAsync(encodeId);
         }
     }

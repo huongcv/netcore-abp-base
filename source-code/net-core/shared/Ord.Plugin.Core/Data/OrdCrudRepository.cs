@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
+using AutoMapper;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
@@ -211,13 +213,21 @@ namespace Ord.Plugin.Core.Data
         /// <returns>DTO chi tiết entity</returns>
         public virtual async Task<TGetByIdDto> GetDetailByIdAsync(TKey id)
         {
+            var mapper = AppFactory.GetServiceDependency<IMapper>();
             var queryable = (await GetQueryableAsync()).AsNoTracking();
-            var entity = await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
-            if (entity == null)
+            var dto = await queryable.Where(x => x.Id.Equals(id))
+                .ProjectTo<TGetByIdDto>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+            if (dto != null)
             {
-                return null;
+                if (dto is IHasEncodedId encodedDto and IEntityDto<TKey> entityDto)
+                {
+                   encodedDto.EncodedId = IdEncoderService.EncodeId(entityDto.Id);
+                }
+
             }
-            return MapToGetByIdDto(entity);
+
+            return dto;
         }
 
         public virtual async Task<TGetByIdDto> GetDetailByEncodedIdAsync(string encodedId)

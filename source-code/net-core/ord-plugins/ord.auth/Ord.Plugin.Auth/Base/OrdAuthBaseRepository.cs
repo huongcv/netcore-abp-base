@@ -6,14 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Base
 {
-    public class OrdAuthBaseRepository<TEntity, TKey> : OrdEfCoreRepository<OrdPluginAuthDbContext,TEntity, TKey>
+    public class OrdAuthBaseRepository<TEntity, TKey>(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
+        : OrdEfCoreRepository<OrdPluginAuthDbContext, TEntity, TKey>(dbContextProvider)
         where TEntity : class, IEntity<TKey>
     {
-        public OrdAuthBaseRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider) : base(dbContextProvider)
-        {
-           var _dbContextProvider = LazyServiceProvider.LazyGetRequiredService<IDbContextProvider<OrdPluginAuthDbContext>>();
-        } 
-        
         protected  Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)
         {
             return GetQueryableEntity<TenantEntity>();

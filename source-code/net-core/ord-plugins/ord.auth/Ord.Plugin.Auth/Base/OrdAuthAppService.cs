@@ -1,10 +1,14 @@
-﻿using Ord.Plugin.Contract.Factories;
-using Volo.Abp.Application.Services;
+﻿using Microsoft.Extensions.Localization;
+using Ord.Plugin.Auth.Shared.Localization;
+using Ord.Plugin.Core.Base;
 
 namespace Ord.Plugin.Auth.Base
 {
-    public class OrdAuthAppService : ApplicationService
+    public class OrdAuthAppService : OrdAppServiceBase
     {
-        protected IAppFactory Factory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
+        protected override IStringLocalizer GetMainLocalizer()
+        {
+            return AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
+        }
     }
 }

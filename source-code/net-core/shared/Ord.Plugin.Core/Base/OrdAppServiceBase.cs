@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Localization;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
-using Volo.Abp.Domain.Services;
+using Volo.Abp.Application.Services;
 
 namespace Ord.Plugin.Core.Base
 {
-    public abstract class OrdManagerBase : DomainService
+    public abstract class OrdAppServiceBase : ApplicationService
     {
         private OrdBaseService _baseService;
         protected OrdBaseService BaseService => _baseService ??= new OrdBaseService(LazyServiceProvider, GetMainLocalizer());

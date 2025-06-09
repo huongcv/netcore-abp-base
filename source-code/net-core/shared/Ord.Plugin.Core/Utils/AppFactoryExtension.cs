@@ -5,14 +5,10 @@ using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Services;
-using Ord.Plugin.Contract.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Authorization;
 using Volo.Abp.Caching;
-using Volo.Abp.Security.Encryption;
 using Volo.Abp.Threading;
 
 namespace Ord.Plugin.Core.Utils
@@ -158,62 +154,5 @@ namespace Ord.Plugin.Core.Utils
                 };
             }
         }
-
-        public static string EncryptEntityId(this IAppFactory factory, string id, string tableName)
-        {
-            var hashBuilder = new StringBuilder(id.ToString());
-            hashBuilder.Append("@");
-            hashBuilder.Append(tableName);
-            hashBuilder.Append("@");
-            hashBuilder.Append(factory?.CurrentUserId.ToString());
-            return StringUtil.Base64Encode(factory.GetServiceDependency<IStringEncryptionService>().Encrypt(hashBuilder.ToString()));
-        }
-
-        public static PagedResultDto<TDto> EncryptPagedResult<TDto, Tkey>(this IAppFactory factory, PagedResultDto<TDto> result, string tableName = "")
-        where TDto : EntityIdHashDto<Tkey>
-        {
-            if (string.IsNullOrEmpty(tableName))
-            {
-                tableName = factory.GuidGenerator.Create().ToString("N");
-            }
-            if (result.Items?.Any() == true)
-            {
-                foreach (var item in result.Items)
-                {
-                    item.IdHash = factory.EncryptEntityId(item.Id.ToString(), tableName);
-                }
-            }
-            return result;
-        }
-        public static PagedResultDto<TDto> EncryptPagedResult<TDto>(this IAppFactory factory, PagedResultDto<TDto> result, string tableName = "")
-            where TDto : EntityIdHashDto<long>
-        {
-            return EncryptPagedResult<TDto, long>(factory, result, tableName);
-        }
-        public static long DecryptEntityId(this IAppFactory factory, string cipherText, string mustCheckTableName = "")
-        {
-            var plainId = DecryptHashId(factory, cipherText, mustCheckTableName);
-            if (!string.IsNullOrEmpty(plainId))
-            {
-                return Convert.ToInt64(plainId);
-            }
-            throw new BadHttpRequestException("Id not found");
-        }
-
-        public static string DecryptHashId(this IAppFactory factory, string cipherText, string mustCheckTableName = "")
-        {
-            var plainText = factory.GetServiceDependency<IStringEncryptionService>().Decrypt(StringUtil.Base64Decode(cipherText));
-            var spl = plainText.Split('@');
-            if (!string.IsNullOrEmpty(mustCheckTableName))
-            {
-                if (plainText?.Contains(mustCheckTableName) != true)
-                {
-                    throw new BadHttpRequestException("Id not found");
-                }
-            }
-
-            return spl[0];
-        }
-     
     }
 }
