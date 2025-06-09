@@ -21,6 +21,9 @@ namespace Ord.Plugin.Core.Base
         protected CommonResultDto<T> CreateUnauthorizedResult<T>(string message = "Unauthorized", params object[] formatArgs)
             => BaseService.CreateUnauthorizedResult<T>(message, formatArgs);
 
+        protected CommonResultDto<T> CreateNotFoundResult<T>(string message = "not_found", params object[] formatArgs)
+            => BaseService.CreateNotFoundResult<T>(message, formatArgs);
+
         protected string GetLocalizedMessage(string key, params object[] formatArgs)
             => BaseService.GetLocalizedMessage(key, formatArgs);
 
@@ -38,6 +41,8 @@ namespace Ord.Plugin.Core.Base
             Func<Task<CommonResultDto<T>>> action,
             string errorMessage = "")
             => BaseService.CheckPermissionAndExecuteAsync(permissionName, action, errorMessage);
+
+
 
         protected abstract IStringLocalizer GetMainLocalizer();
     }

@@ -44,12 +44,20 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<UserDetailDto>> UpdateAsync(UpdateUserDto input)
         {
             var updatedUser = await UserCrudRepository.UpdateByEncodedIdAsync(input.EncodedId, input);
+            if (updatedUser == null)
+            {
+                return CreateNotFoundResult<UserDetailDto>(GetLocalizedMessage("crud_user_not_found"));
+            }
             return CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(updatedUser));
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> RemoveAsync(EncodeIdDto input)
         {
             var ret = await UserCrudRepository.DeleteByEncodedIdAsync(input.EncodeId);
+            if (!ret)
+            {
+                return CreateNotFoundResult<bool>(GetLocalizedMessage("crud_user_not_found"));
+            }
             return CreateSuccessResult(ret);
         }
     }

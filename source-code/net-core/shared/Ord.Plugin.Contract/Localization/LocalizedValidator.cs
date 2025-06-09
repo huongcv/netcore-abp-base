@@ -86,7 +86,6 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
             .WithErrorCode(localizationKey)
             .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
     }
-
     protected void ValidatePhoneNumber(
         Expression<Func<TModel, string>> property,
         string localizationKey,
@@ -120,6 +119,19 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
             .WithErrorCode(localizationKey)
             .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
     }
+    protected void ValidateRegexIfNotNull(
+        Expression<Func<TModel, string>> property,
+        string pattern,
+        string localizationKey,
+        params object[] formatArgs)
+    {
+        RuleFor(property)
+            .Matches(pattern)
+            .When(x => !string.IsNullOrWhiteSpace(GetPropertyValue(property, x)))
+            .WithErrorCode(localizationKey)
+            .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
+    }
+
 
     #endregion
 
@@ -303,4 +315,16 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
     }
 
     #endregion
+
+    private static string GetPropertyValue(Expression<Func<TModel, string>> property, TModel model)
+    {
+        try
+        {
+            return property.Compile().Invoke(model);
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

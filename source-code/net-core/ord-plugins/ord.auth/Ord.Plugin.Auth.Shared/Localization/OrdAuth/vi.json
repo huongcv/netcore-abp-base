@@ -16,7 +16,8 @@
     "login_failed": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập",
     "validation_error": "Đã xảy ra lỗi xác thực",
     "cannot_delete_admin_system": "Không thể xóa tài khoản quản trị hệ thống",
-    "crud_user_null_name": "Tên không được để trống"
+    "crud_user_null_name": "Tên không được để trống",
+    "crud_user_not_found": "Tài khoản không tồn tại trên hệ thống",
   }
   
 }

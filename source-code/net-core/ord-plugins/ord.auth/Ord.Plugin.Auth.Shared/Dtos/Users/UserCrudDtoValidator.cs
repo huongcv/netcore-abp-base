@@ -25,6 +25,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
         {
             ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
             ValidateRequiredString(u => u.Name, "crud_user_null_name");
+            ValidateRegexIfNotNull(u => u.Password, RegexPatternConst.PasswordRegex, "crud_user_null_name");
+
         }
     }
 }

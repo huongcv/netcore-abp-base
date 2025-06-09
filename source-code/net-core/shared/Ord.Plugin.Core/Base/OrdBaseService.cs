@@ -30,6 +30,10 @@ namespace Ord.Plugin.Core.Base
         {
             return CommonResultDto<T>.Failed(GetLocalizedMessage(message, formatArgs));
         }
+        public CommonResultDto<T> CreateNotFoundResult<T>(string message, params object[] formatArgs)
+        {
+            return CommonResultDto<T>.Failed(GetLocalizedMessage(message, formatArgs), "404");
+        }
 
         /// <summary>
         /// Tạo kết quả không có quyền với thông báo đã localize

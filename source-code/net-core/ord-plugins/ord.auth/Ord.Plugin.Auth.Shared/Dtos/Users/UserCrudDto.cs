@@ -1,10 +1,5 @@
-﻿using FluentValidation;
-using Ord.Plugin.Auth.Shared.Dtos.Auths;
-using Ord.Plugin.Auth.Shared.Localization;
-using Ord.Plugin.Contract.Base;
-using Ord.Plugin.Contract.Consts;
+﻿using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
@@ -48,7 +43,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
    
     public class UpdateUserDto : UserCrudBase
     {
-
+        public string? Password { get; set; }
     }
    
 }

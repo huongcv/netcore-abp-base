@@ -43,9 +43,13 @@ namespace Ord.Plugin.Auth.Repositories
             return entity;
         }
 
-        protected override Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
+        protected override async Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
         {
-            throw new NotImplementedException();
+            // must change pwd
+            if (!string.IsNullOrEmpty(updateInput.Password))
+            {
+                entityUpdate.PasswordHash = HashPassword(entityUpdate, updateInput.Password);
+            }
         }
 
         protected override async Task ValidateBeforeDeleteAsync(UserEntity entityDelete)
