@@ -1,25 +1,32 @@
-﻿using Ord.Plugin.Contract.Base;
+﻿using FluentValidation;
+using Ord.Plugin.Auth.Shared.Dtos.Auths;
+using Ord.Plugin.Auth.Shared.Localization;
+using Ord.Plugin.Contract.Base;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
 {
     public class UserCrudBase : IHasActived, IHasEncodedId
     {
-        public string UserName { get; set; }
         public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public bool IsActived { get; set; }
         public string? EncodedId { get; set; }
         public bool? MustChangePassword { get; set; }
         public bool? IsLockoutEnabled { get; set; }
+        public DateTime? BirthDay { get; set; }
     }
     /// <summary>
     /// DTO cho danh sách phân trang User (ít thông tin hơn)
     /// </summary>
-    public class UserPagedDto : UserCrudBase,IEntityDto<Guid>
+    public class UserPagedDto : UserCrudBase, IEntityDto<Guid>
     {
         public Guid Id { get; set; }
+        public string UserName { get; set; }
     }
 
     public class UserPagedInput : OrdPagedRequestDto
@@ -29,15 +36,19 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class UserDetailDto : UserCrudBase, IEntityDto<Guid>
     {
         public Guid Id { get; set; }
+        public string UserName { get; set; }
         public DateTime CreationTime { get; set; }
     }
 
     public class CreateUserDto : UserCrudBase
     {
-
+        public string? UserName { get; set; }
+        public string? Password { get; set; }
     }
+   
     public class UpdateUserDto : UserCrudBase
     {
 
     }
+   
 }

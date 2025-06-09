@@ -1,11 +1,12 @@
-﻿using Ord.Contract.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Repositories
 {
@@ -26,10 +27,20 @@ namespace Ord.Plugin.Auth.Repositories
             return queryable;
         }
 
-        protected override Task ValidateBeforeCreateAsync(CreateUserDto createInput)
+        protected override async Task ValidateBeforeCreateAsync(CreateUserDto createInput)
         {
-            throw new AbpValidationException("");
-            throw new NotImplementedException();
+            var isUserNameUnique = await IsUserNameUniqueAsync(createInput.UserName);
+            if (!isUserNameUnique)
+            {
+                ThrowValidationEx("username_already_exists",createInput.UserName);
+            }
+        }
+
+        protected override async Task<UserEntity> MapToCreateEntityAsync(CreateUserDto createInput)
+        {
+            var entity = AppFactory.ObjectMap<CreateUserDto, UserEntity>(createInput);
+            entity.PasswordHash = HashPassword(entity, createInput.Password);
+            return entity;
         }
 
         protected override Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
@@ -37,11 +48,32 @@ namespace Ord.Plugin.Auth.Repositories
             throw new NotImplementedException();
         }
 
-        protected override Task ValidateBeforeDeleteAsync(UserEntity entityUpdate)
+        protected override async Task ValidateBeforeDeleteAsync(UserEntity entityDelete)
         {
-            throw new NotImplementedException();
+            if (!AppFactory.CurrentTenantId.HasValue && entityDelete.UserName?.Equals("admin", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                ThrowValidationEx("cannot_delete_admin_system");
+            }
         }
 
-        
+        // Additional helper methods for specific validations
+        private async Task<bool> IsUserNameUniqueAsync(string userName, Guid? excludeId = null)
+        {
+            var queryable = await GetQueryableAsync();
+            var query = queryable.AsNoTracking()
+                .Where(x => x.UserName == userName);
+
+            if (excludeId.HasValue)
+            {
+                query = query.Where(x => x.Id != excludeId.Value);
+            }
+
+            return !await query.AnyAsync();
+        }
+        public static string HashPassword(UserEntity user, string password)
+        {
+            var passwordHasher = new PasswordHasher<UserEntity>();
+            return passwordHasher.HashPassword(user, password);
+        }
     }
 }

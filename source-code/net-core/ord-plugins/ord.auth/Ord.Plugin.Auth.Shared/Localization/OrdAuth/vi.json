@@ -14,7 +14,9 @@
     "password_too_short": "Mật khẩu phải có ít nhất {0} ký tự",
     "username_already_exists": "Tên đăng nhập '{0}' đã tồn tại",
     "login_failed": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập",
-    "validation_error": "Đã xảy ra lỗi xác thực"
+    "validation_error": "Đã xảy ra lỗi xác thực",
+    "cannot_delete_admin_system": "Không thể xóa tài khoản quản trị hệ thống",
+    "crud_user_null_name": "Tên không được để trống"
   }
   
 }

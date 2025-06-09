@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -28,11 +29,28 @@ namespace Ord.Plugin.Auth.AppServices
         }
 
         [HttpPost]
-        public async Task<CommonResultDto<UserDetailDto>> GetById(GetByEncodeIdDto input)
+        public async Task<CommonResultDto<UserDetailDto>> GetById(EncodeIdDto input)
         {
-            var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();
-            var dto = await repo.GetDetailByEncodedIdAsync(input.EncodeId);
+            var dto = await UserCrudRepository.GetDetailByEncodedIdAsync(input.EncodeId);
             return CreateSuccessResult(dto);
+        }
+        [HttpPost]
+        public async Task<CommonResultDto<UserDetailDto>> CreateAsync(CreateUserDto input)
+        {
+            var createUser = await UserCrudRepository.CreateAsync(input);
+            return CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(createUser));
+        }
+        [HttpPost]
+        public async Task<CommonResultDto<UserDetailDto>> UpdateAsync(UpdateUserDto input)
+        {
+            var updatedUser = await UserCrudRepository.UpdateByEncodedIdAsync(input.EncodedId, input);
+            return CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(updatedUser));
+        }
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> RemoveAsync(EncodeIdDto input)
+        {
+            var ret = await UserCrudRepository.DeleteByEncodedIdAsync(input.EncodeId);
+            return CreateSuccessResult(ret);
         }
     }
 }

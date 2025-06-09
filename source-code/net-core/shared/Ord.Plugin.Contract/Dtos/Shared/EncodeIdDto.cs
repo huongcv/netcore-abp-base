@@ -1,6 +1,6 @@
 ﻿namespace Ord
 {
-    public class GetByEncodeIdDto
+    public class EncodeIdDto
     {
         public string EncodeId { get; set; }
     }

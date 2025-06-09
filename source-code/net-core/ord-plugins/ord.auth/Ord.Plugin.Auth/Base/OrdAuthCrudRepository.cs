@@ -6,6 +6,7 @@ using Ord.Plugin.Core.Data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Base
 {
@@ -19,7 +20,12 @@ namespace Ord.Plugin.Auth.Base
         where TCreateInputDto : class
         where TUpdateInputDto : class, IHasEncodedId
     {
-        protected IStringLocalizer<OrdAuthResource> L =>
+        public IStringLocalizer<OrdAuthResource> L =>
             AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
+
+        protected void ThrowValidationEx(string key, params object[] formatArgs)
+        {
+            throw new AbpValidationException(L.GetLocalizedMessage(key, formatArgs));
+        }
     }
 }

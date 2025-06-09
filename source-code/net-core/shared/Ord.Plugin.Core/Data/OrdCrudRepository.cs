@@ -67,7 +67,7 @@ namespace Ord.Plugin.Core.Data
         /// <param name="updateInput">Dữ liệu đầu vào cho cập nhật</param>
         /// <param name="entityUpdate">Entity sẽ được cập nhật</param>
         /// <returns>Task hoàn thành</returns>
-        protected abstract Task ValidateBeforeDeleteAsync(TEntity entityUpdate);
+        protected abstract Task ValidateBeforeDeleteAsync(TEntity entityDelete);
 
         #endregion
 
@@ -78,9 +78,9 @@ namespace Ord.Plugin.Core.Data
         /// </summary>
         /// <param name="createInput">DTO đầu vào</param>
         /// <returns>Entity đã được map</returns>
-        protected virtual TEntity MapToEntity(TCreateInputDto createInput)
+        protected virtual Task<TEntity> MapToCreateEntityAsync(TCreateInputDto createInput)
         {
-            return ObjectMap<TCreateInputDto, TEntity>(createInput);
+            return Task.FromResult(ObjectMap<TCreateInputDto, TEntity>(createInput));
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace Ord.Plugin.Core.Data
         /// <param name="updateInput">DTO đầu vào</param>
         /// <param name="entity">Entity cần cập nhật</param>
         /// <returns>Entity đã được map</returns>
-        protected virtual TEntity MapToEntity(TUpdateInputDto updateInput, TEntity entity)
+        protected virtual Task<TEntity> MapToUpdateEntityAsync(TUpdateInputDto updateInput, TEntity entity)
         {
-            return ObjectMap(updateInput, entity);
+            return Task.FromResult(ObjectMap(updateInput, entity));
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Ord.Plugin.Core.Data
             var mapper = AppFactory.GetServiceDependency<IMapper>();
             return entityQueryable.ProjectTo<TGetPagedItemDto>(mapper.ConfigurationProvider);
         }
-        public async Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input)
+        public virtual async Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input)
         {
 
             if (!typeof(IHasActived).IsAssignableFrom(typeof(TEntity)))
@@ -289,7 +289,7 @@ namespace Ord.Plugin.Core.Data
             // Validate đầu vào
             await ValidateBeforeCreateAsync(createInput);
             // Map sang entity
-            var entity = MapToEntity(createInput);
+            var entity = await MapToCreateEntityAsync(createInput);
             // Insert entity
             var insertedEntity = await InsertAsync(entity, autoSave: autoSave);
             return insertedEntity;
@@ -312,12 +312,12 @@ namespace Ord.Plugin.Core.Data
             }
             // Validate đầu vào
             await ValidateBeforeUpdateAsync(updateInput, entity);
-            entity = MapToEntity(updateInput, entity);
+            entity = await MapToUpdateEntityAsync(updateInput, entity);
             var updatedEntity = await UpdateAsync(entity, autoSave: autoSave);
             return updatedEntity;
         }
 
-        public async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
+        public virtual async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
         {
             if (IdEncoderService.TryDecodeId(encodedId, out var id))
             {
@@ -348,7 +348,7 @@ namespace Ord.Plugin.Core.Data
             return true;
         }
 
-        public async Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true)
+        public virtual async Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true)
         {
             if (IdEncoderService.TryDecodeId(encodedId, out var id))
             {
@@ -377,7 +377,7 @@ namespace Ord.Plugin.Core.Data
                 await ValidateBeforeCreateAsync(createInput);
 
                 // Map sang entity
-                var entity = MapToEntity(createInput);
+                var entity = await MapToCreateEntityAsync(createInput);
 
                 // Insert (không save ngay)
                 var insertedEntity = await InsertAsync(entity, autoSave: false);
