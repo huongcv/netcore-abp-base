@@ -56,7 +56,13 @@ namespace Ord.Plugin.Core.Services.Security
                     throw new IdDecodeException(encodedId, _entityType);
                 }
 
-                return payload.Id;
+                var id =  payload.Id;
+                var encodedIdCheck = EncodeId(id);
+                if (!string.Equals(encodedId, encodedIdCheck))
+                {
+                    throw new IdDecodeException(encodedId, _entityType);
+                }
+                return id;
             }
             catch (Exception ex)
             {
@@ -96,18 +102,23 @@ namespace Ord.Plugin.Core.Services.Security
 
         private static string Base64UrlDecode(string input)
         {
-            string base64 = input
-                .Replace("-", "+")
-                .Replace("_", "/");
-
-            // Add padding if needed
-            int padding = 4 - (base64.Length % 4);
-            if (padding != 4)
+            string base64 = input.Replace("-", "+").Replace("_", "/");
+            int mod4 = base64.Length % 4;
+            if (mod4 > 0)
             {
-                base64 += new string('=', padding);
+                base64 += new string('=', 4 - mod4);
             }
 
-            var bytes = Convert.FromBase64String(base64);
+            byte[] bytes;
+            try
+            {
+                bytes = Convert.FromBase64String(base64);
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException("Base64 string is not valid.", ex);
+            }
+
             return Encoding.UTF8.GetString(bytes);
         }
     }
