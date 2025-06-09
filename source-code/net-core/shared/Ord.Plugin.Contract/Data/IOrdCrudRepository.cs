@@ -31,7 +31,7 @@ namespace Ord.Plugin.Contract.Data
         Task<bool> DeleteAsync(TKey id, bool autoSave = true);
         Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true);
 
-        Task<List<TGetByIdDto>> CreateManyAsync(IEnumerable<TCreateInputDto> createInputs, CancellationToken cancellationToken = default);
+        Task<IEnumerable<TEntity>> CreateManyAsync(IEnumerable<TCreateInputDto> createInputs, CancellationToken cancellationToken = default);
 
         Task<IEnumerable<TEntity>> UpdateByConditionAsync(Expression<Func<TEntity, bool>> predicate, Action<TEntity> updateAction, CancellationToken cancellationToken = default);
 

@@ -99,9 +99,9 @@ namespace Ord.Plugin.Core.Data
         /// </summary>
         /// <param name="entity">Entity cần map</param>
         /// <returns>DTO đã được map</returns>
-        protected virtual TGetByIdDto MapToGetByIdDto(TEntity entity)
+        protected virtual Task<TGetByIdDto> MapToGetByIdDtoAsync(TEntity entity)
         {
-            return ObjectMap<TEntity, TGetByIdDto>(entity);
+            return Task.FromResult(ObjectMap<TEntity, TGetByIdDto>(entity));
         }
 
         /// <summary>
@@ -247,15 +247,18 @@ namespace Ord.Plugin.Core.Data
         /// Lấy chi tiết entity theo ID
         /// </summary>
         /// <param name="id">ID của entity</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>DTO chi tiết entity</returns>
         public virtual async Task<TGetByIdDto> GetDetailByIdAsync(TKey id)
         {
             var mapper = AppFactory.GetServiceDependency<IMapper>();
             var queryable = (await GetQueryableAsync()).AsNoTracking();
-            var dto = await queryable.Where(x => x.Id.Equals(id))
-                .ProjectTo<TGetByIdDto>(mapper.ConfigurationProvider)
+            var entity = await queryable.Where(x => x.Id.Equals(id))
                 .FirstOrDefaultAsync();
+            if (entity == null)
+            {
+                return null;
+            }
+            var dto = await MapToGetByIdDtoAsync(entity);
             if (dto != null)
             {
                 if (dto is IHasEncodedId encodedDto and IEntityDto<TKey> entityDto)
@@ -300,7 +303,6 @@ namespace Ord.Plugin.Core.Data
         /// </summary>
         /// <param name="id">ID của entity</param>
         /// <param name="updateInput">Dữ liệu cập nhật</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>DTO chi tiết entity sau khi cập nhật</returns>
         public virtual async Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true)
         {
@@ -331,7 +333,6 @@ namespace Ord.Plugin.Core.Data
         /// Xóa entity theo ID
         /// </summary>
         /// <param name="id">ID của entity</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>Task hoàn thành</returns>
         public virtual async Task<bool> DeleteAsync(TKey id, bool autoSave = true)
         {
@@ -367,9 +368,9 @@ namespace Ord.Plugin.Core.Data
         /// <param name="createInputs">Danh sách dữ liệu đầu vào</param>
         /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>Danh sách DTO đã tạo</returns>
-        public virtual async Task<List<TGetByIdDto>> CreateManyAsync(IEnumerable<TCreateInputDto> createInputs, CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<TEntity>> CreateManyAsync(IEnumerable<TCreateInputDto> createInputs, CancellationToken cancellationToken = default)
         {
-            var results = new List<TGetByIdDto>();
+            var results = new List<TEntity>();
 
             foreach (var createInput in createInputs)
             {
@@ -380,10 +381,10 @@ namespace Ord.Plugin.Core.Data
                 var entity = await MapToCreateEntityAsync(createInput);
 
                 // Insert (không save ngay)
-                var insertedEntity = await InsertAsync(entity, autoSave: false);
+                var insertedEntity = await InsertAsync(entity, autoSave: false, cancellationToken: cancellationToken);
 
                 // Thêm vào kết quả
-                results.Add(MapToGetByIdDto(insertedEntity));
+                results.Add(insertedEntity);
             }
 
             // Save tất cả cùng lúc

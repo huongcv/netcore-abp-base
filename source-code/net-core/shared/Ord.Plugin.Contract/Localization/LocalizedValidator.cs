@@ -38,6 +38,16 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
             .WithErrorCode(localizationKey)
             .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
     }
+    protected void ValidateRequiredString(params (Expression<Func<TModel, string>> Property, string LocalizationKey)[] validations)
+    {
+        foreach (var (property, localizationKey) in validations)
+        {
+            RuleFor(property)
+                .NotEmpty()
+                .WithErrorCode(localizationKey)
+                .WithMessage(GetLocalizedMessage(localizationKey));
+        }
+    }
 
     protected void ValidateMinLength(
         Expression<Func<TModel, string>> property,
@@ -60,7 +70,17 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
         RuleFor(property)
             .MaximumLength(maxLength)
             .WithErrorCode(localizationKey)
-            .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
+            .WithMessage(GetLocalizedMessage(localizationKey, maxLength, formatArgs));
+    }
+    protected void ValidateMaxLength(params (Expression<Func<TModel, string>> Property, int MaxLength, string LocalizationKey)[] validations)
+    {
+        foreach (var (property, maxLength, localizationKey) in validations)
+        {
+            RuleFor(property)
+                .MaximumLength(maxLength)
+                .WithErrorCode(localizationKey)
+                .WithMessage(GetLocalizedMessage(localizationKey, maxLength));
+        }
     }
 
     protected void ValidateLengthRange(

@@ -15,6 +15,13 @@ namespace Ord.Plugin.Auth.Shared.Dtos
             CreateMap<UpdateUserDto, UserEntity>().ReverseMap();
             CreateMap<UserLoginDto, UserEntity>().ReverseMap();
             CreateMap<TenantDto, TenantEntity>().ReverseMap();
+
+
+            CreateMap<RolePagedDto, RoleEntity>().ReverseMap();
+            CreateMap<RoleDetailDto, RoleEntity>().ReverseMap();
+            CreateMap<CreateRoleDto, RoleEntity>().ReverseMap();
+            CreateMap<UpdateRoleDto, RoleEntity>().ReverseMap();
+
         }
     }
 }
