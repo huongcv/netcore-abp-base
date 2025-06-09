@@ -29,4 +29,23 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
 
         }
     }
+
+    public class ResetPasswordUserDtoValidator : LocalizedValidator<ResetPasswordUserDto, OrdAuthResource>
+    {
+        public ResetPasswordUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        {
+            ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
+            ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
+            ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+        }
+    }
+    public class ChangePasswordUserDtoValidator : LocalizedValidator<ChangePasswordUserDto, OrdAuthResource>
+    {
+        public ChangePasswordUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        {
+            ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
+            ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
+            ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+        }
+    }
 }

@@ -313,6 +313,24 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
             .WithErrorCode(localizationKey)
             .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
     }
+    protected void ValidateBlacklist(
+        Expression<Func<TModel, string>> property,
+        Func<Task<List<string>>> getBlacklistAsync,
+        string localizationKey,
+        params object[] formatArgs)
+    {
+        RuleFor(property)
+            .MustAsync(async (value, cancellation) =>
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    return true;
+
+                var blacklist = await getBlacklistAsync();
+                return !blacklist.Contains(value, StringComparer.OrdinalIgnoreCase);
+            })
+            .WithErrorCode(localizationKey)
+            .WithMessage(GetLocalizedMessage(localizationKey, formatArgs));
+    }
 
     #endregion
 

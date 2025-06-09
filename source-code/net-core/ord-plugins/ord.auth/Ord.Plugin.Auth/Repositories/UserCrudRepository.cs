@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
@@ -46,11 +45,19 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
         {
+            
+        }
+
+        protected override async Task<UserEntity> MapToUpdateEntityAsync(UpdateUserDto updateInput, UserEntity entity)
+        {
+            await base.MapToUpdateEntityAsync(updateInput, entity);
             // must change pwd
             if (!string.IsNullOrEmpty(updateInput.Password))
             {
-                entityUpdate.PasswordHash = UserUtil.HashPassword(entityUpdate, updateInput.Password);
+                entity.PasswordHash = UserUtil.HashPassword(entity, updateInput.Password);
             }
+
+            return entity;
         }
 
         protected override async Task ValidateBeforeDeleteAsync(UserEntity entityDelete)

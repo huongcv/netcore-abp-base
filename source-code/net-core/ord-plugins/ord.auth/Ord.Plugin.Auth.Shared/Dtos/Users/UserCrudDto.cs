@@ -40,10 +40,20 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public string? UserName { get; set; }
         public string? Password { get; set; }
     }
-   
+
     public class UpdateUserDto : UserCrudBase
     {
         public string? Password { get; set; }
     }
-   
+
+    public class ResetPasswordUserDto : EncodedIdDto
+    {
+        public string? NewPassword { get; set; }
+        public bool MustChangePassword { get; set; }
+    }
+    public class ChangePasswordUserDto
+    {
+        public string? OldPassword { get; set; }
+        public string? NewPassword { get; set; }
+    }
 }
