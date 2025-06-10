@@ -235,27 +235,27 @@ namespace Ord.Plugin.Core.Services
 
         protected virtual string GetEntityNamePrefix()
         {
-            return "common";
+            return "common.messages.crud.";
             // return typeof(TEntity).Name.ToLower();
         }
         protected virtual string GetNotFoundMessage()
         {
-            return $"{GetEntityNamePrefix()}_not_found";
+            return $"{GetEntityNamePrefix()}not_found";
         }
 
         protected virtual string GetCreateSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}_create_success";
+            return $"{GetEntityNamePrefix()}create_success";
         }
 
         protected virtual string GetUpdateSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}_update_success";
+            return $"{GetEntityNamePrefix()}update_success";
         }
 
         protected virtual string GetDeleteSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}_delete_success";
+            return $"{GetEntityNamePrefix()}delete_success";
         }
 
         #endregion

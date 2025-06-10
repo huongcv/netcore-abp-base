@@ -3,12 +3,60 @@
     "success": "Thao tác thành công",
     "error": "Có lỗi xảy ra",
     "loading": "Đang tải...",
-    "noData": "Không có dữ liệu"
+    "noData": "Không có dữ liệu",
+    "crud": {
+      "not_found": "Không tìm thấy dữ liệu",
+      "create_success": "Tạo mới thành công",
+      "update_success": "Cập nhật thành công",
+      "delete_success": "Xóa thành công"
+    }
   },
   "validation": {
-    "required": "{0} bắt buộc nhập",
-    "maxlength": "{0} vượt quá {1} ký tự",
-    "minlength": "{0} phải lớn hơn {1} ký tự",
-    "invalid_regex": "{0} không đúng định dạng"
+    "required": "Trường {0} là bắt buộc",
+    "email": "Email không hợp lệ",
+    "phone": "Số điện thoại không hợp lệ",
+    "min_length": "Trường {0} phải có ít nhất {1} ký tự",
+    "max_length": "Trường {0} không được vượt quá {1} ký tự",
+    "numeric": "Trường {0} phải là số",
+    "date": "Ngày không hợp lệ",
+    "confirm_password": "Mật khẩu xác nhận không khớp"
+  },
+  "fields": {
+    "id": "ID",
+    "name": "Tên",
+    "title": "Tiêu đề",
+    "description": "Mô tả",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "created_at": "Ngày tạo",
+    "updated_at": "Ngày cập nhật",
+    "status": "Trạng thái",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "username": "Tên đăng nhập",
+    "first_name": "Họ",
+    "last_name": "Tên",
+    "full_name": "Họ và tên",
+    "date_of_birth": "Ngày sinh",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
+  },
+
+  // Status messages
+  "status": {
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "pending": "Đang chờ",
+    "approved": "Đã duyệt",
+    "rejected": "Đã từ chối",
+    "draft": "Bản nháp",
+    "published": "Đã xuất bản",
+    "archived": "Đã lưu trữ",
+    "deleted": "Đã xóa"
   }
 }
