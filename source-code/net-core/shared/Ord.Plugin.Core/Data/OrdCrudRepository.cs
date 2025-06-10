@@ -42,7 +42,7 @@ namespace Ord.Plugin.Core.Data
         #region Abstract Methods - Must be implemented by derived classes
 
         /// <summary>
-        /// Tạo queryable cho danh sách phân trang với mapping sang DTO
+        /// Tạo queryable cho danh sách phân trang
         /// </summary>
         /// <param name="queryable">Queryable gốc của entity</param>
         protected abstract Task<IQueryable<TEntity>> GetPagedQueryableAsync(IQueryable<TEntity> queryable, TGetPagedInputDto input);
@@ -131,25 +131,7 @@ namespace Ord.Plugin.Core.Data
         {
             // Lấy queryable gốc
             var queryable = (await GetQueryableAsync()).AsNoTracking();
-            // Áp dụng default sorting nếu không có sorting được chỉ định
-            if (string.IsNullOrWhiteSpace(input.Sorting))
-            {
-                // Nếu entity có CreationTime, sort theo CreationTime desc
-                if (typeof(IHasCreationTime).IsAssignableFrom(typeof(TEntity)))
-                {
-                    queryable = queryable.OrderByDescending(e => ((IHasCreationTime)e).CreationTime);
-                }
-                // Nếu entity có Id và Id là numeric, sort theo Id desc
-                else if (IsNumericType(typeof(TKey)))
-                {
-                    queryable = queryable.OrderByDescending(e => e.Id);
-                }
-                // Fallback: sort theo Id
-                else
-                {
-                    queryable = queryable.OrderBy(e => e.Id);
-                }
-            }
+            queryable = ApplySortDefault(queryable, input);
             queryable = await GetPagedQueryableAsync(queryable, input);
             var dtoQueryable = await TransformToPagedDtoAsync(queryable, input);
             // Đếm tổng số record
@@ -173,6 +155,31 @@ namespace Ord.Plugin.Core.Data
                 }
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
+        }
+
+        protected IQueryable<TEntity> ApplySortDefault(IQueryable<TEntity> queryable, TGetPagedInputDto input)
+        {
+            // Áp dụng default sorting nếu không có sorting được chỉ định
+            if (string.IsNullOrWhiteSpace(input.Sorting))
+            {
+                // Nếu entity có CreationTime, sort theo CreationTime desc
+                if (typeof(IHasCreationTime).IsAssignableFrom(typeof(TEntity)))
+                {
+                    queryable = queryable.OrderByDescending(e => ((IHasCreationTime)e).CreationTime);
+                }
+                // Nếu entity có Id và Id là numeric, sort theo Id desc
+                else if (IsNumericType(typeof(TKey)))
+                {
+                    queryable = queryable.OrderByDescending(e => e.Id);
+                }
+                // Fallback: sort theo Id
+                else
+                {
+                    queryable = queryable.OrderBy(e => e.Id);
+                }
+            }
+
+            return queryable;
         }
         /// <summary>
         /// Map Entity queryable sang DTO queryable sử dụng AutoMapper ProjectTo
