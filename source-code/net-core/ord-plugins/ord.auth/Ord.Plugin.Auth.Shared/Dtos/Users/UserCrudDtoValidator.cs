@@ -1,72 +1,80 @@
 ﻿using FluentValidation;
-using Ord.Plugin.Auth.Shared.Localization;
-using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Utils;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Users
 {
-    public class CreateUserDtoValidator : LocalizedValidator<CreateUserDto, OrdAuthResource>
+    public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
     {
-        public CreateUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public CreateUserDtoValidator(IAppFactory appFactory)
         {
             RuleFor(u => u.UserName)
                 .Required()
-                .MaxLengthString(2);
+                .MinLengthString(3)
+                .MaxLengthString(200);
             RuleFor(u => u.Password)
                 .Required();
             RuleFor(u => u.Name)
+                .MinLengthString(3)
                 .Required();
-           
-          //  ValidateRegex(u => u.UserName, RegexPatternConst.UserNameRegex, "username_not_regex");
-            ValidateRegex(u => u.Password, RegexPatternConst.PasswordRegex, "pwd_not_regex");
-            RuleFor(x => x.Email).EmailAddress()
-                .When(u => !string.IsNullOrEmpty(u.Email))
-                .WithMessage(GetLocalizedMessage("invalid_email_format"));
 
-            ValidateMaxLength(
-                (u => u.UserName, 2, "crud_user_username_maxlength"),
-                (u => u.Email, 300, "crud_user_email_maxlength"),
-                (u => u.PhoneNumber, 20, "crud_user_phone_maxlength"),
-                (u => u.Name, 200, "crud_user_name_maxlength"),
-                (u => u.Password, 30, "crud_user_pwd_maxlength")
-            );
+
+            RuleFor(u => u.Email).MaxLengthString(300);
+            RuleFor(u => u.PhoneNumber).MaxLengthString(20);
+            RuleFor(u => u.Name).MaxLengthString(300);
+            RuleFor(u => u.Password).MaxLengthString(30);
+            RuleFor(u => u.EncodedId).Required();
+
+            //  ValidateRegex(u => u.UserName, RegexPatternConst.UserNameRegex, "username_not_regex");
+            //ValidateRegex(u => u.Password, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+            //RuleFor(x => x.Email).EmailAddress()
+            //    .When(u => !string.IsNullOrEmpty(u.Email))
+            //    .WithMessage(GetLocalizedMessage("invalid_email_format"));
+
+            //ValidateMaxLength(
+            //    (u => u.UserName, 2, "crud_user_username_maxlength"),
+            //    (u => u.Email, 300, "crud_user_email_maxlength"),
+            //    (u => u.PhoneNumber, 20, "crud_user_phone_maxlength"),
+            //    (u => u.Name, 200, "crud_user_name_maxlength"),
+            //    (u => u.Password, 30, "crud_user_pwd_maxlength")
+            //);
         }
     }
-    public class UpdateUserDtoValidator : LocalizedValidator<UpdateUserDto, OrdAuthResource>
+    public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
     {
-        public UpdateUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public UpdateUserDtoValidator(IAppFactory appFactory)
         {
-            ValidateRequiredString(
-                (u => u.EncodedId, "null_or_empty_encode_id"),
-                (u => u.Name, "crud_user_null_name"));
-            ValidateRegexIfNotNull(u => u.Password, RegexPatternConst.PasswordRegex, "crud_user_null_name");
-
-            ValidateMaxLength(
-                (u => u.Email, 300, "crud_user_email_maxlength"),
-                (u => u.PhoneNumber, 20, "crud_user_phone_maxlength"),
-                (u => u.Name, 200, "crud_user_name_maxlength"),
-                (u => u.Password, 30, "crud_user_pwd_maxlength")
-            );
+            RuleFor(u => u.Name)
+                .MinLengthString(3)
+                .Required();
+            RuleFor(u => u.Email).MaxLengthString(300);
+            RuleFor(u => u.PhoneNumber).MaxLengthString(20);
+            RuleFor(u => u.Name).MaxLengthString(300);
+            RuleFor(u => u.Password).MaxLengthString(30);
+            RuleFor(u => u.EncodedId).Required();
 
         }
     }
 
-    public class ResetPasswordUserDtoValidator : LocalizedValidator<ResetPasswordUserDto, OrdAuthResource>
+    public class ResetPasswordUserDtoValidator : AbstractValidator<ResetPasswordUserDto>
     {
-        public ResetPasswordUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public ResetPasswordUserDtoValidator(IAppFactory appFactory)
         {
-            ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
-            ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
-            ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+            RuleFor(u => u.EncodedId).Required();
+            RuleFor(u => u.NewPassword).Required();
+            //ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
+            //ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
+            //ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
         }
     }
-    public class ChangePasswordUserDtoValidator : LocalizedValidator<ChangePasswordUserDto, OrdAuthResource>
+    public class ChangePasswordUserDtoValidator : AbstractValidator<ChangePasswordUserDto>
     {
-        public ChangePasswordUserDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public ChangePasswordUserDtoValidator(IAppFactory appFactory)
         {
-            ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
-            ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+            RuleFor(u => u.NewPassword).Required();
+            RuleFor(u => u.NewPassword).Required();
+            //ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
+            //ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
         }
     }
 }

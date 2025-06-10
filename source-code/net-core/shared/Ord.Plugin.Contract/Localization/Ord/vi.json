@@ -3,6 +3,7 @@
   "texts": {
     "common_validation_required": "{0} bắt buộc nhập",
     "common_validation_maxlength": "{0} vượt quá {1} ký tự",
+    "common_validation_minlength": "{0} phải lớn hơn {1} ký tự",
     "id_encode_invalid": "Id {0} không tồn tại",
     "of": "của",
     "access_denied": "Tài khoản không có quyền truy cập nội dung",

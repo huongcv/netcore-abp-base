@@ -1,32 +1,25 @@
-﻿using Ord.Plugin.Auth.Shared.Localization;
+﻿using FluentValidation;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Utils;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Roles
 {
-    public class CreateRoleDtoValidator : LocalizedValidator<CreateRoleDto, OrdAuthResource>
+    public class CreateRoleDtoValidator : AbstractValidator<CreateRoleDto>
     {
-        public CreateRoleDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public CreateRoleDtoValidator(IAppFactory appFactory)
         {
-            ValidateRequiredString((u => u.Name, "crud_role_name_null"),
-                    (u => u.Code, "crud_role_code_null"));
-            ValidateMaxLength(
-                (u => u.Code, 100, "crud_role_code_max_length"),
-                (u => u.Name, 200, "crud_role_name_max_length"),
-                (u => u.Description, 500, "crud_role_description_max_length")
-            );
+            RuleFor(u => u.Code).MaxLengthString(100).Required();
+            RuleFor(u => u.Name).MaxLengthString(200).Required();
+            RuleFor(u => u.Description).MaxLengthString(500);
         }
     }
-    public class UpdateRoleDtoValidator : LocalizedValidator<UpdateRoleDto, OrdAuthResource>
+    public class UpdateRoleDtoValidator : AbstractValidator<UpdateRoleDto>
     {
-        public UpdateRoleDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public UpdateRoleDtoValidator(IAppFactory appFactory) 
         {
-            ValidateRequiredString((u => u.Name, "crud_role_name_null"),
-                (u => u.Code, "crud_role_code_null"));
-            ValidateMaxLength(
-                (u => u.Code, 100, "crud_role_code_max_length"),
-                (u => u.Name, 200, "crud_role_name_max_length"),
-                (u => u.Description, 500, "crud_role_description_max_length")
-            );
+            RuleFor(u => u.Code).MaxLengthString(100).Required();
+            RuleFor(u => u.Name).MaxLengthString(200).Required();
+            RuleFor(u => u.Description).MaxLengthString(500);
         }
     }
 }

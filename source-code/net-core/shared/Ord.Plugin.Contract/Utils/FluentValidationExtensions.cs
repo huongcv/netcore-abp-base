@@ -84,5 +84,11 @@ namespace Ord.Plugin.Contract.Utils
                 .WithErrorCode(maxLength.ToString())
                 .WithMessage("common_validation_maxlength");
         }
+        public static IRuleBuilderOptions<T, string> MinLengthString<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength)
+        {
+            return ruleBuilder.MinimumLength(minLength)
+                .WithErrorCode(minLength.ToString())
+                .WithMessage("common_validation_minlength");
+        }
     }
 }

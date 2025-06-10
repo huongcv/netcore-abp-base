@@ -1,5 +1,5 @@
-﻿using Ord.Plugin.Auth.Shared.Localization;
-using Ord.Plugin.Contract.Factories;
+﻿using FluentValidation;
+using Ord.Plugin.Contract.Utils;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Auths
 {
@@ -11,13 +11,17 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Auths
         public string? FireBaseToken { get; set; }
         public string? Platform { get; set; }
     }
-    public class LoginInputDtoValidator : LocalizedValidator<LoginInputDto, OrdAuthResource>
+    public class LoginInputDtoValidator : AbstractValidator<LoginInputDto>
     {
-        public LoginInputDtoValidator(IAppFactory appFactory) : base(appFactory)
+        public LoginInputDtoValidator()
         {
-            ValidateRequiredString(u => u.UserName, "null_or_empty_username");
-            ValidateMinLength(u => u.UserName, 3, "login_username_minlength", 3);
-            ValidateRequiredString(u => u.Password, "null_or_empty_password");
+            RuleFor(u => u.UserName)
+                .Required()
+                .MinLengthString(3)
+                .MaxLengthString(200);
+            RuleFor(u => u.Password)
+                .Required()
+                .MaxLengthString(50);
         }
     }
 }
