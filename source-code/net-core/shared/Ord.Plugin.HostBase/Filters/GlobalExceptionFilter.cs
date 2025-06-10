@@ -42,6 +42,10 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleValidationException(AbpValidationException ex)
         {
             _logger.LogWarning(ex, "Validation error occurred");
+            if (ex.ValidationErrors?.Any() == true)
+            {
+
+            }
             return CommonResultDto<object>.ValidationFailure(ex);
         }
         private CommonResultDto<object> HandleIdDecodeException(IdDecodeException ex)
@@ -56,7 +60,7 @@ namespace Ord.Plugin.HostBase.Filters
                     encodeid = $@"{encodeid} {L["of"]} {entityName}";
                 }
             }
-            var message = L["id_encode_invalid", encodeid].Value;
+            var message = GetLocalizedMessageOrDefault("id_encode_invalid", "EncodedId không chính xác", encodeid);
             return CommonResultDto<object>.Failed(
                 message,
                 errorCode: "404"
@@ -78,7 +82,7 @@ namespace Ord.Plugin.HostBase.Filters
             var message = ex.Message;
             if (ex.IsMustGetLocalized)
             {
-                message = L.GetLocalizedMessage(ex.Message);
+                message = GetLocalizedMessageOrDefault(ex.Message);
             }
 
             return CommonResultDto<object>.Failed(
@@ -91,9 +95,23 @@ namespace Ord.Plugin.HostBase.Filters
         {
             _logger.LogError(ex, "Unhandled exception occurred");
 
-            return CommonResultDto<object>.Failed(ex);
+            return CommonResultDto<object>.ServerFailure(ex, GetLocalizedMessageOrDefault("server_err_common", "Có lỗi trong quá trình xử lý"));
         }
 
+        public string GetLocalizedMessageOrDefault(string key, string defaultValue = "", params object[] formatArgs)
+        {
+            try
+            {
+                var localizedString = formatArgs?.Length > 0
+                    ? L[key, formatArgs]
+                    : L[key];
 
+                return localizedString.ResourceNotFound ? defaultValue : localizedString.Value;
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
     }
 }

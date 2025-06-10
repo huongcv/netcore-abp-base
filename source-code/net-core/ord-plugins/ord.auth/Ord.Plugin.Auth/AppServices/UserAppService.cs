@@ -23,25 +23,25 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<PagedResultDto<UserPagedDto>>> GetPaged(UserPagedInput input)
         {
             var paged = await UserCrudRepository.GetPagedListAsync(input);
-            return CreateSuccessResult(paged);
+            return AppFactory.CreateSuccessResult(paged);
         }
         [HttpPost]
         public async Task<CommonResultDto<CounterByIsActivedDto>> GetCountByIsActived(UserPagedInput input)
         {
-            return CreateSuccessResult(await UserCrudRepository.GetCountGroupByIsActived(input));
+            return AppFactory.CreateSuccessResult(await UserCrudRepository.GetCountGroupByIsActived(input));
         }
 
         [HttpPost]
         public async Task<CommonResultDto<UserDetailDto>> GetById(EncodedIdDto input)
         {
             var dto = await UserCrudRepository.GetDetailByEncodedIdAsync(input.EncodedId);
-            return CreateSuccessResult(dto);
+            return AppFactory.CreateSuccessResult(dto);
         }
         [HttpPost]
         public async Task<CommonResultDto<UserDetailDto>> CreateAsync(CreateUserDto input)
         {
             var createUser = await UserCrudRepository.CreateAsync(input);
-            return CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(createUser));
+            return AppFactory.CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(createUser));
         }
         [HttpPost]
         public async Task<CommonResultDto<UserDetailDto>> UpdateAsync(UpdateUserDto input)
@@ -49,9 +49,9 @@ namespace Ord.Plugin.Auth.AppServices
             var updatedUser = await UserCrudRepository.UpdateByEncodedIdAsync(input.EncodedId, input);
             if (updatedUser == null)
             {
-                return CreateNotFoundResult<UserDetailDto>(GetLocalizedMessage("crud_user_not_found"));
+                return CreateNotFoundResult<UserDetailDto>("crud_user_not_found");
             }
-            return CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(updatedUser));
+            return AppFactory.CreateSuccessResult(AppFactory.ObjectMap<UserEntity, UserDetailDto>(updatedUser));
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> RemoveAsync(EncodedIdDto input)
@@ -59,23 +59,23 @@ namespace Ord.Plugin.Auth.AppServices
             var ret = await UserCrudRepository.DeleteByEncodedIdAsync(input.EncodedId);
             if (!ret)
             {
-                return CreateNotFoundResult<bool>(GetLocalizedMessage("crud_user_not_found"));
+                 return CreateNotFoundResult<bool>("crud_user_not_found");
             }
-            return CreateSuccessResult(ret);
+            return AppFactory.CreateSuccessResult(ret);
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> UnLock(EncodedIdDto input)
         {
             var userId = ConvertEncodeId(input.EncodedId);
             await UserManager.Unlock(userId);
-            return CreateSuccessResult(true);
+            return AppFactory.CreateSuccessResult(true);
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> ResetPassword(ResetPasswordUserDto input)
         {
             var userId = ConvertEncodeId(input.EncodedId);
             await UserManager.ResetPasswordAsync(userId, input.NewPassword, input.MustChangePassword);
-            return CreateSuccessResult(true);
+            return AppFactory.CreateSuccessResult(true);
         }
         /// <summary>
         /// Người dùng đổi mật khẩu của mình 
@@ -87,7 +87,7 @@ namespace Ord.Plugin.Auth.AppServices
         {
             var userId = AppFactory.CurrentUserId.Value;
             await UserManager.ChangePasswordAsync(userId, input.OldPassword, input.NewPassword);
-            return CreateSuccessResult(true);
+            return AppFactory.CreateSuccessResult(true);
         }
         protected Guid ConvertEncodeId(string encodeId)
         {

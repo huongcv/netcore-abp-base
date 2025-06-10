@@ -1,31 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Shared.Dtos;
-using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
-using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
 {
     public class InformationAppService(IAppFactory appFactory) : OrdAuthAppService
     {
         [HttpGet]
-        public async Task<AppBootstrapDto?> GetBootstrap()
+        public async Task<CommonResultDto<AppBootstrapDto>> GetBootstrap()
         {
             var appBootstrapDto = new AppBootstrapDto();
             if (!appFactory.CurrentUserId.HasValue)
             {
-                return appBootstrapDto;
+                return AppFactory.CreateSuccessResult(appBootstrapDto);
             }
-            appBootstrapDto.User = await GetCurrentUser();
-            return appBootstrapDto;
+            appBootstrapDto.User = await DoGetCurrentUser();
+            return AppFactory.CreateSuccessResult(appBootstrapDto);
         }
-
         [HttpGet]
         [OrdAuth]
-        public Task<UserInformationDto> GetCurrentUser()
+        protected async Task<CommonResultDto<UserInformationDto>> GetCurrentUser()
+        {
+            var user = await DoGetCurrentUser();
+            return appFactory.CreateSuccessResult(user);
+        }
+        [NonAction]
+        protected Task<UserInformationDto> DoGetCurrentUser()
         {
             return appFactory.GetUserSessionAsync();
         }
@@ -35,17 +37,6 @@ namespace Ord.Plugin.Auth.AppServices
         public Task<string> Ping()
         {
             return Task.FromResult("pong");
-        }
-        [HttpPost]
-        public Task<PagedResultDto<UserPagedDto>> GetUsers(UserPagedInput input)
-        {
-            var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();
-            return repo.GetPagedListAsync(input);
-        }
-        public Task<UserDetailDto> GetById(string encodeId)
-        {
-            var repo = AppFactory.GetServiceDependency<IUserCrudRepository>();
-            return repo.GetDetailByEncodedIdAsync(encodeId);
         }
     }
 }

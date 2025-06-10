@@ -52,12 +52,15 @@ namespace Ord.Plugin.Contract.Dtos
                 Code = string.IsNullOrEmpty(errorCode) ? CommonResultCode.BadRequest : errorCode
             };
         }
-        public static CommonResultDto<T> Failed(Exception ex)
+        public static CommonResultDto<T> ServerFailure(Exception ex, string message = "")
         {
+#if DEBUG
+            message = ex.Message;
+#endif
             return new CommonResultDto<T>()
             {
                 Code = CommonResultCode.InternalServerError,
-                Message = ""
+                Message = message ?? "Có lỗi trong quá trình xử lý. Xin vui lòng thử lại"
             };
         }
         public static CommonResultDto<T> ValidationFailure(List<ValidationFailure> errorValid)

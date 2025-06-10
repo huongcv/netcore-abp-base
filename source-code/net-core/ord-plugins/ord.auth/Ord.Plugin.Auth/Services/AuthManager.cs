@@ -27,12 +27,12 @@ namespace Ord.Plugin.Auth.Services
                 var tenantEnt = await TenantRepos.GetByCode(tenantCode);
                 if (tenantEnt == null)
                 {
-                    return CreateErrorResult<JwtDto>("not_found_tenant");
+                    return AppFactory.CreateBadRequestResult<JwtDto>("not_found_tenant");
                 }
 
                 if (tenantEnt.IsActived != true)
                 {
-                    return CreateErrorResult<JwtDto>("tenant_not_active");
+                    return AppFactory.CreateBadRequestResult<JwtDto>("tenant_not_active");
                 }
                 tenantId = tenantEnt.Id;
 
@@ -43,19 +43,19 @@ namespace Ord.Plugin.Auth.Services
                 var userLoginDto = await UserRepos.GetLoginByUserName(normalizedUserName);
                 if (userLoginDto == null)
                 {
-                    return CreateErrorResult<JwtDto>(LoginInvalidError);
+                    return AppFactory.CreateBadRequestResult<JwtDto>(LoginInvalidError);
                 }
 
                 if (userLoginDto.IsActived != true)
                 {
-                    return CreateErrorResult<JwtDto>("user_not_active");
+                    return AppFactory.CreateBadRequestResult<JwtDto>("user_not_active");
                 }
                 var now = AppFactory.GetServiceDependency<IClock>().Now;
                 if (userLoginDto.IsLockoutEnabled)
                 {
                     if (userLoginDto.LockoutEnd.HasValue && userLoginDto.LockoutEnd.Value > now)
                     {
-                        return CreateErrorResult<JwtDto>("user_locked");
+                        return AppFactory.CreateBadRequestResult<JwtDto>("user_locked");
                     }
                 }
                 if (!IsCheckPassword(userLoginDto, loginInput.Password))
@@ -72,13 +72,13 @@ namespace Ord.Plugin.Auth.Services
                             await UserRepos.SetLockUser(userLoginDto.Id, now.AddSeconds(lockInSecond));
                         }
                     }
-                    return CreateErrorResult<JwtDto>(LoginInvalidError);
+                    return AppFactory.CreateBadRequestResult<JwtDto>(LoginInvalidError);
                 }
 
                 var jwtService = AppFactory.GetServiceDependency<IJwtManager>();
                 var jwtDto = jwtService.CreateJwt(userLoginDto);
                 await ClearCacheUserWhenLogin(userLoginDto.Id);
-                return CreateSuccessResult(jwtDto);
+                return AppFactory.CreateSuccessResult(jwtDto);
             }
         }
 

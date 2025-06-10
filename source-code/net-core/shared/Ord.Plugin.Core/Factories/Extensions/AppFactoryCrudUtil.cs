@@ -60,7 +60,7 @@ namespace Ord.Plugin.Core.Utils
             {
                 // nhớ đặt để rollback lại db
                 await appFactory.CurrentUnitOfWork.RollbackAsync();
-                return CommonResultDto<TDto>.Failed(ex);
+                return CommonResultDto<TDto>.ServerFailure(ex);
             }
         }
         public static async Task<CommonResultDto<TDto>> UpdateEntity<TEntity, TPrimaryKey, TDto>(
@@ -94,7 +94,7 @@ namespace Ord.Plugin.Core.Utils
             {
                 // nhớ đặt để rollback lại db
                 await appFactory.CurrentUnitOfWork.RollbackAsync();
-                return CommonResultDto<TDto>.Failed(ex);
+                return CommonResultDto<TDto>.ServerFailure(ex);
             }
         }
 
