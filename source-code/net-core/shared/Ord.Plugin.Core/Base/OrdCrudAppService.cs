@@ -84,6 +84,7 @@ namespace Ord.Plugin.Core.Services
             {
                 return AppFactory.CreateNotFoundResult<TGetByIdDto>(GetNotFoundMessage());
             }
+            await OnAfterGetDetailAsync(dto);
             return AppFactory.CreateSuccessResult(dto);
         }
 
@@ -260,6 +261,14 @@ namespace Ord.Plugin.Core.Services
         #endregion
 
         #region Virtual Hook Methods - Override nếu cần custom logic
+        /// <summary>
+        /// Hook method sau khi lấy by id thành công
+        /// Mục đích nếu cần thêm thông tin ngoài có thể lấy tại đây
+        /// </summary>
+        protected virtual Task OnAfterGetDetailAsync(TGetByIdDto dto)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// Hook method sau khi tạo mới thành công

@@ -26,6 +26,12 @@ namespace Ord.Plugin.Auth.AppServices
         {
             return AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
         }
+
+        protected override async Task OnAfterGetDetailAsync(RoleDetailDto dto)
+        {
+            dto.AssignedPermissions = await RoleCrudRepository.GetRolePermissionGrants(dto.Id);
+        }
+
         [HttpPost]
         public async Task<CommonResultDto<bool>> AssignPermissions(AssignPermissionsToRoleDto input)
         {

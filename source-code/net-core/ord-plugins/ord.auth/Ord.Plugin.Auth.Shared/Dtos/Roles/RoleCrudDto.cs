@@ -24,6 +24,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class RoleDetailDto : RolePagedDto
     {
         public DateTime CreationTime { get; set; }
+        public IEnumerable<string> AssignedPermissions { get; set; }
     }
     public class CreateRoleDto : RoleCrudBase
     {
