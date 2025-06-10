@@ -14,5 +14,9 @@ namespace Ord.Plugin.Core.Base
         {
             return AppFactory.GetServiceDependency<IStringLocalizer<OrdLocalizationResource>>();
         }
+        protected string GetLocalizedMessage(string key, params object[] formatArgs)
+        {
+            return L.GetLocalizedMessage(key, formatArgs);
+        }
     }
 }

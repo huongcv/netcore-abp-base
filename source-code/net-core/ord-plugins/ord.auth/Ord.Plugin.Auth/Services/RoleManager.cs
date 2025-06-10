@@ -1,11 +1,13 @@
-﻿using Ord.Plugin.Auth.Base;
+﻿using Microsoft.AspNetCore.Identity;
+using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
 {
-    public class RoleManager(IRoleCrudRepository roleCrudRepository) : OrdAuthManagerBase
+    public class RoleManager(IRoleCrudRepository roleCrudRepository) : OrdAuthManagerBase, IRoleManager
     {
         public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermissions)
         {
