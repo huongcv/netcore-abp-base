@@ -45,7 +45,7 @@ namespace Ord.Plugin.Core.Utils
                 var validResult = await appFactory.ValidateDto(input);
                 if (!validResult.IsValid)
                 {
-                    return CommonResultDto<TDto>.Failed(validResult.Errors);
+                    return CommonResultDto<TDto>.ValidationFailure(validResult.Errors);
                 }
                 var repo = appFactory.GetServiceDependency<IRepository<TEntity>>();
                 var createEnt = appFactory.ObjectMap<TDto, TEntity>(input);
@@ -73,7 +73,7 @@ namespace Ord.Plugin.Core.Utils
                 var validResult = await appFactory.ValidateDto(input);
                 if (!validResult.IsValid)
                 {
-                    return CommonResultDto<TDto>.Failed(validResult.Errors);
+                    return CommonResultDto<TDto>.ValidationFailure(validResult.Errors);
                 }
                 var repo = appFactory.GetServiceDependency<IRepository<TEntity, TPrimaryKey>>();
                 var updateEnt = await repo.FirstOrDefaultAsync(x => x.Id != null && x.Id.Equals(input.Id));

@@ -3,7 +3,7 @@ using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Contract.Dtos
 {
-    public class CommonResultErrorDto
+    public class CommonResultDto<T>
     {
         /// <summary>
         /// 00: Success
@@ -13,29 +13,37 @@ namespace Ord.Plugin.Contract.Dtos
         [System.Text.Json.Serialization.JsonPropertyOrder(1)]
         public string? Code { get; set; }
         /// <summary>
-        /// Thông báo lỗi/ hoặc thành công đều chung 
+        /// Thông báo lỗi/ hoặc thành công đều chung vào message
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(2)]
         public string? Message { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public bool IsSuccessful => string.Equals(CommonResultCode.Success, Code);
-
-
-    }
-    public class CommonResultDto<T> : CommonResultErrorDto
-    {
         /// <summary>
         /// Kết quả chính của api
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(3)]
         public T Data { get; set; }
         /// <summary>
-        /// Thông tin bổ sung...
+        /// Thông tin bổ sung, nếu cần thiết
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(100)]
         public object? Extend { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool IsSuccessful => string.Equals(CommonResultCode.Success, Code);
+
+        public static CommonResultDto<T> Ok(T dataSuccess, string message = "")
+        {
+            var ret = new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.Success,
+                Data = dataSuccess,
+                Message = message
+            };
+            return ret;
+        }
+
         public static CommonResultDto<T> Failed(string errorMessage, string errorCode = "")
         {
             return new CommonResultDto<T>()
@@ -52,7 +60,7 @@ namespace Ord.Plugin.Contract.Dtos
                 Message = ""
             };
         }
-        public static CommonResultDto<T> Failed(List<ValidationFailure> errorValid)
+        public static CommonResultDto<T> ValidationFailure(List<ValidationFailure> errorValid)
         {
             return new CommonResultDto<T>()
             {
@@ -61,7 +69,7 @@ namespace Ord.Plugin.Contract.Dtos
                 Extend = errorValid
             };
         }
-        public static CommonResultDto<T> Failed(AbpValidationException invalidEx)
+        public static CommonResultDto<T> ValidationFailure(AbpValidationException invalidEx)
         {
             if (invalidEx?.ValidationErrors?.Any() == true)
             {
@@ -78,16 +86,12 @@ namespace Ord.Plugin.Contract.Dtos
                 Message = invalidEx?.Message
             };
         }
-        public static CommonResultDto<T> Ok(T dataSuccess, string message = "")
+        public static CommonResultDto<T> ValidationFailure(string message) => new()
         {
-            var ret = new CommonResultDto<T>()
-            {
-                Code = CommonResultCode.Success,
-                Data = dataSuccess,
-                Message = message
-            };
-            return ret;
-        }
+            Code = CommonResultCode.BadRequest,
+            Message = message
+        };
+
         /// <summary>
         /// Tạo kết quả với trạng thái Unauthorized (401)
         /// </summary>
