@@ -12,9 +12,6 @@
     "CommonError": "Có lỗi xảy ra",
     "SaveSuccess": "Lưu thành công",
     "MessageWithParam": "Thông báo với tham số: {0}",
-    "test": "Viet Test Error Tiếng việt",
-    "testSuccess": "Viet Test Success Tiếng việt",
-    "testSuccessThamSo": "Viet Test Success Tiếng việt tham số:  {0}",
     "moveStockErr.NotEnoughInventoryForProduct": "Sản phẩm '{0}' không đủ tồn kho",
     "CreateEmployeeFailed": "Tạo nhân viên thất bại",
     "CantCancelPayroll": "Không thể hủy bảng chấm công do đang được dùng ở bảng lương '{0}'. Vui lòng hủy hoặc xóa bảng lương trước.",
@@ -133,32 +130,5 @@
     "NotFoundShopCode": "Không tìm thấy cửa hàng",
     "ShopNotActive": "Cửa hàng đã tạm dừng hoạt động",
     "LoginInvalid": "Đăng nhập thất bại, vui lòng thử lại sau"
-  },
-  "partnerCategory": {
-    "Caddie": "Nhân viên hỗ trợ chơi golf",
-    "GolfCartAttendant": "Nhân viên lái xe golf",
-    "GroundsCrew": "Nhân viên chăm sóc sân cỏ / bảo trì sân",
-    "StarterMarshal": "Nhân viên điều phối lượt chơi / quản lý sân",
-    "Receptionist": "Nhân viên lễ tân",
-    "ProShopStaff": "Nhân viên cửa hàng",
-    "GuestServices": "Nhân viên dịch vụ khách hàng",
-    "GolfInstructor": "Huấn luyện viên golf",
-    "ClubFitter": "Nhân viên điều chỉnh gậy golf",
-    "FoodAndBeverageStaff": "Nhân viên phục vụ ăn uống",
-    "RestaurantBarStaff": "Nhân viên nhà hàng / quầy bar",
-    "EventCoordinator": "Nhân viên tổ chức sự kiện",
-    "GolfCourseManager": "Quản lý sân golf",
-    "AccountantCashier": "Nhân viên kế toán / thu ngân",
-    "SecurityStaff": "Nhân viên bảo vệ",
-    "MedicalStaff": "Nhân viên y tế"
-  },
-  "GolfCourseIdIsRequiredToGetMaintenanceLog": "Chọn sân để lấy thông tin lịch sử bảo trì",
-  "GolfProductDtoIsNull": "Thông tin sản phẩm không được trống",
-  "UpdateIsActiveFaildBecauseInUse": "Không thể cập nhật trạng thái vì nhóm sản phẩm đang được sử dụng",
-  "GroupCodeExceeds50Characters": "Mã nhóm vượt quá 50 ký tự",
-  "GroupNameExceeds50Characters": "Tên nhóm vượt quá 50 ký tự",
-  "GroupNameIsRequired": "Tên nhóm là bắt buộc",
-  "NotesExceeds200Characters": "Ghi chú vượt quá 200 ký tự",
-  "ProductDoesNotExitOrDeleted": "Sản phẩm không tồn tại hoặc đã bị xóa",
-  "AnErrorOccurredPleaseTryAgainLater": "Đã xảy ra lỗi, vui lòng thử lại sau"
+  }
 }
