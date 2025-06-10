@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Base;
+﻿using System.ComponentModel;
+using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
 using Volo.Abp.Application.Dtos;
 
@@ -8,6 +9,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     {
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+        [DisplayName("p_Name")]
         public string? Name { get; set; }
         public bool IsActived { get; set; }
         public string? EncodedId { get; set; }
@@ -37,12 +39,15 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class CreateUserDto : UserCrudBase
     {
+        [DisplayName("p_UserName")]
         public string? UserName { get; set; }
+        [DisplayName("p_Password")]
         public string? Password { get; set; }
     }
 
     public class UpdateUserDto : UserCrudBase
     {
+        [DisplayName("p_Password")]
         public string? Password { get; set; }
     }
 

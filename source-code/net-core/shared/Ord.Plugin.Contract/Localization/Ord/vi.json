@@ -1,6 +1,8 @@
 {
   "culture": "vi",
   "texts": {
+    "common_validation_required": "{0} bắt buộc nhập",
+    "common_validation_maxlength": "{0} vượt quá {1} ký tự",
     "id_encode_invalid": "Id {0} không tồn tại",
     "of": "của",
     "access_denied": "Tài khoản không có quyền truy cập nội dung",
@@ -27,7 +29,9 @@
     "NotesExceeds200Characters": "Ghi chú vượt quá 200 ký tự",
     "ProductDoesNotExitOrDeleted": "Sản phẩm không tồn tại hoặc đã bị xóa",
     "AnErrorOccurredPleaseTryAgainLater": "Đã xảy ra lỗi, vui lòng thử lại sau",
-
+    "p_UserName": "Tên đăng nhập",
+    "p_Password": "Mật khẩu",
+    "p_Name": "Tên người dùng",
     //Product
     "Product.ActionFailed": "Thao tác thất bại. Vui lòng thử lại sau",
     "Product.ProductNameNull": "Tên sản phẩm bắt buộc nhập",
@@ -153,5 +157,5 @@
   "GroupNameIsRequired": "Tên nhóm là bắt buộc",
   "NotesExceeds200Characters": "Ghi chú vượt quá 200 ký tự",
   "ProductDoesNotExitOrDeleted": "Sản phẩm không tồn tại hoặc đã bị xóa",
-  "AnErrorOccurredPleaseTryAgainLater": "Đã xảy ra lỗi, vui lòng thử lại sau",
+  "AnErrorOccurredPleaseTryAgainLater": "Đã xảy ra lỗi, vui lòng thử lại sau"
 }

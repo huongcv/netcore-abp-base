@@ -43,7 +43,7 @@ public abstract class LocalizedValidator<TModel, TResource> : AbstractValidator<
         foreach (var (property, localizationKey) in validations)
         {
             RuleFor(property)
-                .NotEmpty()
+                .Must(value => !string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
                 .WithErrorCode(localizationKey)
                 .WithMessage(GetLocalizedMessage(localizationKey));
         }

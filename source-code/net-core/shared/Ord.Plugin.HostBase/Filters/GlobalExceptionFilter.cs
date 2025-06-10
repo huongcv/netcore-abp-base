@@ -42,10 +42,6 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleValidationException(AbpValidationException ex)
         {
             _logger.LogWarning(ex, "Validation error occurred");
-            if (ex.ValidationErrors?.Any() == true)
-            {
-
-            }
             return CommonResultDto<object>.ValidationFailure(ex);
         }
         private CommonResultDto<object> HandleIdDecodeException(IdDecodeException ex)
