@@ -110,6 +110,12 @@ namespace Ord.Plugin.Auth.Repositories
 
         }
 
+        public async Task<List<string>> GetRolePermissionGrants(Guid roleId)
+        {
+            var queryable = await GetRolePermissionGrantsQueryableAsync(roleId);
+            return await queryable.Select(x => x.PermissionName).ToListAsync();
+        }
+
         private async Task<bool> IsCodeUniqueAsync(string code, Guid? excludeId = null)
         {
             var queryable = await GetQueryableAsync();

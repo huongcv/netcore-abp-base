@@ -165,6 +165,16 @@ namespace Ord.Plugin.Core.Services
         protected virtual async Task CheckPermissionForOperation(CrudOperationType operationType)
         {
             var permissionName = GetPermissionName(operationType);
+            await EnsurePermissionAsync(permissionName);
+        }
+        protected virtual async Task CheckPermissionForActionName(string actionName)
+        {
+            var permissionName = GetPermissionName(CrudOperationType.Base) + "." + actionName;
+            await EnsurePermissionAsync(permissionName);
+        }
+
+        protected virtual async Task EnsurePermissionAsync(string? permissionName)
+        {
             if (!string.IsNullOrEmpty(permissionName))
             {
                 var isGranted = await AppFactory.CheckPermissionAsync(permissionName);
@@ -189,6 +199,7 @@ namespace Ord.Plugin.Core.Services
 
             return operationType switch
             {
+                CrudOperationType.Base => $"{baseName}",
                 CrudOperationType.Create => $"{baseName}.Create",
                 CrudOperationType.Read => $"{baseName}.Read",
                 CrudOperationType.Update => $"{baseName}.Update",
@@ -224,7 +235,7 @@ namespace Ord.Plugin.Core.Services
         protected virtual string GetEntityNamePrefix()
         {
             return "common";
-           // return typeof(TEntity).Name.ToLower();
+            // return typeof(TEntity).Name.ToLower();
         }
         protected virtual string GetNotFoundMessage()
         {
@@ -276,7 +287,7 @@ namespace Ord.Plugin.Core.Services
 
         #endregion
 
-      
+
     }
 
     /// <summary>
@@ -284,6 +295,7 @@ namespace Ord.Plugin.Core.Services
     /// </summary>
     public enum CrudOperationType
     {
+        Base,
         Create,
         Read,
         Update,

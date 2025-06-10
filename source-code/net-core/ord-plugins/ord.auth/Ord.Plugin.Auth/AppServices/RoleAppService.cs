@@ -27,15 +27,21 @@ namespace Ord.Plugin.Auth.AppServices
             return AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
         }
         [HttpPost]
-        [OrdAuth("AuthPlugin.Role.SetPermission")]
         public async Task<CommonResultDto<bool>> AssignPermissions(AssignPermissionsToRoleDto input)
         {
-            await CheckPermissionForOperation(CrudOperationType.Update);
-
+            await CheckPermissionForActionName("SetPermission");
             var roleId = ConvertEncodeId(input.EncodedId);
             await RoleManager.AssignPermissionsToRoleAsync(roleId, input.PermissionNames ?? new List<string>());
 
             return AppFactory.CreateSuccessResult(true, GetLocalizedMessage("role_assign_permissions_success"));
+        }
+
+        [HttpPost]
+        public async Task<CommonResultDto<List<string>>> GetListPermission(EncodedIdDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.Base);
+            var roleId = ConvertEncodeId(input.EncodedId);
+            return await AppFactory.CreateSuccessResultAsync(() => RoleCrudRepository.GetRolePermissionGrants(roleId));
         }
 
 

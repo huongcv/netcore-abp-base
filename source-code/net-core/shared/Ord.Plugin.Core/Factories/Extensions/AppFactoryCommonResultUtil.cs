@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Hangfire.MemoryStorage.Database;
+using Microsoft.Extensions.Localization;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Localization;
@@ -11,6 +12,11 @@ namespace Ord
 
         public static CommonResultDto<T> CreateSuccessResult<T>(this IAppFactory factory, T data, string message = "", params object[] formatArgs)
         {
+            return factory.CreateSuccessResult<T, OrdLocalizationResource>(data, message, formatArgs);
+        }
+        public static async Task<CommonResultDto<T>> CreateSuccessResultAsync<T>(this IAppFactory factory, Func<Task<T>> getDataFunc, string message = "", params object[] formatArgs)
+        {
+            var data = await getDataFunc();
             return factory.CreateSuccessResult<T, OrdLocalizationResource>(data, message, formatArgs);
         }
         public static CommonResultDto<T> CreateSuccessResult<T, TResource>(this IAppFactory factory, T data, string message = "", params object[] formatArgs)
