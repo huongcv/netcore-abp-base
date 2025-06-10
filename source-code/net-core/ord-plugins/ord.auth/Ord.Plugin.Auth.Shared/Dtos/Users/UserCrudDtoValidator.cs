@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Utils;
+using Ord.Plugin.Core.Factories;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Users
 {
@@ -11,33 +13,17 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
             RuleFor(u => u.UserName)
                 .Required()
                 .MinLengthString(3)
-                .MaxLengthString(200);
+                .MaxLengthString(200)
+                .ValidateUserName();
             RuleFor(u => u.Password)
-                .Required();
+                .Required()
+                .ValidatePassword(appFactory);
             RuleFor(u => u.Name)
-                .MinLengthString(3)
+                .MaxLengthString(300)
                 .Required();
-
-
             RuleFor(u => u.Email).MaxLengthString(300);
             RuleFor(u => u.PhoneNumber).MaxLengthString(20);
-            RuleFor(u => u.Name).MaxLengthString(300);
             RuleFor(u => u.Password).MaxLengthString(30);
-            RuleFor(u => u.EncodedId).Required();
-
-            //  ValidateRegex(u => u.UserName, RegexPatternConst.UserNameRegex, "username_not_regex");
-            //ValidateRegex(u => u.Password, RegexPatternConst.PasswordRegex, "pwd_not_regex");
-            //RuleFor(x => x.Email).EmailAddress()
-            //    .When(u => !string.IsNullOrEmpty(u.Email))
-            //    .WithMessage(GetLocalizedMessage("invalid_email_format"));
-
-            //ValidateMaxLength(
-            //    (u => u.UserName, 2, "crud_user_username_maxlength"),
-            //    (u => u.Email, 300, "crud_user_email_maxlength"),
-            //    (u => u.PhoneNumber, 20, "crud_user_phone_maxlength"),
-            //    (u => u.Name, 200, "crud_user_name_maxlength"),
-            //    (u => u.Password, 30, "crud_user_pwd_maxlength")
-            //);
         }
     }
     public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>

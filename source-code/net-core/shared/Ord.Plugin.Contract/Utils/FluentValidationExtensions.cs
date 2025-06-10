@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
+using Ord.Plugin.Contract.Consts;
+using System.Text.RegularExpressions;
+using Ord.Plugin.Contract.Factories;
 
 namespace Ord.Plugin.Contract.Utils
 {
@@ -89,6 +92,23 @@ namespace Ord.Plugin.Contract.Utils
             return ruleBuilder.MinimumLength(minLength)
                 .WithErrorCode(minLength.ToString())
                 .WithMessage("common_validation_minlength");
+        }
+        /// <summary>
+        /// Validate regex pattern với auto field name
+        /// </summary>
+        public static IRuleBuilderOptions<T, string> ValidateRegex<T>(this IRuleBuilder<T, string> ruleBuilder, string pattern, string? errorMessage = null)
+        {
+            return ruleBuilder
+                .Must(value => string.IsNullOrEmpty(value) || Regex.IsMatch(value, pattern))
+                .WithMessage(errorMessage ?? "common_validation_invalid_regex");
+        }
+        public static IRuleBuilderOptions<T, string> ValidateUserName<T>(this IRuleBuilder<T, string> ruleBuilder, string? errorMessage = null)
+        {
+            return ruleBuilder.ValidateRegex(RegexPatternConst.UserNameRegex, errorMessage);
+        }
+        public static IRuleBuilderOptions<T, string> ValidatePassword<T>(this IRuleBuilder<T, string> ruleBuilder, IAppFactory appFactory, string? errorMessage = null)
+        {
+            return ruleBuilder.ValidateRegex(RegexPatternConst.PasswordRegex, errorMessage);
         }
     }
 }
