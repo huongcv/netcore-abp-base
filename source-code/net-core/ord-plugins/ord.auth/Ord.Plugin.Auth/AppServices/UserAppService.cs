@@ -77,18 +77,7 @@ namespace Ord.Plugin.Auth.AppServices
             await UserManager.ResetPasswordAsync(userId, input.NewPassword, input.MustChangePassword);
             return AppFactory.CreateSuccessResult(true);
         }
-        /// <summary>
-        /// Người dùng đổi mật khẩu của mình 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<CommonResultDto<bool>> ChangePasswordAsync(ChangePasswordUserDto input)
-        {
-            var userId = AppFactory.CurrentUserId.Value;
-            await UserManager.ChangePasswordAsync(userId, input.OldPassword, input.NewPassword);
-            return AppFactory.CreateSuccessResult(true);
-        }
+       
         protected Guid ConvertEncodeId(string encodeId)
         {
             var ser = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();

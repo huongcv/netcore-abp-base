@@ -9,6 +9,7 @@ namespace Ord.Plugin.Auth.Base
     {
         protected IUserRepository UserRepos => AppFactory.GetServiceDependency<IUserRepository>();
         protected ITenantRepository TenantRepos => AppFactory.GetServiceDependency<ITenantRepository>();
+        protected IRoleCrudRepository RoleRepos => AppFactory.GetServiceDependency<IRoleCrudRepository>();
         protected override IStringLocalizer GetMainLocalizer()
         {
             return AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();

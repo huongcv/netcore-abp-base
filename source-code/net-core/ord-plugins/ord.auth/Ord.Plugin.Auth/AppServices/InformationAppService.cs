@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ord.Plugin.Auth.Base;
+using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
@@ -8,6 +10,7 @@ namespace Ord.Plugin.Auth.AppServices
 {
     public class InformationAppService(IAppFactory appFactory) : OrdAuthAppService
     {
+        private IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         [HttpGet]
         public async Task<CommonResultDto<AppBootstrapDto>> GetBootstrap()
         {
@@ -30,6 +33,19 @@ namespace Ord.Plugin.Auth.AppServices
         protected Task<UserInformationDto> DoGetCurrentUser()
         {
             return appFactory.GetUserSessionAsync();
+        }
+        /// <summary>
+        /// Người dùng đổi mật khẩu của mình 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [OrdAuth]
+        public async Task<CommonResultDto<bool>> ChangePasswordAsync(ChangePasswordUserDto input)
+        {
+            var userId = AppFactory.CurrentUserId.Value;
+            await UserManager.ChangePasswordAsync(userId, input.OldPassword, input.NewPassword);
+            return AppFactory.CreateSuccessResult(true);
         }
 
         [HttpGet]

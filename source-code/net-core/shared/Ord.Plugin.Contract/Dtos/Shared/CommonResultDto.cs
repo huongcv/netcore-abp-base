@@ -113,12 +113,12 @@ namespace Ord.Plugin.Contract.Dtos
         /// </summary>
         /// <param name="message">Thông báo lỗi bị cấm truy cập</param>
         /// <returns>CommonResultDto với trạng thái Forbidden</returns>
-        public static CommonResultDto<T> Forbidden(string message = "")
+        public static CommonResultDto<T> Forbidden(string message = "Access forbidden")
         {
             return new CommonResultDto<T>
             {
                 Code = CommonResultCode.Forbidden,
-                Message = string.IsNullOrWhiteSpace(message) ? "Access forbidden" : message
+                Message = message
             };
         }
     }
