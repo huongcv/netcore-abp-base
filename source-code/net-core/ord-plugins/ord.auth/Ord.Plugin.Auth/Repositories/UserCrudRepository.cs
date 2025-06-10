@@ -5,8 +5,10 @@ using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Util;
+using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Repositories
 {
@@ -65,6 +67,14 @@ namespace Ord.Plugin.Auth.Repositories
             if (!AppFactory.CurrentTenantId.HasValue && entityDelete.UserName?.Equals("admin", StringComparison.OrdinalIgnoreCase) == true)
             {
                 ThrowValidationEx("cannot_delete_admin_system");
+            }
+        }
+        // kiểm trả quyền xem dữ liệu
+        protected override async Task CheckPermissionViewEntity(UserEntity entity)
+        {
+            if (AppFactory.CurrentTenantId.HasValue && !AppFactory.CurrentTenantId.Value.Equals(entity.TenantId))
+            {
+                throw new NotAccessPermissionException();
             }
         }
 

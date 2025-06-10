@@ -32,7 +32,7 @@ namespace Ord.Plugin.HostBase.Filters
                 AbpValidationException validationEx => HandleValidationException(validationEx),
                 BusinessException businessEx => HandleBusinessException(businessEx),
                 IdDecodeException idDecodeEx => HandleIdDecodeException(idDecodeEx),
-                EntityNotFoundException entityNotFoundEx => HandleEntityNotFoundException(entityNotFoundEx),
+                OrdCommonException commonEx => HandleOrdCommonException(commonEx),
                 _ => HandleGeneralException(context.Exception)
             };
 
@@ -71,20 +71,19 @@ namespace Ord.Plugin.HostBase.Filters
                 errorCode: "422"
             );
         }
-
-        private CommonResultDto<object> HandleEntityNotFoundException(EntityNotFoundException ex)
+        private CommonResultDto<object> HandleOrdCommonException(OrdCommonException ex)
         {
-            _logger.LogWarning(ex, "Not found entity");
+            _logger.LogWarning(ex, "ord common logic error occurred ");
             var message = ex.Message;
             if (ex.IsMustGetLocalized)
             {
                 message = GetLocalizedMessageOrDefault(ex.Message);
             }
-
-            return CommonResultDto<object>.Failed(
-                ex.Message,
-                errorCode: "404"
-            );
+            else
+            {
+                message = GetLocalizedMessageOrDefault(ex.MessageLocalized ?? ex.Message);
+            }
+            return CommonResultDto<object>.Failed(message, ex.Code);
         }
 
         private CommonResultDto<object> HandleGeneralException(Exception ex)
@@ -94,8 +93,15 @@ namespace Ord.Plugin.HostBase.Filters
             return CommonResultDto<object>.ServerFailure(ex, GetLocalizedMessageOrDefault("server_err_common", "Có lỗi trong quá trình xử lý"));
         }
 
+
+
         public string GetLocalizedMessageOrDefault(string key, string defaultValue = "", params object[] formatArgs)
         {
+            defaultValue = string.IsNullOrEmpty(defaultValue) ? key : defaultValue;
+            if (string.IsNullOrEmpty(key))
+            {
+                return key;
+            }
             try
             {
                 var localizedString = formatArgs?.Length > 0

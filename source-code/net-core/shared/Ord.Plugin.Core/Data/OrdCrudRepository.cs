@@ -193,7 +193,7 @@ namespace Ord.Plugin.Core.Data
             var mapper = AppFactory.GetServiceDependency<IMapper>();
             return entityQueryable.ProjectTo<TGetPagedItemDto>(mapper.ConfigurationProvider);
         }
-        public virtual async Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input)
+        public virtual async Task<CounterByIsActivedDto> GetCountGroupByIsActivedAsync(TGetPagedInputDto input)
         {
 
             if (!typeof(IHasActived).IsAssignableFrom(typeof(TEntity)))
@@ -247,7 +247,7 @@ namespace Ord.Plugin.Core.Data
                    type == typeof(float);
         }
 
-        public virtual async Task<TEntity> GetByEncodedId(string encodedId, bool isAsNoTracking = true)
+        public virtual async Task<TEntity> GetByEncodedIdAsync(string encodedId, bool isAsNoTracking = true)
         {
             if (IdEncoderService.TryDecodeId(encodedId, out var id))
             {
@@ -263,10 +263,7 @@ namespace Ord.Plugin.Core.Data
         /// <returns>DTO chi tiết entity</returns>
         public virtual async Task<TGetByIdDto> GetDetailByIdAsync(TKey id)
         {
-            var mapper = AppFactory.GetServiceDependency<IMapper>();
-            var queryable = (await GetQueryableAsync()).AsNoTracking();
-            var entity = await queryable.Where(x => x.Id.Equals(id))
-                .FirstOrDefaultAsync();
+            var entity = await GetByIdAsync(id, true);
             if (entity == null)
             {
                 return null;

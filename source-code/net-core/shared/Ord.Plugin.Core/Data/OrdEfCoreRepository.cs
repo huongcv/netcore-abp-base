@@ -57,7 +57,19 @@ namespace Ord
         public async Task<TEntity> GetByIdAsync(TKey id, bool isNoTracking = false)
         {
             var queryable = (await GetQueryableAsync()).AsNoTrackingIf(isNoTracking);
-            return await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            var entity = await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            await CheckPermissionViewEntity(entity);
+            return entity;
+        }
+        /// <summary>
+        /// Kiểm trả quyền xem dữ liệu của hàm GetByIdAsync
+        /// throw NotAccessPermissionException nếu không được xem
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual Task CheckPermissionViewEntity(TEntity entity)
+        {
+            return Task.CompletedTask;
         }
     }
 }

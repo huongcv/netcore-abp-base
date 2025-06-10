@@ -33,7 +33,7 @@ namespace Ord.Plugin.Contract.Data
         /// <summary>
         /// Thống kê số lượng theo trạng thái IsActived (chỉ áp dụng Entity có IHasActived)
         /// </summary>
-        Task<CounterByIsActivedDto> GetCountGroupByIsActived(TGetPagedInputDto input);
+        Task<CounterByIsActivedDto> GetCountGroupByIsActivedAsync(TGetPagedInputDto input);
 
         /// <summary>
         /// Lấy Entity theo ID (raw entity)
@@ -43,7 +43,7 @@ namespace Ord.Plugin.Contract.Data
         /// <summary>
         /// Lấy Entity theo Encoded ID (ID đã mã hóa bảo mật)
         /// </summary>
-        Task<TEntity> GetByEncodedId(string encodedId, bool isAsNoTracking = true);
+        Task<TEntity> GetByEncodedIdAsync(string encodedId, bool isAsNoTracking = true);
 
         /// <summary>
         /// Lấy DTO chi tiết theo ID

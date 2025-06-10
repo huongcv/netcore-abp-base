@@ -1,12 +1,6 @@
 ﻿namespace Ord.Plugin.Contract.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class EntityNotFoundException(string message = "not_found") : OrdCommonException(CommonResultCode.NotFound, message)
     {
-        public bool IsMustGetLocalized = false;
-        public EntityNotFoundException(string message = "not_found")
-            : base(message)
-        {
-            IsMustGetLocalized = string.Equals(message, "not_found");
-        }
     }
 }
