@@ -8,6 +8,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Localization;
+using Ord.Plugin.Contract.Utils;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Reflection;
 using Volo.Abp.Validation;
@@ -107,7 +108,7 @@ namespace Ord.Plugin.HostBase.Filters
                                     displayNameCache[propertyName] = displayName;
                                 }
 
-                                if (errorMessage.StartsWith("common.validation"))
+                                if (errorMessage.StartsWith(ValidationMessages.Prefix))
                                 {
                                     errorMessage = GetCommonErrorMessage(errorMessage, displayNameCache[propertyName], error);
                                 }

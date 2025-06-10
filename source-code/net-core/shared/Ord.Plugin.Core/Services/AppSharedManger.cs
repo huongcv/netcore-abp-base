@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-using Ord.Plugin.Contract.Consts;
-using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Localization;
+﻿using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Base;
@@ -43,10 +40,5 @@ namespace Ord.Plugin.Core.Services
             return user;
         }
 
-
-        protected override IStringLocalizer GetMainLocalizer()
-        {
-            return AppFactory.GetServiceDependency<IStringLocalizer<OrdLocalizationResource>>();
-        }
     }
 }

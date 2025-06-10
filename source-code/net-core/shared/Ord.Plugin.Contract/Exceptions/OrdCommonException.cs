@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
+using Ord.Plugin.Contract.Factories;
 
 namespace Ord.Plugin.Contract.Exceptions
 {
@@ -8,9 +9,9 @@ namespace Ord.Plugin.Contract.Exceptions
         public string? MessageLocalized { get; private set; }
         public string Code { get; } = code;
 
-        public OrdCommonException SetMessageLocalized(IStringLocalizer l, string key, params object[] formatArgs)
+        public OrdCommonException SetMessageLocalized(IAppFactory appFactory, string key, params object[] formatArgs)
         {
-            MessageLocalized = l.GetLocalizedMessage(key, formatArgs);
+            MessageLocalized = appFactory.GetLocalizedMessage(key, formatArgs);
             IsMustGetLocalized = false;
             return this;
         }

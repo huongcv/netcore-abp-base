@@ -7,16 +7,6 @@ namespace Ord.Plugin.Core.Base
 {
     public abstract class OrdAppServiceBase : ApplicationService
     {
-        protected IStringLocalizer L => GetMainLocalizer();
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
-
-        protected virtual IStringLocalizer GetMainLocalizer()
-        {
-            return AppFactory.GetServiceDependency<IStringLocalizer<OrdLocalizationResource>>();
-        }
-        protected string GetLocalizedMessage(string key, params object[] formatArgs)
-        {
-            return L.GetLocalizedMessage(key, formatArgs);
-        }
     }
 }

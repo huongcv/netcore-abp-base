@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.DataExporting;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Contract.Services.Shop;
 using Ord.Plugin.Core.Caching;
@@ -56,6 +57,17 @@ namespace Ord.Plugin.Core.Factories
         {
             var service = GetServiceDependency<IIDGenerator>();
             return service.GenerateID();
+        }
+        public string GetLocalizedMessage(string key, params object[] formatArgs)
+        {
+            var l = GetServiceDependency<IOrdLocalizer>();
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return string.Empty;
+            }
+            return formatArgs?.Length > 0
+                ? l[key, formatArgs]
+                : l[key];
         }
 
         public IHttpContextAccessor HttpContextAccessor => LazyService<IHttpContextAccessor>();

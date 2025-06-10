@@ -26,18 +26,18 @@ namespace Ord.Plugin.Auth.Services
             var userSession = await AppFactory.GetUserSessionAsync();
             if (userSession == null)
             {
-                throw new AbpValidationException(L.GetLocalizedMessage("user_session_not_found"));
+                throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_session_not_found"));
             }
             var listPermission = userSession.ListPermission;
             if (listPermission?.Any() != true)
             {
-                throw new AbpValidationException(L.GetLocalizedMessage("user_has_no_permissions"));
+                throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_has_no_permissions"));
             }
             foreach (var permissionName in listOfPermissions)
             {
                 if (listPermission?.Any(s => string.Equals(s, permissionName, StringComparison.OrdinalIgnoreCase)) != true)
                 {
-                    throw new AbpValidationException(L.GetLocalizedMessage("user_missing_permissions", permissionName));
+                    throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_missing_permissions", permissionName));
                 }
             }
 

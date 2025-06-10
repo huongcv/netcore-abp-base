@@ -39,5 +39,6 @@ namespace Ord.Plugin.Contract.Factories
         IEpplusExportingExcelService EpplusExporting { get; }
         IDapperDefaultDbContext DapperDefaultDb { get; }
         long IdGenerator();
+        string GetLocalizedMessage(string key, params object[] formatArgs);
     }
 }

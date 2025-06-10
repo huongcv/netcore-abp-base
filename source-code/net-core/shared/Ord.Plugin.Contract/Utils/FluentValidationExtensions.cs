@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.Localization;
 using Ord.Plugin.Contract.Consts;
-using System.Text.RegularExpressions;
 using Ord.Plugin.Contract.Factories;
+using System.Text.RegularExpressions;
 
 namespace Ord.Plugin.Contract.Utils
 {
+    public static class ValidationMessages
+    {
+        public const string Prefix = "common.validation.";
+    }
     public static class FluentValidationExtensions
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace Ord.Plugin.Contract.Utils
         {
             var propertyType = typeof(TProperty);
             var underlyingType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-            errorMessage = errorMessage ?? "common.validation.required";
+            errorMessage = errorMessage ?? ValidationMessages.Prefix + "required";
 
             // Kiểm tra nếu là string hoặc string?
             if (underlyingType == typeof(string) || propertyType == typeof(string))
@@ -75,23 +78,17 @@ namespace Ord.Plugin.Contract.Utils
                 .NotEmpty()
                 .WithMessage(errorMessage);
         }
-
-        public static IRuleBuilderOptions<T, TProperty> Required<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, IStringLocalizer localizer, string messageKey, params object[] args)
-        {
-            var errorMessage = localizer.GetLocalizedMessage(messageKey, args);
-            return ruleBuilder.Required(errorMessage);
-        }
         public static IRuleBuilderOptions<T, string> MaxLengthString<T>(this IRuleBuilder<T, string> ruleBuilder, int maxLength)
         {
             return ruleBuilder.MaximumLength(maxLength)
                 .WithErrorCode(maxLength.ToString())
-                .WithMessage("common.validation.maxlength");
+                .WithMessage(ValidationMessages.Prefix +"maxlength");
         }
         public static IRuleBuilderOptions<T, string> MinLengthString<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength)
         {
             return ruleBuilder.MinimumLength(minLength)
                 .WithErrorCode(minLength.ToString())
-                .WithMessage("common.validation.minlength");
+                .WithMessage(ValidationMessages.Prefix + "minlength");
         }
         /// <summary>
         /// Validate regex pattern với auto field name
@@ -100,7 +97,7 @@ namespace Ord.Plugin.Contract.Utils
         {
             return ruleBuilder
                 .Must(value => string.IsNullOrEmpty(value) || Regex.IsMatch(value, pattern))
-                .WithMessage(errorMessage ?? "common.validation.invalid_regex");
+                .WithMessage(errorMessage ?? ValidationMessages.Prefix + "invalid_regex");
         }
         public static IRuleBuilderOptions<T, string> ValidateUserName<T>(this IRuleBuilder<T, string> ruleBuilder, string? errorMessage = null)
         {
