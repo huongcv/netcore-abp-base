@@ -45,7 +45,7 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
         {
-            
+          
         }
 
         protected override async Task<UserEntity> MapToUpdateEntityAsync(UpdateUserDto updateInput, UserEntity entity)

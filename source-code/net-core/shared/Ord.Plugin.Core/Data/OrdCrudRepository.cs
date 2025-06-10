@@ -51,7 +51,7 @@ namespace Ord.Plugin.Core.Data
         /// Validate dữ liệu trước khi tạo mới
         /// </summary>
         /// <param name="createInput">Dữ liệu đầu vào cho tạo mới</param>
-        /// <returns>Task hoàn thành</returns>
+        /// <returns>Nếu có lỗi ném AbpValidationException</returns>
         protected abstract Task ValidateBeforeCreateAsync(TCreateInputDto createInput);
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace Ord.Plugin.Core.Data
         /// </summary>
         /// <param name="updateInput">Dữ liệu đầu vào cho cập nhật</param>
         /// <param name="entityUpdate">Entity sẽ được cập nhật</param>
-        /// <returns>Task hoàn thành</returns>
+        /// <returns>Nếu có lỗi ném AbpValidationException</returns>
         protected abstract Task ValidateBeforeUpdateAsync(TUpdateInputDto updateInput, TEntity entityUpdate);
         /// <summary>
         /// Validate dữ liệu trước khi cập nhật
         /// </summary>
         /// <param name="updateInput">Dữ liệu đầu vào cho cập nhật</param>
         /// <param name="entityUpdate">Entity sẽ được cập nhật</param>
-        /// <returns>Task hoàn thành</returns>
+        /// <returns>Nếu có lỗi ném AbpValidationException</returns>
         protected abstract Task ValidateBeforeDeleteAsync(TEntity entityDelete);
 
         #endregion
@@ -151,7 +151,7 @@ namespace Ord.Plugin.Core.Data
                 }
             }
             queryable = await GetPagedQueryableAsync(queryable, input);
-            var dtoQueryable = await MapToDtoQueryableAsync(queryable, input);
+            var dtoQueryable = await TransformToPagedDtoAsync(queryable, input);
             // Đếm tổng số record
             var totalCount = await dtoQueryable.CountAsync();
             if (totalCount == 0)
@@ -174,8 +174,14 @@ namespace Ord.Plugin.Core.Data
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
         }
-
-        protected virtual async Task<IQueryable<TGetPagedItemDto>> MapToDtoQueryableAsync(IQueryable<TEntity> entityQueryable, TGetPagedInputDto input)
+        /// <summary>
+        /// Map Entity queryable sang DTO queryable sử dụng AutoMapper ProjectTo
+        /// ProjectTo giúp optimize query bằng cách chỉ select các field cần thiết từ database
+        /// </summary>
+        /// <param name="entityQueryable">Entity queryable từ database</param>
+        /// <param name="input">Tham số đầu vào (có thể dùng để custom mapping logic)</param>
+        /// <returns>DTO queryable đã được map</returns>
+        protected virtual async Task<IQueryable<TGetPagedItemDto>> TransformToPagedDtoAsync(IQueryable<TEntity> entityQueryable, TGetPagedInputDto input)
         {
             var mapper = AppFactory.GetServiceDependency<IMapper>();
             return entityQueryable.ProjectTo<TGetPagedItemDto>(mapper.ConfigurationProvider);
@@ -318,14 +324,14 @@ namespace Ord.Plugin.Core.Data
             return updatedEntity;
         }
 
-        public virtual async Task<TEntity> UpdateAsync(TKey id, Action<TEntity> updateAction, bool autoSave = true)
+        public virtual async Task<TEntity> UpdateAsync(TKey id, Func<TEntity, Task> updateAction, bool autoSave = true)
         {
             var entity = await GetByIdAsync(id);
             if (entity == null)
             {
                 return null;
             }
-            updateAction(entity);
+            await updateAction(entity);
             var updatedEntity = await UpdateAsync(entity, autoSave: autoSave);
             return updatedEntity;
         }
@@ -340,7 +346,7 @@ namespace Ord.Plugin.Core.Data
             return null;
         }
 
-        public virtual async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, Action<TEntity> updateAction, bool autoSave = true)
+        public virtual async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, Func<TEntity, Task> updateAction, bool autoSave = true)
         {
             if (IdEncoderService.TryDecodeId(encodedId, out var id))
             {
@@ -353,7 +359,6 @@ namespace Ord.Plugin.Core.Data
         /// Xóa entity theo ID
         /// </summary>
         /// <param name="id">ID của entity</param>
-        /// <returns>Task hoàn thành</returns>
         public virtual async Task<bool> DeleteAsync(TKey id, bool autoSave = true)
         {
             // Lấy entity hiện tại
@@ -422,13 +427,13 @@ namespace Ord.Plugin.Core.Data
         /// <returns>Số lượng entity đã cập nhật</returns>
         public virtual async Task<IEnumerable<TEntity>> UpdateByConditionAsync(
             Expression<Func<TEntity, bool>> predicate,
-            Action<TEntity> updateAction,
+            Func<TEntity, Task> updateAction,
             CancellationToken cancellationToken = default)
         {
             var entities = await GetListAsync(predicate, cancellationToken: cancellationToken);
             foreach (var entity in entities)
             {
-                updateAction(entity);
+                await updateAction(entity);
                 await UpdateAsync(entity, autoSave: false, cancellationToken);
             }
             await SaveChangesAsync(cancellationToken);
@@ -561,7 +566,6 @@ namespace Ord.Plugin.Core.Data
         /// Lấy danh sách entity theo điều kiện dưới dạng DTO
         /// </summary>
         /// <param name="predicate">Điều kiện lọc</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>Danh sách DTO</returns>
         public virtual async Task<List<TDto>> GetListAsDtoAsync<TDto>(
             Expression<Func<TEntity, bool>> predicate,
@@ -576,7 +580,6 @@ namespace Ord.Plugin.Core.Data
         /// Lấy danh sách entity theo điều kiện dưới dạng DTO
         /// </summary>
         /// <param name="predicate">Điều kiện lọc</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
         /// <returns>Danh sách DTO</returns>
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
