@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
 using Ord.Plugin.Contract.Utils;
+using System.ComponentModel;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Auths
 {
     public class LoginInputDto
     {
+        [DisplayName("field.username")]
         public string UserName { get; set; }
+        [DisplayName("field.password")]
         public string Password { get; set; }
         public string? TenantCode { get; set; }
         public string? FireBaseToken { get; set; }
