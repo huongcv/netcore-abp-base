@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Localization;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Validation;
@@ -16,9 +14,6 @@ namespace Ord.Plugin.HostBase.Filters
     {
         private readonly ILogger<GlobalExceptionFilter> _logger;
         private readonly IAppFactory _appFactory;
-
-        private IStringLocalizer<OrdLocalizationResource> L =>
-            _appFactory.GetServiceDependency<IStringLocalizer<OrdLocalizationResource>>();
         public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger,
             IAppFactory appFactory)
         {
@@ -47,16 +42,7 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleIdDecodeException(IdDecodeException ex)
         {
             _logger.LogWarning(ex, "Id decode error occurred");
-            var encodeid = $@"'{ex.EncodedId}'";
-            if (!string.IsNullOrEmpty(ex.EntityType))
-            {
-                var entityName = L["entity_name_" + ex.EntityType].Value;
-                if (!string.IsNullOrEmpty(entityName) && !entityName.StartsWith("entity_name_"))
-                {
-                    encodeid = $@"{encodeid} {L["of"]} {entityName}";
-                }
-            }
-            var message = GetLocalizedMessageOrDefault("id_encode_invalid", "EncodedId không chính xác", encodeid);
+            var message = GetLocalizedMessage("exception.id_encode_invalid", ex.EncodedId);
             return CommonResultDto<object>.Failed(
                 message,
                 errorCode: "404"
@@ -77,11 +63,11 @@ namespace Ord.Plugin.HostBase.Filters
             var message = ex.Message;
             if (ex.IsMustGetLocalized)
             {
-                message = GetLocalizedMessageOrDefault(ex.Message);
+                message = GetLocalizedMessage(ex.Message);
             }
             else
             {
-                message = GetLocalizedMessageOrDefault(ex.MessageLocalized ?? ex.Message);
+                message = GetLocalizedMessage(ex.MessageLocalized ?? ex.Message);
             }
             return CommonResultDto<object>.Failed(message, ex.Code);
         }
@@ -90,30 +76,14 @@ namespace Ord.Plugin.HostBase.Filters
         {
             _logger.LogError(ex, "Unhandled exception occurred");
 
-            return CommonResultDto<object>.ServerFailure(ex, GetLocalizedMessageOrDefault("server_err_common", "Có lỗi trong quá trình xử lý"));
+            return CommonResultDto<object>.ServerFailure(ex, GetLocalizedMessage("exception.server_err"));
         }
 
 
 
-        public string GetLocalizedMessageOrDefault(string key, string defaultValue = "", params object[] formatArgs)
+        public string GetLocalizedMessage(string key, params object[] formatArgs)
         {
-            defaultValue = string.IsNullOrEmpty(defaultValue) ? key : defaultValue;
-            if (string.IsNullOrEmpty(key))
-            {
-                return key;
-            }
-            try
-            {
-                var localizedString = formatArgs?.Length > 0
-                    ? L[key, formatArgs]
-                    : L[key];
-
-                return localizedString.ResourceNotFound ? defaultValue : localizedString.Value;
-            }
-            catch
-            {
-                return defaultValue;
-            }
+            return _appFactory.GetLocalizedMessage(key, formatArgs);
         }
     }
 }
