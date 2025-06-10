@@ -306,7 +306,6 @@ namespace Ord.Plugin.Core.Data
         /// <returns>DTO chi tiết entity sau khi cập nhật</returns>
         public virtual async Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true)
         {
-            // Lấy entity hiện tại
             var entity = await GetByIdAsync(id);
             if (entity == null)
             {
@@ -319,6 +318,18 @@ namespace Ord.Plugin.Core.Data
             return updatedEntity;
         }
 
+        public virtual async Task<TEntity> UpdateAsync(TKey id, Action<TEntity> updateAction, bool autoSave = true)
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity == null)
+            {
+                return null;
+            }
+            updateAction(entity);
+            var updatedEntity = await UpdateAsync(entity, autoSave: autoSave);
+            return updatedEntity;
+        }
+
         public virtual async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true)
         {
             if (IdEncoderService.TryDecodeId(encodedId, out var id))
@@ -326,6 +337,15 @@ namespace Ord.Plugin.Core.Data
                 return await UpdateAsync(id, updateInput, autoSave);
             }
 
+            return null;
+        }
+
+        public virtual async Task<TEntity> UpdateByEncodedIdAsync(string encodedId, Action<TEntity> updateAction, bool autoSave = true)
+        {
+            if (IdEncoderService.TryDecodeId(encodedId, out var id))
+            {
+                return await UpdateAsync(id, updateAction, autoSave);
+            }
             return null;
         }
 

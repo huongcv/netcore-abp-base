@@ -27,7 +27,9 @@ namespace Ord.Plugin.Contract.Data
 
         Task<TEntity> CreateAsync(TCreateInputDto createInput, bool autoSave = true);
         Task<TEntity> UpdateAsync(TKey id, TUpdateInputDto updateInput, bool autoSave = true);
+        Task<TEntity> UpdateAsync(TKey id, Action<TEntity> updateAction, bool autoSave = true);
         Task<TEntity> UpdateByEncodedIdAsync(string encodedId, TUpdateInputDto updateInput, bool autoSave = true);
+        Task<TEntity> UpdateByEncodedIdAsync(string encodedId, Action<TEntity> updateAction, bool autoSave = true);
         Task<bool> DeleteAsync(TKey id, bool autoSave = true);
         Task<bool> DeleteByEncodedIdAsync(string encodedId, bool autoSave = true);
 

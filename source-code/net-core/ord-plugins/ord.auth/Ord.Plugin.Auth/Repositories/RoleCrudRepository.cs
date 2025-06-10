@@ -35,22 +35,26 @@ namespace Ord.Plugin.Auth.Repositories
             var isCodeUnique = await IsCodeUniqueAsync(createInput.Code);
             if (!isCodeUnique)
             {
-                ThrowValidationEx("username_already_exists", createInput.Code);
+                ThrowValidationEx("role_code_already_exists", createInput.Code);
             }
         }
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateRoleDto updateInput, RoleEntity entityUpdate)
         {
-            var isCodeUnique = await IsCodeUniqueAsync(updateInput.Code);
+            var isCodeUnique = await IsCodeUniqueAsync(updateInput.Code, entityUpdate.Id);
             if (!isCodeUnique)
             {
-                ThrowValidationEx("username_already_exists", updateInput.Code);
+                ThrowValidationEx("role_code_already_exists", updateInput.Code);
             }
         }
 
-        protected override Task ValidateBeforeDeleteAsync(RoleEntity entityDelete)
+        protected override async Task ValidateBeforeDeleteAsync(RoleEntity entityDelete)
         {
-            throw new NotImplementedException();
+            var isInUse = await IsRoleInUseAsync(entityDelete.Id);
+            if (isInUse)
+            {
+                ThrowValidationEx("role_is_in_use", entityDelete.Name);
+            }
         }
 
         public async Task ClearAllPermission(Guid roleId)
@@ -61,7 +65,7 @@ namespace Ord.Plugin.Auth.Repositories
 
         public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermission)
         {
-            var existingPermissions = await (await GetPermissionGrantQueryable(roleId))
+            var existingPermissions = await (await GetRolePermissionGrantsQueryableAsync(roleId))
                 .Select(x => new { x.Id, x.PermissionName })
                 .ToListAsync();
 
@@ -119,8 +123,12 @@ namespace Ord.Plugin.Auth.Repositories
 
             return !await query.AnyAsync();
         }
-
-        private async Task<bool> IsUsed(Guid roleId)
+        /// <summary>
+        /// Kiểm tra Role có đang được sử dụng hay không (có user nào được assign role này không)
+        /// </summary>
+        /// <param name="roleId">ID của Role cần kiểm tra</param>
+        /// <returns>True nếu Role đang được sử dụng, False nếu không</returns>
+        private async Task<bool> IsRoleInUseAsync(Guid roleId)
         {
             var queryable = await UserRoleRepository.GetQueryableAsync();
             var query = queryable.AsNoTracking()
@@ -128,8 +136,12 @@ namespace Ord.Plugin.Auth.Repositories
             return await query.AnyAsync();
 
         }
-
-        private async Task<IQueryable<PermissionGrantEntity>> GetPermissionGrantQueryable(Guid roleId)
+        /// <summary>
+        /// Lấy queryable cho các permission grants của một role cụ thể
+        /// </summary>
+        /// <param name="roleId">ID của Role</param>
+        /// <returns>IQueryable của PermissionGrantEntity cho role đó</returns>
+        public async Task<IQueryable<PermissionGrantEntity>> GetRolePermissionGrantsQueryableAsync(Guid roleId)
         {
             var queryable = await PermissionGrantRepository.GetQueryableAsync();
             return queryable.AsNoTracking()

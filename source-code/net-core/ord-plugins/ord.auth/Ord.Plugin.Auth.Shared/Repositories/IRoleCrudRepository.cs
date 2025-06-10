@@ -8,5 +8,6 @@ namespace Ord.Plugin.Auth.Shared.Repositories
     {
         Task ClearAllPermission(Guid id);
         Task AssignPermissionsToRoleAsync(Guid id, IEnumerable<string> listOfPermission);
+        Task<IQueryable<PermissionGrantEntity>> GetRolePermissionGrantsQueryableAsync(Guid roleId);
     }
 }
