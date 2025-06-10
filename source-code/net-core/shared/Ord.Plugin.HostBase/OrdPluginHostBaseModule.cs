@@ -188,6 +188,8 @@ namespace Ord.Plugin.HostBase
         void ConfigureLanguage(IServiceCollection services)
         {
             services.AddSingleton<IOrdLocalizer, OrdLocalizer>();
+            services.AddSingleton<ILocalizationPreloader, LocalizationPreloader>();
+            services.AddHostedService<LocalizationPreloadHostedService>();
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[] { "vi", "en" };

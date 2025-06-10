@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-using Ord.Plugin.Auth.Data;
-using Ord.Plugin.Auth.Shared.Localization;
+﻿using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Data;
 using Volo.Abp.Application.Dtos;
@@ -20,12 +18,10 @@ namespace Ord.Plugin.Auth.Base
         where TCreateInputDto : class
         where TUpdateInputDto : class, IHasEncodedId
     {
-        public IStringLocalizer<OrdAuthResource> L =>
-            AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
 
         protected void ThrowValidationEx(string key, params object[] formatArgs)
         {
-            throw new AbpValidationException(L.GetLocalizedMessage(key, formatArgs));
+            throw new AbpValidationException(AppFactory.GetLocalizedMessage(key, formatArgs));
         }
     }
 }

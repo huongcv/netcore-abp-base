@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Dtos;
-using Ord.Plugin.Auth.Shared.Localization;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;

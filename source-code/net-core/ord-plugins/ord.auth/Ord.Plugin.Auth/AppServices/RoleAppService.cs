@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;
-using Ord.Plugin.Auth.Shared.Localization;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
@@ -22,10 +20,6 @@ namespace Ord.Plugin.Auth.AppServices
         {
             return "AuthPlugin.Role";
         }
-        protected override IStringLocalizer GetMainLocalizer()
-        {
-            return AppFactory.GetServiceDependency<IStringLocalizer<OrdAuthResource>>();
-        }
 
         protected override async Task OnAfterGetDetailAsync(RoleDetailDto dto)
         {
@@ -39,7 +33,7 @@ namespace Ord.Plugin.Auth.AppServices
             var roleId = ConvertEncodeId(input.EncodedId);
             await RoleManager.AssignPermissionsToRoleAsync(roleId, input.PermissionNames ?? new List<string>());
 
-            return AppFactory.CreateSuccessResult(true, GetLocalizedMessage("role_assign_permissions_success"));
+            return AppFactory.CreateSuccessResult(true, AppFactory.GetLocalizedMessage("auth.role.assign_permissions_success"));
         }
 
         [HttpPost]

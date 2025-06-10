@@ -4,11 +4,12 @@ using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
 
 namespace Ord.Plugin.Auth.AppServices
 {
-    public class InformationAppService(IAppFactory appFactory) : OrdAuthAppService
+    public class InformationAppService(IAppFactory appFactory) : OrdAppServiceBase
     {
         private IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         [HttpGet]

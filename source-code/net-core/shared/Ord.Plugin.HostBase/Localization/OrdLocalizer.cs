@@ -10,6 +10,7 @@ namespace Ord.Plugin.HostBase.Localization
     public class OrdLocalizer : IOrdLocalizer
     {
         private readonly ILogger<OrdLocalizer> _logger;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly string _resourcesPath;
         private static readonly ConcurrentDictionary<string, Dictionary<string, string>> _cache = new();
         private readonly object _lock = new object();
@@ -17,11 +18,30 @@ namespace Ord.Plugin.HostBase.Localization
         public OrdLocalizer(ILogger<OrdLocalizer> logger, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
-            _resourcesPath = Path.Combine(webHostEnvironment.WebRootPath, "i18n");
+            _webHostEnvironment = webHostEnvironment;
+            _resourcesPath = Path.Combine(_webHostEnvironment.WebRootPath, "i18n");
         }
 
-        public string this[string key] => GetLocalizedString(key);
+        // Static methods để hỗ trợ preloader
+        public static bool HasCachedData(string cacheKey)
+        {
+            return _cache.ContainsKey(cacheKey);
+        }
 
+        public static void AddToCache(string cacheKey, Dictionary<string, string> resources)
+        {
+            _cache.TryAdd(cacheKey, resources);
+        }
+
+        public static void ClearCache()
+        {
+            _cache.Clear();
+        }
+
+        public static int CacheCount => _cache.Count;
+
+        // Các methods khác giữ nguyên như cũ...
+        public string this[string key] => GetLocalizedString(key);
         public string this[string key, params object[] arguments] => GetLocalizedString(key, arguments);
 
         public string GetString(string module, string key)
@@ -94,7 +114,6 @@ namespace Ord.Plugin.HostBase.Localization
                 return (parts[0], parts[1]);
             }
 
-            // Nếu không có module prefix, mặc định là common
             return ("common", fullKey);
         }
 
@@ -107,9 +126,9 @@ namespace Ord.Plugin.HostBase.Localization
                 return cachedResources;
             }
 
+            // Nếu chưa có trong cache, load từ file (fallback)
             lock (_lock)
             {
-                // Double-check locking
                 if (_cache.TryGetValue(cacheKey, out cachedResources))
                 {
                     return cachedResources;
@@ -124,8 +143,6 @@ namespace Ord.Plugin.HostBase.Localization
         private Dictionary<string, string> LoadModuleResources(string culture, string module)
         {
             var resources = new Dictionary<string, string>();
-
-            // Fallback chain: specific culture -> base culture -> default (en)
             var culturesToTry = GetCultureFallbackChain(culture);
 
             foreach (var cultureCode in culturesToTry)
@@ -159,19 +176,16 @@ namespace Ord.Plugin.HostBase.Localization
         {
             var cultures = new List<string> { culture };
 
-            // Thêm base culture nếu có (ví dụ: vi-VN -> vi)
             if (culture.Contains('-'))
             {
                 cultures.Add(culture.Split('-')[0]);
             }
 
-            // Fallback về tiếng Việt thay vì English
             if (!cultures.Contains("vi"))
             {
                 cultures.Add("vi");
             }
 
-            // Cuối cùng mới fallback về English
             if (!cultures.Contains("en"))
             {
                 cultures.Add("en");
