@@ -128,9 +128,9 @@ namespace Ord.Plugin.Core.Services
             var dto = AppFactory.ObjectMap<TEntity, TGetByIdDto>(updatedEntity);
 
             // Set encoded ID nếu DTO support
-            if (dto is IHasEncodedId encodedDto && dto is IEntityDto<TKey> entityDto)
+            if (dto is IHasEncodedId encodedDto)
             {
-                encodedDto.EncodedId = IdEncoderService.EncodeId(entityDto.Id);
+                encodedDto.EncodedId = input.EncodedId;
             }
 
             await OnAfterUpdateAsync(updatedEntity, dto);
