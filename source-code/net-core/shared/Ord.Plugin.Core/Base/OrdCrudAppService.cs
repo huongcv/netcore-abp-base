@@ -221,24 +221,29 @@ namespace Ord.Plugin.Core.Services
 
         #region Messages - Override để custom message
 
+        protected virtual string GetEntityNamePrefix()
+        {
+            return "common";
+           // return typeof(TEntity).Name.ToLower();
+        }
         protected virtual string GetNotFoundMessage()
         {
-            return $"{typeof(TEntity).Name.ToLower()}_not_found";
+            return $"{GetEntityNamePrefix()}_not_found";
         }
 
         protected virtual string GetCreateSuccessMessage()
         {
-            return $"{typeof(TEntity).Name.ToLower()}_create_success";
+            return $"{GetEntityNamePrefix()}_create_success";
         }
 
         protected virtual string GetUpdateSuccessMessage()
         {
-            return $"{typeof(TEntity).Name.ToLower()}_update_success";
+            return $"{GetEntityNamePrefix()}_update_success";
         }
 
         protected virtual string GetDeleteSuccessMessage()
         {
-            return $"{typeof(TEntity).Name.ToLower()}_delete_success";
+            return $"{GetEntityNamePrefix()}_delete_success";
         }
 
         #endregion
