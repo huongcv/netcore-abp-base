@@ -6,5 +6,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 {
     public interface IRoleCrudRepository : IOrdCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>
     {
+        Task ClearAllPermission(Guid id);
+        Task AssignPermissionsToRoleAsync(Guid id, IEnumerable<string> listOfPermission);
     }
 }

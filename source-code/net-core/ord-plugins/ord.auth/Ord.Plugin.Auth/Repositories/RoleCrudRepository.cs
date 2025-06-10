@@ -1,9 +1,12 @@
-﻿using Ord.Plugin.Auth.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
@@ -12,30 +15,125 @@ namespace Ord.Plugin.Auth.Repositories
         : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(dbContextProvider),
             IRoleCrudRepository
     {
+        protected IRepository<PermissionGrantEntity, long> PermissionGrantRepository =>
+            AppFactory.GetServiceDependency<IRepository<PermissionGrantEntity, long>>();
+        protected IRepository<UserRoleEntity, int> UserRoleRepository =>
+            AppFactory.GetServiceDependency<IRepository<UserRoleEntity, int>>();
         protected override async Task<IQueryable<RoleEntity>> GetPagedQueryableAsync(IQueryable<RoleEntity> queryable, RolePagedInput input)
         {
             queryable = queryable.WhereLikeText(input.TextSearch, x => new
-                {
-                    x.Name,
-                    x.Code
-                })
+            {
+                x.Name,
+                x.Code
+            })
                 .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
             return queryable;
         }
 
-        protected override Task ValidateBeforeCreateAsync(CreateRoleDto createInput)
+        protected override async Task ValidateBeforeCreateAsync(CreateRoleDto createInput)
         {
-            throw new NotImplementedException();
+            var isCodeUnique = await IsCodeUniqueAsync(createInput.Code);
+            if (!isCodeUnique)
+            {
+                ThrowValidationEx("username_already_exists", createInput.Code);
+            }
         }
 
-        protected override Task ValidateBeforeUpdateAsync(UpdateRoleDto updateInput, RoleEntity entityUpdate)
+        protected override async Task ValidateBeforeUpdateAsync(UpdateRoleDto updateInput, RoleEntity entityUpdate)
         {
-            throw new NotImplementedException();
+            var isCodeUnique = await IsCodeUniqueAsync(updateInput.Code);
+            if (!isCodeUnique)
+            {
+                ThrowValidationEx("username_already_exists", updateInput.Code);
+            }
         }
 
         protected override Task ValidateBeforeDeleteAsync(RoleEntity entityDelete)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task ClearAllPermission(Guid roleId)
+        {
+            await PermissionGrantRepository.DeleteAsync(
+                x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
+        }
+
+        public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermission)
+        {
+            var existingPermissions = await (await GetPermissionGrantQueryable(roleId))
+                .Select(x => new { x.Id, x.PermissionName })
+                .ToListAsync();
+
+            var permissionsToDelete = existingPermissions
+                .Where(x => !listOfPermission.Contains(x.PermissionName))
+                .Select(x => x.Id)
+                .ToList();
+
+            if (permissionsToDelete.Count != 0)
+            {
+                await PermissionGrantRepository.DeleteAsync(
+                    x => permissionsToDelete.Contains(x.Id));
+            }
+
+            var existingPermissionNames = existingPermissions.Select(x => x.PermissionName).ToHashSet();
+            var newEntities = listOfPermission
+                .Where(permission => !existingPermissionNames.Contains(permission))
+                .Select(permission => new PermissionGrantEntity
+                {
+                    PermissionName = permission,
+                    ProviderId = roleId,
+                    ProviderName = PermissionGrantProviderName.Role,
+                    TenantId = AppFactory.CurrentTenantId
+                })
+                .ToList();
+
+            if (newEntities.Any(x => x.PermissionName.Contains("ReportShop")))
+            {
+                newEntities.Add(new PermissionGrantEntity
+                {
+                    PermissionName = "ReportShop",
+                    ProviderId = roleId,
+                    ProviderName = PermissionGrantProviderName.Role,
+                    TenantId = AppFactory.CurrentTenantId
+                });
+            }
+
+            if (newEntities.Count != 0)
+            {
+                await PermissionGrantRepository.InsertManyAsync(newEntities);
+            }
+
+        }
+
+        private async Task<bool> IsCodeUniqueAsync(string code, Guid? excludeId = null)
+        {
+            var queryable = await GetQueryableAsync();
+            var query = queryable.AsNoTracking()
+                .Where(x => x.Code == code);
+
+            if (excludeId.HasValue)
+            {
+                query = query.Where(x => x.Id != excludeId.Value);
+            }
+
+            return !await query.AnyAsync();
+        }
+
+        private async Task<bool> IsUsed(Guid roleId)
+        {
+            var queryable = await UserRoleRepository.GetQueryableAsync();
+            var query = queryable.AsNoTracking()
+                .Where(x => x.RoleId == roleId);
+            return await query.AnyAsync();
+
+        }
+
+        private async Task<IQueryable<PermissionGrantEntity>> GetPermissionGrantQueryable(Guid roleId)
+        {
+            var queryable = await PermissionGrantRepository.GetQueryableAsync();
+            return queryable.AsNoTracking()
+                .Where(x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
         }
     }
 }
