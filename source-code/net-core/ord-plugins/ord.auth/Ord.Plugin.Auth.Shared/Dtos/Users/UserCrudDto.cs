@@ -8,9 +8,9 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class UserCrudBase : IHasActived, IHasEncodedId
     {
         public string? Email { get; set; }
-        [DisplayName("fields.phone")]
+        [DisplayName("field.phone")]
         public string? PhoneNumber { get; set; }
-        [DisplayName("fields.full_name")]
+        [DisplayName("field.full_name")]
         public string? Name { get; set; }
         public bool IsActived { get; set; }
         public string? EncodedId { get; set; }
@@ -40,29 +40,29 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class CreateUserDto : UserCrudBase
     {
-        [DisplayName("fields.username")]
+        [DisplayName("field.username")]
         public string? UserName { get; set; }
-        [DisplayName("fields.password")]
+        [DisplayName("field.password")]
         public string? Password { get; set; }
     }
 
     public class UpdateUserDto : UserCrudBase
     {
-        [DisplayName("fields.password")]
+        [DisplayName("field.password")]
         public string? Password { get; set; }
     }
 
     public class ResetPasswordUserDto : EncodedIdDto
     {
-        [DisplayName("fields.new_password")]
+        [DisplayName("field.new_password")]
         public string? NewPassword { get; set; }
         public bool MustChangePassword { get; set; }
     }
     public class ChangePasswordUserDto
     {
-        [DisplayName("fields.current_password")]
+        [DisplayName("field.current_password")]
         public string? CurrentPassword { get; set; }
-        [DisplayName("fields.new_password")]
+        [DisplayName("field.new_password")]
         public string? NewPassword { get; set; }
     }
 }
