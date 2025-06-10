@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
-using Ord.Plugin.Contract.Base;
+﻿using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
+using System.ComponentModel;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
@@ -8,9 +8,9 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class UserCrudBase : IHasActived, IHasEncodedId
     {
         public string? Email { get; set; }
-        [DisplayName("auth.PhoneNumber")]
+        [DisplayName("fields.phone")]
         public string? PhoneNumber { get; set; }
-        [DisplayName("auth.user.name")]
+        [DisplayName("fields.full_name")]
         public string? Name { get; set; }
         public bool IsActived { get; set; }
         public string? EncodedId { get; set; }
@@ -40,29 +40,29 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class CreateUserDto : UserCrudBase
     {
-        [DisplayName("auth.UserName")]
+        [DisplayName("fields.username")]
         public string? UserName { get; set; }
-        [DisplayName("auth.Password")]
+        [DisplayName("fields.password")]
         public string? Password { get; set; }
     }
 
     public class UpdateUserDto : UserCrudBase
     {
-        [DisplayName("auth.Password")]
+        [DisplayName("fields.password")]
         public string? Password { get; set; }
     }
 
     public class ResetPasswordUserDto : EncodedIdDto
     {
-        [DisplayName("auth.NewPassword")]
+        [DisplayName("fields.new_password")]
         public string? NewPassword { get; set; }
         public bool MustChangePassword { get; set; }
     }
     public class ChangePasswordUserDto
     {
-        [DisplayName("auth.CurrentPassword")]
+        [DisplayName("fields.current_password")]
         public string? CurrentPassword { get; set; }
-        [DisplayName("auth.NewPassword")]
+        [DisplayName("fields.new_password")]
         public string? NewPassword { get; set; }
     }
 }
