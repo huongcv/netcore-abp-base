@@ -42,7 +42,4 @@
 	<ItemGroup>
 	  <Content Include="Contents\**" CopyToPublishDirectory="PreserveNewest" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
 </Project>

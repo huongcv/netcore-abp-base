@@ -10,7 +10,7 @@
       <ProjectReference Include="..\..\..\shared\Ord.Plugin.Core\Ord.Plugin.Core.csproj" />
     </ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="Localization\OrdAuth\*.json" />
-		<Content Remove="Localization\OrdAuth\*.json" />
+		<EmbeddedResource Include="Localization\**\*.json" />
+		<Content Remove="Localization\**\*.json" />
 	</ItemGroup>
 </Project>

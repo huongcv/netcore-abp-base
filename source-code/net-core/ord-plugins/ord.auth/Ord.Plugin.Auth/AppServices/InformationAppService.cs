@@ -44,7 +44,7 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<bool>> ChangePasswordAsync(ChangePasswordUserDto input)
         {
             var userId = AppFactory.CurrentUserId.Value;
-            await UserManager.ChangePasswordAsync(userId, input.OldPassword, input.NewPassword);
+            await UserManager.ChangePasswordAsync(userId, input.CurrentPassword, input.NewPassword);
             return AppFactory.CreateSuccessResult(true);
         }
 

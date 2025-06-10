@@ -1,0 +1,14 @@
+﻿{
+  "messages": {
+    "success": "Thao tác thành công",
+    "error": "Có lỗi xảy ra",
+    "loading": "Đang tải...",
+    "noData": "Không có dữ liệu"
+  },
+  "validation": {
+    "required": "{0} bắt buộc nhập",
+    "maxlength": "{0} vượt quá {1} ký tự",
+    "minlength": "{0} phải lớn hơn {1} ký tự",
+    "invalid_regex": "{0} không đúng định dạng"
+  }
+}

@@ -7,8 +7,8 @@
 		<Version>1.1.0</Version>
 	</PropertyGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="Localization\Ord\*.json" />
-		<Content Remove="Localization\Ord\*.json" />
+		<EmbeddedResource Include="Localization\**\*.json" />
+		<Content Remove="Localization\**\*.json" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="EPPlus" Version="7.2.1" />

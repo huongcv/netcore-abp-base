@@ -9,12 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.OpenApi.Models;
+using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Core;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
 using Ord.Plugin.HostBase.Filters;
+using Ord.Plugin.HostBase.Localization;
 using Ord.Plugin.HostBase.Middlewares;
 using Ord.Plugin.HostBase.Util;
+using System.Globalization;
 using System.IO.Compression;
 using System.Text.Json.Serialization;
 using Volo.Abp;
@@ -184,18 +187,24 @@ namespace Ord.Plugin.HostBase
 
         void ConfigureLanguage(IServiceCollection services)
         {
+            services.AddSingleton<IOrdLocalizer, OrdLocalizer>();
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[] { "en", "vi" };
-                options.SetDefaultCulture("vi")
-                    .AddSupportedCultures(supportedCultures)
-                    .AddSupportedUICultures(supportedCultures);
+                var supportedCultures = new[] { "vi", "en" };
+                // Đặt tiếng Việt làm mặc định
+                options.DefaultRequestCulture = new RequestCulture("vi");
+                options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+                options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
 
-                // Accept language from header, query, cookie
+                // Fallback về tiếng Việt nếu không tìm thấy culture
+                options.FallBackToParentCultures = true;
+                options.FallBackToParentUICultures = true;
+
+                // Thêm providers để detect culture (ưu tiên theo thứ tự)
                 options.RequestCultureProviders.Clear();
-                options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider());
-                options.RequestCultureProviders.Add(new CookieRequestCultureProvider());
-                options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
+                options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider()); // ?culture=en
+                options.RequestCultureProviders.Add(new CookieRequestCultureProvider());      // Cookie
+                options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider()); // Browser language
             });
         }
 

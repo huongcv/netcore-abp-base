@@ -15,7 +15,7 @@ namespace Ord.Plugin.Contract.Utils
         {
             var propertyType = typeof(TProperty);
             var underlyingType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-            errorMessage = errorMessage ?? "common_validation_required";
+            errorMessage = errorMessage ?? "common.validation.required";
 
             // Kiểm tra nếu là string hoặc string?
             if (underlyingType == typeof(string) || propertyType == typeof(string))
@@ -85,13 +85,13 @@ namespace Ord.Plugin.Contract.Utils
         {
             return ruleBuilder.MaximumLength(maxLength)
                 .WithErrorCode(maxLength.ToString())
-                .WithMessage("common_validation_maxlength");
+                .WithMessage("common.validation.maxlength");
         }
         public static IRuleBuilderOptions<T, string> MinLengthString<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength)
         {
             return ruleBuilder.MinimumLength(minLength)
                 .WithErrorCode(minLength.ToString())
-                .WithMessage("common_validation_minlength");
+                .WithMessage("common.validation.minlength");
         }
         /// <summary>
         /// Validate regex pattern với auto field name
@@ -100,7 +100,7 @@ namespace Ord.Plugin.Contract.Utils
         {
             return ruleBuilder
                 .Must(value => string.IsNullOrEmpty(value) || Regex.IsMatch(value, pattern))
-                .WithMessage(errorMessage ?? "common_validation_invalid_regex");
+                .WithMessage(errorMessage ?? "common.validation.invalid_regex");
         }
         public static IRuleBuilderOptions<T, string> ValidateUserName<T>(this IRuleBuilder<T, string> ruleBuilder, string? errorMessage = null)
         {

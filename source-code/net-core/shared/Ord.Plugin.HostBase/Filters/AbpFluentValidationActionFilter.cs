@@ -107,7 +107,7 @@ namespace Ord.Plugin.HostBase.Filters
                                     displayNameCache[propertyName] = displayName;
                                 }
 
-                                if (errorMessage.StartsWith("common_validation"))
+                                if (errorMessage.StartsWith("common.validation"))
                                 {
                                     errorMessage = GetCommonErrorMessage(errorMessage, displayNameCache[propertyName], error);
                                 }
@@ -123,11 +123,10 @@ namespace Ord.Plugin.HostBase.Filters
 
         private string GetCommonErrorMessage(string errorMessage, string propertyName, ValidationFailure error)
         {
-            var l = appFactory.GetServiceDependency<IStringLocalizer<OrdLocalizationResource>>();
-            propertyName = l.GetLocalizedMessage(propertyName);
+            var l = appFactory.GetServiceDependency<IOrdLocalizer>();
             List<object> prms = new List<object>()
             {
-                propertyName
+                l[propertyName]
             };
             if (!string.IsNullOrEmpty(error.ErrorCode))
             {
@@ -135,7 +134,7 @@ namespace Ord.Plugin.HostBase.Filters
                     .Where(x => !string.IsNullOrWhiteSpace(x));
                 prms.AddRange(parts);
             }
-            return l.GetLocalizedMessage(errorMessage, [.. prms]);
+            return l[errorMessage, [.. prms]];
         }
     }
 }

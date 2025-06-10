@@ -66,6 +66,12 @@ namespace Ord.Plugin.Contract
                     .Add<OrdLocalizationResource>("vi")
                     .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/Ord");
+                options.Resources
+                    .Get<OrdLocalizationResource>()
+                    .AddVirtualJson("/Localization/Validation");
+                options.Resources
+                    .Get<OrdLocalizationResource>()
+                    .AddVirtualJson("/Localization/PropertyName");
                 options.Languages.Add(new LanguageInfo("en", "en", "English"));
                 options.Languages.Add(new LanguageInfo("vi", "vi", "Tiếng Việt"));
             });
