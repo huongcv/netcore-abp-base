@@ -110,5 +110,9 @@ namespace Ord.Plugin.Contract.Utils
         {
             return ruleBuilder.ValidateRegex(RegexPatternConst.PasswordRegex, errorMessage);
         }
+        public static IRuleBuilderOptions<T, string> ValidEmail<T>(this IRuleBuilder<T, string> ruleBuilder, IAppFactory appFactory, string? errorMessage = null)
+        {
+            return ruleBuilder.ValidateRegex(RegexPatternConst.Email, errorMessage);
+        }
     }
 }
