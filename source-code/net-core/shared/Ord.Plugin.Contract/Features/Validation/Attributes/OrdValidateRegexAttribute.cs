@@ -28,32 +28,23 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
     /// <summary>
     /// Regex validation attribute
     /// </summary>
-    public class OrdValidateRegexAttributeBase : OrdRegexValidationAttributeBase
-    {
-        public OrdValidateRegexAttributeBase(string pattern) : base(pattern, "invalid_regex") { }
-    }
+    public class OrdValidateRegexAttribute(string pattern) : OrdRegexValidationAttributeBase(pattern, "invalid_regex");
 
     /// <summary>
     /// Username validation attribute
     /// </summary>
-    public class OrdValidateUserNameAttributeBase : OrdRegexValidationAttributeBase
-    {
-        public OrdValidateUserNameAttributeBase() : base(RegexPatternConst.UserNameRegex, "invalid_username") { }
-    }
+    public class OrdValidateUserNameAttribute()
+        : OrdRegexValidationAttributeBase(RegexPatternConst.UserNameRegex, "invalid_username");
 
     /// <summary>
     /// Password validation attribute
     /// </summary>
-    public class OrdValidatePasswordAttributeBase : OrdRegexValidationAttributeBase
-    {
-        public OrdValidatePasswordAttributeBase() : base(RegexPatternConst.PasswordRegex, "invalid_password") { }
-    }
+    public class OrdValidatePasswordAttribute()
+        : OrdRegexValidationAttributeBase(RegexPatternConst.PasswordRegex, "invalid_password");
 
     /// <summary>
     /// Email validation attribute
     /// </summary>
-    public class OrdValidEmailAttributeBase : OrdRegexValidationAttributeBase
-    {
-        public OrdValidEmailAttributeBase() : base(RegexPatternConst.Email, "invalid_email") { }
-    }
+    public class OrdValidEmailAttribute() : OrdRegexValidationAttributeBase(RegexPatternConst.Email, "invalid_email");
+    public class OrdValidPhoneNumberVietNamAttribute() : OrdRegexValidationAttributeBase(RegexPatternConst.PhoneNumberVietNam, "invalid_phone_vn");
 }

@@ -8,6 +8,7 @@ using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
@@ -39,6 +40,9 @@ namespace Ord.Plugin.Core.Data
     {
         protected IIdEncoderService<TEntity, TKey> IdEncoderService =>
             AppFactory.GetServiceDependency<IIdEncoderService<TEntity, TKey>>();
+
+        protected IDataFilter DataFilter => AppFactory.GetServiceDependency<IDataFilter>();
+        protected IMapper Mapper => AppFactory.GetServiceDependency<IMapper>();
         #region Abstract Methods - Must be implemented by derived classes
 
         /// <summary>
@@ -153,8 +157,15 @@ namespace Ord.Plugin.Core.Data
                 {
                     item.EncodedId = IdEncoderService.EncodeId(item.Id);
                 }
+                await EnrichPagedItemsAsync(items, input);
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
+        }
+        // Hàm ảo để các class con có thể override
+        protected virtual async Task EnrichPagedItemsAsync(List<TGetPagedItemDto> items, TGetPagedInputDto input)
+        {
+            // Implementation mặc định - không làm gì
+            await Task.CompletedTask;
         }
 
         protected IQueryable<TEntity> ApplySortDefault(IQueryable<TEntity> queryable, TGetPagedInputDto input)
