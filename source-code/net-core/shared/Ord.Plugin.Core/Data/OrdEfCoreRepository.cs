@@ -5,7 +5,6 @@ using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
-using Ord.Plugin.Core.Services.Security;
 using System.Data;
 using System.Linq.Expressions;
 using Volo.Abp.Domain.Entities;
@@ -175,7 +174,7 @@ namespace Ord
         /// 3. Nếu entity chưa tồn tại: tạo mới thông qua createNewEntity function và gọi InsertAsync
         /// 4. Trả về entity đã được xử lý
         /// </remarks>
-        public async Task<T> InsertOrUpdateAsync<T>(
+        protected async Task<T> InsertOrUpdateAsync<T>(
             Expression<Func<T, bool>> predicate,
             Func<T> createNewEntity,
             Action<T> updateEntity, bool autoSave = false) where T : class, IEntity
@@ -198,6 +197,14 @@ namespace Ord
             return newEntity;
         }
 
+        protected async Task<TEntity> InsertOrUpdateAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Func<TEntity> createNewEntity,
+            Action<TEntity> updateEntity, bool autoSave = false)
+        {
+            return await InsertOrUpdateAsync<TEntity>(predicate, createNewEntity, updateEntity, autoSave);
+        }
+
         /// <summary>
         /// Thực hiện insert hoặc update nhiều entities dựa trên danh sách DTOs
         /// </summary>
@@ -209,7 +216,7 @@ namespace Ord
         /// <param name="updateEntity">Action để cập nhật entity hiện có từ DTO</param>
         /// <param name="autoSave">Có tự động save thay đổi hay không</param>
         /// <returns>Danh sách các entities đã được xử lý</returns>
-        public async Task<List<TEnt>> InsertOrUpdateManyAsync<TEnt, TDto>(
+        protected async Task<List<TEnt>> InsertOrUpdateManyAsync<TEnt, TDto>(
             IEnumerable<TDto> items,
             Func<TDto, Expression<Func<TEnt, bool>>> predicate,
             Func<TDto, TEnt> createNewEntity,
@@ -260,6 +267,16 @@ namespace Ord
             }
 
             return resultEntities;
+        }
+
+        protected async Task<List<TEntity>> InsertOrUpdateManyAsync<TDto>(IEnumerable<TDto> items,
+            Func<TDto, Expression<Func<TEntity, bool>>> predicate,
+            Func<TDto, TEntity> createNewEntity,
+            Action<TDto, TEntity> updateEntity,
+            bool autoSave = false,
+            CancellationToken cancellationToken = default)
+        {
+            return await InsertOrUpdateManyAsync<TEntity, TDto>(items, predicate, createNewEntity, updateEntity, autoSave, cancellationToken);
         }
     }
 }
