@@ -307,6 +307,8 @@ namespace Ord.Plugin.Core.Services
         Base,
         Create,
         Read,
+        GetPaged,
+        GetDetail,
         Update,
         Delete
     }
