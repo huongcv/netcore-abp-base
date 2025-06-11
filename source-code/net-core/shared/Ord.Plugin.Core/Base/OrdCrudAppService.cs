@@ -177,7 +177,7 @@ namespace Ord.Plugin.Core.Services
                 entityActive.IsActived = input.IsActived;
                 await CrudRepository.UpdateAsync(entity);
             }
-            return AppFactory.CreateSuccessResult(true, "auth.user.message_success.SetActiveStatus");
+            return AppFactory.CreateSuccessResult(true, "common.messages.crud.set_active_status_success");
         }
 
         #endregion

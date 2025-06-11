@@ -8,7 +8,8 @@
       "not_found": "Không tìm thấy dữ liệu",
       "create_success": "Tạo mới thành công",
       "update_success": "Cập nhật thành công",
-      "delete_success": "Xóa thành công"
+      "delete_success": "Xóa thành công",
+      "set_active_status_success": "Cập nhật thành công trạng thái active"
     }
   },
   "validation": {

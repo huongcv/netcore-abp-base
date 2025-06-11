@@ -103,6 +103,7 @@ namespace Ord.Plugin.Auth.Repositories
                     PhoneNumber = x.PhoneNumber,
                     Email = x.Email,
                     UserName = x.UserName,
+                    IsActived = x.IsActived,
                 })
                 .ToListAsync();
         }
