@@ -8,5 +8,6 @@ namespace Ord.Plugin.Auth.Shared.Repositories
     {
         Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false);
         Task<IEnumerable<Guid>> GetListRoleAssigned(Guid id);
+        Task GrantPermissionForUser(Guid userId, string permissionName, bool isGranted);
     }
 }

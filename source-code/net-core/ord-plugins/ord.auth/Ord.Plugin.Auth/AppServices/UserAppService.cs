@@ -7,6 +7,7 @@ using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
+using Ord.Plugin.Core.Utils;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -102,7 +103,7 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<bool>> AssignRoles(AssignRolesToUserDto input)
         {
             await CheckPermissionForActionName("AssignRoles");
-            var userId = ConvertEncodeId(input.EncodedId);
+            var userId = await GetUserIdAndClearCache(input.EncodedId);
             await UserManager.AssignRoles(userId, input.RoleIds);
             return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".assign_roles_success");
         }
@@ -130,7 +131,7 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<bool>> GrantPermission(GrantPermissionToUserDto input)
         {
             await CheckPermissionForOperation(CrudOperationType.Update);
-            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".grant_permission_success");
+            return await DoGrantPermission(input.EncodedId, input.PermissionName, false);
         }
         /// <summary>
         /// Thu hồi permission của người dùng
@@ -139,7 +140,26 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<bool>> RevokePermission(RevokePermissionFromUserDto input)
         {
             await CheckPermissionForOperation(CrudOperationType.Update);
-            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".revoke_permission_success");
+            return await DoGrantPermission(input.EncodedId, input.PermissionName, false);
+        }
+
+        protected async Task<CommonResultDto<bool>> DoGrantPermission(string encodeUserId, string permissionName, bool isGranted)
+        {
+            var userId = await GetUserIdAndClearCache(encodeUserId);
+            var checkPermissionName = await AppFactory.CheckPermissionAsync(permissionName);
+            if (!checkPermissionName)
+            {
+                return AppFactory.CreateBadRequestResult<bool>(GetEntityNamePrefix() + ".error.user_not_permission_name");
+            }
+            await UserCrudRepository.GrantPermissionForUser(userId, permissionName, isGranted);
+            var message = isGranted ? "grant_permission_success" : "revoke_permission_success";
+            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + message);
+        }
+        private async Task<Guid> GetUserIdAndClearCache(string encodedId)
+        {
+            var userId = ConvertEncodeId(encodedId);
+            await AppFactory.ClearCacheUser(userId);
+            return userId;
         }
         #endregion
     }

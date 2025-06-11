@@ -1,6 +1,7 @@
 ﻿using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services;
+using Ord.Plugin.Core.Utils;
 using Volo.Abp.Caching;
 
 namespace Ord.Plugin.Core.Services
@@ -91,6 +92,6 @@ namespace Ord.Plugin.Core.Services
             return grantedPermissions.OrderBy(x => x);
         }
 
-        private static string GetCacheKey(Guid userId) => $"AllPermissionGrantedUser:{userId}";
+        private string GetCacheKey(Guid userId) => appFactory.BuilderUserKeyCache(userId, "permission_granted");
     }
 }

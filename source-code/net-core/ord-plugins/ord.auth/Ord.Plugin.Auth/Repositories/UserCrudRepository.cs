@@ -8,6 +8,7 @@ using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
@@ -111,6 +112,23 @@ namespace Ord.Plugin.Auth.Repositories
         {
             var userRoleQuery = await GetEntityQueryable<UserRoleEntity>(true);
             return await userRoleQuery.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
+        }
+
+        public async Task GrantPermissionForUser(Guid userId, string permissionName, bool isGranted)
+        {
+            await InsertOrUpdateAsync<PermissionUserEntity>(
+                x => x.UserId == userId && x.PermissionName == permissionName,
+                () => new PermissionUserEntity()
+                {
+                    UserId = userId,
+                    PermissionName = permissionName,
+                    IsGrant = isGranted
+                },
+                existing =>
+                {
+                    existing.IsGrant = isGranted;
+                }
+            );
         }
     }
 }

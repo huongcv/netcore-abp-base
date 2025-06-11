@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Factories;
+﻿using System.Text;
+using Ord.Plugin.Contract.Factories;
 using StackExchange.Redis;
 
 namespace Ord.Plugin.Core.Utils
@@ -79,6 +80,25 @@ namespace Ord.Plugin.Core.Utils
             {
                 //
             }
+        }
+
+        public static string BuilderUserKeyCache(this IAppFactory factory, Guid? userId, params string[] partKeys)
+        {
+            var builderStr = new StringBuilder($"user:{userId}:");
+            if (partKeys?.Any() == true)
+            {
+                foreach (var part in partKeys)
+                {
+                    builderStr.Append(part + ":");
+                }
+            }
+
+            return builderStr.ToString();
+        }
+
+        public static string BuilderCurrentUserKeyCache(this IAppFactory factory, params string[] partKeys)
+        {
+            return BuilderUserKeyCache(factory, factory.CurrentUserId, partKeys);
         }
     }
 }

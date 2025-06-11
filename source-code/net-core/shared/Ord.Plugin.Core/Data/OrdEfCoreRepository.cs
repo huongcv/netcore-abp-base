@@ -97,7 +97,7 @@ namespace Ord
         {
             return await ExistsAsync(e => e.Id.Equals(id));
         }
-       
+
 
         /// <summary>
         /// Lấy danh sách tất cả entity dưới dạng DTO
@@ -159,5 +159,43 @@ namespace Ord
 
 
         #endregion
+        /// <summary>
+        /// Hàm base thực hiện Insert hoặc Update entity dựa trên điều kiện tìm kiếm
+        /// </summary>
+        /// <typeparam name="T">Loại entity cần xử lý</typeparam>
+        /// <param name="findPredicate">Function để tìm kiếm entity đã tồn tại trong database</param>
+        /// <param name="createNewEntity">Function tạo entity mới khi không tìm thấy entity tồn tại</param>
+        /// <param name="updateEntity">Action để cập nhật entity khi đã tồn tại (optional)</param>
+        /// <returns>Entity sau khi được insert hoặc update</returns>
+        /// <exception cref="ArgumentNullException">Ném khi findPredicate hoặc createNewEntity là null</exception>
+        /// <remarks>
+        /// Hàm này sẽ:
+        /// 1. Tìm kiếm entity dựa trên điều kiện predicate
+        /// 2. Nếu entity đã tồn tại: cập nhật thông qua updateEntity action và gọi UpdateAsync
+        /// 3. Nếu entity chưa tồn tại: tạo mới thông qua createNewEntity function và gọi InsertAsync
+        /// 4. Trả về entity đã được xử lý
+        /// </remarks>
+        public async Task<T> InsertOrUpdateAsync<T>(
+            Expression<Func<T, bool>> predicate,
+            Func<T> createNewEntity,
+            Action<T> updateEntity, bool autoSave = false) where T : class, IEntity
+        {
+            var repository = AppFactory.GetServiceDependency<IRepository<T>>();
+            var queryable = await repository.GetQueryableAsync();
+
+            var existingEntity = await queryable.Where(predicate).FirstOrDefaultAsync();
+
+            if (existingEntity != null)
+            {
+                // Nếu entity đã tồn tại, cập nhật nó
+                updateEntity?.Invoke(existingEntity);
+                await repository.UpdateAsync(existingEntity, autoSave);
+                return existingEntity;
+            }
+            // Nếu entity chưa tồn tại, tạo mới
+            var newEntity = createNewEntity();
+            await repository.InsertAsync(newEntity, autoSave);
+            return newEntity;
+        }
     }
 }
