@@ -156,16 +156,14 @@ namespace Ord.Plugin.Auth.Repositories
 
         public async Task<IEnumerable<RolePagedDto>> GetListComboOptions(bool includeUnActive = false)
         {
-            var q = await GetQueryableAsync();
-            return await q.AsNoTracking().WhereIf(includeUnActive != true, x => x.IsActived == true)
-                .Select(x => new RolePagedDto()
+            return await GetListAsDtoAsync<RolePagedDto>(x => x.IsActived == true || includeUnActive,
+                x => new RolePagedDto()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Code = x.Code,
                     IsActived = x.IsActived
-                })
-                .ToListAsync();
+                }, true);
         }
     }
 }

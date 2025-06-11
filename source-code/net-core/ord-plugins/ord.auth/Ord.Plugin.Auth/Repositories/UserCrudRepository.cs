@@ -94,9 +94,8 @@ namespace Ord.Plugin.Auth.Repositories
 
         public async Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false)
         {
-            var q = await GetQueryableAsync();
-            return await q.AsNoTracking().WhereIf(includeUnActive != true, x => x.IsActived == true)
-                .Select(x => new UserPagedDto()
+            return await GetListAsDtoAsync<UserPagedDto>(x => x.IsActived == true || includeUnActive,
+                x => new UserPagedDto()
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -104,8 +103,7 @@ namespace Ord.Plugin.Auth.Repositories
                     Email = x.Email,
                     UserName = x.UserName,
                     IsActived = x.IsActived,
-                })
-                .ToListAsync();
+                }, true);
         }
     }
 }

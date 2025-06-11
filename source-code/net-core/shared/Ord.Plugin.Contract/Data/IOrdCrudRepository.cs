@@ -114,5 +114,13 @@ namespace Ord.Plugin.Contract.Data
         /// </summary>
         Task<int> DeleteByConditionAsync(Expression<Func<TEntity, bool>> predicate, int batchSize = 100, CancellationToken cancellationToken = default);
         #endregion
+
+        #region Helper Methods
+        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> ExistsByIdAsync(TKey id);
+        Task<bool> ExistsByEncodeIdAsync(string encodeId);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
+
+        #endregion
     }
 }

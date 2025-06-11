@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
@@ -533,65 +532,15 @@ namespace Ord.Plugin.Core.Data
         #endregion
 
         #region Helper Methods
-        /// <summary>
-        /// Kiểm tra entity có tồn tại theo điều kiện hay không
-        /// </summary>
-        /// <param name="predicate">Điều kiện kiểm tra</param>
-        /// <returns>True nếu tồn tại, False nếu không</returns>
-        public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<bool> ExistsByEncodeIdAsync(string encodeId)
         {
-            var queryable = await GetQueryableAsync();
-            return await queryable.AsNoTracking().AnyAsync(predicate);
-        }
+            if (IdEncoderService.TryDecodeId(encodeId, out var id))
+            {
+                return await ExistsAsync(e => e.Id.Equals(id));
+            }
 
-        /// <summary>
-        /// Kiểm tra entity có tồn tại theo ID hay không
-        /// </summary>
-        /// <param name="id">ID cần kiểm tra</param>
-        /// <returns>True nếu tồn tại</returns>
-        public virtual async Task<bool> ExistsByIdAsync(TKey id)
-        {
-            return await ExistsAsync(e => e.Id.Equals(id));
+            return false;
         }
-
-        /// <summary>
-        /// Lấy danh sách tất cả entity dưới dạng DTO
-        /// </summary>
-        /// <param name="cancellationToken">Token để hủy operation</param>
-        /// <returns>Danh sách DTO</returns>
-        public virtual async Task<List<TDto>> GetAllAsDtoAsync<TDto>(bool isAsNoTracking = true)
-            where TDto : class
-        {
-            var queryable = await GetQueryableAsync();
-            var items = await queryable.AsNoTrackingIf(isAsNoTracking).ToListAsync();
-            return items.Select(ObjectMap<TEntity, TDto>).ToList();
-        }
-
-        /// <summary>
-        /// Lấy danh sách entity theo điều kiện dưới dạng DTO
-        /// </summary>
-        /// <param name="predicate">Điều kiện lọc</param>
-        /// <returns>Danh sách DTO</returns>
-        public virtual async Task<List<TDto>> GetListAsDtoAsync<TDto>(
-            Expression<Func<TEntity, bool>> predicate,
-            bool isAsNoTracking = true)
-        where TDto : class
-        {
-            var queryable = await GetQueryableAsync();
-            var items = await queryable.AsNoTrackingIf(isAsNoTracking).Where(predicate).ToListAsync();
-            return items.Select(ObjectMap<TEntity, TDto>).ToList();
-        }
-        /// <summary>
-        /// Lấy danh sách entity theo điều kiện dưới dạng DTO
-        /// </summary>
-        /// <param name="predicate">Điều kiện lọc</param>
-        /// <returns>Danh sách DTO</returns>
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            var queryable = await GetQueryableAsync();
-            return await queryable.AsNoTracking().Where(predicate).CountAsync();
-        }
-
         #endregion
     }
 }
