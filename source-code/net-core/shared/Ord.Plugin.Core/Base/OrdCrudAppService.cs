@@ -54,7 +54,7 @@ namespace Ord.Plugin.Core.Services
         [ActionName("GetPaged")]
         public virtual async Task<CommonResultDto<PagedResultDto<TGetPagedItemDto>>> GetPaged(TGetPagedInputDto input)
         {
-            await CheckPermissionForOperation(CrudOperationType.Read);
+            await CheckPermissionForOperation(CrudOperationType.GetPaged);
             var paged = await CrudRepository.GetPagedListAsync(input);
             return AppFactory.CreateSuccessResult(paged);
         }
@@ -66,7 +66,7 @@ namespace Ord.Plugin.Core.Services
         [ActionName("GetCountByActive")]
         public virtual async Task<CommonResultDto<CounterByIsActivedDto>> GetCountByIsActived(TGetPagedInputDto input)
         {
-            await CheckPermissionForOperation(CrudOperationType.Read);
+            await CheckPermissionForOperation(CrudOperationType.GetPaged);
             var counter = await CrudRepository.GetCountGroupByIsActivedAsync(input);
             return AppFactory.CreateSuccessResult(counter);
         }
@@ -78,7 +78,7 @@ namespace Ord.Plugin.Core.Services
         [ActionName("GetById")]
         public virtual async Task<CommonResultDto<TGetByIdDto>> GetById(EncodedIdDto input)
         {
-            await CheckPermissionForOperation(CrudOperationType.Read);
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
             var dto = await CrudRepository.GetDetailByEncodedIdAsync(input.EncodedId);
             if (dto == null)
             {
@@ -203,6 +203,8 @@ namespace Ord.Plugin.Core.Services
                 CrudOperationType.Base => $"{baseName}",
                 CrudOperationType.Create => $"{baseName}.Create",
                 CrudOperationType.Read => $"{baseName}.Read",
+                CrudOperationType.GetPaged => $"{baseName}.GetPaged",
+                CrudOperationType.GetDetail => $"{baseName}.GetDetail",
                 CrudOperationType.Update => $"{baseName}.Update",
                 CrudOperationType.Delete => $"{baseName}.Delete",
                 _ => baseName
@@ -214,7 +216,7 @@ namespace Ord.Plugin.Core.Services
         /// </summary>
         protected virtual string GetBasePermissionName()
         {
-            return string.Empty;
+            return typeof(TEntity).Name;
         }
 
         #endregion
