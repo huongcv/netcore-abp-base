@@ -197,5 +197,69 @@ namespace Ord
             await repository.InsertAsync(newEntity, autoSave);
             return newEntity;
         }
+
+        /// <summary>
+        /// Thực hiện insert hoặc update nhiều entities dựa trên danh sách DTOs
+        /// </summary>
+        /// <typeparam name="TEnt">Loại entity cần xử lý</typeparam>
+        /// <typeparam name="TDto">Loại DTO đầu vào</typeparam>
+        /// <param name="items">Danh sách các DTO cần xử lý</param>
+        /// <param name="predicate">Hàm tạo expression để tìm entity tương ứng cho mỗi DTO</param>
+        /// <param name="createNewEntity">Hàm tạo entity mới từ DTO</param>
+        /// <param name="updateEntity">Action để cập nhật entity hiện có từ DTO</param>
+        /// <param name="autoSave">Có tự động save thay đổi hay không</param>
+        /// <returns>Danh sách các entities đã được xử lý</returns>
+        public async Task<List<TEnt>> InsertOrUpdateManyAsync<TEnt, TDto>(
+            IEnumerable<TDto> items,
+            Func<TDto, Expression<Func<TEnt, bool>>> predicate,
+            Func<TDto, TEnt> createNewEntity,
+            Action<TDto, TEnt> updateEntity,
+            bool autoSave = false,
+            CancellationToken cancellationToken = default)
+            where TEnt : class, IEntity
+        {
+            // Kiểm tra danh sách đầu vào
+            if (items?.Any() != true)
+            {
+                return new List<TEnt>();
+            }
+            // Lấy repository cho entity
+            var repository = AppFactory.GetServiceDependency<IRepository<TEnt>>();
+            var resultEntities = new List<TEnt>();
+
+            // Xử lý từng item trong danh sách
+            foreach (var item in items)
+            {
+                // Tạo predicate động cho item hiện tại
+                var itemPredicate = predicate(item);
+
+                // Lấy queryable và tìm entity tương ứng
+                var queryable = await repository.GetQueryableAsync();
+                var existingEntity = await queryable.Where(itemPredicate).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+                if (existingEntity != null)
+                {
+                    // Nếu entity đã tồn tại, cập nhật nó
+                    updateEntity?.Invoke(item, existingEntity);
+                    await repository.UpdateAsync(existingEntity, false, cancellationToken); // Không save ngay
+                    resultEntities.Add(existingEntity);
+                }
+                else
+                {
+                    // Nếu entity chưa tồn tại, tạo mới
+                    var newEntity = createNewEntity(item);
+                    await repository.InsertAsync(newEntity, false, cancellationToken); // Không save ngay
+                    resultEntities.Add(newEntity);
+                }
+            }
+
+            // Save tất cả thay đổi cùng lúc nếu autoSave = true
+            if (autoSave)
+            {
+                await SaveChangesAsync(cancellationToken);
+            }
+
+            return resultEntities;
+        }
     }
 }
