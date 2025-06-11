@@ -4,7 +4,6 @@ using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Auth.Util;
-using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Validation;
@@ -44,7 +43,8 @@ namespace Ord.Plugin.Auth.Services
         public async Task AssignRoles(Guid userId, List<Guid> listOfRoleId)
         {
             var userEnt = await GetById(userId);
-            throw new NotImplementedException();
+            var userRoleRepos = AppFactory.GetServiceDependency<IUserRoleRepository>();
+            await userRoleRepos.AssignRolesToUserAsync(userId, listOfRoleId);
         }
 
         protected async Task<UserEntity> GetById(Guid userId)

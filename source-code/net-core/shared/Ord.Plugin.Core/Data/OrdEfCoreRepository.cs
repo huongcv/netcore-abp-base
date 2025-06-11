@@ -89,6 +89,13 @@ namespace Ord
             return await queryable.AsNoTracking().AnyAsync(predicate);
         }
 
+        public virtual async Task<bool> ExistsEntityAsync<T>(Expression<Func<T, bool>> predicate)
+        where T : class, IEntity
+        {
+            var queryable = await GetEntityQueryable<T>();
+            return await queryable.AsNoTracking().AnyAsync(predicate);
+        }
+
         /// <summary>
         /// Kiểm tra entity có tồn tại theo ID hay không
         /// </summary>
@@ -157,7 +164,12 @@ namespace Ord
             var queryable = await GetQueryableAsync();
             return await queryable.AsNoTracking().Where(predicate).CountAsync();
         }
-
+        public virtual async Task<int> CountEntityAsync<T>(Expression<Func<T, bool>> predicate)
+            where T : class, IEntity
+        {
+            var queryable = await GetEntityQueryable<T>();
+            return await queryable.AsNoTracking().Where(predicate).CountAsync();
+        }
 
         #endregion
         /// <summary>

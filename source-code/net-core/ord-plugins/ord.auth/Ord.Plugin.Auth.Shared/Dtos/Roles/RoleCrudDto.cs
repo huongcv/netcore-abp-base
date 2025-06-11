@@ -56,6 +56,10 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public DateTime AssignedDate { get; set; }
         public string UserEncodedId { get; set; }
     }
+    public class UsersToRoleDto : EncodedIdDto
+    {
+        public List<Guid> UserIds { get; set; } = new();
+    }
     #endregion
 
 }

@@ -2,6 +2,7 @@
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
+using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Validation;
 
@@ -19,6 +20,8 @@ namespace Ord.Plugin.Auth.Services
             }
 
             await roleCrudRepository.AssignPermissionsToRoleAsync(roleId, listOfPermissions);
+            var permissionSharedSer = AppFactory.GetServiceDependency<IPermissionSharedManger>();
+            await permissionSharedSer.ClearCacheWhenRoleChangePermissions(roleId);
         }
 
         protected async Task ValidateUserCanGrantPermissionsAsync(IEnumerable<string> listOfPermissions)

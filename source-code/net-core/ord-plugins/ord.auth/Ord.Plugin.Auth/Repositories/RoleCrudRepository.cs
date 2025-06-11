@@ -78,8 +78,6 @@ namespace Ord.Plugin.Auth.Repositories
                 true);
         }
 
-
-
         public async Task<List<string>> GetRolePermissionGrants(Guid roleId)
         {
             var queryable = await GetRolePermissionGrantsQueryableAsync(roleId);
@@ -102,6 +100,7 @@ namespace Ord.Plugin.Auth.Repositories
 
         public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermission)
         {
+            listOfPermission = listOfPermission.Distinct();
             var existingPermissions = await (await GetRolePermissionGrantsQueryableAsync(roleId))
                 .Select(x => new { x.Id, x.PermissionName })
                 .ToListAsync();
@@ -116,7 +115,7 @@ namespace Ord.Plugin.Auth.Repositories
                 await PermissionGrantRepository.DeleteAsync(x => permissionsToDelete.Contains(x.Id));
             }
 
-            var existingPermissionNames = existingPermissions.Select(x => x.PermissionName).ToHashSet();
+            var existingPermissionNames = existingPermissions.Select(x => x.PermissionName).Distinct().ToHashSet();
 
             var newEntities = listOfPermission
                 .Where(permission => !existingPermissionNames.Contains(permission))

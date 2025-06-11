@@ -16,14 +16,6 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 
         #region User Management
         Task<PagedResultDto<UserInRoleDto>> GetUsersInRoleAsync(Guid roleId, GetUsersInRoleInput input);
-        //Task AddUserToRoleAsync(Guid roleId, Guid userId);
-        //Task RemoveUserFromRoleAsync(Guid roleId, Guid userId);
-        //Task AddUsersToRoleAsync(Guid roleId, List<Guid> userIds);
-        //Task RemoveUsersFromRoleAsync(Guid roleId, List<Guid> userIds);
-        //Task<bool> IsUserInRoleAsync(Guid userId, Guid roleId);
-        //Task<List<Guid>> GetUserIdsInRoleAsync(Guid roleId);
-        //Task<int> GetUserCountInRoleAsync(Guid roleId);
-        //Task ClearAllUsersFromRoleAsync(Guid roleId);
         #endregion
 
     }

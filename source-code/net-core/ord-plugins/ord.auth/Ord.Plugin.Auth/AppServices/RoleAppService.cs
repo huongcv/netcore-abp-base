@@ -8,6 +8,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
+using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
@@ -80,6 +81,31 @@ namespace Ord.Plugin.Auth.AppServices
             var result = await RoleCrudRepository.GetUsersInRoleAsync(roleId, input);
             return AppFactory.CreateSuccessResult(result);
         }
-
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> AddUsersToRole(UsersToRoleDto input)
+        {
+            await CheckPermissionForActionName("AssignUsers");
+            var roleId = ConvertEncodeId(input.EncodedId);
+            var userRoleRepos = AppFactory.GetServiceDependency<IUserRoleRepository>();
+            await userRoleRepos.AddUsersToRoleAsync(roleId, input.UserIds);
+            foreach (var userId in input.UserIds)
+            {
+                await AppFactory.ClearCacheUser(userId);
+            }
+            return AppFactory.CreateSuccessResult(true, AppFactory.GetLocalizedMessage("auth.role.users_added_success"));
+        }
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> RemoveUsersFromRole(UsersToRoleDto input)
+        {
+            await CheckPermissionForActionName("AssignUsers");
+            var roleId = ConvertEncodeId(input.EncodedId);
+            var userRoleRepos = AppFactory.GetServiceDependency<IUserRoleRepository>();
+            await userRoleRepos.RemoveUsersFromRoleAsync(roleId, input.UserIds);
+            foreach (var userId in input.UserIds)
+            {
+                await AppFactory.ClearCacheUser(userId);
+            }
+            return AppFactory.CreateSuccessResult(true, AppFactory.GetLocalizedMessage("auth.role.users_removed_success"));
+        }
     }
 }

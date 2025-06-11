@@ -25,7 +25,10 @@ namespace Ord.Plugin.Auth.AppServices
         private IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         protected override IOrdCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto> CrudRepository => UserCrudRepository;
 
-
+        protected override async Task OnAfterUpdateAsync(UserEntity entity, UserDetailDto dto)
+        {
+            await AppFactory.ClearCacheUser(entity.Id);
+        }
 
         #region Read Operations
 
@@ -63,7 +66,7 @@ namespace Ord.Plugin.Auth.AppServices
         public async Task<CommonResultDto<bool>> UnLock(EncodedIdDto input)
         {
             await CheckPermissionForActionName("Unlock");
-            var userId = ConvertEncodeId(input.EncodedId);
+            var userId = await GetUserIdAndClearCache(input.EncodedId);
             await UserManager.Unlock(userId);
             return AppFactory.CreateSuccessResult(true);
         }
