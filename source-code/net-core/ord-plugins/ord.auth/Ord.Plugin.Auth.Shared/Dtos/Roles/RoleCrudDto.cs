@@ -1,46 +1,52 @@
 ﻿using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
 using System.ComponentModel;
+using Ord.Plugin.Contract.Features.Validation.Attributes;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
 {
-    public class RoleCrudBase : IHasActived, IHasEncodedId
+    public class RoleCrudBase : IHasActived
     {
-        [DisplayName("field.code")]
+
+        [OrdMaxLengthString(100)]
+        [OrdValidateRequired]
         public string? Code { get; set; }
-        [DisplayName("field.name")]
+        [OrdMaxLengthString(200)]
         public string? Name { get; set; }
-        [DisplayName("field.description")]
+        [OrdMaxLengthString(500)]
         public string? Description { get; set; }
         public bool IsActived { get; set; }
-        public string? EncodedId { get; set; }
+
     }
 
-    public class RolePagedDto : RoleCrudBase, IEntityDto<Guid>
+    public class RolePagedDto : RoleCrudBase, IEntityDto<Guid>, IHasEncodedId
     {
         public Guid Id { get; set; }
+        public string? EncodedId { get; set; }
+        public DateTime CreationTime { get; set; }
     }
     public class RolePagedInput : OrdPagedRequestDto
     {
-
     }
     public class RoleDetailDto : RolePagedDto
     {
-        public DateTime CreationTime { get; set; }
         public IEnumerable<string>? AssignedPermissions { get; set; }
     }
     public class CreateRoleDto : RoleCrudBase
     {
     }
 
-    public class UpdateRoleDto : RoleCrudBase
+    public class UpdateRoleDto : RoleCrudBase, IHasEncodedId
     {
+        [OrdValidateRequired]
+        public string? EncodedId { get; set; }
     }
     #region User Management DTOs
     public class GetUsersInRoleInput : OrdPagedRequestDto
     {
-        public string EncodedId { get; set; }
+        [OrdValidateRequired]
+        public string? EncodedId { get; set; }
         public bool? IsActived { get; set; }
     }
 

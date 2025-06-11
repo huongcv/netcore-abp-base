@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Localization;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Ord.Plugin.Contract.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ord.Plugin.Contract.Features.Validation.Attributes
@@ -13,14 +14,13 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
             MessageKey = ValidationMessages.Prefix + defaultMessageKey;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (IsValueValid(value, validationContext))
                 return ValidationResult.Success;
-
-            var localizer = (IOrdLocalizer)validationContext.GetService(typeof(IOrdLocalizer));
-            var fieldName = FieldName ?? validationContext.DisplayName;
-            var errorMessage = GetErrorMessage(localizer, fieldName, value);
+            var localizer = GetLocalizer(validationContext);
+            var fieldName = GetFieldName(validationContext, localizer);
+            var errorMessage = GetErrorMessage(validationContext, localizer, fieldName, value);
             return new ValidationResult(errorMessage);
         }
 
@@ -32,9 +32,25 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
         /// <summary>
         /// Virtual method để tùy chỉnh cách tạo error message
         /// </summary>
-        protected virtual string GetErrorMessage(IOrdLocalizer localizer, string fieldName,object value)
+        protected virtual string GetErrorMessage(ValidationContext validationContext, IOrdLocalizer localizer, string fieldName, object value)
         {
-            return localizer[MessageKey, fieldName, value];
+            return localizer[MessageKey ?? "common.validation_err_base", fieldName, value];
+        }
+
+        protected virtual string GetFieldName(ValidationContext validationContext, IOrdLocalizer localizer)
+        {
+            var fieldName = FieldName ?? validationContext.DisplayName;
+            if (!fieldName.StartsWith("field"))
+            {
+                fieldName = "field." + fieldName;
+            }
+
+            return localizer[fieldName];
+        }
+
+        protected IOrdLocalizer GetLocalizer(ValidationContext validationContext)
+        {
+            return (IOrdLocalizer)validationContext.GetRequiredService(typeof(IOrdLocalizer));
         }
     }
 
@@ -43,17 +59,13 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
     /// </summary>
     public abstract class OrdParameterValidationAttribute(string defaultMessageKey) : OrdValidationAttribute(defaultMessageKey)
     {
-        protected override string GetErrorMessage(IOrdLocalizer localizer, string fieldName, object value)
+        protected override string GetErrorMessage(ValidationContext validationContext, IOrdLocalizer localizer, string fieldName, object value)
         {
             var parameters = GetMessageParameters();
             var allParams = new object[] { fieldName }.Concat(parameters).ToArray();
             allParams.AddLast(value);
             return localizer[MessageKey, allParams];
         }
-
-        /// <summary>
-        /// Abstract method để lấy các parameter cho error message
-        /// </summary>
         protected abstract object[] GetMessageParameters();
     }
 }
