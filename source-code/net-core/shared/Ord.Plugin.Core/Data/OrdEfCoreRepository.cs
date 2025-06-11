@@ -5,8 +5,10 @@ using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
+using Pipelines.Sockets.Unofficial;
 using System.Data;
 using System.Linq.Expressions;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -277,6 +279,30 @@ namespace Ord
             CancellationToken cancellationToken = default)
         {
             return await InsertOrUpdateManyAsync<TEntity, TDto>(items, predicate, createNewEntity, updateEntity, autoSave, cancellationToken);
+        }
+
+        protected async Task<PagedResultDto<TDto>> QueryPagedResultAsync<TDto>(IQueryable<TDto> queryable,
+            PagedAndSortedResultRequestDto input,
+            Func<TDto, Task> postProcessItemAsync = null)
+        where TDto : class
+        {
+            var totalCount = await queryable.CountAsync();
+            if (totalCount == 0)
+            {
+                return new();
+            }
+            var pagedQuery = queryable
+                .Skip(input.SkipCount)
+                .Take(input.MaxResultCount);
+            var dtos = await pagedQuery.ToListAsync();
+            if (postProcessItemAsync != null)
+            {
+                foreach (var dto in dtos)
+                {
+                    await postProcessItemAsync(dto);
+                }
+            }
+            return new PagedResultDto<TDto>(totalCount, dtos);
         }
     }
 }

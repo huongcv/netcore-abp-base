@@ -213,28 +213,12 @@ namespace Ord.Plugin.Auth.Repositories
                             IsActived = user.IsActived,
                             AssignedDate = userRole.CreationTime
                         };
-
-            // Đếm tổng số records
-            var totalCount = await query.CountAsync();
-            if (totalCount == 0)
-            {
-                return new();
-            }
             query = query.OrderByDescending(u => u.AssignedDate);
-
-            // Apply paging
-            var pagedQuery = query
-                .Skip(input.SkipCount)
-                .Take(input.MaxResultCount);
-
-            // Execute query và map to DTO
-            var userDtos = await pagedQuery.ToListAsync();
             var encodeSer = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();
-            foreach (var user in userDtos)
+            return await QueryPagedResultAsync(query,input, async (user) =>
             {
                 user.UserEncodedId = encodeSer.EncodeId(user.UserId);
-            }
-            return new PagedResultDto<UserInRoleDto>(totalCount, userDtos);
+            });
         }
         #endregion
     }
