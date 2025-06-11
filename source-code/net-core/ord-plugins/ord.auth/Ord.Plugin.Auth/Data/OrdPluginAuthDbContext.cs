@@ -12,7 +12,6 @@ namespace Ord.Plugin.Auth.Data
     public class OrdPluginAuthDbContext : AbpDbContext<OrdPluginAuthDbContext>
     {
         public virtual DbSet<UserEntity> Users { get; set; }
-        public virtual DbSet<UserClaimEntity> UserClaims { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
         public virtual DbSet<UserRoleEntity> UserAuthorities { get; set; }
         public virtual DbSet<PermissionGrantEntity> PermissionGrants { get; set; }
