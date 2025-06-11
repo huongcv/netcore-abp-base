@@ -28,7 +28,7 @@ namespace Ord
             _dbContextProvider = dbContextProvider;
             DapperHelper = new DapperDbcontext<TDbContext>(dbContextProvider);
         }
-        protected async Task<IQueryable<T>> GetQueryableEntity<T>(bool isNoTracking = true)
+        protected async Task<IQueryable<T>> GetEntityQueryable<T>(bool isNoTracking = true)
             where T : class, IEntity
         {
             var dbContext = await GetDbContextAsync();
@@ -37,7 +37,7 @@ namespace Ord
         protected async Task<IQueryable<T>> GetActiveEntitiesQueryable<T>(bool isNoTracking = true)
             where T : class, IEntity, IHasActived
         {
-            var queryable = await GetQueryableEntity<T>(isNoTracking);
+            var queryable = await GetEntityQueryable<T>(isNoTracking);
             return queryable.Where(e => e.IsActived == true);
         }
 

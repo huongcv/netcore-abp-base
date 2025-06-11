@@ -3,6 +3,7 @@ using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Contract.Exceptions;
@@ -104,6 +105,12 @@ namespace Ord.Plugin.Auth.Repositories
                     UserName = x.UserName,
                     IsActived = x.IsActived,
                 }, true);
+        }
+
+        public async Task<IEnumerable<Guid>> GetListRoleAssigned(Guid id)
+        {
+            var userRoleQuery = await GetEntityQueryable<UserRoleEntity>(true);
+            return await userRoleQuery.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
         }
     }
 }

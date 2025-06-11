@@ -4,6 +4,7 @@ using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Auth.Util;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Validation;
@@ -55,6 +56,19 @@ namespace Ord.Plugin.Auth.Services
             }
 
             return userEnt;
+        }
+        public async Task<string> GenerateRandomPassword(Guid userId)
+        {
+            var newPassword = GenerateRandomPasswordString();
+            await ResetPasswordAsync(userId, newPassword, mustChangePassword: true);
+            return newPassword;
+        }
+        private string GenerateRandomPasswordString()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@#$";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 12)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

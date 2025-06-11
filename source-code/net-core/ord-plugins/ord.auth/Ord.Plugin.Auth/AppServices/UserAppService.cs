@@ -5,6 +5,7 @@ using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
 
 namespace Ord.Plugin.Auth.AppServices
@@ -65,6 +66,9 @@ namespace Ord.Plugin.Auth.AppServices
             await UserManager.Unlock(userId);
             return AppFactory.CreateSuccessResult(true);
         }
+        /// <summary>
+        /// Admin reset mật khẩu cho người dùng
+        /// </summary>
         [HttpPost]
         [OrdAuth]
         public async Task<CommonResultDto<bool>> ResetPassword(ResetPasswordUserDto input)
@@ -76,6 +80,67 @@ namespace Ord.Plugin.Auth.AppServices
         }
 
 
+        #endregion
+
+        #region Role Management
+
+        /// <summary>
+        /// Lấy danh sách roles của người dùng
+        /// </summary>
+        [HttpPost]
+        public async Task<CommonResultDto<IEnumerable<Guid>>> GetUserRoles(EncodedIdDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
+            var userId = ConvertEncodeId(input.EncodedId);
+            var lstRoleId = await UserCrudRepository.GetListRoleAssigned(userId);
+            return AppFactory.CreateSuccessResult(lstRoleId);
+        }
+        /// <summary>
+        /// Gán roles cho người dùng
+        /// </summary>
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> AssignRoles(AssignRolesToUserDto input)
+        {
+            await CheckPermissionForActionName("AssignRoles");
+            var userId = ConvertEncodeId(input.EncodedId);
+            await UserManager.AssignRoles(userId, input.RoleIds);
+            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".assign_roles_success");
+        }
+        #endregion
+
+        #region Permission Management
+
+
+        /// <summary>
+        /// Lấy permissions của người dùng
+        /// </summary>
+        [HttpPost]
+        public async Task<CommonResultDto<IEnumerable<string>>> GetUserPermissions(EncodedIdDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
+            var userId = ConvertEncodeId(input.EncodedId);
+            var permissionManager = AppFactory.GetServiceDependency<IPermissionSharedManger>();
+            var permissions = await permissionManager.GetPermissionsAsync(userId);
+            return AppFactory.CreateSuccessResult(permissions);
+        }
+        /// <summary>
+        /// Gán permission trực tiếp cho người dùng
+        /// </summary>
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> GrantPermission(GrantPermissionToUserDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.Update);
+            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".grant_permission_success");
+        }
+        /// <summary>
+        /// Thu hồi permission của người dùng
+        /// </summary>
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> RevokePermission(RevokePermissionFromUserDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.Update);
+            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".revoke_permission_success");
+        }
         #endregion
     }
 }

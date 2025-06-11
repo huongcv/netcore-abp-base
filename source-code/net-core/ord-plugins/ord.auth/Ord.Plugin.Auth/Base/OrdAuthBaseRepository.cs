@@ -12,32 +12,32 @@ namespace Ord.Plugin.Auth.Base
     {
         protected  Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<TenantEntity>();
+            return GetEntityQueryable<TenantEntity>();
         }
         protected Task<IQueryable<UserEntity>> GetUserQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<UserEntity>();
+            return GetEntityQueryable<UserEntity>();
         }
         protected Task<IQueryable<RoleEntity>> GetRoleQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<RoleEntity>();
+            return GetEntityQueryable<RoleEntity>();
         }
         protected Task<IQueryable<UserRoleEntity>> GetUserRoleQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<UserRoleEntity>();
+            return GetEntityQueryable<UserRoleEntity>();
         }
         protected Task<IQueryable<PermissionGrantEntity>> GetPermissionGrantQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<PermissionGrantEntity>();
+            return GetEntityQueryable<PermissionGrantEntity>();
         }
 
         protected Task<IQueryable<PermissionUserEntity>> GetPermissionUserQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<PermissionUserEntity>();
+            return GetEntityQueryable<PermissionUserEntity>();
         }
         protected Task<IQueryable<SettingEntity>> GetSettingQueryable(bool isNoTracking = true)
         {
-            return GetQueryableEntity<SettingEntity>();
+            return GetEntityQueryable<SettingEntity>();
         }
     }
 }

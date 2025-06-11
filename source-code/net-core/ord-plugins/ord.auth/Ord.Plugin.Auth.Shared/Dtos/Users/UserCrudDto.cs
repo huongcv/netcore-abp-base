@@ -65,4 +65,18 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         [DisplayName("field.new_password")]
         public string? NewPassword { get; set; }
     }
+
+    public class AssignRolesToUserDto : EncodedIdDto
+    {
+        public List<Guid> RoleIds { get; set; }
+    }
+    public class GrantPermissionToUserDto : EncodedIdDto
+    {
+        public string PermissionName { get; set; }
+    }
+
+    public class RevokePermissionFromUserDto : EncodedIdDto
+    {
+        public string PermissionName { get; set; }
+    }
 }
