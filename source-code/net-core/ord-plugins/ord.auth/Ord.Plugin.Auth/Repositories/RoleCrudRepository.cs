@@ -17,16 +17,16 @@ namespace Ord.Plugin.Auth.Repositories
     {
         protected IRepository<PermissionGrantEntity, long> PermissionGrantRepository =>
             AppFactory.GetServiceDependency<IRepository<PermissionGrantEntity, long>>();
+
         protected IRepository<UserRoleEntity, int> UserRoleRepository =>
             AppFactory.GetServiceDependency<IRepository<UserRoleEntity, int>>();
+
+        #region CRUD Overrides
+
         protected override async Task<IQueryable<RoleEntity>> GetPagedQueryableAsync(IQueryable<RoleEntity> queryable, RolePagedInput input)
         {
-            queryable = queryable.WhereLikeText(input.TextSearch, x => new
-            {
-                x.Name,
-                x.Code
-            })
-                .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
+            queryable = queryable.WhereLikeText(input.TextSearch, x => new { x.Name, x.Code })
+                                 .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
             return queryable;
         }
 
@@ -57,11 +57,43 @@ namespace Ord.Plugin.Auth.Repositories
             }
         }
 
-        public async Task ClearAllPermission(Guid roleId)
+        #endregion
+
+        #region Get Methods
+
+        public async Task<IEnumerable<RolePagedDto>> GetListComboOptions(bool includeUnActive = false)
         {
-            await PermissionGrantRepository.DeleteAsync(
-                x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
+            return await GetListAsDtoAsync<RolePagedDto>(
+                x => x.IsActived == true || includeUnActive,
+                x => new RolePagedDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Code = x.Code,
+                    IsActived = x.IsActived
+                },
+                true);
         }
+
+        public async Task<List<string>> GetRolePermissionGrants(Guid roleId)
+        {
+            var queryable = await GetRolePermissionGrantsQueryableAsync(roleId);
+            return await queryable.Select(x => x.PermissionName).ToListAsync();
+        }
+
+        /// <summary>
+        /// Lấy queryable cho các permission grants của một role cụ thể
+        /// </summary>
+        public async Task<IQueryable<PermissionGrantEntity>> GetRolePermissionGrantsQueryableAsync(Guid roleId)
+        {
+            var queryable = await PermissionGrantRepository.GetQueryableAsync();
+            return queryable.AsNoTracking()
+                            .Where(x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
+        }
+
+        #endregion
+
+        #region Insert/Update Methods
 
         public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermission)
         {
@@ -76,11 +108,11 @@ namespace Ord.Plugin.Auth.Repositories
 
             if (permissionsToDelete.Count != 0)
             {
-                await PermissionGrantRepository.DeleteAsync(
-                    x => permissionsToDelete.Contains(x.Id));
+                await PermissionGrantRepository.DeleteAsync(x => permissionsToDelete.Contains(x.Id));
             }
 
             var existingPermissionNames = existingPermissions.Select(x => x.PermissionName).ToHashSet();
+
             var newEntities = listOfPermission
                 .Where(permission => !existingPermissionNames.Contains(permission))
                 .Select(permission => new PermissionGrantEntity
@@ -107,20 +139,26 @@ namespace Ord.Plugin.Auth.Repositories
             {
                 await PermissionGrantRepository.InsertManyAsync(newEntities);
             }
-
         }
 
-        public async Task<List<string>> GetRolePermissionGrants(Guid roleId)
+        #endregion
+
+        #region Delete Methods
+
+        public async Task ClearAllPermission(Guid roleId)
         {
-            var queryable = await GetRolePermissionGrantsQueryableAsync(roleId);
-            return await queryable.Select(x => x.PermissionName).ToListAsync();
+            await PermissionGrantRepository.DeleteAsync(
+                x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
         }
+
+        #endregion
+
+        #region Private Helpers
 
         private async Task<bool> IsCodeUniqueAsync(string code, Guid? excludeId = null)
         {
             var queryable = await GetQueryableAsync();
-            var query = queryable.AsNoTracking()
-                .Where(x => x.Code == code);
+            var query = queryable.AsNoTracking().Where(x => x.Code == code);
 
             if (excludeId.HasValue)
             {
@@ -129,41 +167,17 @@ namespace Ord.Plugin.Auth.Repositories
 
             return !await query.AnyAsync();
         }
+
         /// <summary>
-        /// Kiểm tra Role có đang được sử dụng hay không (có user nào được assign role này không)
+        /// Kiểm tra Role có đang được sử dụng (bởi user) không
         /// </summary>
-        /// <param name="roleId">ID của Role cần kiểm tra</param>
-        /// <returns>True nếu Role đang được sử dụng, False nếu không</returns>
         private async Task<bool> IsRoleInUseAsync(Guid roleId)
         {
             var queryable = await UserRoleRepository.GetQueryableAsync();
-            var query = queryable.AsNoTracking()
-                .Where(x => x.RoleId == roleId);
-            return await query.AnyAsync();
-
-        }
-        /// <summary>
-        /// Lấy queryable cho các permission grants của một role cụ thể
-        /// </summary>
-        /// <param name="roleId">ID của Role</param>
-        /// <returns>IQueryable của PermissionGrantEntity cho role đó</returns>
-        public async Task<IQueryable<PermissionGrantEntity>> GetRolePermissionGrantsQueryableAsync(Guid roleId)
-        {
-            var queryable = await PermissionGrantRepository.GetQueryableAsync();
-            return queryable.AsNoTracking()
-                .Where(x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
+            return await queryable.AsNoTracking()
+                                  .AnyAsync(x => x.RoleId == roleId);
         }
 
-        public async Task<IEnumerable<RolePagedDto>> GetListComboOptions(bool includeUnActive = false)
-        {
-            return await GetListAsDtoAsync<RolePagedDto>(x => x.IsActived == true || includeUnActive,
-                x => new RolePagedDto()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Code = x.Code,
-                    IsActived = x.IsActived
-                }, true);
-        }
+        #endregion
     }
 }

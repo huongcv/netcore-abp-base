@@ -17,8 +17,9 @@ namespace Ord.Plugin.Auth.Repositories
         : OrdAuthCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(dbContextProvider),
             IUserCrudRepository
     {
-        protected override async Task<IQueryable<UserEntity>> GetPagedQueryableAsync(IQueryable<UserEntity> queryable,
-            UserPagedInput input)
+        #region CRUD Overrides
+
+        protected override async Task<IQueryable<UserEntity>> GetPagedQueryableAsync(IQueryable<UserEntity> queryable, UserPagedInput input)
         {
             queryable = queryable.WhereLikeText(input.TextSearch, x => new
             {
@@ -26,7 +27,8 @@ namespace Ord.Plugin.Auth.Repositories
                 x.PhoneNumber,
                 x.Email,
             })
-                .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
+            .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
+
             return queryable;
         }
 
@@ -48,13 +50,13 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
         {
-
+            // TODO: Add update validations if needed
         }
 
         protected override async Task<UserEntity> MapToUpdateEntityAsync(UpdateUserDto updateInput, UserEntity entity)
         {
             await base.MapToUpdateEntityAsync(updateInput, entity);
-            // must change pwd
+
             if (!string.IsNullOrEmpty(updateInput.Password))
             {
                 entity.PasswordHash = UserUtil.HashPassword(entity, updateInput.Password);
@@ -70,7 +72,7 @@ namespace Ord.Plugin.Auth.Repositories
                 ThrowValidationEx("cannot_delete_admin_system");
             }
         }
-        // kiểm trả quyền xem dữ liệu
+
         protected override async Task CheckPermissionViewEntity(UserEntity entity)
         {
             if (AppFactory.CurrentTenantId.HasValue && !AppFactory.CurrentTenantId.Value.Equals(entity.TenantId))
@@ -79,12 +81,72 @@ namespace Ord.Plugin.Auth.Repositories
             }
         }
 
-        // Additional helper methods for specific validations
+        #endregion
+
+        #region Get Methods
+
+        /// <summary>
+        /// Lấy danh sách user cho mục đích hiển thị dạng combobox.
+        /// </summary>
+        public async Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false)
+        {
+            return await GetListAsDtoAsync<UserPagedDto>(
+                x => x.IsActived == true || includeUnActive,
+                x => new UserPagedDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    PhoneNumber = x.PhoneNumber,
+                    Email = x.Email,
+                    UserName = x.UserName,
+                    IsActived = x.IsActived,
+                },
+                true);
+        }
+
+        /// <summary>
+        /// Lấy danh sách role được gán cho user.
+        /// </summary>
+        public async Task<IEnumerable<Guid>> GetListRoleAssigned(Guid id)
+        {
+            var userRoleQuery = await GetEntityQueryable<UserRoleEntity>(true);
+            return await userRoleQuery.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
+        }
+
+        #endregion
+
+        #region Insert/Update Methods
+
+        /// <summary>
+        /// Cấp hoặc thu hồi quyền cho user.
+        /// </summary>
+        public async Task GrantPermissionForUser(Guid userId, string permissionName, bool isGranted)
+        {
+            await InsertOrUpdateAsync<PermissionUserEntity>(
+                x => x.UserId == userId && x.PermissionName == permissionName,
+                () => new PermissionUserEntity
+                {
+                    UserId = userId,
+                    PermissionName = permissionName,
+                    IsGrant = isGranted
+                },
+                existing =>
+                {
+                    existing.IsGrant = isGranted;
+                });
+        }
+
+        #endregion
+
+        #region Private Helpers
+
+        /// <summary>
+        /// Kiểm tra username đã tồn tại trong hệ thống hay chưa.
+        /// </summary>
         private async Task<bool> IsUserNameUniqueAsync(string userName, Guid? excludeId = null)
         {
             var queryable = await GetQueryableAsync();
-            var query = queryable.AsNoTracking()
-                .Where(x => x.UserName == userName);
+            var query = queryable.AsNoTracking().Where(x => x.UserName == userName);
 
             if (excludeId.HasValue)
             {
@@ -94,41 +156,6 @@ namespace Ord.Plugin.Auth.Repositories
             return !await query.AnyAsync();
         }
 
-        public async Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false)
-        {
-            return await GetListAsDtoAsync<UserPagedDto>(x => x.IsActived == true || includeUnActive,
-                x => new UserPagedDto()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    PhoneNumber = x.PhoneNumber,
-                    Email = x.Email,
-                    UserName = x.UserName,
-                    IsActived = x.IsActived,
-                }, true);
-        }
-
-        public async Task<IEnumerable<Guid>> GetListRoleAssigned(Guid id)
-        {
-            var userRoleQuery = await GetEntityQueryable<UserRoleEntity>(true);
-            return await userRoleQuery.Where(x => x.UserId == id).Select(x => x.RoleId).ToListAsync();
-        }
-
-        public async Task GrantPermissionForUser(Guid userId, string permissionName, bool isGranted)
-        {
-            await InsertOrUpdateAsync<PermissionUserEntity>(
-                x => x.UserId == userId && x.PermissionName == permissionName,
-                () => new PermissionUserEntity()
-                {
-                    UserId = userId,
-                    PermissionName = permissionName,
-                    IsGrant = isGranted
-                },
-                existing =>
-                {
-                    existing.IsGrant = isGranted;
-                }
-            );
-        }
+        #endregion
     }
 }
