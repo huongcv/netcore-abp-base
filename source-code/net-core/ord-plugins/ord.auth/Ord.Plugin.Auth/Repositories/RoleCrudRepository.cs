@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Consts;
+using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -74,6 +77,8 @@ namespace Ord.Plugin.Auth.Repositories
                 },
                 true);
         }
+
+
 
         public async Task<List<string>> GetRolePermissionGrants(Guid roleId)
         {
@@ -178,6 +183,59 @@ namespace Ord.Plugin.Auth.Repositories
                                   .AnyAsync(x => x.RoleId == roleId);
         }
 
+        #endregion
+
+        #region User Management
+
+        public async Task<PagedResultDto<UserInRoleDto>> GetUsersInRoleAsync(Guid roleId, GetUsersInRoleInput input)
+        {
+            var userQueryable = await GetEntityQueryable<UserEntity>();
+            var userRoleQueryable = await GetEntityQueryable<UserRoleEntity>();
+            userQueryable = userQueryable.WhereLikeText(input.TextSearch, x => new
+            {
+                x.UserName,
+                x.Name,
+                x.Email,
+                x.PhoneNumber
+            }).WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
+            // Join Users với UserRoles để lấy users thuộc role cụ thể
+            var query = from user in userQueryable
+                        join userRole in userRoleQueryable on user.Id equals userRole.UserId
+                        where userRole.RoleId == roleId
+                        select new UserInRoleDto()
+                        {
+                            UserId = user.Id,
+                            TenantId = user.TenantId,
+                            UserName = user.UserName,
+                            Name = user.Name,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            IsActived = user.IsActived,
+                            AssignedDate = userRole.CreationTime
+                        };
+
+            // Đếm tổng số records
+            var totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                return new();
+            }
+            query = query.OrderByDescending(u => u.AssignedDate);
+
+            // Apply paging
+            var pagedQuery = query
+                .Skip(input.SkipCount)
+                .Take(input.MaxResultCount);
+
+            // Execute query và map to DTO
+            var userDtos = await pagedQuery.ToListAsync();
+            var encodeSer = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();
+            foreach (var user in userDtos)
+            {
+                user.UserEncodedId = encodeSer.EncodeId(user.UserId);
+            }
+            return new PagedResultDto<UserInRoleDto>(totalCount, userDtos);
+        }
         #endregion
     }
 }

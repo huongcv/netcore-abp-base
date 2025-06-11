@@ -37,4 +37,25 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     public class UpdateRoleDto : RoleCrudBase
     {
     }
+    #region User Management DTOs
+    public class GetUsersInRoleInput : OrdPagedRequestDto
+    {
+        public string EncodedId { get; set; }
+        public bool? IsActived { get; set; }
+    }
+
+    public class UserInRoleDto
+    {
+        public Guid UserId { get; set; }
+        public Guid? TenantId { get; set; }
+        public string UserName { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public bool IsActived { get; set; }
+        public DateTime AssignedDate { get; set; }
+        public string UserEncodedId { get; set; }
+    }
+    #endregion
+
 }

@@ -8,6 +8,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -40,9 +41,9 @@ namespace Ord.Plugin.Auth.AppServices
 
         #region Read Operations
         [HttpPost]
-        public async Task<CommonResultDto<List<string>>> GetListPermission(EncodedIdDto input)
+        public async Task<CommonResultDto<List<string>>> GetRolePermissions(EncodedIdDto input)
         {
-            await CheckPermissionForOperation(CrudOperationType.Base);
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
             var roleId = ConvertEncodeId(input.EncodedId);
             return await AppFactory.CreateSuccessResultAsync(() => RoleCrudRepository.GetRolePermissionGrants(roleId));
         }
@@ -71,5 +72,14 @@ namespace Ord.Plugin.Auth.AppServices
             return AppFactory.CreateSuccessResult(options);
         }
         #endregion
+        [HttpPost]
+        public async Task<CommonResultDto<PagedResultDto<UserInRoleDto>>> GetUsersInRole(GetUsersInRoleInput input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
+            var roleId = ConvertEncodeId(input.EncodedId);
+            var result = await RoleCrudRepository.GetUsersInRoleAsync(roleId, input);
+            return AppFactory.CreateSuccessResult(result);
+        }
+
     }
 }
