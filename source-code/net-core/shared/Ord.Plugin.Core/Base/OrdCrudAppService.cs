@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
@@ -7,6 +8,7 @@ using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Core.Services
 {
@@ -155,6 +157,28 @@ namespace Ord.Plugin.Core.Services
             await OnAfterDeleteAsync(input.EncodedId);
             return AppFactory.CreateSuccessResult(result, GetDeleteSuccessMessage());
         }
+        [HttpPost]
+        [ActionName("SetActiveStatus")]
+        public async Task<CommonResultDto<bool>> SetActiveStatusAsync(SetActiveStatusDto input)
+        {
+            if (!typeof(IHasActived).IsAssignableFrom(typeof(TEntity)))
+            {
+                throw new AbpValidationException("common.not_support");
+
+            }
+            var id = ConvertEncodeId(input.EncodedId);
+            var entity = await CrudRepository.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return AppFactory.CreateNotFoundResult<bool>(GetNotFoundMessage());
+            }
+            if (entity is IHasActived entityActive)
+            {
+                entityActive.IsActived = input.IsActived;
+                await CrudRepository.UpdateAsync(entity);
+            }
+            return AppFactory.CreateSuccessResult(true, "auth.user.message_success.SetActiveStatus");
+        }
 
         #endregion
 
@@ -193,11 +217,6 @@ namespace Ord.Plugin.Core.Services
         protected virtual string GetPermissionName(CrudOperationType operationType)
         {
             var baseName = GetBasePermissionName();
-            if (string.IsNullOrEmpty(baseName))
-            {
-                return string.Empty;
-            }
-
             return operationType switch
             {
                 CrudOperationType.Base => $"{baseName}",

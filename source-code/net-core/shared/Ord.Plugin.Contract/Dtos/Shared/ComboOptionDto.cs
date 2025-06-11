@@ -4,7 +4,11 @@
     {
         public object? Value { get; set; }
         public string? DisplayName { get; set; }
-        public bool? Disabled { get; set; }
         public object? Data { get; set; }
+    }
+
+    public class GetComboOptionInputDto
+    {
+        public bool? IncludeUnActive { get; set; }
     }
 }

@@ -153,5 +153,19 @@ namespace Ord.Plugin.Auth.Repositories
             return queryable.AsNoTracking()
                 .Where(x => x.ProviderName == PermissionGrantProviderName.Role && x.ProviderId == roleId);
         }
+
+        public async Task<IEnumerable<RolePagedDto>> GetListComboOptions(bool includeUnActive = false)
+        {
+            var q = await GetQueryableAsync();
+            return await q.AsNoTracking().WhereIf(includeUnActive != true, x => x.IsActived == true)
+                .Select(x => new RolePagedDto()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Code = x.Code,
+                    IsActived = x.IsActived
+                })
+                .ToListAsync();
+        }
     }
 }

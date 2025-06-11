@@ -8,7 +8,6 @@ using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Repositories
 {
@@ -34,7 +33,7 @@ namespace Ord.Plugin.Auth.Repositories
             var isUserNameUnique = await IsUserNameUniqueAsync(createInput.UserName);
             if (!isUserNameUnique)
             {
-                ThrowValidationEx("username_already_exists",createInput.UserName);
+                ThrowValidationEx("username_already_exists", createInput.UserName);
             }
         }
 
@@ -47,7 +46,7 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateUserDto updateInput, UserEntity entityUpdate)
         {
-          
+
         }
 
         protected override async Task<UserEntity> MapToUpdateEntityAsync(UpdateUserDto updateInput, UserEntity entity)
@@ -92,6 +91,20 @@ namespace Ord.Plugin.Auth.Repositories
 
             return !await query.AnyAsync();
         }
-       
+
+        public async Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false)
+        {
+            var q = await GetQueryableAsync();
+            return await q.AsNoTracking().WhereIf(includeUnActive != true, x => x.IsActived == true)
+                .Select(x => new UserPagedDto()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    PhoneNumber = x.PhoneNumber,
+                    Email = x.Email,
+                    UserName = x.UserName,
+                })
+                .ToListAsync();
+        }
     }
 }

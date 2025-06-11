@@ -6,5 +6,6 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 {
     public interface IUserCrudRepository : IOrdCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>
     {
+        Task<IEnumerable<UserPagedDto>> GetListComboOptions(bool includeUnActive = false);
     }
 }
