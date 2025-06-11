@@ -3,7 +3,7 @@ using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
 using System.Text.RegularExpressions;
 
-namespace Ord.Plugin.Contract.Utils
+namespace Ord.Plugin.Contract.Features.Validation
 {
     public static class ValidationMessages
     {

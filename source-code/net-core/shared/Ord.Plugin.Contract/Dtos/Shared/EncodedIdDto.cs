@@ -1,11 +1,14 @@
 ﻿using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.Validation.Attributes;
 
 namespace Ord
 {
     public class EncodedIdDto: IHasEncodedId
     {
+        [OrdValidateRequired(LocalizationKey = "common.validation.required", FieldName = "EncodedId")]
         public string? EncodedId { get; set; }
     }
+
 
     public class SetActiveStatusDto : EncodedIdDto
     {

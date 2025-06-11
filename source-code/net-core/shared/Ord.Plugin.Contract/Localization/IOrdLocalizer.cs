@@ -1,6 +1,8 @@
-﻿namespace Ord.Plugin.Contract.Localization
+﻿using Volo.Abp.DependencyInjection;
+
+namespace Ord.Plugin.Contract.Localization
 {
-    public interface IOrdLocalizer
+    public interface IOrdLocalizer : ISingletonDependency
     {
         /// <summary>
         /// Lấy localized string theo key

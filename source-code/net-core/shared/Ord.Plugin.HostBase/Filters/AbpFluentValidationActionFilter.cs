@@ -3,139 +3,155 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Features.Validation;
 using Ord.Plugin.Contract.Localization;
-using Ord.Plugin.Contract.Utils;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Reflection;
 using Volo.Abp.Validation;
 
-namespace Ord.Plugin.HostBase.Filters
+namespace Ord.Plugin.HostBase.Filters;
+
+public class AbpFluentValidationActionFilter(IAppFactory appFactory) : IAsyncActionFilter
 {
-    public class AbpFluentValidationActionFilter(IAppFactory appFactory) : IAsyncActionFilter
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        if (!context.ActionDescriptor.IsControllerAction() ||
+            !context.GetRequiredService<IOptions<AbpAspNetCoreMvcOptions>>().Value.AutoModelValidation ||
+            HasDisableValidationAttribute(context))
         {
-            if (!context.ActionDescriptor.IsControllerAction())
+            await next();
+            return;
+        }
+
+        var controllerActionDescriptor = (ControllerActionDescriptor)context.ActionDescriptor;
+        var serviceProvider = context.HttpContext.RequestServices;
+
+        foreach (var parameter in controllerActionDescriptor.Parameters)
+        {
+            if (!context.ActionArguments.TryGetValue(parameter.Name, out var value)) continue;
+
+            var parameterType = parameter.ParameterType;
+
+            if (value != null && !TypeHelper.IsPrimitiveExtended(parameterType))
             {
-                await next();
-                return;
-            }
+                var modelType = value.GetType();
+                var displayNameCache = new Dictionary<string, string>();
 
-            if (!context.GetRequiredService<IOptions<AbpAspNetCoreMvcOptions>>().Value.AutoModelValidation)
-            {
-                await next();
-                return;
-            }
-
-            if (ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(context.ActionDescriptor.GetMethodInfo()) != null)
-            {
-                await next();
-                return;
-            }
-
-            if (ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(context.Controller.GetType()) != null)
-            {
-                await next();
-                return;
-            }
-
-            if (context.ActionDescriptor.GetMethodInfo().DeclaringType != context.Controller.GetType())
-            {
-                var baseMethod = context.ActionDescriptor.GetMethodInfo();
-
-                var overrideMethod = context.Controller.GetType().GetMethods().FirstOrDefault(x =>
-                    x.DeclaringType == context.Controller.GetType() &&
-                    x.Name == baseMethod.Name &&
-                    x.ReturnType == baseMethod.ReturnType &&
-                    x.GetParameters().Select(p => p.ToString()).SequenceEqual(baseMethod.GetParameters().Select(p => p.ToString())));
-
-                if (overrideMethod != null)
+                // 1. FluentValidation
+                if (serviceProvider.GetService(typeof(IValidator<>).MakeGenericType(parameterType)) is IValidator validator)
                 {
-                    if (ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(overrideMethod) != null)
+                    var validationContext = new ValidationContext<object>(value);
+                    var validationResult = await validator.ValidateAsync(validationContext, context.HttpContext.RequestAborted);
+
+                    if (!validationResult.IsValid)
                     {
-                        await next();
-                        return;
-                    }
-                }
-            }
-
-            var controllerActionDescriptor = (ControllerActionDescriptor)context.ActionDescriptor;
-            var serviceProvider = context.HttpContext.RequestServices;
-
-            foreach (var parameter in controllerActionDescriptor.Parameters)
-            {
-                if (context.ActionArguments.TryGetValue(parameter.Name, out var value))
-                {
-                    var parameterInfo = (parameter as ControllerParameterDescriptor)?.ParameterInfo;
-                    var parameterType = parameter.ParameterType;
-
-                    if (value != null &&
-                        !TypeHelper.IsPrimitiveExtended(parameterType) &&
-                        serviceProvider.GetService(typeof(IValidator<>).MakeGenericType(parameterType)) is IValidator validator)
-                    {
-                        var validationContext = new ValidationContext<object>(value);
-
-                        var validationResult = await validator.ValidateAsync(validationContext, context.HttpContext.RequestAborted);
-
-                        if (!validationResult.IsValid)
+                        foreach (var error in validationResult.Errors)
                         {
-
-                            var displayNameCache = new Dictionary<string, string>();
-                            var modelType = value.GetType();
-                            foreach (var error in validationResult.Errors)
+                            var propertyName = error.PropertyName;
+                            if (!displayNameCache.TryGetValue(propertyName, out var displayName))
                             {
-                                var errorMessage = error.ErrorMessage;
-                                var propertyName = error.PropertyName;
-                                if (!displayNameCache.TryGetValue(propertyName, out var displayName))
-                                {
-                                    var propertyInfo = modelType.GetProperty(propertyName);
-                                    if (propertyInfo != null)
-                                    {
-                                        var displayAttr = propertyInfo.GetCustomAttributes(typeof(System.ComponentModel.DisplayNameAttribute), true)
-                                            .Cast<System.ComponentModel.DisplayNameAttribute>()
-                                            .FirstOrDefault();
-                                        displayName = displayAttr?.DisplayName ?? propertyInfo.Name;
-                                    }
-                                    else
-                                    {
-                                        displayName = propertyName;
-                                    }
-
-                                    displayNameCache[propertyName] = displayName;
-                                }
-
-                                if (errorMessage.StartsWith(ValidationMessages.Prefix))
-                                {
-                                    errorMessage = GetCommonErrorMessage(errorMessage, displayNameCache[propertyName], error);
-                                }
-                                context.ModelState.AddModelError(error.PropertyName, errorMessage);
+                                displayName = GetLocalizedDisplayName(modelType, propertyName);
+                                displayNameCache[propertyName] = displayName;
                             }
+
+                            var errorMessage = error.ErrorMessage;
+                            if (errorMessage.StartsWith(ValidationMessages.Prefix))
+                            {
+                                errorMessage = GetCommonErrorMessage(errorMessage, displayName, error);
+                            }
+
+                            context.ModelState.AddModelError(propertyName, errorMessage);
                         }
                     }
                 }
             }
-
-            await next();
         }
 
-        private string GetCommonErrorMessage(string errorMessage, string propertyName, ValidationFailure error)
+        await next();
+    }
+
+    private static bool HasDisableValidationAttribute(ActionExecutingContext context)
+    {
+        var methodInfo = context.ActionDescriptor.GetMethodInfo();
+        var controllerType = context.Controller.GetType();
+
+        return ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(methodInfo) != null
+            || ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(controllerType) != null
+            || (
+                methodInfo.DeclaringType != controllerType &&
+                controllerType.GetMethods().FirstOrDefault(x =>
+                    x.DeclaringType == controllerType &&
+                    x.Name == methodInfo.Name &&
+                    x.ReturnType == methodInfo.ReturnType &&
+                    x.GetParameters().Select(p => p.ToString()).SequenceEqual(methodInfo.GetParameters().Select(p => p.ToString()))
+                ) is { } overrideMethod &&
+                ReflectionHelper.GetSingleAttributeOfMemberOrDeclaringTypeOrDefault<DisableValidationAttribute>(overrideMethod) != null
+            );
+    }
+
+    private string GetCommonErrorMessage(string errorMessage, string propertyName, ValidationFailure error)
+    {
+        var prm = new List<object>
         {
-            var l = appFactory.GetServiceDependency<IOrdLocalizer>();
-            List<object> prms = new List<object>()
-            {
-                l[propertyName]
-            };
-            if (!string.IsNullOrEmpty(error.ErrorCode))
-            {
-                var parts = error.ErrorCode.Split(";")
-                    .Where(x => !string.IsNullOrWhiteSpace(x));
-                prms.AddRange(parts);
-            }
-            return l[errorMessage, [.. prms]];
+            appFactory.GetLocalizedMessage(propertyName)
+        };
+
+        if (!string.IsNullOrEmpty(error.ErrorCode))
+        {
+            var parts = error.ErrorCode.Split(";")
+                .Where(x => !string.IsNullOrWhiteSpace(x));
+            prm.AddRange(parts);
         }
+
+        return appFactory.GetLocalizedMessage(errorMessage, [.. prm]);
+    }
+
+    private void ValidationWithDataAnnotations(object value, ModelStateDictionary modelState, Type modelType)
+    {
+        var validationResults = DataAnnotationsValidator.ValidateObject(value, true);
+        if (validationResults?.Any() == true)
+        {
+            foreach (var result in validationResults)
+            {
+                var memberName = result.MemberNames.FirstOrDefault() ?? "";
+                var displayName = GetLocalizedDisplayName(modelType, memberName);
+                var message = appFactory.GetLocalizedMessage(result.ErrorMessage, displayName);
+                modelState.AddModelError(memberName, message);
+            }
+        }
+    }
+
+    private string GetLocalizedDisplayName(Type modelType, string propertyName)
+    {
+        var rawDisplayName = GetDisplayName(modelType, propertyName);
+        var localizer = appFactory.GetServiceDependency<IOrdLocalizer>();
+        return localizer[rawDisplayName];
+    }
+
+    private static string GetDisplayName(Type modelType, string propertyName)
+    {
+        var propertyInfo = modelType.GetProperty(propertyName);
+        if (propertyInfo == null) return propertyName;
+
+        // 1. [Display(Name = "...")]
+        var displayAttr = propertyInfo.GetCustomAttributes(typeof(DisplayAttribute), true)
+            .Cast<DisplayAttribute>()
+            .FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(displayAttr?.Name)) return displayAttr.Name;
+
+        // 2. [DisplayName("...")]
+        var displayNameAttr = propertyInfo.GetCustomAttributes(typeof(DisplayNameAttribute), true)
+            .Cast<DisplayNameAttribute>()
+            .FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(displayNameAttr?.DisplayName)) return displayNameAttr.DisplayName;
+
+        // 3. Fallback
+        return propertyInfo.Name;
     }
 }

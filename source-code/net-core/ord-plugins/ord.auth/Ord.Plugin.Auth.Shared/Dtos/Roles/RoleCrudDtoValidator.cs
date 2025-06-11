@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Utils;
+using Ord.Plugin.Contract.Features.Validation;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Roles
 {

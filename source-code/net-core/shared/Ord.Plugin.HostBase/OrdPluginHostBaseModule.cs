@@ -74,7 +74,7 @@ namespace Ord.Plugin.HostBase
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
-                   // options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    // options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
         }
 
@@ -89,6 +89,7 @@ namespace Ord.Plugin.HostBase
                 options.Filters.Add<GlobalExceptionFilter>();
                 options.Filters.Add<AbpFluentValidationActionFilter>(modelStateInvalidFilter.Order - 1);
             });
+              
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
         {

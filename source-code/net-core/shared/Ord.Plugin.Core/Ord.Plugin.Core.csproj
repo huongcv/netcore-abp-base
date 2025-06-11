@@ -50,8 +50,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Ord.Plugin.Contract\Ord.Plugin.Contract.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Features\Setting\" />
-	</ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Utils;
+using Ord.Plugin.Contract.Features.Validation;
 using Ord.Plugin.Core.Factories;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Users

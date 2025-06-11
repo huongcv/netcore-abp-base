@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Ord.Plugin.Contract.Utils;
+using Ord.Plugin.Contract.Features.Validation;
 using System.ComponentModel;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Auths
