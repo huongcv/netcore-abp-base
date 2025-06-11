@@ -34,7 +34,7 @@ namespace Ord.Plugin.Auth.Repositories
             return queryable;
         }
 
-        protected override async Task EnrichPagedItemsAsync(List<TenantPagedDto> items, TenantPagedInput input)
+        protected override async Task ProcessPagedItemsAsync(List<TenantPagedDto> items, TenantPagedInput input)
         {
             using (DataFilter.Disable<IMultiTenant>())
             {
@@ -51,17 +51,9 @@ namespace Ord.Plugin.Auth.Repositories
             var isCodeUnique = await IsCodeUniqueAsync(createInput.Code);
             if (!isCodeUnique)
             {
-                ThrowValidationEx("tenant_code_already_exists", createInput.Code);
+                ThrowValidationEx("auth.tenant.code_already_exists", createInput.Code);
             }
 
-            if (!string.IsNullOrEmpty(createInput.Email))
-            {
-                var isEmailUnique = await IsEmailUniqueAsync(createInput.Email);
-                if (!isEmailUnique)
-                {
-                    ThrowValidationEx("tenant_email_already_exists", createInput.Email);
-                }
-            }
         }
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateTenantDto updateInput, TenantEntity entityUpdate)
@@ -69,26 +61,17 @@ namespace Ord.Plugin.Auth.Repositories
             var isCodeUnique = await IsCodeUniqueAsync(updateInput.Code, entityUpdate.Id);
             if (!isCodeUnique)
             {
-                ThrowValidationEx("tenant_code_already_exists", updateInput.Code);
-            }
-
-            if (!string.IsNullOrEmpty(updateInput.Email))
-            {
-                var isEmailUnique = await IsEmailUniqueAsync(updateInput.Email, entityUpdate.Id);
-                if (!isEmailUnique)
-                {
-                    ThrowValidationEx("tenant_email_already_exists", updateInput.Email);
-                }
+                ThrowValidationEx("auth.tenant.code_already_exists", updateInput.Code);
             }
         }
 
         protected override async Task ValidateBeforeDeleteAsync(TenantEntity entityDelete)
         {
-            var hasUsers = await HasUsersAsync(entityDelete.Id);
-            if (hasUsers)
-            {
-                ThrowValidationEx("tenant_has_users_cannot_delete", entityDelete.Name);
-            }
+            //var hasUsers = await HasUsersAsync(entityDelete.Id);
+            //if (hasUsers)
+            //{
+            //    ThrowValidationEx("auth.tenant.has_users_cannot_delete", entityDelete.Name);
+            //}
         }
 
         public async Task<bool> IsCodeUniqueAsync(string code, Guid? excludeId = null)

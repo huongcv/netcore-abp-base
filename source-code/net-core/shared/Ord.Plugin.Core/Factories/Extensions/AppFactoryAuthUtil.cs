@@ -1,4 +1,5 @@
 ﻿using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Authorization;
@@ -29,6 +30,15 @@ namespace Ord
                 ? factory.GetLocalizedMessage("err_403")
                 : factory.GetLocalizedMessage(errorMessage);
             return CommonResultDto<T>.Forbidden(message);
+        }
+
+        public static void CheckHostUser(this IAppFactory factory)
+        {
+            var currentTenantId = factory.CurrentTenantId;
+            if (currentTenantId.HasValue)
+            {
+                throw new NotAccessPermissionException(factory.GetLocalizedMessage("auth.not_access_to_host_feature"));
+            }
         }
     }
 }

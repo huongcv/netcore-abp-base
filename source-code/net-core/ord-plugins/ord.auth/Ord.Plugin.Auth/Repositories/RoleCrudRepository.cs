@@ -3,6 +3,7 @@ using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Consts;
@@ -14,7 +15,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class RoleCrudRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
+    public partial class RoleCrudRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
         : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(dbContextProvider),
             IRoleCrudRepository
     {
@@ -219,6 +220,11 @@ namespace Ord.Plugin.Auth.Repositories
                 user.UserEncodedId = encodeSer.EncodeId(user.UserId);
             });
         }
+
+
+
         #endregion
+
+       
     }
 }

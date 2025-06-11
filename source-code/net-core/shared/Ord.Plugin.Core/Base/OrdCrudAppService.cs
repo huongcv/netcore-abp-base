@@ -166,6 +166,8 @@ namespace Ord.Plugin.Core.Services
                 throw new AbpValidationException("common.not_support");
 
             }
+
+            await CheckPermissionForOperation(CrudOperationType.Update);
             var id = ConvertEncodeId(input.EncodedId);
             var entity = await CrudRepository.GetByIdAsync(id);
             if (entity == null)

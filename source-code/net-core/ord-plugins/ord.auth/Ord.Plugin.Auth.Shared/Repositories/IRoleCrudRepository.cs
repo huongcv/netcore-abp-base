@@ -1,4 +1,5 @@
 ﻿using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Contract.Data;
 using Volo.Abp.Application.Dtos;
@@ -16,6 +17,12 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 
         #region User Management
         Task<PagedResultDto<UserInRoleDto>> GetUsersInRoleAsync(Guid roleId, GetUsersInRoleInput input);
+        #endregion
+
+        #region Role template
+
+        Task<RoleEntity> CreateTemplateRoleAsync(CreateTemplateRoleDto input);
+
         #endregion
 
     }

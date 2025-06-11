@@ -157,12 +157,17 @@ namespace Ord.Plugin.Core.Data
                 {
                     item.EncodedId = IdEncoderService.EncodeId(item.Id);
                 }
-                await EnrichPagedItemsAsync(items, input);
+                await ProcessPagedItemsAsync(items, input);
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
         }
-        // Hàm ảo để các class con có thể override
-        protected virtual async Task EnrichPagedItemsAsync(List<TGetPagedItemDto> items, TGetPagedInputDto input)
+        /// <summary>
+        /// bổ sung dữ liệu liên quan hoặc xử lý thêm cho danh sách DTO đã phân trang
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        protected virtual async Task ProcessPagedItemsAsync(List<TGetPagedItemDto> items, TGetPagedInputDto input)
         {
             // Implementation mặc định - không làm gì
             await Task.CompletedTask;

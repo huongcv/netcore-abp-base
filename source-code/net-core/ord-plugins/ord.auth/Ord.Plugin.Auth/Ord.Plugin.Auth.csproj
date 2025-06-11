@@ -15,8 +15,4 @@
 	  <ProjectReference Include="..\Ord.Plugin.Auth.Shared\Ord.Plugin.Auth.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="AppServices\Host\" />
-	</ItemGroup>
-
 </Project>
