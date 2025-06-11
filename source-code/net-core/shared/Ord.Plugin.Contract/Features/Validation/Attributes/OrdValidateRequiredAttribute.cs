@@ -1,19 +1,36 @@
-﻿using Ord.Plugin.Contract.Localization;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Ord.Plugin.Contract.Features.Validation.Attributes
 {
-    public class OrdValidateRequiredAttribute : ValidationAttribute
+    public class OrdValidateRequiredAttribute() : OrdValidationAttribute("required")
     {
-        public string LocalizationKey { get; set; }
-        public string FieldName { get; set; }
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override bool IsValueValid(object value, ValidationContext validationContext)
         {
-            if (value != null && !string.IsNullOrWhiteSpace(value.ToString()))
-                return ValidationResult.Success;
-            var localizer = (IOrdLocalizer)validationContext.GetService(typeof(IOrdLocalizer));
-            var errorMessage = localizer[LocalizationKey, FieldName];
-            return new ValidationResult(errorMessage);
+            if (value == null) return false;
+
+            var valueType = value.GetType();
+            var underlyingType = Nullable.GetUnderlyingType(valueType) ?? valueType;
+
+            // Kiểm tra string
+            if (value is string stringValue)
+            {
+                return !string.IsNullOrEmpty(stringValue) && !string.IsNullOrWhiteSpace(stringValue);
+            }
+
+            // Kiểm tra Guid
+            if (value is Guid guidValue)
+            {
+                return guidValue != Guid.Empty;
+            }
+
+            // Kiểm tra enum
+            if (underlyingType.IsEnum)
+            {
+                return Enum.IsDefined(underlyingType, value);
+            }
+
+            // Mặc định cho các type khác
+            return true;
         }
     }
 }

@@ -3,9 +3,9 @@ using Ord.Plugin.Contract.Features.Validation.Attributes;
 
 namespace Ord
 {
-    public class EncodedIdDto: IHasEncodedId
+    public class EncodedIdDto : IHasEncodedId
     {
-        [OrdValidateRequired(LocalizationKey = "common.validation.required", FieldName = "EncodedId")]
+        [OrdValidateRequired]
         public string? EncodedId { get; set; }
     }
 
