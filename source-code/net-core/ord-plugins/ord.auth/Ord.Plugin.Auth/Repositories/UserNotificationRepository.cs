@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Auth.Base;
+using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class UserNotificationRepository(IAppFactory appFactory) : OrdAuthBaseRepository<UserNotificationEntity, Guid>(appFactory)
+    public class UserNotificationRepository(IAppFactory appFactory) : OrdAuthBaseRepository<UserNotificationEntity, Guid>(appFactory), IUserNotificationRepository
     {
         public async Task MarkAsReadAsync(Guid userId, Guid notificationId)
         {

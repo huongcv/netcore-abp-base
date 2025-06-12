@@ -55,5 +55,10 @@ namespace Ord.Plugin.Auth.AppServices
         {
             return Task.FromResult("pong");
         }
+
+        protected override string GetBasePermissionName()
+        {
+            return "AuthPlugin.Information";
+        }
     }
 }
