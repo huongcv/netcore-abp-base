@@ -89,10 +89,7 @@ namespace Ord.Plugin.Core.Features.Notifications
             // Loại bỏ người dùng bị loại trừ
             if (input.ExcludedUsers?.Any() == true)
             {
-                userIds.RemoveWhere(userIdentifier =>
-                    input.ExcludedUsers.Any(excluded =>
-                        excluded.TenantId == userIdentifier.TenantId &&
-                        excluded.UserId == userIdentifier.UserId));
+                userIds.RemoveWhere(userIdentifier => input.ExcludedUsers.Any(excluded => excluded.UserId == userIdentifier.UserId));
             }
 
             return userIds;
