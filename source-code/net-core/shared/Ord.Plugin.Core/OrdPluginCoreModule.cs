@@ -2,7 +2,6 @@
 using kp.Dapper.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,10 +11,12 @@ using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Services.Auth;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Data;
+using Ord.Plugin.Core.Features.Notifications.Channels;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.Core.Services.Security;
 using Ord.Plugin.HostBase.Middlewares;
 using System.Text;
+using Ord.Plugin.Core.Features.Notifications.Firebases;
 using Volo.Abp;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
@@ -36,6 +37,7 @@ namespace Ord.Plugin.Core
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
             JwtConfiguration(services);
+            FireBaseConfiguration(services, configuration);
             Configure<AbpAutoMapperOptions>(options =>
             {
                 options.AddMaps<OrdPluginCoreModule>(validate: false);
@@ -108,7 +110,7 @@ namespace Ord.Plugin.Core
                 options.Cookie.Name = "OrdPlugin.Identity";
                 options.SlidingExpiration = true;
 #if DEBUG
-                                options.ExpireTimeSpan = TimeSpan.FromDays(3600);
+                options.ExpireTimeSpan = TimeSpan.FromDays(3600);
 #else
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
 #endif
@@ -131,6 +133,20 @@ namespace Ord.Plugin.Core
                     ClockSkew = TimeSpan.Zero,
                 };
             });
+        }
+
+
+        private void FireBaseConfiguration(IServiceCollection services, IConfiguration configuration)
+        {
+            // Configure Firebase
+            services.Configure<FirebaseNotificationConfiguration>(
+                configuration.GetSection("Notification.Firebase"));
+
+            // Register notification channel
+            services.AddTransient<FirebaseNotificationChannel>();
+
+            // Initialize Firebase on startup
+            services.AddHostedService<FirebaseInitializationService>();
         }
     }
 }
