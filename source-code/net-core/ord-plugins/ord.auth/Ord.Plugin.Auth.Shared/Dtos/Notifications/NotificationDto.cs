@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Dtos;
+﻿using Ord.Contract.Dtos.CommonDto;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.Notifications;
 using System.ComponentModel;
 using Volo.Abp.Application.Dtos;
@@ -22,8 +23,9 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Notifications
     {
         public bool? IsRead { get; set; }
         public NotificationSeverity? Severity { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
+        public DateRangeDto? CreationTimeRange { get; set; }
+        public DateTime? FromDate => CreationTimeRange?.StartDate;
+        public DateTime? ToDate => CreationTimeRange?.EndDate;
     }
 
     public class SendNotificationDto
@@ -45,16 +47,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Notifications
         /// Danh sách UserId cần gửi thông báo
         /// </summary>
         public List<Guid>? UserIds { get; set; }
-
-        /// <summary>
-        /// Danh sách TenantId (nếu null thì gửi cho tất cả tenant)
-        /// </summary>
-        public List<Guid?>? TenantIds { get; set; }
-
-        /// <summary>
-        /// Gửi cho tất cả người dùng
-        /// </summary>
-        public bool SendToAll { get; set; }
 
         /// <summary>
         /// Kênh gửi thông báo

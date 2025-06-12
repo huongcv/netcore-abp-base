@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -10,7 +9,6 @@ using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Domain.Repositories;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
 {

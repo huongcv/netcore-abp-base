@@ -215,6 +215,9 @@ namespace Ord.Plugin.Core.Data
 
             }
             var queryable = (await GetQueryableAsync()).AsNoTracking();
+
+            #region set IsActived = null cho input, mục đích bỏ qua trong where khi count
+
             var isActivedProp = typeof(TGetPagedInputDto).GetProperty("IsActived");
             if (isActivedProp != null && isActivedProp.PropertyType == typeof(bool?) && isActivedProp.CanWrite)
             {
@@ -224,7 +227,11 @@ namespace Ord.Plugin.Core.Data
                     isActivedProp.SetValue(input, null);
                 }
             }
-            var queryableDto = await GetPagedQueryableAsync(queryable, input);
+
+            #endregion
+
+            queryable = await GetPagedQueryableAsync(queryable, input);
+            var queryableDto = await TransformToPagedDtoAsync(queryable, input);
             var groupByQuery = await queryableDto.GroupBy(e => ((IHasActived)e).IsActived)
                 .Select(x => new CounterByIsActivedItemDto()
                 {
