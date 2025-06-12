@@ -32,6 +32,7 @@ public class NotificationRepository(IAppFactory factory)
                     select new UserNotificationDto
                     {
                         Id = userNotification.Id,
+                        NotificationId = notification.Id,
                         NotificationName = notification.NotificationName,
                         Title = notification.Title,
                         Body = notification.Body,

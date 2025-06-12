@@ -8,6 +8,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Notifications
 {
     public class UserNotificationDto : EntityDto<Guid>
     {
+        public Guid NotificationId { get; set; }
         public string? NotificationName { get; set; }
         public string? Title { get; set; }
         public string? Body { get; set; }
