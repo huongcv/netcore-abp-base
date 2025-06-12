@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
@@ -10,12 +11,14 @@ namespace Ord.Plugin.Auth.AppServices
     {
         private IAuthManager AuthManager => appFactory.GetServiceDependency<IAuthManager>();
         private IHttpContextAccessor HttpContextAccessor => appFactory.GetServiceDependency<IHttpContextAccessor>();
+        private ILoginFirebaseManager LoginFirebaseManager => appFactory.GetServiceDependency<ILoginFirebaseManager>();
         public async Task<CommonResultDto<JwtDto>> Login(LoginInputDto input)
         {
             var result = await AuthManager.LoginAsync(input);
             if (result.IsSuccessful && result.Data != null)
             {
                 SetJwtCookie(result.Data.AccessToken, result.Data.ExpireInSeconds);
+                await SetFirebaseLogin(result.Data?.TenantId, result.Data.UserId, input.FireBase);
                 return result;
             }
             return result;
@@ -39,6 +42,25 @@ namespace Ord.Plugin.Auth.AppServices
             };
 
             HttpContextAccessor.HttpContext?.Response.Cookies.Append("jwt", token, cookieOptions);
+        }
+
+        private async Task SetFirebaseLogin(Guid? tenantId,Guid userId,FireBaseDto fireBaseDto)
+        {
+            if (!string.IsNullOrEmpty(fireBaseDto?.FireBaseToken))
+            {
+                using (CurrentTenant.Change(tenantId))
+                {
+                    try
+                    {
+                        await LoginFirebaseManager.HandleFirebaseTokenOnLoginAsync(userId, fireBaseDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex, $"Failed to handle Firebase token during login for user {userId} with firebasetoke {fireBaseDto.FireBaseToken}");
+                    }
+                }
+
+            }
         }
 
         private void ClearJwtCookie()

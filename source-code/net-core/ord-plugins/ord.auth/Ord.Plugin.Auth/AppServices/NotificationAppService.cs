@@ -40,7 +40,7 @@ namespace Ord.Plugin.Auth.AppServices
                     return AppFactory.CreateBadRequestResult<bool>(GetAccessDeniedMessage());
                 }
                 await UserNotificationRepository.MarkAsReadAsync(userNotificationId);
-                return AppFactory.CreateSuccessResult(true, "notification.marked_as_read");
+                return AppFactory.CreateSuccessResult(true, "auth.notification.marked_as_read");
             }
             return AppFactory.CreateNotFoundResult<bool>(GetNotFoundMessage());
         }
@@ -49,7 +49,7 @@ namespace Ord.Plugin.Auth.AppServices
         {
             var userId = AppFactory.CurrentUserId.Value;
             await UserNotificationRepository.MarkAllAsReadAsync(userId);
-            return AppFactory.CreateSuccessResult(true, "notification.all_marked_as_read");
+            return AppFactory.CreateSuccessResult(true, "auth.notification.all_marked_as_read");
         }
 
         [HttpPost]

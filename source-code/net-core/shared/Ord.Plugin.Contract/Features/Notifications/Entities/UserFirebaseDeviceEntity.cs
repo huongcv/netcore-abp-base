@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ord.Plugin.Contract.Base;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Ord.Plugin.Contract.Features.Notifications.Entities
 {
     [Table("user_firebase_devices")]
-    public class UserFirebaseDeviceEntity: FullAuditedEntity<Guid>, IMultiTenant
+    public class UserFirebaseDeviceEntity : FullAuditedEntity<Guid>, IMultiTenant,IHasActived
     {
         public Guid? TenantId { get; set; }
         public Guid UserId { get; set; }
@@ -31,5 +32,7 @@ namespace Ord.Plugin.Contract.Features.Notifications.Entities
         /// </summary>
         [MaxLength(20)]
         public string Platform { get; set; }
+        public DateTime? LastLoginTime { get; set; }
+        public bool IsActived { get; set; }
     }
 }

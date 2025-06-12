@@ -77,6 +77,8 @@ namespace Ord.Plugin.Auth.Services
 
                 var jwtService = AppFactory.GetServiceDependency<IJwtManager>();
                 var jwtDto = jwtService.CreateJwt(userLoginDto);
+                jwtDto.UserId = userLoginDto.Id;
+                jwtDto.TenantId = userLoginDto.TenantId;
                 await ClearCacheUserWhenLogin(userLoginDto.Id);
                 return AppFactory.CreateSuccessResult(jwtDto);
             }

@@ -47,6 +47,11 @@ namespace Ord
             var dbContext = await GetDbContextAsync();
             return dbContext.Set<T>().AsNoTrackingIf(isNoTracking);
         }
+        public virtual async Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool isNoTracking = true)
+        {
+            var queryable = await GetQueryableAsNoTracking(isNoTracking);
+            return await queryable.Where(predicate).FirstOrDefaultAsync();
+        }
 
         /// <summary>
         /// Lấy queryable cho các entity đang active
@@ -66,7 +71,7 @@ namespace Ord
         /// </summary>
         /// <param name="isAsNoTracking">Có sử dụng AsNoTracking hay không</param>
         /// <returns>IQueryable của entity</returns>
-        protected virtual async Task<IQueryable<TEntity>> GetQueryableAsNoTracking(bool isAsNoTracking)
+        protected virtual async Task<IQueryable<TEntity>> GetQueryableAsNoTracking(bool isAsNoTracking = true)
         {
             var queryable = await GetQueryableAsync();
             return queryable.AsNoTrackingIf(isAsNoTracking);
@@ -171,6 +176,11 @@ namespace Ord
 
         #region Get List as DTO Methods
 
+        protected virtual async Task<List<TEntity>> GetListAsNoTrackingAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var q = await GetQueryableAsNoTracking();
+            return await q.Where(predicate).ToListAsync();
+        }
         /// <summary>
         /// Lấy danh sách tất cả entity dưới dạng DTO
         /// </summary>
