@@ -28,7 +28,10 @@ namespace Ord.Plugin.Contract.Features.Notifications
         public List<UserIdentifier> Users { get; set; } = new();
         public List<UserIdentifier> ExcludedUsers { get; set; }
         public List<Guid?> Tenants { get; set; }
-        public List<NotificationChannel> Channels { get; set; } = new();
+        public HashSet<NotificationChannel> Channels { get; set; } = new()
+        {
+            NotificationChannel.InApp
+        };
 
         protected NotificationPublishDto() : base()
         {
@@ -38,6 +41,17 @@ namespace Ord.Plugin.Contract.Features.Notifications
         public NotificationPublishDto(string notificationName, string title, string body, Dictionary<string, object?>? data = null) : base(notificationName, title, body, data)
         {
 
+        }
+
+        public NotificationPublishDto AddChannel(NotificationChannel channel)
+        {
+            Channels.Add(channel); // HashSet tự xử lý trùng
+            return this;
+        }
+        public NotificationPublishDto RemoveChannel(NotificationChannel channel)
+        {
+            Channels.Remove(channel);
+            return this;
         }
     }
 }

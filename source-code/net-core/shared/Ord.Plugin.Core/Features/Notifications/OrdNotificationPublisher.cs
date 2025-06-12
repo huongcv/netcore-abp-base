@@ -11,6 +11,10 @@ namespace Ord.Plugin.Core.Features.Notifications
         public async Task PublishAsync(NotificationPublishDto input)
         {
             var users = await notificationManager.GetTargetUserIdsAsync(input);
+            if (input.Channels?.Any() != true)
+            {
+                return;
+            }
             if (input.Channels?.Any(x => x == NotificationChannel.InApp) == true)
             {
                 var notificationId = await notificationManager.CreateAsync(input);
