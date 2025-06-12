@@ -3,13 +3,14 @@ using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class TenantRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
-        : OrdAuthBaseRepository<TenantEntity, Guid>(dbContextProvider), ITenantRepository
+    public class TenantRepository(IAppFactory factory)
+        : OrdAuthBaseRepository<TenantEntity, Guid>(factory), ITenantRepository
     {
         public async Task<Guid?> GetIdByCode(string? tenantCode)
         {

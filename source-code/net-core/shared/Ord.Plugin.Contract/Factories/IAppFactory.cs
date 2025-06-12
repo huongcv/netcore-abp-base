@@ -37,7 +37,6 @@ namespace Ord.Plugin.Contract.Factories
         IGuidGenerator GuidGenerator { get; }
         IStringEncryptionService StringEncryption { get; }
         IEpplusExportingExcelService EpplusExporting { get; }
-        IDapperDefaultDbContext DapperDefaultDb { get; }
         long IdGenerator();
         string GetLocalizedMessage(string key, params object[] formatArgs);
     }

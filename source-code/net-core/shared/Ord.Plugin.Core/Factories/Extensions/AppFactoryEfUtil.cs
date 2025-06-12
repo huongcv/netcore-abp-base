@@ -89,5 +89,6 @@ namespace Ord.Plugin.Core.Utils
             await repos.UpdateManyAsync(entities, autoSave);
             return entities;
         }
+
     }
 }

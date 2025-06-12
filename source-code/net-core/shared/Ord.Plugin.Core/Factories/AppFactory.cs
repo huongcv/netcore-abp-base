@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.DataExporting;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Localization;
@@ -52,7 +51,6 @@ namespace Ord.Plugin.Core.Factories
         public IGuidGenerator GuidGenerator => _lazyServiceProvider.LazyGetService<IGuidGenerator>(SimpleGuidGenerator.Instance);
         public IStringEncryptionService StringEncryption => LazyService<IStringEncryptionService>();
         public IEpplusExportingExcelService EpplusExporting => LazyService<IEpplusExportingExcelService>();
-        public IDapperDefaultDbContext DapperDefaultDb => LazyService<IDapperDefaultDbContext>();
         public long IdGenerator()
         {
             var service = GetServiceDependency<IIDGenerator>();

@@ -7,14 +7,15 @@ using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Contract.Exceptions;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class UserCrudRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
-        : OrdAuthCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(dbContextProvider),
+    public class UserCrudRepository(IAppFactory factory)
+        : OrdAuthCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(factory),
             IUserCrudRepository
     {
         #region CRUD Overrides

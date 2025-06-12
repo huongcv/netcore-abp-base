@@ -22,7 +22,7 @@ namespace Ord
 
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
         public IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
-        public IDapperDbContext DapperHelper { get; }
+        public IDapperRepositoryBase DapperHelper { get; }
         public OrdEfCoreRepository(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;

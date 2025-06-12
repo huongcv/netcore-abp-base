@@ -1,16 +1,17 @@
 ﻿using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Entities;
+using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Base
 {
-    public class OrdAuthBaseRepository<TEntity, TKey>(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
-        : OrdEfCoreRepository<OrdPluginAuthDbContext, TEntity, TKey>(dbContextProvider)
+    public class OrdAuthBaseRepository<TEntity, TKey>(IAppFactory appFactory)
+        : OrdEfCoreRepository<OrdPluginAuthDbContext, TEntity, TKey>(appFactory.GetServiceDependency<IDbContextProvider<OrdPluginAuthDbContext>>())
         where TEntity : class, IEntity<TKey>
     {
-        protected  Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)
+        protected Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)
         {
             return GetEntityQueryable<TenantEntity>();
         }

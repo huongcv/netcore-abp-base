@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
-using Volo.Abp.EntityFrameworkCore;
+using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class UserRoleRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
-        : OrdAuthBaseRepository<UserRoleEntity, int>(dbContextProvider), IUserRoleRepository
+    public class UserRoleRepository(IAppFactory factory)
+        : OrdAuthBaseRepository<UserRoleEntity, int>(factory), IUserRoleRepository
     {
 
         #region Basic User-Role Operations

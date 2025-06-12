@@ -1,13 +1,15 @@
-﻿using Ord.Plugin.Contract.Configurations;
+﻿using Microsoft.IdentityModel.JsonWebTokens;
+using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services.Auth;
+using Ord.Plugin.Core.Utils;
 using System.Net;
 using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Ord.Plugin.Core.Utils;
 using Volo.Abp.Caching;
 using Volo.Abp.Security.Claims;
+using Volo.Abp.Uow;
 
 namespace Ord.Plugin.HostBase.Middlewares
 {
@@ -19,7 +21,6 @@ namespace Ord.Plugin.HostBase.Middlewares
         {
             _appFactory = appFactory;
         }
-
         public async Task<HttpStatusCode> CheckClaims(IEnumerable<Claim>? claims)
         {
             if (claims?.Any() != true)
@@ -47,20 +48,22 @@ namespace Ord.Plugin.HostBase.Middlewares
             var changePasswordDateTime = claims.FirstOrDefault(x => x.Type == OrdClaimsTypes.ChangePasswordDateTime)?.Value ?? "";
             var userId = claims.FirstOrDefault(x => x.Type == AbpClaimTypes.UserId)?.Value;
             var _cache = _appFactory.LazyService<IDistributedCache<string>>();
-            var cacheData = await _cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, async () =>
-            {
-                var changePasswordDateTime = await _appFactory.DapperDefaultDb.QueryFirstOrDefaultAsync<DateTime?>(
-                    "select ChangePasswordDateTime from Users where id = @id", new
-                    {
-                        id = userId
-                    });
-                return changePasswordDateTime.HasValue ? changePasswordDateTime.Value.ToString(OrdClaimsTypes.FormatClaimDateType) : "";
-            });
+            var cacheData = await _cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, () => DoGetChangePasswordDateTime(userId));
             if (!string.Equals(cacheData, changePasswordDateTime))
             {
                 return HttpStatusCode.Unauthorized;
             }
             return HttpStatusCode.OK;
+        }
+
+        private async Task<string> DoGetChangePasswordDateTime(string? userId)
+        {
+            var userSer = _appFactory.GetServiceDependency<IUserSharedRepository>();
+            var uowManager = _appFactory.GetServiceDependency<IUnitOfWorkManager>();
+            using var uow = uowManager.Begin();
+            var changeTime = await userSer.GetChangePasswordDateTime(userId);
+            await uow.CompleteAsync();
+            return changeTime.HasValue ? changeTime.Value.ToString(OrdClaimsTypes.FormatClaimDateType) : "";
         }
     }
 }

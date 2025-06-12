@@ -8,7 +8,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Data
 {
-    public class DapperRepositoryBase<TDbContext> : DapperRepository<TDbContext>, IDapperDbContext
+    public class DapperRepositoryBase<TDbContext> : DapperRepository<TDbContext>, IDapperRepositoryBase
         where TDbContext : IEfCoreDbContext
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();

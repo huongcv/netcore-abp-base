@@ -6,7 +6,7 @@ namespace Ord.Plugin.Contract.Data
     /// <summary>
     /// Dapper truy vấn db connect string Default
     /// </summary>
-    public interface IDapperDbContext
+    public interface IDapperRepositoryBase
     {
         Task<T?> QueryFirstOrDefaultAsync<T>(
             string sql,

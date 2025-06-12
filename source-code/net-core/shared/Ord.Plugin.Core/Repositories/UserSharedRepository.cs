@@ -40,5 +40,13 @@ namespace Ord.Plugin.Core.Repositories
                 TenantId = tenantId
             });
         }
+        public Task<DateTime?> GetChangePasswordDateTime(string? userId)
+        {
+            var sql = new StringBuilder($@"select ChangePasswordDateTime from Users where id = @Id");
+            return QueryFirstOrDefaultAsync<DateTime?>(sql.ToString(), new
+            {
+                Id = userId
+            });
+        }
     }
 }

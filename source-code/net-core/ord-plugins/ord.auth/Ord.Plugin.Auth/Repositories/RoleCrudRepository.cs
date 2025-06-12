@@ -7,6 +7,7 @@ using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Consts;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
@@ -15,8 +16,8 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public partial class RoleCrudRepository(IDbContextProvider<OrdPluginAuthDbContext> dbContextProvider)
-        : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(dbContextProvider),
+    public partial class RoleCrudRepository(IAppFactory factory)
+        : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
             IRoleCrudRepository
     {
         protected IRepository<PermissionGrantEntity, long> PermissionGrantRepository =>
