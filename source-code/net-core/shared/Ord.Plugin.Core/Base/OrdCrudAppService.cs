@@ -58,6 +58,7 @@ namespace Ord.Plugin.Core.Services
         {
             await CheckPermissionForOperation(CrudOperationType.GetPaged);
             var paged = await CrudRepository.GetPagedListAsync(input);
+            AppFactory.EncodeIdPagedItems<TEntity, TKey, TGetPagedItemDto>(paged.Items);
             return AppFactory.CreateSuccessResult(paged);
         }
 

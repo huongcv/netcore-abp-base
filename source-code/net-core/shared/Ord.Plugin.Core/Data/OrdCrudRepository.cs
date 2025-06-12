@@ -32,7 +32,7 @@ namespace Ord.Plugin.Core.Data
         where TDbContext : IEfCoreDbContext
         where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
-        where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
+        where TGetPagedItemDto : class
         where TGetByIdDto : class
         where TCreateInputDto : class
         where TUpdateInputDto : class, IHasEncodedId
@@ -153,10 +153,6 @@ namespace Ord.Plugin.Core.Data
             var items = await dtoQueryable.ToListAsync();
             if (items?.Any() == true)
             {
-                foreach (var item in items)
-                {
-                    item.EncodedId = IdEncoderService.EncodeId(item.Id);
-                }
                 await ProcessPagedItemsAsync(items, input);
             }
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);

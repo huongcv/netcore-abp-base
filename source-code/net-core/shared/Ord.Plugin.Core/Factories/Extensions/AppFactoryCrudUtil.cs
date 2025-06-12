@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Services.Security;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
@@ -114,5 +115,31 @@ namespace Ord.Plugin.Core.Utils
             await repo.DeleteAsync(removeId, autoSave);
             return CommonResultDto<TDto>.Ok(appFactory.ObjectMap<TEntity, TDto>(find), $@"Crud.{entityName}.RemoveSuccess");
         }
+
+        #region Encode Id paged result
+
+
+        public static void EncodeIdPagedItems<TEntity, TPrimaryKey, TPagedItemDto>(this IAppFactory appFactory, IEnumerable<TPagedItemDto> items)
+            where TEntity : class, IEntity<TPrimaryKey>
+            where TPagedItemDto : class, IEntityDto<TPrimaryKey>, IHasEncodedId
+        {
+            var encodeService = appFactory.GetServiceDependency<IIdEncoderService<TEntity, TPrimaryKey>>();
+            EncodeIdPagedItems(appFactory, items, encodeService);
+        }
+        public static void EncodeIdPagedItems<TEntity, TPrimaryKey, TPagedItemDto>(this IAppFactory appFactory, IEnumerable<TPagedItemDto> items, IIdEncoderService<TEntity, TPrimaryKey> encodeService)
+            where TEntity : class, IEntity<TPrimaryKey>
+            where TPagedItemDto : class, IEntityDto<TPrimaryKey>, IHasEncodedId
+        {
+            if (items?.Any() != true)
+            {
+                return;
+            }
+            foreach (var item in items)
+            {
+                item.EncodedId = encodeService.EncodeId(item.Id);
+            }
+        }
+        #endregion
+
     }
 }

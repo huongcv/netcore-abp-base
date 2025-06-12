@@ -47,10 +47,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
         public ResetPasswordUserDtoValidator(IAppFactory appFactory)
         {
             RuleFor(u => u.EncodedId).Required();
-            RuleFor(u => u.NewPassword).Required();
-            //ValidateRequiredString(u => u.EncodedId, "null_or_empty_encode_id");
-            //ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
-            //ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+            RuleFor(u => u.NewPassword).Required().ValidatePassword(appFactory);
         }
     }
     public class ChangePasswordUserDtoValidator : AbstractValidator<ChangePasswordUserDto>
@@ -58,9 +55,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
         public ChangePasswordUserDtoValidator(IAppFactory appFactory)
         {
             RuleFor(u => u.NewPassword).Required();
-            RuleFor(u => u.NewPassword).Required();
-            //ValidateRequiredString(u => u.NewPassword, "null_or_empty_password");
-            //ValidateRegex(u => u.NewPassword, RegexPatternConst.PasswordRegex, "pwd_not_regex");
+            RuleFor(u => u.NewPassword).Required().ValidatePassword(appFactory);
         }
     }
 }

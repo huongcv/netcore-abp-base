@@ -18,6 +18,7 @@ namespace Ord.Plugin.Auth.AppServices
             => TenantCrudRepository;
         protected override string GetBasePermissionName()
         {
+            AppFactory.CheckHostUser();
             return "AuthPlugin.Tenant";
         }
         #region Read Operations
