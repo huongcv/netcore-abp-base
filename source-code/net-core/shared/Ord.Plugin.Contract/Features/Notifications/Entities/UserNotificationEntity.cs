@@ -11,8 +11,8 @@ namespace Ord.Plugin.Contract.Features.Notifications.Entities
         public virtual DateTime CreationTime { get; set; }
         public virtual Guid? TenantId { get; set; }
         public virtual Guid UserId { get; set; }
+        // state = true => đã đọc
         public virtual bool State { get; set; }
         public virtual Guid NotificationId { get; set; }
-        public virtual bool? IsExcluded { get; set; }
     }
 }

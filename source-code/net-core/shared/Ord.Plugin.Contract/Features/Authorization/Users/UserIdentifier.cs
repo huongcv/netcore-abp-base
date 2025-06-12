@@ -1,6 +1,6 @@
 ﻿using Ord.Plugin.Contract.Factories;
 
-namespace Ord.Plugin.Contract.Features.Notifications
+namespace Ord.Plugin.Contract.Features.Authorization.Users
 {
     public class UserIdentifier
     {
@@ -11,20 +11,14 @@ namespace Ord.Plugin.Contract.Features.Notifications
         }
         public UserIdentifier(Guid? tenantId, Guid userId)
         {
-            this.TenantId = tenantId;
-            this.UserId = userId;
+            TenantId = tenantId;
+            UserId = userId;
         }
 
         public UserIdentifier(IAppFactory appFactory, Guid userId)
         {
             TenantId = appFactory.CurrentTenantId;
             UserId = userId;
-        }
-
-        public static List<UserIdentifier> GetCurrentTenantUserIdentifier(IAppFactory appFactory, IEnumerable<Guid> userIds)
-        {
-            var tenantId = appFactory.CurrentTenantId;
-            return userIds.Select(x => new UserIdentifier(tenantId, x)).ToList();
         }
         public static UserIdentifier Parse(string userIdentifierString)
         {
@@ -41,7 +35,7 @@ namespace Ord.Plugin.Contract.Features.Notifications
         }
         public string ToUserIdentifierString()
         {
-            return !this.TenantId.HasValue ? this.UserId.ToString() : this.UserId.ToString() + "@" + this.TenantId.ToString();
+            return !TenantId.HasValue ? UserId.ToString() : UserId.ToString() + "@" + TenantId.ToString();
         }
 
     }

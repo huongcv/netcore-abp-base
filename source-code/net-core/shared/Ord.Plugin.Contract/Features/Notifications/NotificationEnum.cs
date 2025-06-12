@@ -13,14 +13,6 @@
         /// <summary>Fatal.</summary>
         Fatal = 5,
     }
-
-    public enum NotificationType : byte
-    {
-        System = 1,
-        Tenant = 2,
-        User = 3
-    }
-
     public enum NotificationChannel
     {
         Firebase,

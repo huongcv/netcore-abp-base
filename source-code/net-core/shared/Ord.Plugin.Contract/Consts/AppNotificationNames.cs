@@ -1,4 +1,4 @@
-﻿namespace Ord.Plugin.Contract.Features.Notifications
+﻿namespace Ord.Plugin.Contract.Consts
 {
     public class AppNotificationNames
     {
