@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
-using Ord.Plugin.Contract.Exceptions;
+﻿using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Services;
@@ -69,31 +67,34 @@ namespace Ord.Plugin.Core.Base
 
         #region Messages - Override để custom message
 
-        protected virtual string GetEntityNamePrefix()
+        protected virtual string GetMessagePrefix()
         {
             return "common.messages.crud.";
             // return typeof(TEntity).Name.ToLower();
         }
         protected virtual string GetNotFoundMessage()
         {
-            return $"{GetEntityNamePrefix()}not_found";
+            return $"{GetMessagePrefix()}not_found";
         }
 
         protected virtual string GetCreateSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}create_success";
+            return $"{GetMessagePrefix()}create_success";
         }
 
         protected virtual string GetUpdateSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}update_success";
+            return $"{GetMessagePrefix()}update_success";
         }
 
         protected virtual string GetDeleteSuccessMessage()
         {
-            return $"{GetEntityNamePrefix()}delete_success";
+            return $"{GetMessagePrefix()}delete_success";
         }
-
+        protected virtual string GetAccessDeniedMessage()
+        {
+            return $"{GetMessagePrefix()}access_denied";
+        }
         #endregion
     }
 }

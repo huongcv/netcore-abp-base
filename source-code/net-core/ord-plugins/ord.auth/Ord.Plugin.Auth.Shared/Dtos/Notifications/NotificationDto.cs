@@ -6,7 +6,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Notifications
 {
-    public class UserNotificationDto : EntityDto<Guid>
+    public class UserNotificationDto : EntityDto<Guid>, IHasEncodedId
     {
         public Guid NotificationId { get; set; }
         public string? NotificationName { get; set; }
@@ -18,6 +18,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Notifications
         public DateTime CreationTime { get; set; }
         public string? SeverityText => Severity.ToString();
         public bool IsRead => State;
+        public string? EncodedId { get; set; }
     }
 
     public class GetUserNotificationInput : OrdPagedRequestDto

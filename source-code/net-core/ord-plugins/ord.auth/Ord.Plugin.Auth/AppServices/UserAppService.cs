@@ -108,7 +108,7 @@ namespace Ord.Plugin.Auth.AppServices
             await CheckPermissionForActionName("AssignRoles");
             var userId = await GetUserIdAndClearCache(input.EncodedId);
             await UserManager.AssignRoles(userId, input.RoleIds);
-            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + ".assign_roles_success");
+            return AppFactory.CreateSuccessResult(true, GetMessagePrefix() + ".assign_roles_success");
         }
         #endregion
 
@@ -152,11 +152,11 @@ namespace Ord.Plugin.Auth.AppServices
             var checkPermissionName = await AppFactory.CheckPermissionAsync(permissionName);
             if (!checkPermissionName)
             {
-                return AppFactory.CreateBadRequestResult<bool>(GetEntityNamePrefix() + ".error.user_not_permission_name");
+                return AppFactory.CreateBadRequestResult<bool>(GetMessagePrefix() + ".error.user_not_permission_name");
             }
             await UserCrudRepository.GrantPermissionForUser(userId, permissionName, isGranted);
             var message = isGranted ? "grant_permission_success" : "revoke_permission_success";
-            return AppFactory.CreateSuccessResult(true, GetEntityNamePrefix() + message);
+            return AppFactory.CreateSuccessResult(true, GetMessagePrefix() + message);
         }
         private async Task<Guid> GetUserIdAndClearCache(string encodedId)
         {

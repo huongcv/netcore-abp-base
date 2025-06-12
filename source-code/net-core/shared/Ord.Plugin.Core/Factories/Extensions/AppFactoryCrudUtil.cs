@@ -118,7 +118,12 @@ namespace Ord.Plugin.Core.Utils
 
         #region Encode Id paged result
 
-
+        public static void EncodeIdPagedItems<TEntity, TPrimaryKey, TPagedItemDto>(this IAppFactory appFactory, PagedResultDto<TPagedItemDto> pagedResult)
+            where TEntity : class, IEntity<TPrimaryKey>
+            where TPagedItemDto : class, IEntityDto<TPrimaryKey>, IHasEncodedId
+        {
+            appFactory.EncodeIdPagedItems<TEntity, TPrimaryKey, TPagedItemDto>(pagedResult.Items);
+        }
         public static void EncodeIdPagedItems<TEntity, TPrimaryKey, TPagedItemDto>(this IAppFactory appFactory, IEnumerable<TPagedItemDto> items)
             where TEntity : class, IEntity<TPrimaryKey>
             where TPagedItemDto : class, IEntityDto<TPrimaryKey>, IHasEncodedId

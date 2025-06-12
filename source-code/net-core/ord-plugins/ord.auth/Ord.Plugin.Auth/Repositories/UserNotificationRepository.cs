@@ -15,6 +15,13 @@ namespace Ord.Plugin.Auth.Repositories
                 x => { x.State = true; }
             );
         }
+        public async Task MarkAsReadAsync(Guid userNotificationId)
+        {
+            await UpdateByConditionAsync(
+                x => x.Id == userNotificationId,
+                x => { x.State = true; }
+            );
+        }
 
         public async Task MarkAllAsReadAsync(Guid userId)
         {
@@ -29,10 +36,10 @@ namespace Ord.Plugin.Auth.Repositories
             await DeleteAsync(x => x.UserId == userId && x.NotificationId == notificationId);
         }
 
-        public async Task<bool> CanUserAccessNotificationAsync(Guid userId, Guid notificationId)
+        public async Task<bool> CanUserAccessNotificationAsync(Guid userId, Guid userNotificationId)
         {
             var queryable = await GetQueryableAsync();
-            return await queryable.AnyAsync(x => x.UserId == userId && x.NotificationId == notificationId);
+            return await queryable.AnyAsync(x => x.UserId == userId && x.Id == userNotificationId);
         }
     }
 }

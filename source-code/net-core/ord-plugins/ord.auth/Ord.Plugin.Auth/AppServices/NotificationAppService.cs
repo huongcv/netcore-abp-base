@@ -2,7 +2,10 @@
 using Ord.Plugin.Auth.Shared.Dtos.Notifications;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.Notifications.Entities;
+using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Base;
+using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
@@ -14,27 +17,32 @@ namespace Ord.Plugin.Auth.AppServices
             AppFactory.GetServiceDependency<INotificationRepository>();
         private IUserNotificationRepository UserNotificationRepository =>
             AppFactory.GetServiceDependency<IUserNotificationRepository>();
+        private IIdEncoderService<UserNotificationEntity, Guid> IdEncoder => AppFactory.GetServiceDependency<IIdEncoderService<UserNotificationEntity, Guid>>();
         [HttpPost]
         public async Task<CommonResultDto<PagedResultDto<UserNotificationDto>>> GetUserNotificationsAsync(GetUserNotificationInput input)
         {
             var userId = AppFactory.CurrentUserId.Value;
             var result = await NotificationRepository.GetUserNotificationsAsync(userId, input);
+            AppFactory.EncodeIdPagedItems<UserNotificationEntity,Guid, UserNotificationDto>(result);
             return AppFactory.CreateSuccessResult(result);
         }
 
         [HttpPost]
-        public async Task<CommonResultDto<bool>> MarkAsReadAsync(Guid notificationId)
+        public async Task<CommonResultDto<bool>> MarkAsReadAsync(EncodedIdDto input)
         {
-            var userId = AppFactory.CurrentUserId.Value;
-
-            // Kiểm tra quyền truy cập
-            var canAccess = await UserNotificationRepository.CanUserAccessNotificationAsync(userId, notificationId);
-            if (!canAccess)
+            if (IdEncoder.TryDecodeId(input.EncodedId,out var userNotificationId))
             {
-                return AppFactory.CreateBadRequestResult<bool>("notification.access_denied");
+                var userId = AppFactory.CurrentUserId.Value;
+                // Kiểm tra quyền truy cập
+                var canAccess = await UserNotificationRepository.CanUserAccessNotificationAsync(userId, userNotificationId);
+                if (!canAccess)
+                {
+                    return AppFactory.CreateBadRequestResult<bool>(GetAccessDeniedMessage());
+                }
+                await UserNotificationRepository.MarkAsReadAsync(userNotificationId);
+                return AppFactory.CreateSuccessResult(true, "notification.marked_as_read");
             }
-            await UserNotificationRepository.MarkAsReadAsync(userId, notificationId);
-            return AppFactory.CreateSuccessResult(true, "notification.marked_as_read");
+            return AppFactory.CreateNotFoundResult<bool>(GetNotFoundMessage());
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> MarkAllAsReadAsync()
@@ -45,19 +53,21 @@ namespace Ord.Plugin.Auth.AppServices
         }
 
         [HttpPost]
-        public async Task<CommonResultDto<bool>> DeleteNotificationAsync(Guid notificationId)
+        public async Task<CommonResultDto<bool>> RemoveAsync(EncodedIdDto input)
         {
-            var userId = AppFactory.CurrentUserId.Value;
-
-            // Kiểm tra quyền truy cập
-            var canAccess = await UserNotificationRepository.CanUserAccessNotificationAsync(userId, notificationId);
-            if (!canAccess)
+            if (IdEncoder.TryDecodeId(input.EncodedId, out var userNotificationId))
             {
-                return AppFactory.CreateBadRequestResult<bool>("notification.access_denied");
+                var userId = AppFactory.CurrentUserId.Value;
+                // Kiểm tra quyền truy cập
+                var canAccess = await UserNotificationRepository.CanUserAccessNotificationAsync(userId, userNotificationId);
+                if (!canAccess)
+                {
+                    return AppFactory.CreateBadRequestResult<bool>(GetAccessDeniedMessage());
+                }
+                await UserNotificationRepository.DeleteAsync(userNotificationId);
+                return AppFactory.CreateSuccessResult(true, GetDeleteSuccessMessage());
             }
-
-            await UserNotificationRepository.DeleteUserNotificationAsync(userId, notificationId);
-            return AppFactory.CreateSuccessResult(true, "notification.deleted");
+            return AppFactory.CreateNotFoundResult<bool>(GetNotFoundMessage());
         }
 
         [HttpGet]
