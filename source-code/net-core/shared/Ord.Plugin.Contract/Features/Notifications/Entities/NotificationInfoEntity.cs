@@ -15,7 +15,8 @@ namespace Ord.Plugin.Contract.Features.Notifications
         public virtual string? Title { get; set; }
         [StringLength(1000)]
         public virtual string? Body { get; set; }
-        public virtual string? Data { get; set; }
+        [Column(TypeName = "json")]
+        public virtual string? DataJson { get; set; }
         public virtual NotificationSeverity Severity { get; set; }
     }
 }

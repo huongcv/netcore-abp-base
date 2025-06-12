@@ -17,7 +17,7 @@ namespace Ord.Plugin.Core.Features.Notifications
                 NotificationName = input.NotificationName,
                 Body = input.Body,
                 Title = input.Title,
-                Data = data != null ? data.ToJsonString() : (string?)null,
+                DataJson = data != null ? data.ToJsonString() : (string?)null,
                 Severity = input.Severity ?? NotificationSeverity.Info
             };
             await notificationRepository.InsertAsync(notificationInfo);
