@@ -5,7 +5,7 @@ using Volo.Abp.Uow;
 
 namespace Ord.Plugin.Core.Features.Notifications
 {
-    public class OrdNotificationPublisher(INotificationManager notificationManager) : OrdManagerBase, IOrdNotificationPublisher
+    public class NotificationPublisher(INotificationManager notificationManager) : OrdManagerBase, INotificationPublisher
     {
         [UnitOfWork]
         public async Task PublishAsync(NotificationPublishDto input)
