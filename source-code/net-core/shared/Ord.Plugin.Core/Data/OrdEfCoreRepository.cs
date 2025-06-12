@@ -15,19 +15,14 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord
 {
-    public class OrdEfCoreRepository<TDbContext, TEntity, TKey> : EfCoreRepository<TDbContext, TEntity, TKey>
+    public class OrdEfCoreRepository<TDbContext, TEntity, TKey>(IAppFactory appFactory)
+        : EfCoreRepository<TDbContext, TEntity, TKey>(appFactory.GetServiceDependency<IDbContextProvider<TDbContext>>())
         where TDbContext : IEfCoreDbContext
         where TEntity : class, IEntity<TKey>
     {
-
-        private readonly IDbContextProvider<TDbContext> _dbContextProvider;
         public IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
-        public IDapperRepositoryBase DapperHelper { get; }
-        public OrdEfCoreRepository(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
-        {
-            _dbContextProvider = dbContextProvider;
-            DapperHelper = new DapperRepositoryBase<TDbContext>(dbContextProvider);
-        }
+        public IDapperRepositoryBase DapperHelper { get; } = new DapperRepositoryBase<TDbContext>(appFactory);
+
         protected async Task<IQueryable<T>> GetEntityQueryable<T>(bool isNoTracking = true)
             where T : class, IEntity
         {

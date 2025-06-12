@@ -1,13 +1,12 @@
 ﻿using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Data;
 using System.Text;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Repositories
 {
-    public class UserSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbRepository(dbContextProvider), IUserSharedRepository
+    public class UserSharedRepository(IAppFactory appFactory) : DapperDefaultDbRepository(appFactory), IUserSharedRepository
     {
         public async Task<UserInformationDto?> GetById(Guid userId)
         {

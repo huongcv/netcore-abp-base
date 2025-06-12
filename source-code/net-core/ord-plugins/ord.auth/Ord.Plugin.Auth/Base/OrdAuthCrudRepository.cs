@@ -4,7 +4,6 @@ using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
-using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Base
@@ -12,7 +11,7 @@ namespace Ord.Plugin.Auth.Base
     public abstract class OrdAuthCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(IAppFactory appFactory) :
         OrdCrudRepository<OrdPluginAuthDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
-        TUpdateInputDto>(appFactory.GetServiceDependency<IDbContextProvider<OrdPluginAuthDbContext>>()) where TEntity : class, IEntity<TKey>
+        TUpdateInputDto>(appFactory) where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
         where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
         where TGetByIdDto : class

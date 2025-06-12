@@ -1,12 +1,12 @@
 ﻿using Ord.Plugin.Contract.Dtos.Auth;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Data;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Repositories
 {
-    public class PermissionSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbRepository(dbContextProvider), IPermissionSharedRepository
+    public class PermissionSharedRepository(IAppFactory appFactory) : DapperDefaultDbRepository(appFactory), IPermissionSharedRepository
     {
        
         public Task<IEnumerable<string>> GetRoleBasedPermissionsAsync(Guid userId)

@@ -12,7 +12,7 @@ namespace Ord.Plugin.Core.Data
         where TDbContext : IEfCoreDbContext
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
-        public DapperRepositoryBase(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
+        public DapperRepositoryBase(IAppFactory appFactory) : base(appFactory.GetServiceDependency<IDbContextProvider<TDbContext>>())
         {
 
         }
@@ -76,7 +76,7 @@ namespace Ord.Plugin.Core.Data
         public async Task<T> GetCount<T>(string sql, object param = null)
         {
             var sqlCount = $"select count(1) from ({sql}) A";
-            
+
             var countTsk = await QueryFirstOrDefaultAsync<T>(sqlCount, param);
             return countTsk;
         }

@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Contract.Enums;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Data;
 using System.Text;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Repositories
 {
-    public class SettingSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbRepository(dbContextProvider), ISettingSharedRepository
+    public class SettingSharedRepository(IAppFactory appFactory) : DapperDefaultDbRepository(appFactory), ISettingSharedRepository
     {
         private ILogger<SettingSharedRepository> Logger =>
             AppFactory.GetServiceDependency<ILogger<SettingSharedRepository>>();

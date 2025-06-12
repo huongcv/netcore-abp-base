@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Services.Security;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
@@ -26,8 +27,8 @@ namespace Ord.Plugin.Core.Data
     /// <typeparam name="TCreateInputDto">DTO cho tạo mới</typeparam>
     /// <typeparam name="TUpdateInputDto">DTO cho cập nhật</typeparam>
     public abstract class OrdCrudRepository<TDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
-        TUpdateInputDto>(IDbContextProvider<TDbContext> dbContextProvider)
-        : OrdEfCoreRepository<TDbContext, TEntity, TKey>(dbContextProvider), IOrdCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
+        TUpdateInputDto>(IAppFactory factory)
+        : OrdEfCoreRepository<TDbContext, TEntity, TKey>(factory), IOrdCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
             TUpdateInputDto>
         where TDbContext : IEfCoreDbContext
         where TEntity : class, IEntity<TKey>
