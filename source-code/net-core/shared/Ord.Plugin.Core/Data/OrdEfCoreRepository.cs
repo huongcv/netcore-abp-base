@@ -286,7 +286,41 @@ namespace Ord
         {
             return await InsertOrUpdateManyAsync<TEntity, TDto>(items, predicate, createNewEntity, updateEntity, autoSave, cancellationToken);
         }
-
+        /// <summary>
+        /// Cập nhật với điều kiện
+        /// </summary>
+        /// <param name="predicate">Điều kiện để lọc entity cần cập nhật</param>
+        /// <param name="updateAction">Action để cập nhật entity</param>
+        /// <param name="cancellationToken">Token để hủy operation</param>
+        /// <returns>Số lượng entity đã cập nhật</returns>
+        public virtual async Task<IEnumerable<TEntity>> UpdateByConditionAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Func<TEntity, Task> updateAction,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = await GetListAsync(predicate, cancellationToken: cancellationToken);
+            foreach (var entity in entities)
+            {
+                await updateAction(entity);
+                await UpdateAsync(entity, autoSave: false, cancellationToken);
+            }
+            await SaveChangesAsync(cancellationToken);
+            return entities;
+        }
+        public virtual async Task<IEnumerable<TEntity>> UpdateByConditionAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Action<TEntity> updateAction,
+            CancellationToken cancellationToken = default)
+        {
+            var entities = await GetListAsync(predicate, cancellationToken: cancellationToken);
+            foreach (var entity in entities)
+            {
+                updateAction(entity);
+                await UpdateAsync(entity, autoSave: false, cancellationToken);
+            }
+            await SaveChangesAsync(cancellationToken);
+            return entities;
+        }
         protected async Task<PagedResultDto<TDto>> QueryPagedResultAsync<TDto>(IQueryable<TDto> queryable,
             PagedAndSortedResultRequestDto input,
             Func<TDto, Task> postProcessItemAsync = null)

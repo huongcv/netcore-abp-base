@@ -26,7 +26,7 @@ namespace Ord.Plugin.Core.Data
     /// <typeparam name="TGetByIdDto">DTO cho chi tiết entity</typeparam>
     /// <typeparam name="TCreateInputDto">DTO cho tạo mới</typeparam>
     /// <typeparam name="TUpdateInputDto">DTO cho cập nhật</typeparam>
-    public abstract class OrdCrudRepository<TDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
+    public abstract partial class OrdCrudRepository<TDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(IAppFactory factory)
         : OrdEfCoreRepository<TDbContext, TEntity, TKey>(factory), IOrdCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
             TUpdateInputDto>
@@ -442,27 +442,7 @@ namespace Ord.Plugin.Core.Data
             return results;
         }
 
-        /// <summary>
-        /// Cập nhật với điều kiện
-        /// </summary>
-        /// <param name="predicate">Điều kiện để lọc entity cần cập nhật</param>
-        /// <param name="updateAction">Action để cập nhật entity</param>
-        /// <param name="cancellationToken">Token để hủy operation</param>
-        /// <returns>Số lượng entity đã cập nhật</returns>
-        public virtual async Task<IEnumerable<TEntity>> UpdateByConditionAsync(
-            Expression<Func<TEntity, bool>> predicate,
-            Func<TEntity, Task> updateAction,
-            CancellationToken cancellationToken = default)
-        {
-            var entities = await GetListAsync(predicate, cancellationToken: cancellationToken);
-            foreach (var entity in entities)
-            {
-                await updateAction(entity);
-                await UpdateAsync(entity, autoSave: false, cancellationToken);
-            }
-            await SaveChangesAsync(cancellationToken);
-            return entities;
-        }
+        
         /// <summary>
         /// Xóa nhiều entity theo danh sách ID
         /// </summary>
