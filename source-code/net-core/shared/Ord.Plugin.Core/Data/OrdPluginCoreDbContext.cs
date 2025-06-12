@@ -9,6 +9,7 @@ namespace Ord.Plugin.Core.Data
     {
         public virtual DbSet<NotificationInfoEntity> Notifications { get; set; }
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
+        public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
         public OrdPluginCoreDbContext(DbContextOptions<OrdPluginCoreDbContext> options) : base(options)
         {
         }

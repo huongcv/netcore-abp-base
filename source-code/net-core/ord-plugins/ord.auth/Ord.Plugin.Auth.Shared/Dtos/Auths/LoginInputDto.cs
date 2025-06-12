@@ -12,7 +12,15 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Auths
         [OrdMaxLengthString(50)]
         public string Password { get; set; }
         public string? TenantCode { get; set; }
+        public FireBaseDto? FireBase { get; set; }
+
+    }
+
+    public class FireBaseDto
+    {
         public string? FireBaseToken { get; set; }
+        public string? DeviceId { get; set; }
+        public string? DeviceName { get; set; }
         public string? Platform { get; set; }
     }
 }
