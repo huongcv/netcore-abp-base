@@ -7,7 +7,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Core.Repositories
 {
     public class TenantSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbContext(dbContextProvider), ITenantSharedRepository
+        : DapperDefaultDbRepository(dbContextProvider), ITenantSharedRepository
     {
         public Task<TenantSharedDto> GetById(Guid tenantId)
         {

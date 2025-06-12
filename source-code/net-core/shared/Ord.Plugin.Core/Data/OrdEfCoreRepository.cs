@@ -5,7 +5,6 @@ using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
-using Pipelines.Sockets.Unofficial;
 using System.Data;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
@@ -27,7 +26,7 @@ namespace Ord
         public OrdEfCoreRepository(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
-            DapperHelper = new DapperDbcontext<TDbContext>(dbContextProvider);
+            DapperHelper = new DapperRepositoryBase<TDbContext>(dbContextProvider);
         }
         protected async Task<IQueryable<T>> GetEntityQueryable<T>(bool isNoTracking = true)
             where T : class, IEntity

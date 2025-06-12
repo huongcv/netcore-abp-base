@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Core.Repositories
 {
     public class PermissionSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbContext(dbContextProvider), IPermissionSharedRepository
+        : DapperDefaultDbRepository(dbContextProvider), IPermissionSharedRepository
     {
        
         public Task<IEnumerable<string>> GetRoleBasedPermissionsAsync(Guid userId)

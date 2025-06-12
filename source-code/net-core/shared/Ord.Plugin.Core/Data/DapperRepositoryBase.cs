@@ -1,18 +1,18 @@
 ﻿using Dapper;
 using Ord.Plugin.Contract.Data;
-using System.Data;
 using Ord.Plugin.Contract.Factories;
+using System.Data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories.Dapper;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Data
 {
-    public class DapperDbcontext<TDbContext> : DapperRepository<TDbContext>, IDapperDbContext
+    public class DapperRepositoryBase<TDbContext> : DapperRepository<TDbContext>, IDapperDbContext
         where TDbContext : IEfCoreDbContext
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
-        public DapperDbcontext(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
+        public DapperRepositoryBase(IDbContextProvider<TDbContext> dbContextProvider) : base(dbContextProvider)
         {
 
         }

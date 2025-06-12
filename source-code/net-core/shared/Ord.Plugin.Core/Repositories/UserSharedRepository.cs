@@ -8,7 +8,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Core.Repositories
 {
     public class UserSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbContext(dbContextProvider), IUserSharedRepository
+        : DapperDefaultDbRepository(dbContextProvider), IUserSharedRepository
     {
         public async Task<UserInformationDto?> GetById(Guid userId)
         {

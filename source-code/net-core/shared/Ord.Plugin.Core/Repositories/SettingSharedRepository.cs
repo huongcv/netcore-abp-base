@@ -9,7 +9,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Core.Repositories
 {
     public class SettingSharedRepository(IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider)
-        : DapperDefaultDbContext(dbContextProvider), ISettingSharedRepository
+        : DapperDefaultDbRepository(dbContextProvider), ISettingSharedRepository
     {
         private ILogger<SettingSharedRepository> Logger =>
             AppFactory.GetServiceDependency<ILogger<SettingSharedRepository>>();
