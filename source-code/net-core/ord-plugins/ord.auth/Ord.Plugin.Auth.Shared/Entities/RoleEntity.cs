@@ -14,12 +14,12 @@ namespace Ord.Plugin.Auth.Shared.Entities
         [MaxLength(100)]
         public string Code { get; set; }
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }
         public Guid? TenantId { get; set; }
         public bool IsActived { get; set; }
-
+        public bool IsStatic { get; set; }
         /// <summary>
         /// Tham chiếu đến Role Template (Host Role) để thừa kế permissions
         /// Chỉ role của tenant mới có thể có TemplateRoleId

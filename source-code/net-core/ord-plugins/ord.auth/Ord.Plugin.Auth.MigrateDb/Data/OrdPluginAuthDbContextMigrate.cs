@@ -11,7 +11,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
     public class OrdPluginAuthDbContextMigrate : AbpDbContext<OrdPluginAuthDbContextMigrate>
     {
         public virtual DbSet<UserEntity> Users { get; set; }
-        public virtual DbSet<UserClaimEntity> UserClaims { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
         public virtual DbSet<UserRoleEntity> UserAuthorities { get; set; }
         public virtual DbSet<PermissionGrantEntity> PermissionGrants { get; set; }
@@ -37,16 +36,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
                     x.UserName,
                     x.TenantId
                 });
-            });
-            builder.Entity<UserClaimEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.UserId,
-                    x.Name,
-                    x.TenantId
-                }).IsUnique();
             });
             builder.Entity<RoleEntity>(b =>
             {
