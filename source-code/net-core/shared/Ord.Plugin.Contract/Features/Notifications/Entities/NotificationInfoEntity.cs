@@ -4,10 +4,12 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Ord.Plugin.Contract.Features.Notifications
 {
+    /// <summary>
+    /// Bảng system_notifications không cần multi-tenant
+    /// </summary>
     [Table("system_notifications")]
     public class NotificationInfoEntity : CreationAuditedEntity<Guid>
     {
-        public Guid? TenantId { get; set; }
         [Required]
         [StringLength(200)]
         public virtual string NotificationName { get; set; }

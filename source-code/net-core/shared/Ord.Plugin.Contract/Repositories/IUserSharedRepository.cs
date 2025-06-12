@@ -10,5 +10,6 @@ namespace Ord.Plugin.Contract.Repositories
     {
         Task<UserInformationDto?> GetById(Guid userId);
         Task<IEnumerable<Guid>> GetUsersGrantedRole(Guid roleId);
+        Task<IEnumerable<Guid>> GetUsersByTenantsAsync(Guid? tenantId);
     }
 }

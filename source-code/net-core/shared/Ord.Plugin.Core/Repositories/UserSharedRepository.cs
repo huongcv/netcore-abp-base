@@ -1,5 +1,4 @@
 ﻿using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Dtos.Auth;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Data;
 using System.Text;
@@ -29,6 +28,16 @@ namespace Ord.Plugin.Core.Repositories
             return QueryAsync<Guid>(sql, new
             {
                 RoleId = roleId
+            });
+        }
+
+        public Task<IEnumerable<Guid>> GetUsersByTenantsAsync(Guid? tenantId)
+        {
+            var sql = new StringBuilder($@"SELECT Id from users where IsDeleted = 0 ");
+            sql.AppendTenantFilter(tenantId);
+            return QueryAsync<Guid>(sql.ToString(), new
+            {
+                TenantId = tenantId
             });
         }
     }

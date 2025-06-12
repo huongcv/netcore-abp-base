@@ -1,5 +1,6 @@
 ﻿using Ord.Plugin.Auth;
 using Ord.Plugin.Core;
+using Ord.Plugin.Core.Data;
 using Ord.Plugin.HostBase;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -30,6 +31,16 @@ namespace Ord.PluginZero.HttpHost
             {
                 options.Configure(configurationContext => {configurationContext.UseMySQL(); });
             });
+            Configure<AbpDbContextOptions>(options =>
+            {
+                options.Configure(configurationContext => { configurationContext.UseMySQL(); });
+                // có thể cấu hình song song các hệ quản trị csdl khác
+                options.Configure<OrdPluginCoreDbContext>(config =>
+                {
+                    config.UseMySQL(); // Hoặc UseMySql() tùy theo version
+                });
+            });
+
             //services.AddHostedService<SeedDataStartupTask>();
             Configure<AbpAuditingOptions>(options =>
             {
