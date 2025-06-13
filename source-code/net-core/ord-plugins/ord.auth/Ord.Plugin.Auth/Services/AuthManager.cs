@@ -79,7 +79,7 @@ namespace Ord.Plugin.Auth.Services
                 var jwtDto = jwtService.CreateJwt(userLoginDto);
                 jwtDto.UserId = userLoginDto.Id;
                 jwtDto.TenantId = userLoginDto.TenantId;
-                await ClearCacheUserWhenLogin(userLoginDto.Id);
+                ClearCacheUserWhenLogin(userLoginDto.Id);
                 return AppFactory.CreateSuccessResult(jwtDto);
             }
         }

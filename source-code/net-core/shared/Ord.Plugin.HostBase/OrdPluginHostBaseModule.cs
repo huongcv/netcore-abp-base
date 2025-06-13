@@ -22,7 +22,6 @@ using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.Swashbuckle;
-
 namespace Ord.Plugin.HostBase
 {
     [DependsOn(
@@ -47,13 +46,13 @@ namespace Ord.Plugin.HostBase
                 });
             });
             base.PreConfigureServices(context);
-            
+
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
-           
+
             Configure<AbpMultiTenancyOptions>(options =>
             {
                 options.IsEnabled = true;
@@ -67,6 +66,7 @@ namespace Ord.Plugin.HostBase
             ConfigureResponseCompression(services);
             ConfigureCache(services, configuration);
             services.AddRedisRateLimit(configuration);
+            services.AddHealthCheckOpenTelemetry(configuration);
 #if DEBUG
             services.AddHangfireMemory();
 #else
@@ -118,7 +118,7 @@ namespace Ord.Plugin.HostBase
 
         private void ConfigureCache(IServiceCollection services, IConfiguration configuration)
         {
-           
+
             Configure<AbpDistributedCacheOptions>(options =>
             {
                 options.KeyPrefix = (configuration["App:Name"] ?? "OrdPlugin") + ":";
@@ -133,6 +133,9 @@ namespace Ord.Plugin.HostBase
             ConfigureMiddlewares(app);
             ConfigureSwagger(app, configuration);
             app.UseHangfireConfiguration(configuration);
+            // Map Prometheus scraping endpoint
+            app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
         }
 
         private void ConfigureMiddlewares(IApplicationBuilder app)
@@ -149,6 +152,7 @@ namespace Ord.Plugin.HostBase
             app.UseMiddleware<LanguageMiddleware>();
             app.UseDynamicClaims();
             app.UseMiddleware<OrdMultiTenancyMiddleware>();
+            //  app.UseMiddleware<MetricsMiddleware>();
             app.UseAuditing();
             app.UseAntiforgery();
             app.UseAuthorization();
