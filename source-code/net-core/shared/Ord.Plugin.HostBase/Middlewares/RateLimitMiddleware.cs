@@ -382,7 +382,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
                 Message = _appFactory.GetLocalizedMessage("message.RateLimit.RateLimitExceeded"),
                 Extend = new
                 {
-                    message = _appFactory.GetLocalizedMessage("message.RateLimit.RateLimitExceededDetail", identifierInfor),
+                    messageDetail = _appFactory.GetLocalizedMessage("message.RateLimit.RateLimitExceededDetail", identifierInfor),
                     policy = policy.ToLower(),
                     identifier = identifier,
                     totalRequests = result.TotalRequests
