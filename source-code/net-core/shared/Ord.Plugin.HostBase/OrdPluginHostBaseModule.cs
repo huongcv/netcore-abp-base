@@ -11,11 +11,13 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.OpenApi.Models;
 using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Core;
+using Ord.Plugin.Core.Configurations;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
 using Ord.Plugin.HostBase.Filters;
 using Ord.Plugin.HostBase.Localization;
 using Ord.Plugin.HostBase.Middlewares;
+using Ord.Plugin.HostBase.Middlewares.Jwt;
 using Ord.Plugin.HostBase.Util;
 using System.Globalization;
 using System.IO.Compression;
@@ -62,7 +64,7 @@ namespace Ord.Plugin.HostBase
             {
                 options.IsEnabled = true;
             });
-            ConfigureMvcFilter(services);
+            services.AddMvcAndFilters();
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             ConfigureSwaggerServices(services);
@@ -71,25 +73,7 @@ namespace Ord.Plugin.HostBase
             ConfigureCache(configuration);
             ConfigureLanguage(services);
             services.ConfigureHangfire();
-            services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    // options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                });
-        }
-
-        void ConfigureMvcFilter(IServiceCollection services)
-        {
-            var modelStateInvalidFilter = new ModelStateInvalidFilter(new ApiBehaviorOptions
-            {
-                InvalidModelStateResponseFactory = (ActionContext context) => new OkResult()
-            }, NullLogger.Instance);
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add<GlobalExceptionFilter>();
-                options.Filters.Add<AbpFluentValidationActionFilter>(modelStateInvalidFilter.Order - 1);
-            });
-              
+           
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
         {

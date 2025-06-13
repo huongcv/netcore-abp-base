@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ord.Plugin.Contract.Services.Auth;
 using System.Net;
 
-namespace Ord.Plugin.HostBase.Middlewares
+namespace Ord.Plugin.HostBase.Middlewares.Jwt
 {
     public class CheckTokenJWTLocalMiddleware
     {

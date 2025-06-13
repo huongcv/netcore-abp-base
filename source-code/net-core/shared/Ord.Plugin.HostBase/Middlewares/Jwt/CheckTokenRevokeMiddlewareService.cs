@@ -6,7 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using Volo.Abp.Caching;
 
-namespace Ord.Plugin.Core.Middlewares
+namespace Ord.Plugin.HostBase.Middlewares.Jwt
 {
     public class CheckTokenRevokeMiddlewareService : ICheckClaimTokenJwtMiddlewareService
     {

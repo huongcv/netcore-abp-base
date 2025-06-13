@@ -11,7 +11,7 @@ using Volo.Abp.Caching;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Uow;
 
-namespace Ord.Plugin.HostBase.Middlewares
+namespace Ord.Plugin.HostBase.Middlewares.Jwt
 {
     public class CheckPasswordChangeTokenMiddlewareService : ICheckClaimTokenJwtMiddlewareService
     {
