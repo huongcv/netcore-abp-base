@@ -480,5 +480,6 @@
   "Dashboard": "Bảng điều khiển",
   "RealTimeData": "Dữ liệu thời gian thực",
   "Code": "Mã",
-  "CreationTime": "Ngày tạo"
+  "CreationTime": "Ngày tạo",
+  "RowIndex": "STT"
 }

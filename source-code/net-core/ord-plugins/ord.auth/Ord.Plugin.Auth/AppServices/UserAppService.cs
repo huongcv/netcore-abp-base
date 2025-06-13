@@ -46,7 +46,7 @@ namespace Ord.Plugin.Auth.AppServices
                 .AddRowIndex()
                 .AddColumn(x => x.UserName, 15)
                 .AddColumn(x => x.Name, "FullName", 20)
-                .AddColumn(x => x.Email ?? "N/A", "Email", 25)
+                .AddColumn(x => x.Email ?? "N/A", 25)
                 .AddColumn(x => x.PhoneNumber ?? "N/A", 15)
                 .AddDateTimeColumn(x => x.CreationTime, width: 18)
                 .AddIsActiveColumn(x => x.IsActived));
