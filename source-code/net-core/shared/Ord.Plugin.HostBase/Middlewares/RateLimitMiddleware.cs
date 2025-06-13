@@ -180,7 +180,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
         {
             var method = context.Request.Method;
             var path = context.Request.Path.Value ?? "";
-            return $"{method}:{path}";
+            return path.Trim('/');
         }
 
         private bool IsEndpointMatch(string currentEndpoint, string ruleEndpoint)
@@ -195,6 +195,13 @@ namespace Ord.Plugin.Core.Features.RateLimits
             // Xử lý pattern "**" - match tất cả (giống *)
             if (ruleEndpoint == "**")
                 return true;
+            if (ruleEndpoint.StartsWith("*") && ruleEndpoint.EndsWith("*") && ruleEndpoint.Length > 2)
+            {
+                var containsText = ruleEndpoint.Substring(1, ruleEndpoint.Length - 2);
+                containsText = containsText.Trim('/');
+                containsText = "/" + containsText + "/";
+                return currentEndpoint.Contains(containsText, StringComparison.OrdinalIgnoreCase);
+            }
 
             // Xử lý pattern "api/**" - match những endpoint bắt đầu với 'api'
             if (ruleEndpoint.EndsWith("/**"))
@@ -211,6 +218,18 @@ namespace Ord.Plugin.Core.Features.RateLimits
                 return currentEndpoint.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
             }
 
+            if (ruleEndpoint.StartsWith("*"))
+            {
+                var suffix = ruleEndpoint[1..].Trim('/');
+                return currentEndpoint.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
+            }
+            if (ruleEndpoint.StartsWith("**"))
+            {
+                var suffix = ruleEndpoint[2..].Trim('/');
+                return currentEndpoint.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
+            }
+
+
             // Xử lý pattern có "*" ở giữa
             if (ruleEndpoint.Contains("*"))
             {
@@ -218,6 +237,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
                 return Regex.IsMatch(currentEndpoint, pattern, RegexOptions.IgnoreCase);
             }
 
+            ruleEndpoint = ruleEndpoint.Trim('/');
             // Exact match
             return string.Equals(currentEndpoint, ruleEndpoint, StringComparison.OrdinalIgnoreCase);
         }
