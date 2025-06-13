@@ -42,13 +42,14 @@ namespace Ord.Plugin.Auth.AppServices
             )> GetExportConfiguration(List<UserPagedDto> dataItems, UserPagedInput input)
         {
             // Column Builder cho User
+
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex()
-                .AddColumn(x => x.UserName, 15)
-                .AddColumn(x => x.Name, "FullName", 20)
-                .AddColumn(x => x.Email ?? "N/A", 25)
-                .AddColumn(x => x.PhoneNumber ?? "N/A", 15)
-                .AddDateTimeColumn(x => x.CreationTime, width: 18)
+                .AddColumn(c => c.WithBase(x => x.UserName, 20))
+                .AddColumn(c => c.WithBase(x => x.Name, 20).WithHeader("FullName"))
+                .AddColumn(c => c.WithBase(x => x.Email, 20))
+                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 15))
+                .AddColumn(c => c.WithBase(x => x.CreationTime, 18).WithWidth(18).WithDateTimeFormat())
                 .AddIsActiveColumn(x => x.IsActived));
 
             // Configuration Builder cho User
@@ -62,6 +63,7 @@ namespace Ord.Plugin.Auth.AppServices
                         .WithFont("Arial", 16)
                         .WithBoldFont()
                         .WithCenterAlignment()
+                        .WithWrapText(true)
                         .WithFontColor(Color.DarkBlue)))
                 .WithHeaderStyle(style => style
                     .WithBoldFont()
