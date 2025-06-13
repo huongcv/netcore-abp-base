@@ -22,8 +22,8 @@ namespace Ord.Plugin
         Task<byte[]> ExportFromPagedQuery<TData>(
             OrdPagedRequestDto pagedInput,
             Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-            Action<OrdExportConfigurationBuilder> configurationBuilder,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder)
+            Action<OrdExcelConfigurationBuilder> configurationBuilder,
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder)
             where TData : class;
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Ord.Plugin
         Task<byte[]> ExportFromPagedQuery<TData>(
             OrdPagedRequestDto pagedInput,
             Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-            OrdExportConfiguration configuration,
-            params OrdExportColumnData<TData>[] columns)
+            OrdExcelConfiguration configuration,
+            params OrdExcelColumnData<TData>[] columns)
             where TData : class;
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace Ord.Plugin
         /// <returns>Excel file as byte array</returns>
         Task<byte[]> ExportDataCollection<TData>(
             IEnumerable<TData> dataItems,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder,
-            Action<OrdExportConfigurationBuilder>? configurationBuilder = null)
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder,
+            Action<OrdExcelConfigurationBuilder>? configurationBuilder = null)
             where TData : class;
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace Ord.Plugin
         /// <returns>Excel file as byte array</returns>
         Task<byte[]> ExportDataCollection<TData>(
             IEnumerable<TData> dataItems,
-            OrdExportConfiguration configuration,
-            params OrdExportColumnData<TData>[] columns)
+            OrdExcelConfiguration configuration,
+            params OrdExcelColumnData<TData>[] columns)
             where TData : class;
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Ord.Plugin
         OrdExportSheetConfiguration CreateSheetConfiguration<TData>(
             string sheetName,
             IEnumerable<TData> dataItems,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder,
-            Action<OrdExportConfigurationBuilder>? configurationBuilder = null)
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder,
+            Action<OrdExcelConfigurationBuilder>? configurationBuilder = null)
             where TData : class;
     }
 
@@ -102,21 +102,21 @@ namespace Ord.Plugin
         public string SheetName { get; set; } = "Sheet1";
         public object Data { get; set; } = null!;
         public Type DataType { get; set; } = null!;
-        public OrdExportConfiguration Configuration { get; set; } = new();
+        public OrdExcelConfiguration Configuration { get; set; } = new();
         public Array Columns { get; set; } = null!;
 
         public static OrdExportSheetConfiguration Create<T>(
             string sheetName,
             IEnumerable<T> data,
-            OrdExportColumnData<T>[] columns,
-            OrdExportConfiguration? configuration = null) where T : class
+            OrdExcelColumnData<T>[] columns,
+            OrdExcelConfiguration? configuration = null) where T : class
         {
             return new OrdExportSheetConfiguration
             {
                 SheetName = sheetName,
                 Data = data,
                 DataType = typeof(T),
-                Configuration = configuration ?? OrdExportConfiguration.Default(),
+                Configuration = configuration ?? OrdExcelConfiguration.Default(),
                 Columns = columns
             };
         }

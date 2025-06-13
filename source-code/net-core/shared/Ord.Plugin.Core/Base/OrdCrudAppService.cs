@@ -205,7 +205,7 @@ namespace Ord.Plugin.Core.Services
                 var pagedResultCommon = await GetPaged(input);
                 var items = pagedResultCommon?.Data?.Items ?? new List<TGetPagedItemDto>();
                 // Lấy cấu hình export
-                var (columnBuilder, configurationBuilder, fileName) = await GetExportConfiguration(items.ToList());
+                var (columnBuilder, configurationBuilder, fileName) = await GetExportConfiguration(items.ToList(), input);
                 // Xuất dữ liệu
                 var excelBytes = await EpplusService.ExportDataCollection(items, columnBuilder, configurationBuilder);
                 // Trả về file
@@ -231,12 +231,12 @@ namespace Ord.Plugin.Core.Services
         /// </summary>
         /// <returns>Tuple chứa 3 cấu hình cần thiết cho export</returns>
         protected virtual Task<(
-            Action<OrdExportColumnBuilder<TGetPagedItemDto>> ColumnBuilder,
-            Action<OrdExportConfigurationBuilder> ConfigurationBuilder,
+            Action<OrdExcelColumnBuilder<TGetPagedItemDto>> ColumnBuilder,
+            Action<OrdExcelConfigurationBuilder> ConfigurationBuilder,
             string FileName
-            )> GetExportConfiguration(List<TGetPagedItemDto> dataItems)
+            )> GetExportConfiguration(List<TGetPagedItemDto> dataItems, TGetPagedInputDto input)
         {
-            throw new AbpValidationException("Not GetExportConfiguration");
+            throw new AbpValidationException("Not implement GetExportConfiguration");
         }
 
         #endregion

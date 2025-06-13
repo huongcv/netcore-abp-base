@@ -36,13 +36,13 @@ namespace Ord.Plugin.Auth.AppServices
         /// Lấy cấu hình export cho User
         /// </summary>
         protected override async Task<(
-            Action<OrdExportColumnBuilder<UserPagedDto>> ColumnBuilder,
-            Action<OrdExportConfigurationBuilder> ConfigurationBuilder,
+            Action<OrdExcelColumnBuilder<UserPagedDto>> ColumnBuilder,
+            Action<OrdExcelConfigurationBuilder> ConfigurationBuilder,
             string FileName
-            )> GetExportConfiguration(List<UserPagedDto> dataItems)
+            )> GetExportConfiguration(List<UserPagedDto> dataItems, UserPagedInput input)
         {
             // Column Builder cho User
-            var columnBuilder = new Action<OrdExportColumnBuilder<UserPagedDto>>(columns => columns
+            var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex("STT", 5)
                 .AddColumn(x => x.UserName, "Tên đăng nhập", 15)
                 .AddColumn(x => x.Name, "Họ tên", 20)
@@ -59,10 +59,12 @@ namespace Ord.Plugin.Auth.AppServices
                 );
 
             // Configuration Builder cho User
-            var configurationBuilder = new Action<OrdExportConfigurationBuilder>(config => config
+            var configurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
                 .WithWorksheetName("Danh sách người dùng")
                 .WithTitle(title => title
                     .WithText("BÁO CÁO DANH SÁCH NGƯỜI DÙNG HỆ THỐNG")
+                    .WithRowIndex(4)
+                    .WithRowHeight(10)
                     .WithStyle(style => style
                         .WithFont("Arial", 16)
                         .WithBoldFont()

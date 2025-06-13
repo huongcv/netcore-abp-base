@@ -30,16 +30,16 @@ namespace Ord.Plugin.Core.Features.DataExporting
         public async Task<byte[]> ExportFromPagedQuery<TData>(
             OrdPagedRequestDto pagedInput,
             Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-            Action<OrdExportConfigurationBuilder> configurationBuilder,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder) where TData : class
+            Action<OrdExcelConfigurationBuilder> configurationBuilder,
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder) where TData : class
         {
             // Build configuration
-            var configBuilder = OrdExportConfiguration.Builder();
+            var configBuilder = OrdExcelConfiguration.Builder();
             configurationBuilder(configBuilder);
             var configuration = configBuilder.Build();
 
             // Build columns
-            var colBuilder = new OrdExportColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>();
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
@@ -52,8 +52,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         public async Task<byte[]> ExportFromPagedQuery<TData>(
             OrdPagedRequestDto pagedInput,
             Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-            OrdExportConfiguration configuration,
-            params OrdExportColumnData<TData>[] columns) where TData : class
+            OrdExcelConfiguration configuration,
+            params OrdExcelColumnData<TData>[] columns) where TData : class
         {
             try
             {
@@ -85,19 +85,19 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         public async Task<byte[]> ExportDataCollection<TData>(
             IEnumerable<TData> dataItems,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder,
-            Action<OrdExportConfigurationBuilder>? configurationBuilder = null) where TData : class
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder,
+            Action<OrdExcelConfigurationBuilder>? configurationBuilder = null) where TData : class
         {
             // Build columns
-            var colBuilder = new OrdExportColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>();
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
             // Build configuration
-            var configuration = OrdExportConfiguration.Default();
+            var configuration = OrdExcelConfiguration.Default();
             if (configurationBuilder != null)
             {
-                var configBuilder = OrdExportConfiguration.Builder();
+                var configBuilder = OrdExcelConfiguration.Builder();
                 configurationBuilder(configBuilder);
                 configuration = configBuilder.Build();
             }
@@ -110,8 +110,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         public async Task<byte[]> ExportDataCollection<TData>(
             IEnumerable<TData> dataItems,
-            OrdExportConfiguration configuration,
-            params OrdExportColumnData<TData>[] columns) where TData : class
+            OrdExcelConfiguration configuration,
+            params OrdExcelColumnData<TData>[] columns) where TData : class
         {
             try
             {
@@ -197,19 +197,19 @@ namespace Ord.Plugin.Core.Features.DataExporting
         public OrdExportSheetConfiguration CreateSheetConfiguration<TData>(
             string sheetName,
             IEnumerable<TData> dataItems,
-            Action<OrdExportColumnBuilder<TData>> columnBuilder,
-            Action<OrdExportConfigurationBuilder>? configurationBuilder = null) where TData : class
+            Action<OrdExcelColumnBuilder<TData>> columnBuilder,
+            Action<OrdExcelConfigurationBuilder>? configurationBuilder = null) where TData : class
         {
             // Build columns
-            var colBuilder = new OrdExportColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>();
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
             // Build configuration
-            var configuration = OrdExportConfiguration.Default();
+            var configuration = OrdExcelConfiguration.Default();
             if (configurationBuilder != null)
             {
-                var configBuilder = OrdExportConfiguration.Builder();
+                var configBuilder = OrdExcelConfiguration.Builder();
                 configurationBuilder(configBuilder);
                 configuration = configBuilder.Build();
             }
@@ -230,7 +230,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         private void ValidateExportParameters<TData>(
             OrdPagedRequestDto pagedInput,
             Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-            OrdExportColumnData<TData>[] columns) where TData : class
+            OrdExcelColumnData<TData>[] columns) where TData : class
         {
             if (pagedInput == null)
                 throw new ArgumentNullException(nameof(pagedInput));
@@ -245,8 +245,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         private void ValidateDirectExportParameters<TData>(
             IEnumerable<TData> dataItems,
-            OrdExportConfiguration configuration,
-            OrdExportColumnData<TData>[] columns) where TData : class
+            OrdExcelConfiguration configuration,
+            OrdExcelColumnData<TData>[] columns) where TData : class
         {
             if (dataItems == null)
                 throw new ArgumentNullException(nameof(dataItems));
@@ -273,7 +273,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// <summary>
         /// Configure worksheet default settings
         /// </summary>
-        private void ConfigureWorksheetDefaults(ExcelWorksheet workSheet, OrdExportConfiguration configuration)
+        private void ConfigureWorksheetDefaults(ExcelWorksheet workSheet, OrdExcelConfiguration configuration)
         {
             workSheet.DefaultRowHeight = configuration.DefaultRowHeight;
             workSheet.DefaultColWidth = configuration.DefaultColumnWidth;
@@ -285,9 +285,9 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// <summary>
         /// Process columns (add row index if needed)
         /// </summary>
-        private OrdExportColumnData<TData>[] ProcessColumns<TData>(
-            OrdExportColumnData<TData>[] columns,
-            OrdExportConfiguration configuration) where TData : class
+        private OrdExcelColumnData<TData>[] ProcessColumns<TData>(
+            OrdExcelColumnData<TData>[] columns,
+            OrdExcelConfiguration configuration) where TData : class
         {
             if (!configuration.ShowRowNumber)
                 return columns;
@@ -297,11 +297,11 @@ namespace Ord.Plugin.Core.Features.DataExporting
                 return columns;
 
             // Add row index column at the beginning
-            var rowIndexColumn = OrdExportColumnData<TData>.RowIndex(
+            var rowIndexColumn = OrdExcelColumnData<TData>.RowIndex(
                 configuration.RowNumberColumnName,
                 configuration.RowNumberColumnWidth);
 
-            var processedColumns = new OrdExportColumnData<TData>[columns.Length + 1];
+            var processedColumns = new OrdExcelColumnData<TData>[columns.Length + 1];
             processedColumns[0] = rowIndexColumn;
             Array.Copy(columns, 0, processedColumns, 1, columns.Length);
 
@@ -313,7 +313,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         private async Task<int> AddTitleToWorksheet(
             ExcelWorksheet workSheet,
-            OrdExportTitle? title,
+            OrdExcelTitle? title,
             int columnCount)
         {
             if (title == null || string.IsNullOrEmpty(title.Text))
@@ -330,7 +330,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             if (title.RowHeight.HasValue)
                 workSheet.Row(title.RowIndex).Height = title.RowHeight.Value;
 
-            return title.RowIndex + 1;
+            return title.RowIndex + title.MarginBottomRow;
         }
 
         /// <summary>
@@ -338,8 +338,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         private async Task<int> AddHeadersToWorksheet<TData>(
             ExcelWorksheet workSheet,
-            OrdExportConfiguration configuration,
-            OrdExportColumnData<TData>[] columns,
+            OrdExcelConfiguration configuration,
+            OrdExcelColumnData<TData>[] columns,
             int currentRowIndex) where TData : class
         {
             var headerRowIndex = Math.Max(currentRowIndex, configuration.HeaderRowIndex);
@@ -366,7 +366,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// Get header text for column
         /// </summary>
         private string GetHeaderText<TData>(
-            OrdExportColumnData<TData> column,
+            OrdExcelColumnData<TData> column,
             int columnIndex,
             List<string>? customColumnNames) where TData : class
         {
@@ -393,8 +393,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         private async Task<int> AddDataRowsToWorksheet<TData>(
             ExcelWorksheet workSheet,
             IEnumerable<TData> dataItems,
-            OrdExportColumnData<TData>[] columns,
-            OrdExportConfiguration configuration,
+            OrdExcelColumnData<TData>[] columns,
+            OrdExcelConfiguration configuration,
             int startRowIndex) where TData : class
         {
             if (!dataItems.Any())
@@ -432,7 +432,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// Get cell value from column configuration
         /// </summary>
         private object GetCellValue<TData>(
-            OrdExportColumnData<TData> column,
+            OrdExcelColumnData<TData> column,
             TData dataItem,
             int recordIndex) where TData : class
         {
@@ -481,8 +481,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// </summary>
         private void ConfigureColumns<TData>(
             ExcelWorksheet workSheet,
-            OrdExportColumnData<TData>[] columns,
-            OrdExportConfiguration configuration) where TData : class
+            OrdExcelColumnData<TData>[] columns,
+            OrdExcelConfiguration configuration) where TData : class
         {
             for (int col = 0; col < columns.Length; col++)
             {
@@ -513,7 +513,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// <summary>
         /// Apply custom configurations
         /// </summary>
-        private async Task ApplyCustomConfigurations(ExcelWorksheet workSheet, OrdExportConfiguration configuration)
+        private async Task ApplyCustomConfigurations(ExcelWorksheet workSheet, OrdExcelConfiguration configuration)
         {
             configuration.CustomWorksheetAction?.Invoke(workSheet);
 
@@ -526,7 +526,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         /// <summary>
         /// Apply worksheet protection
         /// </summary>
-        private void ApplyWorksheetProtection(ExcelWorksheet workSheet, OrdExportConfiguration configuration)
+        private void ApplyWorksheetProtection(ExcelWorksheet workSheet, OrdExcelConfiguration configuration)
         {
             if (configuration.ProtectWorksheet)
             {
@@ -569,8 +569,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         private async Task ApplyConfigurationToWorksheet<T>(
             ExcelWorksheet worksheet,
             IEnumerable<T> data,
-            OrdExportConfiguration configuration,
-            OrdExportColumnData<T>[] columns) where T : class
+            OrdExcelConfiguration configuration,
+            OrdExcelColumnData<T>[] columns) where T : class
         {
             // Configure worksheet defaults
             ConfigureWorksheetDefaults(worksheet, configuration);

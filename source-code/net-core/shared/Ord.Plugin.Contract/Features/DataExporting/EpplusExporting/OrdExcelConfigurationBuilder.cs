@@ -8,16 +8,16 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
     /// <summary>
     /// Builder pattern để cấu hình export dễ dàng
     /// </summary>
-    public class OrdExportConfigurationBuilder
+    public class OrdExcelConfigurationBuilder
     {
-        private readonly OrdExportConfiguration _configuration = new();
+        private readonly OrdExcelConfiguration _configuration = new();
 
         #region Worksheet Configuration
 
         /// <summary>
         /// Thiết lập tên worksheet
         /// </summary>
-        public OrdExportConfigurationBuilder WithWorksheetName(string name)
+        public OrdExcelConfigurationBuilder WithWorksheetName(string name)
         {
             _configuration.WorksheetName = name;
             return this;
@@ -26,7 +26,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập chiều cao mặc định của hàng
         /// </summary>
-        public OrdExportConfigurationBuilder WithDefaultRowHeight(double height)
+        public OrdExcelConfigurationBuilder WithDefaultRowHeight(double height)
         {
             _configuration.DefaultRowHeight = height;
             return this;
@@ -35,7 +35,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập chiều rộng mặc định của cột
         /// </summary>
-        public OrdExportConfigurationBuilder WithDefaultColumnWidth(double width)
+        public OrdExcelConfigurationBuilder WithDefaultColumnWidth(double width)
         {
             _configuration.DefaultColumnWidth = width;
             return this;
@@ -44,7 +44,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập auto fit columns
         /// </summary>
-        public OrdExportConfigurationBuilder WithAutoFitColumns(bool autoFit = true, double minWidth = 8, double maxWidth = 50)
+        public OrdExcelConfigurationBuilder WithAutoFitColumns(bool autoFit = true, double minWidth = 8, double maxWidth = 50)
         {
             _configuration.AutoFitColumns = autoFit;
             _configuration.MinColumnWidth = minWidth;
@@ -59,9 +59,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập tiêu đề đơn giản
         /// </summary>
-        public OrdExportConfigurationBuilder WithTitle(string title, int rowIndex = 2, double? rowHeight = 32)
+        public OrdExcelConfigurationBuilder WithTitle(string title, int rowIndex = 2, double? rowHeight = 32)
         {
-            _configuration.Title = new OrdExportTitle
+            _configuration.Title = new OrdExcelTitle
             {
                 Text = title,
                 RowIndex = rowIndex,
@@ -73,9 +73,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập tiêu đề với cấu hình chi tiết
         /// </summary>
-        public OrdExportConfigurationBuilder WithTitle(Action<OrdExportTitleBuilder> titleBuilder)
+        public OrdExcelConfigurationBuilder WithTitle(Action<OrdExcelTitleBuilder> titleBuilder)
         {
-            var builder = new OrdExportTitleBuilder();
+            var builder = new OrdExcelTitleBuilder();
             titleBuilder(builder);
             _configuration.Title = builder.Build();
             return this;
@@ -88,7 +88,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập vị trí header
         /// </summary>
-        public OrdExportConfigurationBuilder WithHeaderRowIndex(int index)
+        public OrdExcelConfigurationBuilder WithHeaderRowIndex(int index)
         {
             _configuration.HeaderRowIndex = index;
             return this;
@@ -97,7 +97,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập tên cột tùy chỉnh
         /// </summary>
-        public OrdExportConfigurationBuilder WithCustomColumnNames(params string[] columnNames)
+        public OrdExcelConfigurationBuilder WithCustomColumnNames(params string[] columnNames)
         {
             _configuration.CustomColumnNames = columnNames.ToList();
             return this;
@@ -106,9 +106,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập style cho header
         /// </summary>
-        public OrdExportConfigurationBuilder WithHeaderStyle(Action<OrdExportStyleBuilder> styleBuilder)
+        public OrdExcelConfigurationBuilder WithHeaderStyle(Action<OrdExcelStyleBuilder> styleBuilder)
         {
-            var builder = new OrdExportStyleBuilder();
+            var builder = new OrdExcelStyleBuilder();
             styleBuilder(builder);
             _configuration.HeaderStyle = builder.Build();
             return this;
@@ -117,9 +117,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập style header mặc định
         /// </summary>
-        public OrdExportConfigurationBuilder WithDefaultHeaderStyle()
+        public OrdExcelConfigurationBuilder WithDefaultHeaderStyle()
         {
-            _configuration.HeaderStyle = OrdExportStyleConfiguration.Header();
+            _configuration.HeaderStyle = OrdExcelStyleConfiguration.Header();
             return this;
         }
 
@@ -130,9 +130,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập style cho data cells
         /// </summary>
-        public OrdExportConfigurationBuilder WithDataStyle(Action<OrdExportStyleBuilder> styleBuilder)
+        public OrdExcelConfigurationBuilder WithDataStyle(Action<OrdExcelStyleBuilder> styleBuilder)
         {
-            var builder = new OrdExportStyleBuilder();
+            var builder = new OrdExcelStyleBuilder();
             styleBuilder(builder);
             _configuration.DataStyle = builder.Build();
             return this;
@@ -141,7 +141,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập hiển thị số thứ tự
         /// </summary>
-        public OrdExportConfigurationBuilder WithRowNumber(bool show = true, string columnName = "STT", double width = 5)
+        public OrdExcelConfigurationBuilder WithRowNumber(bool show = true, string columnName = "STT", double width = 5)
         {
             _configuration.ShowRowNumber = show;
             _configuration.RowNumberColumnName = columnName;
@@ -156,9 +156,9 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập cấu hình in ấn
         /// </summary>
-        public OrdExportConfigurationBuilder WithPrintSettings(Action<OrdExportPrintBuilder> printBuilder)
+        public OrdExcelConfigurationBuilder WithPrintSettings(Action<OrdExcelPrintBuilder> printBuilder)
         {
-            var builder = new OrdExportPrintBuilder();
+            var builder = new OrdExcelPrintBuilder();
             printBuilder(builder);
             _configuration.PrintSettings = builder.Build();
             return this;
@@ -167,7 +167,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập hướng in landscape
         /// </summary>
-        public OrdExportConfigurationBuilder WithLandscapeOrientation()
+        public OrdExcelConfigurationBuilder WithLandscapeOrientation()
         {
             _configuration.PrintSettings.Orientation = eOrientation.Landscape;
             return this;
@@ -176,7 +176,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập hướng in portrait
         /// </summary>
-        public OrdExportConfigurationBuilder WithPortraitOrientation()
+        public OrdExcelConfigurationBuilder WithPortraitOrientation()
         {
             _configuration.PrintSettings.Orientation = eOrientation.Portrait;
             return this;
@@ -189,7 +189,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập function tùy chỉnh worksheet
         /// </summary>
-        public OrdExportConfigurationBuilder WithCustomWorksheet(Action<ExcelWorksheet> customAction)
+        public OrdExcelConfigurationBuilder WithCustomWorksheet(Action<ExcelWorksheet> customAction)
         {
             _configuration.CustomWorksheetAction = customAction;
             return this;
@@ -198,7 +198,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập function tùy chỉnh worksheet async
         /// </summary>
-        public OrdExportConfigurationBuilder WithCustomWorksheetAsync(Func<ExcelWorksheet, Task> customAction)
+        public OrdExcelConfigurationBuilder WithCustomWorksheetAsync(Func<ExcelWorksheet, Task> customAction)
         {
             _configuration.CustomWorksheetAsyncAction = customAction;
             return this;
@@ -207,7 +207,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập bảo vệ worksheet
         /// </summary>
-        public OrdExportConfigurationBuilder WithProtection(string? password = null)
+        public OrdExcelConfigurationBuilder WithProtection(string? password = null)
         {
             _configuration.ProtectWorksheet = true;
             _configuration.WorksheetPassword = password;
@@ -219,15 +219,15 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Build configuration
         /// </summary>
-        public OrdExportConfiguration Build() => _configuration;
+        public OrdExcelConfiguration Build() => _configuration;
 
         /// <summary>
         /// Build action delegate
         /// </summary>
-        public Action<OrdExportConfiguration> BuildAction() => config =>
+        public Action<OrdExcelConfiguration> BuildAction() => config =>
         {
             // Copy all properties from built configuration to the provided one
-            typeof(OrdExportConfiguration).GetProperties()
+            typeof(OrdExcelConfiguration).GetProperties()
                 .Where(p => p.CanWrite)
                 .ToList()
                 .ForEach(p => p.SetValue(config, p.GetValue(_configuration)));
@@ -237,55 +237,60 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
     /// <summary>
     /// Builder cho Title
     /// </summary>
-    public class OrdExportTitleBuilder
+    public class OrdExcelTitleBuilder
     {
-        private readonly OrdExportTitle _title = new();
+        private readonly OrdExcelTitle _title = new();
 
-        public OrdExportTitleBuilder WithText(string text)
+        public OrdExcelTitleBuilder WithText(string text)
         {
             _title.Text = text;
             return this;
         }
 
-        public OrdExportTitleBuilder WithRowIndex(int rowIndex)
+        public OrdExcelTitleBuilder WithRowIndex(int rowIndex)
         {
             _title.RowIndex = rowIndex;
             return this;
         }
 
-        public OrdExportTitleBuilder WithRowHeight(double height)
+        public OrdExcelTitleBuilder WithRowHeight(double height)
         {
             _title.RowHeight = height;
             return this;
         }
-
-        public OrdExportTitleBuilder WithStyle(Action<OrdExportStyleBuilder> styleBuilder)
+        public OrdExcelTitleBuilder WithMarginBottomRow(int marginBottomRow)
         {
-            var builder = new OrdExportStyleBuilder();
+            _title.MarginBottomRow = marginBottomRow;
+            return this;
+        }
+
+        public OrdExcelTitleBuilder WithStyle(Action<OrdExcelStyleBuilder> styleBuilder)
+        {
+            var builder = new OrdExcelStyleBuilder();
             styleBuilder(builder);
             _title.Style = builder.Build();
             return this;
         }
 
-        public OrdExportTitleBuilder WithCustomStyle(Action<ExcelStyle> customAction)
+        public OrdExcelTitleBuilder WithCustomStyle(Action<ExcelStyle> customAction)
         {
             _title.CustomStyleAction = customAction;
             return this;
         }
 
-        public OrdExportTitle Build() => _title;
+        public OrdExcelTitle Build() => _title;
     }
 
     /// <summary>
     /// Builder cho Style
     /// </summary>
-    public class OrdExportStyleBuilder
+    public class OrdExcelStyleBuilder
     {
-        private readonly OrdExportStyleConfiguration _style = new();
+        private readonly OrdExcelStyleConfiguration _style = new();
 
         #region Font Settings
 
-        public OrdExportStyleBuilder WithFont(string fontName, float? fontSize = null)
+        public OrdExcelStyleBuilder WithFont(string fontName, float? fontSize = null)
         {
             _style.FontName = fontName;
             if (fontSize.HasValue)
@@ -293,31 +298,31 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             return this;
         }
 
-        public OrdExportStyleBuilder WithFontSize(float size)
+        public OrdExcelStyleBuilder WithFontSize(float size)
         {
             _style.FontSize = size;
             return this;
         }
 
-        public OrdExportStyleBuilder WithBoldFont(bool bold = true)
+        public OrdExcelStyleBuilder WithBoldFont(bool bold = true)
         {
             _style.IsBold = bold;
             return this;
         }
 
-        public OrdExportStyleBuilder WithItalicFont(bool italic = true)
+        public OrdExcelStyleBuilder WithItalicFont(bool italic = true)
         {
             _style.IsItalic = italic;
             return this;
         }
 
-        public OrdExportStyleBuilder WithUnderlineFont(bool underline = true)
+        public OrdExcelStyleBuilder WithUnderlineFont(bool underline = true)
         {
             _style.IsUnderline = underline;
             return this;
         }
 
-        public OrdExportStyleBuilder WithFontColor(Color color)
+        public OrdExcelStyleBuilder WithFontColor(Color color)
         {
             _style.FontColor = color;
             return this;
@@ -327,26 +332,26 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #region Alignment Settings
 
-        public OrdExportStyleBuilder WithHorizontalAlignment(ExcelHorizontalAlignment alignment)
+        public OrdExcelStyleBuilder WithHorizontalAlignment(ExcelHorizontalAlignment alignment)
         {
             _style.HorizontalAlignment = alignment;
             return this;
         }
 
-        public OrdExportStyleBuilder WithVerticalAlignment(ExcelVerticalAlignment alignment)
+        public OrdExcelStyleBuilder WithVerticalAlignment(ExcelVerticalAlignment alignment)
         {
             _style.VerticalAlignment = alignment;
             return this;
         }
 
-        public OrdExportStyleBuilder WithCenterAlignment()
+        public OrdExcelStyleBuilder WithCenterAlignment()
         {
             _style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             _style.VerticalAlignment = ExcelVerticalAlignment.Center;
             return this;
         }
 
-        public OrdExportStyleBuilder WithWrapText(bool wrap = true)
+        public OrdExcelStyleBuilder WithWrapText(bool wrap = true)
         {
             _style.WrapText = wrap;
             return this;
@@ -356,7 +361,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #region Background Settings
 
-        public OrdExportStyleBuilder WithBackgroundColor(Color color, ExcelFillStyle? pattern = null)
+        public OrdExcelStyleBuilder WithBackgroundColor(Color color, ExcelFillStyle? pattern = null)
         {
             _style.BackgroundColor = color;
             _style.FillPattern = pattern ?? ExcelFillStyle.Solid;
@@ -367,23 +372,23 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #region Border Settings
 
-        public OrdExportStyleBuilder WithBorder(Action<OrdExportBorderBuilder> borderBuilder)
+        public OrdExcelStyleBuilder WithBorder(Action<OrdExcelBorderBuilder> borderBuilder)
         {
-            var builder = new OrdExportBorderBuilder();
+            var builder = new OrdExcelBorderBuilder();
             borderBuilder(builder);
             _style.Border = builder.Build();
             return this;
         }
 
-        public OrdExportStyleBuilder WithAllBorders(ExcelBorderStyle style = ExcelBorderStyle.Thin)
+        public OrdExcelStyleBuilder WithAllBorders(ExcelBorderStyle style = ExcelBorderStyle.Thin)
         {
-            _style.Border = OrdExportBorderConfiguration.All(style);
+            _style.Border = OrdExcelBorderConfiguration.All(style);
             return this;
         }
 
-        public OrdExportStyleBuilder WithAroundBorder(ExcelBorderStyle style = ExcelBorderStyle.Medium)
+        public OrdExcelStyleBuilder WithAroundBorder(ExcelBorderStyle style = ExcelBorderStyle.Medium)
         {
-            _style.Border = OrdExportBorderConfiguration.Around(style);
+            _style.Border = OrdExcelBorderConfiguration.Around(style);
             return this;
         }
 
@@ -391,34 +396,34 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #region Number Format Settings
 
-        public OrdExportStyleBuilder WithNumberFormat(string format)
+        public OrdExcelStyleBuilder WithNumberFormat(string format)
         {
             _style.NumberFormat = format;
             return this;
         }
 
-        public OrdExportStyleBuilder WithCurrencyFormat(string currencySymbol = "₫")
+        public OrdExcelStyleBuilder WithCurrencyFormat(string currencySymbol = "₫")
         {
             _style.NumberFormat = $"#,##0.00 {currencySymbol}";
             _style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
             return this;
         }
 
-        public OrdExportStyleBuilder WithDateFormat(string format = "dd/mm/yyyy")
+        public OrdExcelStyleBuilder WithDateFormat(string format = "dd/mm/yyyy")
         {
             _style.NumberFormat = format;
             _style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             return this;
         }
 
-        public OrdExportStyleBuilder WithDateTimeFormat(string format = "dd/mm/yyyy hh:mm:ss")
+        public OrdExcelStyleBuilder WithDateTimeFormat(string format = "dd/mm/yyyy hh:mm:ss")
         {
             _style.NumberFormat = format;
             _style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             return this;
         }
 
-        public OrdExportStyleBuilder WithPercentageFormat(int decimals = 2)
+        public OrdExcelStyleBuilder WithPercentageFormat(int decimals = 2)
         {
             _style.NumberFormat = decimals == 0 ? "0%" : $"0.{new string('0', decimals)}%";
             _style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -427,41 +432,41 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #endregion
 
-        public OrdExportStyleConfiguration Build() => _style;
+        public OrdExcelStyleConfiguration Build() => _style;
     }
 
     /// <summary>
     /// Builder cho Border
     /// </summary>
-    public class OrdExportBorderBuilder
+    public class OrdExcelBorderBuilder
     {
-        private readonly OrdExportBorderConfiguration _border = new();
+        private readonly OrdExcelBorderConfiguration _border = new();
 
-        public OrdExportBorderBuilder WithTop(ExcelBorderStyle style)
+        public OrdExcelBorderBuilder WithTop(ExcelBorderStyle style)
         {
             _border.Top = style;
             return this;
         }
 
-        public OrdExportBorderBuilder WithBottom(ExcelBorderStyle style)
+        public OrdExcelBorderBuilder WithBottom(ExcelBorderStyle style)
         {
             _border.Bottom = style;
             return this;
         }
 
-        public OrdExportBorderBuilder WithLeft(ExcelBorderStyle style)
+        public OrdExcelBorderBuilder WithLeft(ExcelBorderStyle style)
         {
             _border.Left = style;
             return this;
         }
 
-        public OrdExportBorderBuilder WithRight(ExcelBorderStyle style)
+        public OrdExcelBorderBuilder WithRight(ExcelBorderStyle style)
         {
             _border.Right = style;
             return this;
         }
 
-        public OrdExportBorderBuilder WithAll(ExcelBorderStyle style)
+        public OrdExcelBorderBuilder WithAll(ExcelBorderStyle style)
         {
             _border.Top = style;
             _border.Bottom = style;
@@ -470,29 +475,29 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             return this;
         }
 
-        public OrdExportBorderBuilder WithColor(Color color)
+        public OrdExcelBorderBuilder WithColor(Color color)
         {
             _border.Color = color;
             return this;
         }
 
-        public OrdExportBorderConfiguration Build() => _border;
+        public OrdExcelBorderConfiguration Build() => _border;
     }
 
     /// <summary>
     /// Builder cho Print Configuration
     /// </summary>
-    public class OrdExportPrintBuilder
+    public class OrdExcelPrintBuilder
     {
-        private readonly OrdExportPrintConfiguration _print = new();
+        private readonly OrdExcelPrintConfiguration _print = new();
 
-        public OrdExportPrintBuilder WithOrientation(eOrientation orientation)
+        public OrdExcelPrintBuilder WithOrientation(eOrientation orientation)
         {
             _print.Orientation = orientation;
             return this;
         }
 
-        public OrdExportPrintBuilder WithFitToPage(bool fit = true, int width = 1, int height = 0)
+        public OrdExcelPrintBuilder WithFitToPage(bool fit = true, int width = 1, int height = 0)
         {
             _print.FitToPage = fit;
             _print.FitToWidth = width;
@@ -500,7 +505,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             return this;
         }
 
-        public OrdExportPrintBuilder WithMargins(decimal left, decimal right, decimal top, decimal bottom)
+        public OrdExcelPrintBuilder WithMargins(decimal left, decimal right, decimal top, decimal bottom)
         {
             _print.LeftMargin = left;
             _print.RightMargin = right;
@@ -509,76 +514,76 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             return this;
         }
 
-        public OrdExportPrintBuilder WithHeader(string header)
+        public OrdExcelPrintBuilder WithHeader(string header)
         {
             _print.Header = header;
             return this;
         }
 
-        public OrdExportPrintBuilder WithFooter(string footer)
+        public OrdExcelPrintBuilder WithFooter(string footer)
         {
             _print.Footer = footer;
             return this;
         }
 
-        public OrdExportPrintConfiguration Build() => _print;
+        public OrdExcelPrintConfiguration Build() => _print;
     }
 
     /// <summary>
     /// Fluent column builder được tối ưu hóa
     /// </summary>
-    public class OrdExportColumnBuilder<T>
+    public class OrdExcelColumnBuilder<T>
     {
-        private readonly List<OrdExportColumnData<T>> _columns = new();
+        private readonly List<OrdExcelColumnData<T>> _columns = new();
 
         /// <summary>
         /// Thêm cột số thứ tự
         /// </summary>
-        public OrdExportColumnBuilder<T> AddRowIndex(string headerName = "STT", double? width = 5)
+        public OrdExcelColumnBuilder<T> AddRowIndex(string headerName = "STT", double? width = 5)
         {
-            _columns.Add(OrdExportColumnData<T>.RowIndex(headerName, width));
+            _columns.Add(OrdExcelColumnData<T>.RowIndex(headerName, width));
             return this;
         }
 
         /// <summary>
         /// Thêm cột đơn giản
         /// </summary>
-        public OrdExportColumnBuilder<T> AddColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName = null,
             double? width = null)
         {
-            _columns.Add(OrdExportColumnData<T>.Create(expression, headerName, width));
+            _columns.Add(OrdExcelColumnData<T>.Create(expression, headerName, width));
             return this;
         }
 
         /// <summary>
         /// Thêm cột với style configuration
         /// </summary>
-        public OrdExportColumnBuilder<T> AddColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName,
-            Action<OrdExportStyleBuilder> styleBuilder,
+            Action<OrdExcelStyleBuilder> styleBuilder,
             double? width = null)
         {
-            var builder = new OrdExportStyleBuilder();
+            var builder = new OrdExcelStyleBuilder();
             styleBuilder(builder);
             var style = builder.Build();
 
-            _columns.Add(OrdExportColumnData<T>.Create(expression, headerName, style, width));
+            _columns.Add(OrdExcelColumnData<T>.Create(expression, headerName, style, width));
             return this;
         }
 
         /// <summary>
         /// Thêm cột với custom style action
         /// </summary>
-        public OrdExportColumnBuilder<T> AddColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName,
             Action<T, ExcelStyle> customStyleAction,
             double? width = null)
         {
-            var column = OrdExportColumnData<T>.Create(expression, headerName, width);
+            var column = OrdExcelColumnData<T>.Create(expression, headerName, width);
             column.CustomStyleAction = customStyleAction;
             _columns.Add(column);
             return this;
@@ -587,7 +592,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột currency
         /// </summary>
-        public OrdExportColumnBuilder<T> AddCurrencyColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddCurrencyColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName = null,
             string currencySymbol = "₫",
@@ -602,7 +607,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột date
         /// </summary>
-        public OrdExportColumnBuilder<T> AddDateColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddDateColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName = null,
             string format = "dd/mm/yyyy",
@@ -617,7 +622,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột datetime
         /// </summary>
-        public OrdExportColumnBuilder<T> AddDateTimeColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddDateTimeColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName = null,
             string format = "dd/mm/yyyy hh:mm:ss",
@@ -632,7 +637,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột percentage
         /// </summary>
-        public OrdExportColumnBuilder<T> AddPercentageColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddPercentageColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName = null,
             int decimals = 2,
@@ -647,7 +652,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột với conditional formatting
         /// </summary>
-        public OrdExportColumnBuilder<T> AddConditionalColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddConditionalColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName,
             Func<T, bool> condition,
@@ -665,7 +670,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột với conditional background
         /// </summary>
-        public OrdExportColumnBuilder<T> AddConditionalBackgroundColumn<TProperty>(
+        public OrdExcelColumnBuilder<T> AddConditionalBackgroundColumn<TProperty>(
             Expression<Func<T, TProperty>> expression,
             string? headerName,
             Func<T, bool> condition,
@@ -681,6 +686,6 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             }, width);
         }
 
-        public OrdExportColumnData<T>[] Build() => _columns.ToArray();
+        public OrdExcelColumnData<T>[] Build() => _columns.ToArray();
     }
 }
