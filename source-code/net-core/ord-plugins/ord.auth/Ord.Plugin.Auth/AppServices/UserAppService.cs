@@ -43,7 +43,7 @@ namespace Ord.Plugin.Auth.AppServices
         {
             // Column Builder cho User
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
-                .AddRowIndex("STT", 5)
+                .AddRowIndex()
                 .AddColumn(x => x.UserName, "Tên đăng nhập", 15)
                 .AddColumn(x => x.Name, "Họ tên", 20)
                 .AddColumn(x => x.Email, "Email" ?? "N/A", 25)
@@ -64,7 +64,7 @@ namespace Ord.Plugin.Auth.AppServices
                 .WithTitle(title => title
                     .WithText("BÁO CÁO DANH SÁCH NGƯỜI DÙNG HỆ THỐNG")
                     .WithRowIndex(4)
-                    .WithRowHeight(10)
+                    .WithRowHeight(30)
                     .WithStyle(style => style
                         .WithFont("Arial", 16)
                         .WithBoldFont()
@@ -80,7 +80,8 @@ namespace Ord.Plugin.Auth.AppServices
                 .WithLandscapeOrientation()
                 .WithPrintSettings(print => print
                     .WithHeader("HỆ THỐNG QUẢN LÝ NGƯỜI DÙNG")
-                    .WithFooter("Trang {0} / {1}"))
+                    //.WithFooter("Trang {0} / {1}")
+                )
                 .WithCustomWorksheet(worksheet =>
                 {
                     // Thêm thông tin tổng hợp ở cuối

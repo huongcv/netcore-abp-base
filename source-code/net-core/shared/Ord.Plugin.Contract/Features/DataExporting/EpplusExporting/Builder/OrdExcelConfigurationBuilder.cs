@@ -135,17 +135,6 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             return this;
         }
 
-        /// <summary>
-        /// Thiết lập hiển thị số thứ tự
-        /// </summary>
-        public OrdExcelConfigurationBuilder WithRowNumber(bool show = true, string columnName = "STT", double width = 5)
-        {
-            _configuration.ShowRowNumber = show;
-            _configuration.RowNumberColumnName = columnName;
-            _configuration.RowNumberColumnWidth = width;
-            return this;
-        }
-
         #endregion
 
         #region Print Configuration

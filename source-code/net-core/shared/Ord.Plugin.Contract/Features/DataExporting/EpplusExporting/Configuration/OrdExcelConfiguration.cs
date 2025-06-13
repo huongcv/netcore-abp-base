@@ -76,22 +76,6 @@ public class OrdExcelConfiguration
     /// Cấu hình style cho data cells
     /// </summary>
     public OrdExcelStyleConfiguration DataStyle { get; set; } = new();
-
-    /// <summary>
-    /// Có hiển thị số thứ tự hay không
-    /// </summary>
-    public bool ShowRowNumber { get; set; } = true;
-
-    /// <summary>
-    /// Tên cột số thứ tự
-    /// </summary>
-    public string RowNumberColumnName { get; set; } = "STT";
-
-    /// <summary>
-    /// Chiều rộng cột số thứ tự
-    /// </summary>
-    public double RowNumberColumnWidth { get; set; } = 5;
-
     #endregion
 
     #region Print Settings

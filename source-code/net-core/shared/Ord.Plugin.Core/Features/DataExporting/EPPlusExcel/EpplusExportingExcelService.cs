@@ -128,7 +128,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
                 ConfigureWorksheetDefaults(workSheet, configuration);
 
                 // Process columns (add row index if needed)
-                var processedColumns = ProcessColumns(columns, configuration);
+                var processedColumns = columns;
 
                 // Add title
                 var currentRowIndex = await AddTitleToWorksheet(workSheet, configuration.Title, processedColumns.Length);
@@ -282,31 +282,6 @@ namespace Ord.Plugin.Core.Features.DataExporting
             configuration.PrintSettings.ApplyTo(workSheet);
         }
 
-        /// <summary>
-        /// Process columns (add row index if needed)
-        /// </summary>
-        private OrdExcelColumnData<TData>[] ProcessColumns<TData>(
-            OrdExcelColumnData<TData>[] columns,
-            OrdExcelConfiguration configuration) where TData : class
-        {
-            if (!configuration.ShowRowNumber)
-                return columns;
-
-            // Check if row index column already exists
-            if (columns.Any(c => c.IsRowIndex))
-                return columns;
-
-            // Add row index column at the beginning
-            var rowIndexColumn = OrdExcelColumnData<TData>.RowIndex(
-                configuration.RowNumberColumnName,
-                configuration.RowNumberColumnWidth);
-
-            var processedColumns = new OrdExcelColumnData<TData>[columns.Length + 1];
-            processedColumns[0] = rowIndexColumn;
-            Array.Copy(columns, 0, processedColumns, 1, columns.Length);
-
-            return processedColumns;
-        }
 
         /// <summary>
         /// Add title to worksheet
@@ -576,7 +551,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             ConfigureWorksheetDefaults(worksheet, configuration);
 
             // Process columns
-            var processedColumns = ProcessColumns(columns, configuration);
+            var processedColumns = columns;
 
             // Add title
             var currentRowIndex = await AddTitleToWorksheet(worksheet, configuration.Title, processedColumns.Length);
