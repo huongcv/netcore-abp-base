@@ -25,21 +25,8 @@ namespace Ord.Plugin.HostBase.Configurations
                     builder.AddView("http.server.request.duration",
                         new ExplicitBucketHistogramConfiguration
                         {
-                            Boundaries = new double[] { 0, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10 }
-                        });
-
-                    // Configure histogram buckets for ABP request duration
-                    builder.AddView("abp.request.duration",
-                        new ExplicitBucketHistogramConfiguration
-                        {
-                            Boundaries = new double[] { 0, 1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000 }
-                        });
-
-                    // Configure histogram buckets for database query duration
-                    builder.AddView("abp.database.query.duration",
-                        new ExplicitBucketHistogramConfiguration
-                        {
-                            Boundaries = new double[] { 0, 0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 }
+                            Boundaries = new double[]
+                                { 0, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10 }
                         });
                 });
         }
