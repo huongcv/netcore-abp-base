@@ -9,6 +9,8 @@
         public IpRateLimitPolicy IpPolicy { get; set; } = new();
         public UserRateLimitPolicy UserPolicy { get; set; } = new();
         public TenantRateLimitPolicy TenantPolicy { get; set; } = new();
+
+        public List<string?> EndpointWhitelist { get; set; } = new();
     }
 
     public class IpRateLimitPolicy

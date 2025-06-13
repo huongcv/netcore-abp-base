@@ -38,8 +38,20 @@ namespace Ord.Plugin.Core.Features.RateLimits
         {
             var options = _options;
             var endpoint = GetEndpoint(context);
-            _endpointHash = SecurityHelper.Sha256(endpoint);
+            var whiteListEndpoints = options.EndpointWhitelist;
+            if (whiteListEndpoints?.Any() == true)
+            {
+                foreach (var ruleWhiteList in whiteListEndpoints)
+                {
+                    if (IsEndpointMatch(endpoint, ruleWhiteList))
+                    {
+                        await _next(context);
+                        return;
+                    }
+                }
+            }
 
+            _endpointHash = SecurityHelper.Sha256(endpoint);
             // 1. Kiểm tra IP Policy
             if (options.IpPolicy.Enabled)
             {
@@ -175,7 +187,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
         {
             if (string.IsNullOrEmpty(ruleEndpoint))
                 return false;
-
+            ruleEndpoint = ruleEndpoint.Trim();
             // Xử lý pattern "*" - match tất cả
             if (ruleEndpoint == "*")
                 return true;
@@ -339,11 +351,11 @@ namespace Ord.Plugin.Core.Features.RateLimits
             if (result.RetryAfter.HasValue)
             {
                 context.Response.Headers.Add("Retry-After",
-                    ((int)result.RetryAfter.Value.TotalSeconds).ToString());
+                    ((int)result.RetryAfter.Value.TotalSeconds).ToString() + "s");
             }
 
             var identifierInfor = _appFactory.GetLocalizedMessage("message.RateLimit.PolicyName." + policy);
-            identifierInfor = identifierInfor + ": (" + identifier +")";
+            identifierInfor = identifierInfor + ": (" + identifier + ")";
             var response = new CommonResultDto<object>()
             {
                 Code = "429",
