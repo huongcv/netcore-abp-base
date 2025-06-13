@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.Style;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
+using System.Drawing;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -29,7 +32,78 @@ namespace Ord.Plugin.Auth.AppServices
         {
             await AppFactory.ClearCacheUser(entity.Id);
         }
+        /// <summary>
+        /// Lấy cấu hình export cho User
+        /// </summary>
+        protected override async Task<(
+            Action<OrdExportColumnBuilder<UserPagedDto>> ColumnBuilder,
+            Action<OrdExportConfigurationBuilder> ConfigurationBuilder,
+            string FileName
+            )> GetExportConfiguration(List<UserPagedDto> dataItems)
+        {
+            // Column Builder cho User
+            var columnBuilder = new Action<OrdExportColumnBuilder<UserPagedDto>>(columns => columns
+                .AddRowIndex("STT", 5)
+                .AddColumn(x => x.UserName, "Tên đăng nhập", 15)
+                .AddColumn(x => x.Name, "Họ tên", 20)
+                .AddColumn(x => x.Email, "Email" ?? "N/A", 25)
+                .AddColumn(x => x.PhoneNumber ?? "N/A", "Số điện thoại", 15)
+                .AddDateTimeColumn(x => x.CreationTime, "Ngày tạo", width: 18)
+                .AddConditionalColumn(
+                    x => x.IsActived ? "Hoạt động" : "Không hoạt động",
+                    "Trạng thái",
+                    u => u.IsActived,
+                    Color.Green,
+                    Color.Red,
+                    12)
+                );
 
+            // Configuration Builder cho User
+            var configurationBuilder = new Action<OrdExportConfigurationBuilder>(config => config
+                .WithWorksheetName("Danh sách người dùng")
+                .WithTitle(title => title
+                    .WithText("BÁO CÁO DANH SÁCH NGƯỜI DÙNG HỆ THỐNG")
+                    .WithStyle(style => style
+                        .WithFont("Arial", 16)
+                        .WithBoldFont()
+                        .WithCenterAlignment()
+                        .WithFontColor(Color.DarkBlue)))
+                .WithHeaderStyle(style => style
+                    .WithBoldFont()
+                    .WithBackgroundColor(Color.LightBlue)
+                    .WithCenterAlignment()
+                    .WithAllBorders())
+                .WithDataStyle(style => style
+                    .WithAllBorders(ExcelBorderStyle.Thin))
+                .WithLandscapeOrientation()
+                .WithPrintSettings(print => print
+                    .WithHeader("HỆ THỐNG QUẢN LÝ NGƯỜI DÙNG")
+                    .WithFooter("Trang {0} / {1}"))
+                .WithCustomWorksheet(worksheet =>
+                {
+                    // Thêm thông tin tổng hợp ở cuối
+                    var lastRow = worksheet.Dimension?.End.Row ?? 1;
+                    var summaryRow = lastRow + 3;
+
+                    worksheet.Cells[summaryRow, 1].Value = "Tổng số người dùng:";
+                    worksheet.Cells[summaryRow, 1].Style.Font.Bold = true;
+                    worksheet.Cells[summaryRow, 2].Value = dataItems.Count;
+
+                    worksheet.Cells[summaryRow + 1, 1].Value = "Người dùng hoạt động:";
+                    worksheet.Cells[summaryRow + 1, 1].Style.Font.Bold = true;
+                    worksheet.Cells[summaryRow + 1, 2].Value = dataItems.Count(x => x.IsActived);
+
+                    // Thêm border cho summary
+                    var summaryRange = worksheet.Cells[summaryRow, 1, summaryRow + 1, 2];
+                    summaryRange.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                }));
+
+            // File Name cho User
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            var fileName = $"DanhSachNguoiDung_{timestamp}.xlsx";
+
+            return (columnBuilder, configurationBuilder, fileName);
+        }
         #region Read Operations
 
         /// <summary>

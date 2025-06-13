@@ -9,6 +9,7 @@ namespace Ord.Plugin.Core.Base
     public abstract class OrdAppServiceBase : ApplicationService
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
+        protected IEpplusExportingExcelService EpplusService => LazyServiceProvider.LazyGetRequiredService<IEpplusExportingExcelService>();
 
         #region Permission Methods
 

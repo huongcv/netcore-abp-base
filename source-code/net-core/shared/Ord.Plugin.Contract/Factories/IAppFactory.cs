@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Ord.Plugin.Contract.Data;
-using Ord.Plugin.Contract.DataExporting;
+using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Services.Shop;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;

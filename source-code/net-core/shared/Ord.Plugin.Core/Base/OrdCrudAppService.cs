@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
+using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Validation;
@@ -61,6 +64,7 @@ namespace Ord.Plugin.Core.Services
             AppFactory.EncodeIdPagedItems<TEntity, TKey, TGetPagedItemDto>(paged.Items);
             return AppFactory.CreateSuccessResult(paged);
         }
+
 
         /// <summary>
         /// Lấy số lượng theo trạng thái IsActived
@@ -185,6 +189,58 @@ namespace Ord.Plugin.Core.Services
 
         #endregion
 
+        #region Export Operations
+        /// <summary>
+        /// Xuất dữ liệu phân trang ra Excel
+        /// </summary>
+        [HttpPost]
+        public virtual async Task<IActionResult> ExportPagedResultData(TGetPagedInputDto input)
+        {
+            // Kiểm tra quyền export (có thể custom)
+            await CheckPermissionForExport();
+
+            try
+            {
+                input.MaxResultCount = Int32.MaxValue;
+                var pagedResultCommon = await GetPaged(input);
+                var items = pagedResultCommon?.Data?.Items ?? new List<TGetPagedItemDto>();
+                // Lấy cấu hình export
+                var (columnBuilder, configurationBuilder, fileName) = await GetExportConfiguration(items.ToList());
+                // Xuất dữ liệu
+                var excelBytes = await EpplusService.ExportDataCollection(items, columnBuilder, configurationBuilder);
+                // Trả về file
+                return new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                {
+                    FileDownloadName = fileName
+                };
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Lỗi khi xuất dữ liệu cho {EntityType}", typeof(TEntity).Name);
+                throw new UserFriendlyException("Xuất dữ liệu thất bại. Vui lòng thử lại.");
+            }
+        }
+
+        protected virtual async Task CheckPermissionForExport()
+        {
+            // Mặc định sử dụng quyền Read, có thể override để dùng permission riêng
+            await CheckPermissionForOperation(CrudOperationType.Read);
+        }
+        /// <summary>
+        /// Lấy cấu hình export (Column Builder, Configuration Builder, File Name)
+        /// </summary>
+        /// <returns>Tuple chứa 3 cấu hình cần thiết cho export</returns>
+        protected virtual Task<(
+            Action<OrdExportColumnBuilder<TGetPagedItemDto>> ColumnBuilder,
+            Action<OrdExportConfigurationBuilder> ConfigurationBuilder,
+            string FileName
+            )> GetExportConfiguration(List<TGetPagedItemDto> dataItems)
+        {
+            throw new AbpValidationException("Not GetExportConfiguration");
+        }
+
+        #endregion
+
         protected override string GetBasePermissionName()
         {
             return typeof(TEntity).Name;
@@ -202,7 +258,7 @@ namespace Ord.Plugin.Core.Services
 
         #endregion
 
-    
+
 
         #region Virtual Hook Methods - Override nếu cần custom logic
         /// <summary>

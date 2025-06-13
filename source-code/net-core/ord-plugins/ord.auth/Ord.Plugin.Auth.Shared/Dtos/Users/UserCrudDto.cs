@@ -25,6 +25,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 
     public class UserPagedInput : OrdPagedRequestDto
