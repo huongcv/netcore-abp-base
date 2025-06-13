@@ -385,8 +385,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
                     message = _appFactory.GetLocalizedMessage("message.RateLimit.RateLimitExceededDetail", identifierInfor),
                     policy = policy.ToLower(),
                     identifier = identifier,
-                    totalRequests = result.TotalRequests,
-                    timestamp = DateTime.UtcNow
+                    totalRequests = result.TotalRequests
                 }
             };
             var json = JsonSerializer.Serialize(response, new JsonSerializerOptions
