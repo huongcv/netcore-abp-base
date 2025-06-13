@@ -48,10 +48,10 @@ namespace Ord.Plugin.Auth.AppServices
                 .AddColumn(c => c.WithBase(x => x.UserName, 20)
                     .WithBoldFont()
                     .WithWrapText())
-                .AddColumn(c => c.WithBase(x => x.Name, 20).WithHeader("FullName"))
+                .AddColumn(c => c.WithBase(x => x.Name, 20, "FullName"))
                 .AddColumn(c => c.WithBase(x => x.Email, 20))
                 .AddColumn(c => c.WithBase(x => x.PhoneNumber, 15))
-                .AddColumn(c => c.WithBase(x => x.CreationTime, 18).WithWidth(18).WithDateTimeFormat())
+                .AddColumn(c => c.WithBase(x => x.CreationTime, 18).WithDateTimeFormat())
                 .AddIsActiveColumn(x => x.IsActived));
 
             // Configuration Builder cho User
