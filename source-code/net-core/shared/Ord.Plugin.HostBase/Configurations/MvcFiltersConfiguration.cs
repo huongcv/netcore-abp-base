@@ -20,7 +20,6 @@ namespace Ord.Plugin.Core.Configurations
             services.Configure<MvcOptions>(options =>
             {
                 // Add custom exception filter
-                options.Filters.Add<OrdExceptionFilter>();
                 options.Filters.Add<TrimStringsActionFilter>();
                 options.Filters.Add<GlobalExceptionFilter>();
                 options.Filters.Add<AbpFluentValidationActionFilter>(modelStateInvalidFilter.Order - 1);

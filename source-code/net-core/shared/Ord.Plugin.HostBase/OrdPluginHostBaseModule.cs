@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Ord.Plugin.Core;
 using Ord.Plugin.Core.Configurations;
+using Ord.Plugin.Core.Features.RateLimits;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
 using Ord.Plugin.HostBase.Middlewares;
 using Ord.Plugin.HostBase.Middlewares.Jwt;
+using StackExchange.Redis;
 using System.IO.Compression;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -46,11 +48,13 @@ namespace Ord.Plugin.HostBase
                 });
             });
             base.PreConfigureServices(context);
+            
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
+           
             Configure<AbpMultiTenancyOptions>(options =>
             {
                 options.IsEnabled = true;
@@ -62,7 +66,8 @@ namespace Ord.Plugin.HostBase
             services.AddLanguageLocalization();
             ConfigureCors(services, configuration);
             ConfigureResponseCompression(services);
-            ConfigureCache(configuration);
+            ConfigureCache(services, configuration);
+            services.AddRedisRateLimit(configuration);
 #if DEBUG
             services.AddHangfireMemory();
 #else
@@ -113,8 +118,9 @@ namespace Ord.Plugin.HostBase
             });
         }
 
-        private void ConfigureCache(IConfiguration configuration)
+        private void ConfigureCache(IServiceCollection services, IConfiguration configuration)
         {
+           
             Configure<AbpDistributedCacheOptions>(options =>
             {
                 options.KeyPrefix = (configuration["App:Name"] ?? "OrdPlugin") + ":";
@@ -132,6 +138,7 @@ namespace Ord.Plugin.HostBase
             app.UseAuthentication();
             app.UseAbpClaimsMap();
             app.UseUnitOfWork();
+            app.UseMiddleware<RateLimitMiddleware>();
             app.UseMiddleware<CheckTokenJWTLocalMiddleware>();
             app.UseMiddleware<LanguageMiddleware>();
             app.UseDynamicClaims();

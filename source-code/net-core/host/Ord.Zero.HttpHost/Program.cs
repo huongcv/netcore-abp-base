@@ -1,6 +1,9 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Hosting;
 using Ord.PluginZero.HttpHost;
 using Serilog;
 using Serilog.Events;
+using System.IO;
 
 namespace Ord.PluginDev.HttpHost;
 
@@ -44,6 +47,7 @@ public class Program
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.AddAppSettingsSecretsJson()
+                .AddAppSettingsSecretsJson(path: "appsettings.ratelimit.json")
                 .UseAutofac()
                 .UseSerilog();
             await builder.AddApplicationAsync<OrdPosHttpHostModule>(options =>
@@ -66,6 +70,7 @@ public class Program
                 //  options.PlugInSources.AddFolder(System.IO.Path.GetFullPath("plugins/ord/master-data"));
 
             });
+            
             var app = builder.Build();
             await app.InitializeApplicationAsync();
             await app.RunAsync();

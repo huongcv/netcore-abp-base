@@ -7,7 +7,6 @@ using Volo.Abp;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
-using Volo.Abp.MultiTenancy;
 
 namespace Ord.Plugin.Core
 {

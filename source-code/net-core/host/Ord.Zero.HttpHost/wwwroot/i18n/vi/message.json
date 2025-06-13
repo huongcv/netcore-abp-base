@@ -23,5 +23,16 @@
     "invalid_regex": "{0} không đúng định dạng",
     "file_size": "Kích thước file không được vượt quá {0}MB",
     "file_extension": "Định dạng file không được hỗ trợ"
+  },
+  "RateLimit": {
+    "RateLimitExceeded": "Vượt quá giới hạn truy cập",
+    "RateLimitExceededDetail": "Quá nhiều yêu cầu. Đã vượt quá giới hạn truy cập cho {0}.",
+    "TryAgainAfter": "Vui lòng thử lại sau {0} giây",
+    "ResetAt": "Giới hạn truy cập sẽ được đặt lại vào lúc {0}",
+    "PolicyName": {
+      "IP": "địa chỉ Ip: ",
+      "User": "người dùng: ",
+      "Tenant": "thuê bao: "
+    }
   }
 }
