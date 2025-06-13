@@ -44,19 +44,12 @@ namespace Ord.Plugin.Auth.AppServices
             // Column Builder cho User
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex()
-                .AddColumn(x => x.UserName, "Tên đăng nhập", 15)
-                .AddColumn(x => x.Name, "Họ tên", 20)
-                .AddColumn(x => x.Email, "Email" ?? "N/A", 25)
-                .AddColumn(x => x.PhoneNumber ?? "N/A", "Số điện thoại", 15)
-                .AddDateTimeColumn(x => x.CreationTime, "Ngày tạo", width: 18)
-                .AddConditionalColumn(
-                    x => x.IsActived ? "Hoạt động" : "Không hoạt động",
-                    "Trạng thái",
-                    u => u.IsActived,
-                    Color.Green,
-                    Color.Red,
-                    12)
-                );
+                .AddColumn(x => x.UserName, 15)
+                .AddColumn(x => x.Name, "FullName", 20)
+                .AddColumn(x => x.Email ?? "N/A", "Email", 25)
+                .AddColumn(x => x.PhoneNumber ?? "N/A", 15)
+                .AddDateTimeColumn(x => x.CreationTime, width: 18)
+                .AddIsActiveColumn(x => x.IsActived));
 
             // Configuration Builder cho User
             var configurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
@@ -80,7 +73,7 @@ namespace Ord.Plugin.Auth.AppServices
                 .WithLandscapeOrientation()
                 .WithPrintSettings(print => print
                     .WithHeader("HỆ THỐNG QUẢN LÝ NGƯỜI DÙNG")
-                    //.WithFooter("Trang {0} / {1}")
+                //.WithFooter("Trang {0} / {1}")
                 )
                 .WithCustomWorksheet(worksheet =>
                 {

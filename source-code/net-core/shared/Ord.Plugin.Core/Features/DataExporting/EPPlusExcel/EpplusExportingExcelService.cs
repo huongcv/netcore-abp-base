@@ -3,15 +3,18 @@ using OfficeOpenXml;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using System.Reflection;
+using Ord.Plugin.Core.Base;
+using Ord.Plugin.Core.Factories;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Services;
 
 namespace Ord.Plugin.Core.Features.DataExporting
 {
     /// <summary>
     /// EPPlus Excel Export Service with optimized configuration system
     /// </summary>
-    public class EpplusExportingExcelService : IEpplusExportingExcelService, ITransientDependency
+    public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcelService, ITransientDependency
     {
         private readonly ILogger<EpplusExportingExcelService> _logger;
 
@@ -39,7 +42,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             var configuration = configBuilder.Build();
 
             // Build columns
-            var colBuilder = new OrdExcelColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>(AppFactory);
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
@@ -89,7 +92,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             Action<OrdExcelConfigurationBuilder>? configurationBuilder = null) where TData : class
         {
             // Build columns
-            var colBuilder = new OrdExcelColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>(AppFactory);
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
@@ -201,7 +204,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             Action<OrdExcelConfigurationBuilder>? configurationBuilder = null) where TData : class
         {
             // Build columns
-            var colBuilder = new OrdExcelColumnBuilder<TData>();
+            var colBuilder = new OrdExcelColumnBuilder<TData>(AppFactory);
             columnBuilder(colBuilder);
             var columns = colBuilder.Build();
 
@@ -326,7 +329,11 @@ namespace Ord.Plugin.Core.Features.DataExporting
 
                 // Set header text
                 var headerText = GetHeaderText(column, col, configuration.CustomColumnNames);
-                headerCell.Value = headerText;
+                if (!string.IsNullOrEmpty(headerText) && !headerText.StartsWith("field"))
+                {
+                    headerText = "field." + headerText;
+                }
+                headerCell.Value = AppFactory.GetLocalizedMessage(headerText);
 
                 // Apply header styling
                 configuration.HeaderStyle.ApplyTo(headerCell.Style);

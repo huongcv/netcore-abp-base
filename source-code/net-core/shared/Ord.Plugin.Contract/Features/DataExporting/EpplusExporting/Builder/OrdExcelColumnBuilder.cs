@@ -1,7 +1,8 @@
-﻿using OfficeOpenXml;
-using OfficeOpenXml.Style;
+﻿using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Linq.Expressions;
+using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Localization;
 
 namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 {
@@ -11,6 +12,12 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
     public class OrdExcelColumnBuilder<T>
     {
         private readonly List<OrdExcelColumnData<T>> _columns = new();
+        private readonly IAppFactory _appFactory;
+
+        public OrdExcelColumnBuilder(IAppFactory appFactory)
+        {
+            _appFactory = appFactory;
+        }
 
         /// <summary>
         /// Thêm cột số thứ tự
@@ -20,7 +27,16 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             _columns.Add(OrdExcelColumnData<T>.RowIndex(headerName, width));
             return this;
         }
-
+        /// <summary>
+        /// Thêm cột đơn giản
+        /// </summary>
+        public OrdExcelColumnBuilder<T> AddColumn<TProperty>(
+            Expression<Func<T, TProperty>> expression,
+            double width = 10)
+        {
+            _columns.Add(OrdExcelColumnData<T>.Create(expression, width: width));
+            return this;
+        }
         /// <summary>
         /// Thêm cột đơn giản
         /// </summary>
@@ -141,6 +157,20 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
                 var color = condition(data) ? trueColor : falseColor;
                 style.Font.Color.SetColor(color);
             }, width);
+        }
+        public OrdExcelColumnBuilder<T> AddIsActiveColumn(
+            Expression<Func<T, bool?>> expression,
+            double? width = null,
+            string? headerName = null
+            )
+        {
+            return AddConditionalColumn(
+                    x => expression.Compile().Invoke(x) == true ? _appFactory.GetLocalizedMessage("status.active") : _appFactory.GetLocalizedMessage("status.inactive"),
+                    headerName ?? "Status",
+                    u => expression.Compile().Invoke(u) == true,
+                    Color.Green,
+                    Color.Red,
+                    12);
         }
 
         /// <summary>
