@@ -1,0 +1,11 @@
+﻿{
+  "active": "Hoạt động",
+  "inactive": "Không hoạt động",
+  "pending": "Đang chờ",
+  "approved": "Đã duyệt",
+  "rejected": "Đã từ chối",
+  "draft": "Bản nháp",
+  "published": "Đã xuất bản",
+  "archived": "Đã lưu trữ",
+  "deleted": "Đã xóa"
+}

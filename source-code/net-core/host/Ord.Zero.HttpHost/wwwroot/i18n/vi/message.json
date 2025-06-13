@@ -1,0 +1,27 @@
+﻿{
+  "success": "Thao tác thành công",
+  "error": "Có lỗi xảy ra",
+  "loading": "Đang tải...",
+  "noData": "Không có dữ liệu",
+  "not_support": "Không hỗ trợ",
+  "crud": {
+    "not_found": "Không tìm thấy dữ liệu",
+    "create_success": "Tạo mới thành công",
+    "update_success": "Cập nhật thành công",
+    "delete_success": "Xóa thành công",
+    "set_active_status_success": "Cập nhật thành công trạng thái active"
+  },
+  "validation": {
+    "required": "{0} bắt buộc nhập",
+    "email": "Email không hợp lệ",
+    "phone": "Số điện thoại không hợp lệ",
+    "min_length": "{0} phải có ít nhất {1} ký tự",
+    "max_length": "{0} không được vượt quá {1} ký tự",
+    "numeric": "{0} phải là số",
+    "date": "{0} không phải ngày hợp lệ",
+    "confirm_password": "Mật khẩu xác nhận không khớp",
+    "invalid_regex": "{0} không đúng định dạng",
+    "file_size": "Kích thước file không được vượt quá {0}MB",
+    "file_extension": "Định dạng file không được hỗ trợ"
+  }
+}

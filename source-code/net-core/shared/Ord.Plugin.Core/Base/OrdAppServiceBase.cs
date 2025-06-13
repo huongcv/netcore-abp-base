@@ -69,7 +69,7 @@ namespace Ord.Plugin.Core.Base
 
         protected virtual string GetMessagePrefix()
         {
-            return "common.messages.crud.";
+            return "messages.crud.";
             // return typeof(TEntity).Name.ToLower();
         }
         protected virtual string GetNotFoundMessage()

@@ -7,7 +7,7 @@ namespace Ord.Plugin.Contract.Features.Validation
 {
     public static class ValidationMessages
     {
-        public const string Prefix = "common.validation.";
+        public const string Prefix = "message.validation.";
     }
     public static class FluentValidationExtensions
     {

@@ -164,7 +164,7 @@ namespace Ord.Plugin.Core.Services
         {
             if (!typeof(IHasActived).IsAssignableFrom(typeof(TEntity)))
             {
-                throw new AbpValidationException("common.not_support");
+                throw new AbpValidationException("messages.not_support");
 
             }
 
@@ -180,7 +180,7 @@ namespace Ord.Plugin.Core.Services
                 entityActive.IsActived = input.IsActived;
                 await CrudRepository.UpdateAsync(entity);
             }
-            return AppFactory.CreateSuccessResult(true, "common.messages.crud.set_active_status_success");
+            return AppFactory.CreateSuccessResult(true, "messages.crud.set_active_status_success");
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public string? Email { get; set; }
         [DisplayName("field.phone")]
         public string? PhoneNumber { get; set; }
-        [DisplayName("field.full_name")]
+        [DisplayName("FullName")]
         public string? Name { get; set; }
         public bool IsActived { get; set; }
         public string? EncodedId { get; set; }
@@ -40,27 +40,22 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class CreateUserDto : UserCrudBase
     {
-        [DisplayName("field.username")]
         public string? UserName { get; set; }
-        [DisplayName("field.password")]
         public string? Password { get; set; }
     }
 
     public class UpdateUserDto : UserCrudBase
     {
-        [DisplayName("field.password")]
         public string? Password { get; set; }
     }
 
     public class ResetPasswordUserDto : EncodedIdDto
     {
-        [DisplayName("field.new_password")]
         public string? NewPassword { get; set; }
         public bool MustChangePassword { get; set; }
     }
     public class ChangePasswordUserDto
     {
-        [DisplayName("field.current_password")]
         public string? CurrentPassword { get; set; }
         [DisplayName("field.new_password")]
         public string? NewPassword { get; set; }
