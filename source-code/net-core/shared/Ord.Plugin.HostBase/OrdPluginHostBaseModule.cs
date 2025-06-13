@@ -12,7 +12,6 @@ using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
 using Ord.Plugin.HostBase.Middlewares;
 using Ord.Plugin.HostBase.Middlewares.Jwt;
-using StackExchange.Redis;
 using System.IO.Compression;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -74,7 +73,6 @@ namespace Ord.Plugin.HostBase
             services.AddHangfireMysql();
 #endif
 
-
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
         {
@@ -131,6 +129,14 @@ namespace Ord.Plugin.HostBase
             var app = context.GetApplicationBuilder();
             var env = context.GetEnvironment();
             var configuration = context.GetConfiguration();
+
+            ConfigureMiddlewares(app);
+            ConfigureSwagger(app, configuration);
+            app.UseHangfireConfiguration(configuration);
+        }
+
+        private void ConfigureMiddlewares(IApplicationBuilder app)
+        {
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCors();
@@ -146,18 +152,18 @@ namespace Ord.Plugin.HostBase
             app.UseAuditing();
             app.UseAntiforgery();
             app.UseAuthorization();
-
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
-            app.UseHangfireConfiguration(configuration);
-
-
-            if (configuration["Swagger:IsEnabled"] == "true" || configuration["Swagger:IsEnabled"] == "1")
+        }
+        private void ConfigureSwagger(IApplicationBuilder app, IConfiguration configuration)
+        {
+            if (bool.TryParse(configuration["Swagger:IsEnabled"], out var isSwaggerEnabled) && isSwaggerEnabled)
             {
                 app.UseSwagger(option =>
                 {
                     option.RouteTemplate = "ord-doc-api/{documentName}/plugin-api.json";
                 });
+
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/ord-doc-api/v1/plugin-api.json", "Ord Web API");
@@ -165,7 +171,6 @@ namespace Ord.Plugin.HostBase
                 });
             }
         }
-
 
     }
 }
