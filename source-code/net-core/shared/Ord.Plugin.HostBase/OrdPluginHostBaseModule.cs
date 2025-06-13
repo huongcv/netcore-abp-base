@@ -134,7 +134,7 @@ namespace Ord.Plugin.HostBase
             ConfigureSwagger(app, configuration);
             app.UseHangfireConfiguration(configuration);
             // Map Prometheus scraping endpoint
-            app.UseOpenTelemetryPrometheusScrapingEndpoint();
+            app.UseOpenTelemetryPrometheusScrapingEndpoint("z-metrics");
 
         }
 
@@ -152,7 +152,6 @@ namespace Ord.Plugin.HostBase
             app.UseMiddleware<LanguageMiddleware>();
             app.UseDynamicClaims();
             app.UseMiddleware<OrdMultiTenancyMiddleware>();
-            //  app.UseMiddleware<MetricsMiddleware>();
             app.UseAuditing();
             app.UseAntiforgery();
             app.UseAuthorization();
