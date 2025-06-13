@@ -1,25 +1,16 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.OpenApi.Models;
-using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Core;
 using Ord.Plugin.Core.Configurations;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
-using Ord.Plugin.HostBase.Filters;
-using Ord.Plugin.HostBase.Localization;
 using Ord.Plugin.HostBase.Middlewares;
 using Ord.Plugin.HostBase.Middlewares.Jwt;
-using Ord.Plugin.HostBase.Util;
-using System.Globalization;
 using System.IO.Compression;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -67,13 +58,18 @@ namespace Ord.Plugin.HostBase
             services.AddMvcAndFilters();
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            ConfigureSwaggerServices(services);
+            services.AddSwagger();
+            services.AddLanguageLocalization();
             ConfigureCors(services, configuration);
             ConfigureResponseCompression(services);
             ConfigureCache(configuration);
-            ConfigureLanguage(services);
-            services.ConfigureHangfire();
-           
+#if DEBUG
+            services.AddHangfireMemory();
+#else
+            services.AddHangfireMysql();
+#endif
+
+
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
         {
@@ -95,49 +91,6 @@ namespace Ord.Plugin.HostBase
                         .AllowCredentials();
                 });
             });
-        }
-        void ConfigureSwaggerServices(IServiceCollection services)
-        {
-            services.AddAbpSwaggerGen(
-                swagger =>
-                {
-                    swagger.HideAbpEndpoints();
-
-                    swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "OrdWebApp API", Version = "v1" });
-                    swagger.DocInclusionPredicate((docName, description) => true);
-                    swagger.CustomSchemaIds(type => type.FullName);
-
-                    swagger.ParameterFilter<SwaggerEnumParameterFilter>();
-                    swagger.SchemaFilter<SwaggerEnumSchemaFilter>();
-                    swagger.OperationFilter<SwaggerOperationIdFilter>();
-                    swagger.OperationFilter<SwaggerOperationFilter>();
-                    swagger.CustomDefaultSchemaIdSelector();
-
-                    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                    {
-                        Name = "Authorization",
-                        Type = SecuritySchemeType.ApiKey,
-                        Scheme = "Bearer",
-                        BearerFormat = "JWT",
-                        In = ParameterLocation.Header,
-                        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-                    });
-                    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-
-                        }
-                    });
-                });
         }
         void ConfigureResponseCompression(IServiceCollection services)
         {
@@ -167,33 +120,6 @@ namespace Ord.Plugin.HostBase
                 options.KeyPrefix = (configuration["App:Name"] ?? "OrdPlugin") + ":";
             });
         }
-
-
-        void ConfigureLanguage(IServiceCollection services)
-        {
-            services.AddSingleton<IOrdLocalizer, OrdLocalizer>();
-            services.AddSingleton<ILocalizationPreloader, LocalizationPreloader>();
-            services.AddHostedService<LocalizationPreloadHostedService>();
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new[] { "vi", "en" };
-                // Đặt tiếng Việt làm mặc định
-                options.DefaultRequestCulture = new RequestCulture("vi");
-                options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
-                options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
-
-                // Fallback về tiếng Việt nếu không tìm thấy culture
-                options.FallBackToParentCultures = true;
-                options.FallBackToParentUICultures = true;
-
-                // Thêm providers để detect culture (ưu tiên theo thứ tự)
-                options.RequestCultureProviders.Clear();
-                options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider()); // ?culture=en
-                options.RequestCultureProviders.Add(new CookieRequestCultureProvider());      // Cookie
-                options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider()); // Browser language
-            });
-        }
-
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
@@ -217,7 +143,7 @@ namespace Ord.Plugin.HostBase
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
             app.UseHangfireConfiguration(configuration);
-       
+
 
             if (configuration["Swagger:IsEnabled"] == "true" || configuration["Swagger:IsEnabled"] == "1")
             {
