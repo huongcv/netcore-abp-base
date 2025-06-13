@@ -14,23 +14,23 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
             _title.Text = text;
             return this;
         }
-
-        public OrdExcelTitleBuilder WithRowIndex(int rowIndex)
+        public OrdExcelTitleBuilder WithMargin(int marginTopRow = 3, int marginBottomRow = 2)
         {
-            _title.RowIndex = rowIndex;
+            _title.RowIndex = marginTopRow + 1;
+            _title.MarginBottomRow = marginBottomRow;
             return this;
         }
-
+        public OrdExcelTitleBuilder WithTitleColumnSpan(int titleColumnSpan)
+        {
+            _title.TitleColumnSpan = titleColumnSpan;
+            return this;
+        }
         public OrdExcelTitleBuilder WithRowHeight(double height)
         {
             _title.RowHeight = height;
             return this;
         }
-        public OrdExcelTitleBuilder WithMarginBottomRow(int marginBottomRow)
-        {
-            _title.MarginBottomRow = marginBottomRow;
-            return this;
-        }
+
 
         public OrdExcelTitleBuilder WithStyle(Action<OrdExcelStyleBuilder> styleBuilder)
         {

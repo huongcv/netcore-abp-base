@@ -296,8 +296,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         {
             if (title == null || string.IsNullOrEmpty(title.Text))
                 return 1;
-
-            var titleRange = workSheet.Cells[title.RowIndex, 1, title.RowIndex, columnCount];
+            var actualColumnSpan = title.TitleColumnSpan > 0 ? title.TitleColumnSpan : columnCount;
+            var titleRange = workSheet.Cells[title.RowIndex, 1, title.RowIndex, actualColumnSpan];
             titleRange.Merge = true;
             titleRange.Value = title.Text;
 

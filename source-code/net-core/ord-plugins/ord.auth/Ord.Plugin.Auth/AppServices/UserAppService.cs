@@ -59,7 +59,7 @@ namespace Ord.Plugin.Auth.AppServices
                 .WithWorksheetName("Danh sách người dùng")
                 .WithTitle(title => title
                     .WithText("BÁO CÁO DANH SÁCH NGƯỜI DÙNG HỆ THỐNG")
-                    .WithRowIndex(4)
+                    .WithMargin(1,3)
                     .WithRowHeight(30)
                     .WithStyle(style => style
                         .WithFont("Arial", 16)

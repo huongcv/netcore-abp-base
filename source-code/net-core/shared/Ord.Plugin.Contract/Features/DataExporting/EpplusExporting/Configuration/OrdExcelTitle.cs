@@ -27,6 +27,11 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         public int MarginBottomRow { get; set; } = 4;
 
         /// <summary>
+        /// Số cột mà title sẽ span (merge). Nếu null thì sẽ dùng số cột của bảng data
+        /// </summary>
+        public int TitleColumnSpan { get; set; } = 0;
+
+        /// <summary>
         /// Cấu hình style cho tiêu đề
         /// </summary>
         public OrdExcelStyleConfiguration Style { get; set; } = new()
