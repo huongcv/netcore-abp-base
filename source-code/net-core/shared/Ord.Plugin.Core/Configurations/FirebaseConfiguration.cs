@@ -10,7 +10,7 @@ public static class FirebaseConfiguration
     public static void AddFirebaseServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Configure Firebase
-        services.Configure<FirebaseNotificationConfiguration>(configuration.GetSection("Notification.Firebase"));
+        services.Configure<FirebaseNotificationConfiguration>(configuration.GetSection(FirebaseNotificationConfiguration.SectionName));
         // Register notification channel
         services.AddTransient<FirebaseNotificationChannel>();
         // Initialize Firebase on startup

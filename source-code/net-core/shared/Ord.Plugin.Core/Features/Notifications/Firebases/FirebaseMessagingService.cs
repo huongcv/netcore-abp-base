@@ -1,6 +1,7 @@
 ﻿using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
@@ -13,13 +14,15 @@ namespace Ord.Plugin.Core.Features.Notifications.Firebases
         private readonly ILogger<FirebaseMessagingService> _logger;
         private bool _isInitialized = false;
         private readonly SemaphoreSlim _initSemaphore = new(1, 1);
-
+        private readonly IWebHostEnvironment _env;
         public FirebaseMessagingService(
             IOptions<FirebaseNotificationConfiguration> config,
-            ILogger<FirebaseMessagingService> logger)
+            ILogger<FirebaseMessagingService> logger,
+            IWebHostEnvironment env)
         {
             _config = config.Value;
             _logger = logger;
+            _env = env;
         }
 
         public async Task<bool> IsInitializedAsync()
@@ -32,6 +35,7 @@ namespace Ord.Plugin.Core.Features.Notifications.Firebases
             if (_isInitialized) return;
 
             await _initSemaphore.WaitAsync();
+            var keyFilePath = _config.ServiceAccountKeyPath;
             try
             {
                 if (_isInitialized) return;
@@ -42,15 +46,20 @@ namespace Ord.Plugin.Core.Features.Notifications.Firebases
                     return;
                 }
 
-                if (string.IsNullOrEmpty(_config.ServiceAccountKeyPath))
+                if (string.IsNullOrEmpty(keyFilePath))
                 {
                     _logger.LogError("Firebase service account key path is not configured");
                     return;
                 }
 
-                if (!File.Exists(_config.ServiceAccountKeyPath))
+                if (!Path.IsPathRooted(keyFilePath))
                 {
-                    _logger.LogError($"Firebase service account key file not found: {_config.ServiceAccountKeyPath}");
+                    keyFilePath = Path.Combine(_env.WebRootPath, keyFilePath.TrimStart(Path.DirectorySeparatorChar));
+                }
+
+                if (!File.Exists(keyFilePath))
+                {
+                    _logger.LogError($"Firebase service account key file not found: {keyFilePath}");
                     return;
                 }
 
@@ -59,7 +68,7 @@ namespace Ord.Plugin.Core.Features.Notifications.Firebases
                 {
                     FirebaseApp.Create(new AppOptions()
                     {
-                        Credential = GoogleCredential.FromFile(_config.ServiceAccountKeyPath),
+                        Credential = GoogleCredential.FromFile(keyFilePath),
                         ProjectId = _config.ProjectId
                     });
                 }

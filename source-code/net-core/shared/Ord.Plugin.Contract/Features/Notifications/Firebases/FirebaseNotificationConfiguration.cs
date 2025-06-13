@@ -2,6 +2,7 @@
 {
     public class FirebaseNotificationConfiguration
     {
+        public const string SectionName = "Notification:Firebase";
         public string? ProjectId { get; set; }
         public string? ServiceAccountKeyPath { get; set; }
         public bool IsEnabled { get; set; } = true;
