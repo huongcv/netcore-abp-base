@@ -113,8 +113,78 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         {
             var builder = new OrdExcelStyleBuilder();
             styleBuilder(builder);
-            _column.Style = builder.Build();
+            var newStyle = builder.Build();
+
+            if (_column.Style == null)
+            {
+                _column.Style = newStyle;
+            }
+            else
+            {
+                // Merge styles - giữ lại giá trị cũ và append giá trị mới
+                _column.Style = MergeStyles(_column.Style, newStyle);
+            }
             return this;
+        }
+
+        /// <summary>
+        /// Merge two style configurations, new style overrides existing style where values are provided
+        /// </summary>
+        private OrdExcelStyleConfiguration MergeStyles(OrdExcelStyleConfiguration existingStyle, OrdExcelStyleConfiguration newStyle)
+        {
+            var mergedStyle = new OrdExcelStyleConfiguration();
+
+            // Font settings - new overrides existing
+            mergedStyle.FontName = newStyle.FontName ?? existingStyle.FontName;
+            mergedStyle.FontSize = newStyle.FontSize ?? existingStyle.FontSize;
+            mergedStyle.IsBold = newStyle.IsBold || existingStyle.IsBold; // True if either is true
+            mergedStyle.IsItalic = newStyle.IsItalic || existingStyle.IsItalic;
+            mergedStyle.IsUnderline = newStyle.IsUnderline || existingStyle.IsUnderline;
+            mergedStyle.FontColor = newStyle.FontColor ?? existingStyle.FontColor;
+
+            // Alignment settings - new overrides existing
+            mergedStyle.HorizontalAlignment = newStyle.HorizontalAlignment ?? existingStyle.HorizontalAlignment;
+            mergedStyle.VerticalAlignment = newStyle.VerticalAlignment ?? existingStyle.VerticalAlignment;
+            mergedStyle.WrapText = newStyle.WrapText || existingStyle.WrapText; // True if either is true
+
+            // Background settings - new overrides existing
+            mergedStyle.BackgroundColor = newStyle.BackgroundColor ?? existingStyle.BackgroundColor;
+            mergedStyle.FillPattern = newStyle.FillPattern ?? existingStyle.FillPattern;
+
+            // Border settings - merge borders
+            if (newStyle.Border != null || existingStyle.Border != null)
+            {
+                mergedStyle.Border = MergeBorders(existingStyle.Border, newStyle.Border);
+            }
+
+            // Number format - new overrides existing
+            mergedStyle.NumberFormat = newStyle.NumberFormat ?? existingStyle.NumberFormat;
+
+            return mergedStyle;
+        }
+
+        /// <summary>
+        /// Merge border configurations
+        /// </summary>
+        private OrdExcelBorderConfiguration MergeBorders(OrdExcelBorderConfiguration? existingBorder, OrdExcelBorderConfiguration? newBorder)
+        {
+            if (existingBorder == null && newBorder == null)
+                return null;
+
+            if (existingBorder == null)
+                return newBorder;
+
+            if (newBorder == null)
+                return existingBorder;
+
+            return new OrdExcelBorderConfiguration
+            {
+                Top = newBorder.Top ?? existingBorder.Top,
+                Bottom = newBorder.Bottom ?? existingBorder.Bottom,
+                Left = newBorder.Left ?? existingBorder.Left,
+                Right = newBorder.Right ?? existingBorder.Right,
+                Color = newBorder.Color ?? existingBorder.Color
+            };
         }
 
         /// <summary>
