@@ -132,10 +132,8 @@ namespace Ord.Plugin.HostBase
 
             ConfigureMiddlewares(app);
             ConfigureSwagger(app, configuration);
+            ConfigurePrometheus(app, configuration);
             app.UseHangfireConfiguration(configuration);
-            // Map Prometheus scraping endpoint
-            app.UseOpenTelemetryPrometheusScrapingEndpoint("z-metrics");
-
         }
 
         private void ConfigureMiddlewares(IApplicationBuilder app)
@@ -174,6 +172,12 @@ namespace Ord.Plugin.HostBase
                 });
             }
         }
-
+        private void ConfigurePrometheus(IApplicationBuilder app, IConfiguration configuration)
+        {
+            if (configuration.TryParseBoolValue("Prometheus:IsEnabled"))
+            {
+                app.UseOpenTelemetryPrometheusScrapingEndpoint(configuration["Prometheus:Endpoint"]);
+            }
+        }
     }
 }

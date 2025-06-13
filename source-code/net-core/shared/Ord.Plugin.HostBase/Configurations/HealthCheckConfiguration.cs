@@ -8,6 +8,10 @@ namespace Ord.Plugin.HostBase.Configurations
     {
         public static void AddHealthCheckOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
         {
+            if (configuration.TryParseBoolValue("Prometheus:IsEnabled") != true)
+            {
+                return;
+            }
             services.AddOpenTelemetry()
                 .WithMetrics(builder =>
                 {
