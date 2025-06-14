@@ -340,7 +340,11 @@ namespace Ord.Plugin.Core.Features.DataExporting
                 column.Header?.Style?.ApplyTo(headerCell.Style);
                 column.Header?.CustomStyleAction?.Invoke(headerCell.Style, headerText);
             }
-
+            var rowHeight = configuration.HeaderStyle?.RowHeight;
+            if (rowHeight.HasValue)
+            {
+                workSheet.Row(headerRowIndex).Height = rowHeight.Value;
+            }
             return headerRowIndex + 1;
         }
 
@@ -406,7 +410,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
                 var dataCellRowHeight = configuration.DataStyle?.RowHeight;
                 if (dataCellRowHeight.HasValue)
                 {
-                    workSheet.Row(recordIndex).Height = dataCellRowHeight.Value;
+                    workSheet.Row(currentRowIndex).Height = dataCellRowHeight.Value;
                 }
                 currentRowIndex++;
             }
