@@ -46,6 +46,15 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 
         #endregion
 
+        #region Row Settings
+
+        /// <summary>
+        /// Chiều cao hàng cho style này
+        /// </summary>
+        public double? RowHeight { get; set; }
+
+        #endregion
+
         #region Factory Methods
 
         public static OrdExcelStyleConfiguration Default() => new();

@@ -101,12 +101,15 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Tạo cột số thứ tự
         /// </summary>
-        public static OrdExcelColumnData<TData> RowIndex(string headerName = "STT", double? width = 5)
+        public static OrdExcelColumnData<TData> RowIndex(string headerName = "STT", double? width = 10)
         {
+            var builder = new OrdExcelStyleBuilder();
+            builder.WithCenterAlignment().WithBoldFont();
             return new OrdExcelColumnData<TData>(true)
             {
                 Header = OrdExcelTableHeader.Create(headerName, width),
-                Width = width
+                Width = width,
+                Style = builder.Build()
             };
         }
 

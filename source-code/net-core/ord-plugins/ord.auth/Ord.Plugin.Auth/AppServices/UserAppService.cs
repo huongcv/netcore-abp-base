@@ -11,6 +11,7 @@ using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
 using System.Drawing;
+using Ord.Plugin.Contract.Features.DataExporting;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -45,36 +46,18 @@ namespace Ord.Plugin.Auth.AppServices
 
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex()
-                .AddColumn(c => c.WithBase(x => x.UserName, 20)
+                .AddColumn(c => c.WithBase(x => x.UserName, 30)
                     .WithBoldFont()
                     .WithWrapText())
-                .AddColumn(c => c.WithBase(x => x.Name, 20, "FullName"))
-                .AddColumn(c => c.WithBase(x => x.Email, 20))
-                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 15))
-                .AddColumn(c => c.WithBase(x => x.CreationTime, 18).WithDateTimeFormat())
+                .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
+                .AddColumn(c => c.WithBase(x => x.Email, 50))
+                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
+                .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
                 .AddIsActiveColumn(x => x.IsActived));
 
             // Configuration Builder cho User
             var configurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
-                .WithWorksheetName("Danh sách người dùng")
-                .WithTitle(title => title
-                    .WithText("BÁO CÁO DANH SÁCH NGƯỜI DÙNG HỆ THỐNG")
-                    .WithMargin(1,3)
-                    .WithRowHeight(30)
-                    .WithStyle(style => style
-                        .WithFont("Arial", 16)
-                        .WithBoldFont()
-                        .WithCenterAlignment()
-                        .WithWrapText(true)
-                        .WithFontColor(Color.DarkBlue)))
-                .WithHeaderStyle(style => style
-                    .WithBoldFont()
-                    .WithBackgroundColor(Color.LightBlue)
-                    .WithCenterAlignment()
-                    .WithAllBorders())
-                .WithDataStyle(style => style
-                    .WithAllBorders(ExcelBorderStyle.Thin))
-                .WithLandscapeOrientation()
+                .DefaultConfig(AppFactory.GetLocalizedMessage("auth.user.list-user"))
                 .WithPrintSettings(print => print
                     .WithHeader("HỆ THỐNG QUẢN LÝ NGƯỜI DÙNG")
                 //.WithFooter("Trang {0} / {1}")

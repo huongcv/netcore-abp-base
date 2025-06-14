@@ -403,7 +403,11 @@ namespace Ord.Plugin.Core.Features.DataExporting
                     column.Style?.ApplyTo(cell.Style);
                     column.CustomStyleAction?.Invoke(dataItem, cell.Style);
                 }
-
+                var dataCellRowHeight = configuration.DataStyle?.RowHeight;
+                if (dataCellRowHeight.HasValue)
+                {
+                    workSheet.Row(recordIndex).Height = dataCellRowHeight.Value;
+                }
                 currentRowIndex++;
             }
 

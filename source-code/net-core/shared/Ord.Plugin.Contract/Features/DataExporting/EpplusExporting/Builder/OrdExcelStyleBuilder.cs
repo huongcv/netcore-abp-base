@@ -153,7 +153,18 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         }
 
         #endregion
+        #region Row Settings
 
+        /// <summary>
+        /// Thiết lập chiều cao hàng
+        /// </summary>
+        public OrdExcelStyleBuilder WithRowHeight(double height)
+        {
+            _style.RowHeight = height;
+            return this;
+        }
+
+        #endregion
         public OrdExcelStyleConfiguration Build() => _style;
     }
 

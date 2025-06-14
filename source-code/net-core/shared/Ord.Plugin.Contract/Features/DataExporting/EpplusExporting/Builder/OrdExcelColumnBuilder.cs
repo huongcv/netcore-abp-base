@@ -1,5 +1,4 @@
-﻿using OfficeOpenXml.Style;
-using Ord.Plugin.Contract.Factories;
+﻿using Ord.Plugin.Contract.Factories;
 using System.Drawing;
 using System.Linq.Expressions;
 
@@ -43,7 +42,6 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// </summary>
         public OrdExcelColumnBuilder<T> AddIsActiveColumn(
             Expression<Func<T, bool?>> expression,
-            double? width = null,
             string? headerName = null)
         {
             return AddColumn(c => c
@@ -51,7 +49,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
                     ? _appFactory.GetLocalizedMessage("status.active")
                     : _appFactory.GetLocalizedMessage("status.inactive"))
                 .WithHeader(headerName ?? "Status")
-                .WithWidth(width ?? 12)
+                .WithWidth(20)
                 .WithConditionalFormat(
                     u => expression.Compile().Invoke(u) == true,
                     Color.Green,
