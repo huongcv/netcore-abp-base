@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml.Style;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -7,11 +6,11 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
+using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting.Extends;
 using Ord.Plugin.Contract.Services;
+using Ord.Plugin.Core.Features.DataExporting;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
-using System.Drawing;
-using Ord.Plugin.Contract.Features.DataExporting;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -64,21 +63,24 @@ namespace Ord.Plugin.Auth.AppServices
                 )
                 .WithCustomWorksheet(worksheet =>
                 {
-                    // Thêm thông tin tổng hợp ở cuối
-                    var lastRow = worksheet.Dimension?.End.Row ?? 1;
-                    var summaryRow = lastRow + 3;
+                    var layoutSummary = ExcelSummaryHelper.SummaryLayout.Default();
+                    ExcelSummaryHelper.CreateStyled(worksheet, new[]
+                    {
+                        ExcelSummaryHelper.SummaryItem.Create(
+                            "Tổng số người dùng:",
+                            dataItems.Count,
+                            ExcelSummaryHelper.Styles.Total()),
 
-                    worksheet.Cells[summaryRow, 1].Value = "Tổng số người dùng:";
-                    worksheet.Cells[summaryRow, 1].Style.Font.Bold = true;
-                    worksheet.Cells[summaryRow, 2].Value = dataItems.Count;
+                        ExcelSummaryHelper.SummaryItem.Create(
+                            "Người dùng hoạt động:",
+                            dataItems.Count(x => x.IsActived),
+                            ExcelSummaryHelper.Styles.Active()), 
 
-                    worksheet.Cells[summaryRow + 1, 1].Value = "Người dùng hoạt động:";
-                    worksheet.Cells[summaryRow + 1, 1].Style.Font.Bold = true;
-                    worksheet.Cells[summaryRow + 1, 2].Value = dataItems.Count(x => x.IsActived);
-
-                    // Thêm border cho summary
-                    var summaryRange = worksheet.Cells[summaryRow, 1, summaryRow + 1, 2];
-                    summaryRange.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                        ExcelSummaryHelper.SummaryItem.Create(
+                            "Người dùng không hoạt động:",
+                            dataItems.Count(x => !x.IsActived),
+                            ExcelSummaryHelper.Styles.Inactive())
+                    }, layoutSummary);
                 }));
 
             // File Name cho User

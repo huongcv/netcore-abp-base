@@ -20,7 +20,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thêm cột số thứ tự
         /// </summary>
-        public OrdExcelColumnBuilder<T> AddRowIndex(string headerName = "RowIndex", double? width = 5)
+        public OrdExcelColumnBuilder<T> AddRowIndex(string headerName = "RowIndex", double? width = 8)
         {
             _columns.Add(OrdExcelColumnData<T>.RowIndex(headerName, width));
             return this;

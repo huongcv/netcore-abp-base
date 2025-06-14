@@ -2,7 +2,7 @@
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using System.Drawing;
 
-namespace Ord.Plugin.Contract.Features.DataExporting
+namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting.Extends
 {
     public static class ExcelConfigurationUtil
     {
