@@ -226,7 +226,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// </summary>
         public OrdExcelColumnFluentBuilder<T> WithDateTimeFormat(string format = "dd/mm/yyyy hh:mm:ss")
         {
-            return WithStyle(style => style.WithDateTimeFormat(format));
+            return WithStyle(style => style.WithDateTimeFormat(format)).WithWrapText();
         }
 
         /// <summary>
