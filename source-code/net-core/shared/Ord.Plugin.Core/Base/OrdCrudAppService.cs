@@ -205,13 +205,13 @@ namespace Ord.Plugin.Core.Services
                 var pagedResultCommon = await GetPaged(input);
                 var items = pagedResultCommon?.Data?.Items ?? new List<TGetPagedItemDto>();
                 // Lấy cấu hình export
-                var (columnBuilder, configurationBuilder, fileName) = await GetExportConfiguration(items.ToList(), input);
+                var exportDto = await GetExportConfiguration(items.ToList(), input);
                 // Xuất dữ liệu
-                var excelBytes = await EpplusService.ExportDataCollection(items, columnBuilder, configurationBuilder);
+                var excelBytes = await EpplusService.ExportDataCollection(items, exportDto.ColumnBuilder, exportDto.ConfigurationBuilder);
                 // Trả về file
                 return new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
-                    FileDownloadName = fileName
+                    FileDownloadName = exportDto.FileName
                 };
             }
             catch (Exception ex)
@@ -230,11 +230,7 @@ namespace Ord.Plugin.Core.Services
         /// Lấy cấu hình export (Column Builder, Configuration Builder, File Name)
         /// </summary>
         /// <returns>Tuple chứa 3 cấu hình cần thiết cho export</returns>
-        protected virtual Task<(
-            Action<OrdExcelColumnBuilder<TGetPagedItemDto>> ColumnBuilder,
-            Action<OrdExcelConfigurationBuilder> ConfigurationBuilder,
-            string FileName
-            )> GetExportConfiguration(List<TGetPagedItemDto> dataItems, TGetPagedInputDto input)
+        protected virtual Task<EPPlusExportPagedDto<TGetPagedItemDto>> GetExportConfiguration(List<TGetPagedItemDto> dataItems, TGetPagedInputDto input)
         {
             throw new AbpValidationException("Not implement GetExportConfiguration");
         }

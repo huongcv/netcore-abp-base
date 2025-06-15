@@ -35,15 +35,12 @@ namespace Ord.Plugin.Auth.AppServices
         /// <summary>
         /// Lấy cấu hình export cho User
         /// </summary>
-        protected override async Task<(
-            Action<OrdExcelColumnBuilder<UserPagedDto>> ColumnBuilder,
-            Action<OrdExcelConfigurationBuilder> ConfigurationBuilder,
-            string FileName
-            )> GetExportConfiguration(List<UserPagedDto> dataItems, UserPagedInput input)
+        protected override async Task<EPPlusExportPagedDto<UserPagedDto>> GetExportConfiguration(List<UserPagedDto> dataItems, UserPagedInput input)
         {
             // Column Builder cho User
-
-            var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
+            var exportDto = new EPPlusExportPagedDto<UserPagedDto>()
+                .WithFileNameTimestamp("DanhSachNguoiDung");
+            exportDto.ColumnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex()
                 .AddColumn(c => c.WithBase(x => x.UserName, 30)
                     .WithBoldFont()
@@ -55,39 +52,30 @@ namespace Ord.Plugin.Auth.AppServices
                 .AddIsActiveColumn(x => x.IsActived));
 
             // Configuration Builder cho User
-            var configurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
+            exportDto.ConfigurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
                 .DefaultConfig(AppFactory.GetLocalizedMessage("auth.user.list-user"))
-                .WithPrintSettings(print => print
-                    .WithHeader("HỆ THỐNG QUẢN LÝ NGƯỜI DÙNG")
-                //.WithFooter("Trang {0} / {1}")
-                )
                 .WithCustomWorksheet(worksheet =>
                 {
                     var layoutSummary = ExcelSummaryHelper.SummaryLayout.Default();
                     ExcelSummaryHelper.CreateStyled(worksheet, new[]
                     {
                         ExcelSummaryHelper.SummaryItem.Create(
-                            "Tổng số người dùng:",
+                            AppFactory.GetLocalizedMessage("auth.user.totalCount"),
                             dataItems.Count,
                             ExcelSummaryHelper.Styles.Total()),
 
                         ExcelSummaryHelper.SummaryItem.Create(
-                            "Người dùng hoạt động:",
+                            AppFactory.GetLocalizedMessage("auth.user.totalActiveCount"),
                             dataItems.Count(x => x.IsActived),
                             ExcelSummaryHelper.Styles.Active()), 
 
                         ExcelSummaryHelper.SummaryItem.Create(
-                            "Người dùng không hoạt động:",
+                            AppFactory.GetLocalizedMessage("auth.user.totalInactiveCount"),
                             dataItems.Count(x => !x.IsActived),
                             ExcelSummaryHelper.Styles.Inactive())
                     }, layoutSummary);
                 }));
-
-            // File Name cho User
-            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            var fileName = $"DanhSachNguoiDung_{timestamp}.xlsx";
-
-            return (columnBuilder, configurationBuilder, fileName);
+            return exportDto;
         }
         #region Read Operations
 
