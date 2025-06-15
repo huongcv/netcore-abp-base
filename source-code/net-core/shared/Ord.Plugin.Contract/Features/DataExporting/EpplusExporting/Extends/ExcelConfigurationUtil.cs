@@ -1,5 +1,4 @@
 ﻿using OfficeOpenXml.Style;
-using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using System.Drawing;
 
 namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting.Extends
@@ -28,7 +27,6 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting.Extends
                     .WithCenterAlignment()
                     .WithAllBorders())
                 .WithHeaderRowIndex(5)
-                .WithAutoFitColumns(true, 10, 60)
                 .WithDataStyle(style => style
                     .WithAllBorders(ExcelBorderStyle.Thin)
                     .WithFontSize(13)
