@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.Style;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -6,11 +7,10 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
-using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting.Extends;
 using Ord.Plugin.Contract.Services;
-using Ord.Plugin.Core.Features.DataExporting;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
+using System.Drawing;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -32,52 +32,65 @@ namespace Ord.Plugin.Auth.AppServices
         {
             await AppFactory.ClearCacheUser(entity.Id);
         }
-        /// <summary>
-        /// Lấy cấu hình export cho User
-        /// </summary>
-        protected override async Task<EPPlusExportPagedDto<UserPagedDto>> GetExportConfiguration(List<UserPagedDto> dataItems, UserPagedInput input)
+
+        protected override async Task ConfigureExportAsync(EpplusExportingConfigurationBuilder config, List<UserPagedDto> dataItems, UserPagedInput input)
         {
-            // Column Builder cho User
-            var exportDto = new EPPlusExportPagedDto<UserPagedDto>()
-                .WithFileNameTimestamp("DanhSachNguoiDung");
-            exportDto.ColumnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
-                .AddRowIndex()
-                .AddColumn(c => c.WithBase(x => x.UserName, 30)
-                    .WithBoldFont()
-                    .WithWrapText())
-                .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
-                .AddColumn(c => c.WithBase(x => x.Email, 50))
-                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
-                .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
-                .AddIsActiveColumn(x => x.IsActived));
-
-            // Configuration Builder cho User
-            exportDto.ConfigurationBuilder = new Action<OrdExcelConfigurationBuilder>(config => config
-                .DefaultConfig(AppFactory.GetLocalizedMessage("auth.user.list-user"))
-                .WithCustomWorksheet(worksheet =>
-                {
-                    var layoutSummary = ExcelSummaryHelper.SummaryLayout.Default();
-                    ExcelSummaryHelper.CreateStyled(worksheet, new[]
-                    {
-                        ExcelSummaryHelper.SummaryItem.Create(
-                            AppFactory.GetLocalizedMessage("auth.user.totalCount"),
-                            dataItems.Count,
-                            ExcelSummaryHelper.Styles.Total()),
-
-                        ExcelSummaryHelper.SummaryItem.Create(
-                            AppFactory.GetLocalizedMessage("auth.user.totalActiveCount"),
-                            dataItems.Count(x => x.IsActived),
-                            ExcelSummaryHelper.Styles.Active()), 
-
-                        ExcelSummaryHelper.SummaryItem.Create(
-                            AppFactory.GetLocalizedMessage("auth.user.totalInactiveCount"),
-                            dataItems.Count(x => !x.IsActived),
-                            ExcelSummaryHelper.Styles.Inactive())
-                    }, layoutSummary);
-                }));
-            return exportDto;
+            var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
+             .AddRowIndex()
+             .AddColumn(c => c.WithBase(x => x.UserName, 30)
+                 .WithBoldFont()
+                 .WithWrapText())
+             .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
+             .AddColumn(c => c.WithBase(x => x.Email, 50))
+             .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
+             .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
+             .AddIsActiveColumn(x => x.IsActived));
+            config.WithWorksheetName(AppFactory.GetLocalizedMessage("auth.user.list-user"))
+                .WithTitle(title => title
+                    .WithText(AppFactory.GetLocalizedMessage("auth.user.list-user"))
+                    .WithRowIndexStart(2)
+                    .WithRowHeight(35)
+                    .WithStyle(style => style
+                        .WithFont("Arial", 18)
+                        .WithBoldFont()
+                        .WithCenterAlignment()
+                        .WithWrapText(true)
+                        .WithFontColor(Color.DarkBlue)))
+                .WithTitle(title => title
+                    .WithText(DateTime.Now.ToString("dd/MM/yyyy"))
+                    .WithRowIndexStart(3)
+                    .WithRowHeight(35)
+                    .WithStyle(style => style
+                        .WithFont("Arial", 13)
+                        .WithBoldFont()
+                        .WithItalicFont()
+                        .WithCenterAlignment()
+                        .WithWrapText(true)
+                        )
+                )
+                .WithDataTable<UserPagedDto>(dt => dt
+                    .WithRowIndexStart(5)
+                    .WithHeaderStyle(style => style
+                        .WithBoldFont()
+                        .WithRowHeight(25)
+                        .WithFontSize(15)
+                        .WithBackgroundColor(Color.LightBlue)
+                        .WithCenterAlignment()
+                        .WithAllBorders())
+                    .WithDataStyle(style => style
+                        .WithAllBorders(ExcelBorderStyle.Thin)
+                        .WithFontSize(13)
+                        .WithRowHeight(25)
+                        .WithWrapText())
+                    .WithColumns(columnBuilder)
+                )
+                .WithLandscapeOrientation();
         }
-        #region Read Operations
+
+        protected override string GetExportFileName(UserPagedInput input)
+        {
+            return FileNameHelper.GenerateFileNameExcelWithTimestamp("DanhSachNguoiDung");
+        }
 
         /// <summary>
         /// Lấy danh sách người dùng để chọn (combo/select)
@@ -105,7 +118,7 @@ namespace Ord.Plugin.Auth.AppServices
             }).ToList();
             return AppFactory.CreateSuccessResult(options);
         }
-        #endregion
+
 
         #region  User Management
         [HttpPost]

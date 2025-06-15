@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Base;
@@ -205,13 +204,15 @@ namespace Ord.Plugin.Core.Services
                 var pagedResultCommon = await GetPaged(input);
                 var items = pagedResultCommon?.Data?.Items ?? new List<TGetPagedItemDto>();
                 // Lấy cấu hình export
-                var exportDto = await GetExportConfiguration(items.ToList(), input);
+                var config = new EpplusExportingConfigurationBuilder();
+                await ConfigureExportAsync(config, items.ToList(), input);
                 // Xuất dữ liệu
-                var excelBytes = await EpplusService.ExportDataCollection(items, exportDto.ColumnBuilder, exportDto.ConfigurationBuilder);
+                var excelBytes = await EpplusService.ExportDataCollection(items, config.Build());
+                var fileName = GetExportFileName(input);
                 // Trả về file
                 return new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
-                    FileDownloadName = exportDto.FileName
+                    FileDownloadName = fileName
                 };
             }
             catch (Exception ex)
@@ -227,12 +228,17 @@ namespace Ord.Plugin.Core.Services
             await CheckPermissionForOperation(CrudOperationType.Read);
         }
         /// <summary>
-        /// Lấy cấu hình export (Column Builder, Configuration Builder, File Name)
+        /// Lấy cấu hình export 
         /// </summary>
-        /// <returns>Tuple chứa 3 cấu hình cần thiết cho export</returns>
-        protected virtual Task<EPPlusExportPagedDto<TGetPagedItemDto>> GetExportConfiguration(List<TGetPagedItemDto> dataItems, TGetPagedInputDto input)
+        protected virtual async Task ConfigureExportAsync(EpplusExportingConfigurationBuilder config, List<TGetPagedItemDto> dataItems, TGetPagedInputDto input)
         {
-            throw new AbpValidationException("Not implement GetExportConfiguration");
+
+        }
+
+        protected virtual string GetExportFileName(TGetPagedInputDto input)
+        {
+            var entityName = AppFactory.GetLocalizedMessage("file.download-name." + typeof(TEntity).Name);
+            return FileNameHelper.GenerateFileNameExcelWithTimestamp(entityName);
         }
 
         #endregion
