@@ -1,6 +1,4 @@
 ﻿using Ord.Plugin.Contract.Factories;
-using System.Drawing;
-using System.Linq.Expressions;
 
 namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
 {
@@ -31,30 +29,10 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// </summary>
         public OrdExcelColumnBuilder<T> AddColumn(Action<OrdExcelColumnFluentBuilder<T>> columnBuilder)
         {
-            var builder = new OrdExcelColumnFluentBuilder<T>();
+            var builder = new OrdExcelColumnFluentBuilder<T>(_appFactory);
             columnBuilder(builder);
             _columns.Add(builder.Build());
             return this;
-        }
-
-        /// <summary>
-        /// Thêm cột IsActive với format chuẩn
-        /// </summary>
-        public OrdExcelColumnBuilder<T> AddIsActiveColumn(
-            Expression<Func<T, bool?>> expression,
-            string? headerName = null)
-        {
-            return AddColumn(c => c
-                .WithValue(x => expression.Compile().Invoke(x) == true
-                    ? _appFactory.GetLocalizedMessage("status.active")
-                    : _appFactory.GetLocalizedMessage("status.inactive"))
-                .WithHeader(headerName ?? "Status")
-                .WithWidth(20)
-                .WithConditionalFormat(
-                    u => expression.Compile().Invoke(u) == true,
-                    Color.Green,
-                    Color.Red)
-                .WithCenterAlignment());
         }
 
         public OrdExcelColumnData<T>[] Build() => _columns.ToArray();

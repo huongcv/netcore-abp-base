@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml.Style;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -10,7 +9,6 @@ using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
-using System.Drawing;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -33,18 +31,20 @@ namespace Ord.Plugin.Auth.AppServices
             await AppFactory.ClearCacheUser(entity.Id);
         }
 
+        #region Export excel
         protected override async Task ConfigureExportAsync(EpplusExportingConfigurationBuilder config, List<UserPagedDto> dataItems, UserPagedInput input)
         {
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
-             .AddRowIndex()
-             .AddColumn(c => c.WithBase(x => x.UserName, 30)
-                 .WithBoldFont()
-                 .WithWrapText())
-             .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
-             .AddColumn(c => c.WithBase(x => x.Email, 50))
-             .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
-             .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
-             .AddIsActiveColumn(x => x.IsActived));
+                .AddRowIndex()
+                .AddColumn(c => c.WithBase(x => x.UserName, 30)
+                    .WithBoldFont()
+                    .WithWrapText())
+                .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
+                .AddColumn(c => c.WithBase(x => x.Email, 50))
+                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
+                .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
+                .AddColumn(c => c.WithStatusSwitchCase(x => x.IsActived))
+            );
             config.WithWorksheetName(AppFactory.GetLocalizedMessage("auth.user.list-user"))
                 .WithTitle(EpplusExportingConfigurationUtils.MainTitle(AppFactory.GetLocalizedMessage("auth.user.list-user"),
                     2))
@@ -63,6 +63,8 @@ namespace Ord.Plugin.Auth.AppServices
         {
             return FileNameHelper.GenerateFileNameExcelWithTimestamp("DanhSachNguoiDung");
         }
+        #endregion
+
 
         /// <summary>
         /// Lấy danh sách người dùng để chọn (combo/select)

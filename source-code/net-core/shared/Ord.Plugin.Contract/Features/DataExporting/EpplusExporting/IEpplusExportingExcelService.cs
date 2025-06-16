@@ -10,33 +10,6 @@ namespace Ord.Plugin;
 /// </summary>
 public interface IEpplusExportingExcelService : ITransientDependency
 {
-    /// <summary>
-    /// Export data from paged query with new configuration builder (Recommended)
-    /// </summary>
-    /// <typeparam name="TData">Type of data to export</typeparam>
-    /// <param name="pagedInput">Paged request input</param>
-    /// <param name="funcGetPaged">Function to get paged data</param>
-    /// <param name="configurationBuilder">Configuration builder action</param>
-    /// <returns>Excel file as byte array</returns>
-    Task<byte[]> ExportFromPagedQuery<TData>(
-        OrdPagedRequestDto pagedInput,
-        Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-        Action<EpplusExportingConfigurationBuilder> configurationBuilder)
-        where TData : class;
-
-    /// <summary>
-    /// Export data from paged query with pre-built configuration
-    /// </summary>
-    /// <typeparam name="TData">Type of data to export</typeparam>
-    /// <param name="pagedInput">Paged request input</param>
-    /// <param name="funcGetPaged">Function to get paged data</param>
-    /// <param name="configuration">Export configuration</param>
-    /// <returns>Excel file as byte array</returns>
-    Task<byte[]> ExportFromPagedQuery<TData>(
-        OrdPagedRequestDto pagedInput,
-        Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-        EpplusExportingConfiguration configuration)
-        where TData : class;
 
     /// <summary>
     /// Export data collection with new fluent builders (Recommended)

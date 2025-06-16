@@ -1,87 +1,36 @@
 ﻿using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
-using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Core.Base;
 using System.Reflection;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Core.Features.DataExporting;
 
 /// <summary>
-/// EPPlus Excel Export Service with updated configuration system
+/// Dịch vụ xuất Excel sử dụng EPPlus với hệ thống cấu hình được cập nhật
 /// </summary>
 public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcelService, ITransientDependency
 {
     private readonly ILogger<EpplusExportingExcelService> _logger;
+    private EpplusExportingConfiguration _exportConfig;
 
     public EpplusExportingExcelService(ILogger<EpplusExportingExcelService> logger)
     {
         _logger = logger;
-        // Set EPPlus license context
+        // Thiết lập license context cho EPPlus
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
     }
 
-    #region New Export API Methods
-
+    #region Export method
     /// <summary>
-    /// Export from paged query with new configuration builder
-    /// </summary>
-    public async Task<byte[]> ExportFromPagedQuery<TData>(
-        OrdPagedRequestDto pagedInput,
-        Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-        Action<EpplusExportingConfigurationBuilder> configurationBuilder) where TData : class
-    {
-        // Build configuration
-        var configBuilder = EpplusExportingConfiguration.Builder();
-        configurationBuilder(configBuilder);
-        var configuration = configBuilder.Build();
-
-        return await ExportFromPagedQuery(pagedInput, funcGetPaged, configuration);
-    }
-
-    /// <summary>
-    /// Export from paged query with pre-built configuration
-    /// </summary>
-    public async Task<byte[]> ExportFromPagedQuery<TData>(
-        OrdPagedRequestDto pagedInput,
-        Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-        EpplusExportingConfiguration configuration) where TData : class
-    {
-        try
-        {
-            _logger.LogInformation("Starting paged export for type {DataType}", typeof(TData).Name);
-
-            // Validate parameters
-            ValidateExportParameters(pagedInput, funcGetPaged, configuration);
-
-            // Prepare paged input for full export
-            var exportPagedInput = PreparePagedInputForExport(pagedInput);
-
-            // Get all data
-            var pagedResult = await funcGetPaged.Invoke(exportPagedInput);
-
-            _logger.LogInformation("Retrieved {TotalCount} records for export", pagedResult.TotalCount);
-
-            // Export the data
-            return await ExportDataCollection(pagedResult.Items, configuration);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred during paged export");
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Export data collection with new fluent builders
+    /// Xuất collection dữ liệu với fluent builders mới
     /// </summary>
     public async Task<byte[]> ExportDataCollection<TData>(
         IEnumerable<TData> dataItems,
         Action<EpplusExportingConfigurationBuilder> configurationBuilder) where TData : class
     {
-        // Build configuration
+        // Xây dựng cấu hình
         var configBuilder = EpplusExportingConfiguration.Builder();
         configurationBuilder(configBuilder);
         var configuration = configBuilder.Build();
@@ -90,7 +39,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Export data collection with pre-built configuration
+    /// Xuất collection dữ liệu với cấu hình đã được xây dựng sẵn
     /// </summary>
     public async Task<byte[]> ExportDataCollection<TData>(
         IEnumerable<TData> dataItems,
@@ -98,55 +47,56 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     {
         try
         {
-            _logger.LogInformation("Starting direct export with {RecordCount} records", dataItems.Count());
+            SetExportingConfigurationGlobal(configuration);
+            _logger.LogInformation("Bắt đầu xuất trực tiếp với {RecordCount} bản ghi", dataItems.Count());
 
-            // Validate parameters
+            // Kiểm tra tham số
             ValidateDirectExportParameters(dataItems, configuration);
 
-            // Create Excel package
+            // Tạo Excel package
             using var excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add(configuration.WorksheetName);
 
-            // Configure worksheet defaults
+            // Cấu hình mặc định cho worksheet
             ConfigureWorksheetDefaults(workSheet, configuration);
 
-            // Add titles
+            // Thêm tiêu đề
             var currentRowIndex = await AddTitlesToWorksheet(workSheet, configuration.Titles);
 
-            // Add data table if configured
+            // Thêm bảng dữ liệu nếu được cấu hình
             if (configuration.DataTable != null)
             {
                 currentRowIndex = await AddDataTableToWorksheet<TData>(workSheet, dataItems, configuration.DataTable, currentRowIndex);
             }
 
-            // Apply custom configurations
+            // Áp dụng cấu hình tùy chỉnh
             await ApplyCustomConfigurations(workSheet, configuration);
 
-            // Apply worksheet protection
+            // Áp dụng bảo vệ worksheet
             ApplyWorksheetProtection(workSheet, configuration);
 
-            // Save and return
+            // Lưu và trả về
             var result = await SaveExcelToBytes(excel);
 
-            _logger.LogInformation("Successfully exported {RecordCount} records", dataItems.Count());
+            _logger.LogInformation("Xuất thành công {RecordCount} bản ghi", dataItems.Count());
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred during direct export");
+            _logger.LogError(ex, "Lỗi xảy ra trong quá trình xuất trực tiếp");
             throw;
         }
     }
 
     /// <summary>
-    /// Export multiple sheets
+    /// Xuất nhiều sheet
     /// </summary>
     public async Task<byte[]> ExportMultipleSheets(params EpplusExportSheetConfiguration[] exportSheets)
     {
         try
         {
-            _logger.LogInformation("Starting multi-sheet export with {SheetCount} sheets", exportSheets.Length);
+            _logger.LogInformation("Bắt đầu xuất nhiều sheet với {SheetCount} sheet", exportSheets.Length);
 
             using var excel = new ExcelPackage();
 
@@ -157,31 +107,31 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
 
             var result = await SaveExcelToBytes(excel);
 
-            _logger.LogInformation("Successfully exported multi-sheet file with {SheetCount} sheets", exportSheets.Length);
+            _logger.LogInformation("Xuất thành công file nhiều sheet với {SheetCount} sheet", exportSheets.Length);
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred during multi-sheet export");
+            _logger.LogError(ex, "Lỗi xảy ra trong quá trình xuất nhiều sheet");
             throw;
         }
     }
 
     /// <summary>
-    /// Create export sheet configuration for multi-sheet export
+    /// Tạo cấu hình sheet xuất cho xuất nhiều sheet
     /// </summary>
     public EpplusExportSheetConfiguration CreateSheetConfiguration<TData>(
         string sheetName,
         IEnumerable<TData> dataItems,
         Action<EpplusExportingConfigurationBuilder> configurationBuilder) where TData : class
     {
-        // Build configuration
+        // Xây dựng cấu hình
         var configBuilder = EpplusExportingConfiguration.Builder();
         configurationBuilder(configBuilder);
         var configuration = configBuilder.Build();
 
-        // Override worksheet name
+        // Ghi đè tên worksheet
         configuration.WorksheetName = sheetName;
 
         return EpplusExportSheetConfiguration.Create(sheetName, dataItems, configuration);
@@ -189,26 +139,15 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
 
     #endregion
 
-    #region Private Helper Methods
+    #region Helper private
 
-    /// <summary>
-    /// Validate paged export parameters
-    /// </summary>
-    private void ValidateExportParameters<TData>(
-        OrdPagedRequestDto pagedInput,
-        Func<OrdPagedRequestDto, Task<PagedResultDto<TData>>> funcGetPaged,
-        EpplusExportingConfiguration configuration) where TData : class
+    private void SetExportingConfigurationGlobal(EpplusExportingConfiguration config)
     {
-        if (pagedInput == null)
-            throw new ArgumentNullException(nameof(pagedInput));
-        if (funcGetPaged == null)
-            throw new ArgumentNullException(nameof(funcGetPaged));
-        if (configuration == null)
-            throw new ArgumentNullException(nameof(configuration));
+        _exportConfig = config;
     }
 
     /// <summary>
-    /// Validate direct export parameters
+    /// Kiểm tra tham số xuất trực tiếp
     /// </summary>
     private void ValidateDirectExportParameters<TData>(
         IEnumerable<TData> dataItems,
@@ -221,32 +160,19 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Prepare paged input for full export
-    /// </summary>
-    private OrdPagedRequestDto PreparePagedInputForExport(OrdPagedRequestDto pagedInput)
-    {
-        return new OrdPagedRequestDto
-        {
-            MaxResultCount = int.MaxValue,
-            SkipCount = 0,
-            Sorting = pagedInput.Sorting
-        };
-    }
-
-    /// <summary>
-    /// Configure worksheet default settings
+    /// Cấu hình các thiết lập mặc định cho worksheet
     /// </summary>
     private void ConfigureWorksheetDefaults(ExcelWorksheet workSheet, EpplusExportingConfiguration configuration)
     {
-        workSheet.DefaultRowHeight = configuration.DefaultRowHeight;
-        workSheet.DefaultColWidth = configuration.DefaultColumnWidth;
+        workSheet.DefaultRowHeight = configuration.DefaultRowHeight; // Chiều cao hàng mặc định
+        workSheet.DefaultColWidth = configuration.DefaultColumnWidth; // Chiều rộng cột mặc định
 
-        // Apply print settings
+        // Áp dụng thiết lập in
         configuration.PrintSettings.ApplyTo(workSheet);
     }
 
     /// <summary>
-    /// Add titles to worksheet
+    /// Thêm tiêu đề vào worksheet
     /// </summary>
     private async Task<int> AddTitlesToWorksheet(ExcelWorksheet workSheet, List<OrdExcelTitle> titles)
     {
@@ -257,22 +183,23 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
             if (title == null || string.IsNullOrEmpty(title.Text))
                 continue;
 
-            // Use the RowIndex from title configuration
+            // Sử dụng RowIndex từ cấu hình tiêu đề
             var titleRowIndex = title.RowIndex > 0 ? title.RowIndex : currentRowIndex;
 
             var actualColumnSpan = title.TitleColumnSpan > 0 ? title.TitleColumnSpan : GetWorksheetColumnCount(workSheet);
             var titleRange = workSheet.Cells[titleRowIndex, 1, titleRowIndex, actualColumnSpan];
-            titleRange.Merge = true;
+            titleRange.Merge = true; // Merge các ô để tạo tiêu đề dài
             titleRange.Value = title.Text;
 
-            // Apply title styling
+            // Áp dụng style cho tiêu đề
             title.Style.ApplyTo(titleRange.Style);
             title.CustomStyleAction?.Invoke(titleRange.Style);
 
+            // Thiết lập chiều cao hàng nếu có
             if (title.RowHeight.HasValue)
                 workSheet.Row(titleRowIndex).Height = title.RowHeight.Value;
 
-            // Update current row index for next title
+            // Cập nhật chỉ số hàng hiện tại cho tiêu đề tiếp theo
             currentRowIndex = Math.Max(currentRowIndex, titleRowIndex + title.MarginBottomRow);
         }
 
@@ -280,16 +207,26 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Get worksheet column count (for title spanning)
+    /// Lấy số cột của worksheet (để span tiêu đề)
     /// </summary>
     private int GetWorksheetColumnCount(ExcelWorksheet workSheet)
     {
-        // Default to reasonable column count if worksheet is empty
+        // Ưu tiên lấy số cột từ cấu hình DataTable nếu có
+        if (_exportConfig.DataTable?.ColumnsConfiguration is OrdExcelColumnBuilder<object> columnBuilder)
+        {
+            var columns = GetColumnsFromConfiguration<object>(_exportConfig.DataTable);
+            if (columns?.Length > 0)
+            {
+                return columns.Length;
+            }
+        }
+
+        // Nếu không có cấu hình DataTable, lấy từ dimension hiện tại của worksheet
         return workSheet.Dimension?.End.Column ?? 10;
     }
 
     /// <summary>
-    /// Add data table to worksheet
+    /// Thêm bảng dữ liệu vào worksheet
     /// </summary>
     private async Task<int> AddDataTableToWorksheet<TData>(
         ExcelWorksheet workSheet,
@@ -297,37 +234,37 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
         EpplusDataTableConfiguration dataTableConfig,
         int currentRowIndex) where TData : class
     {
-        // Get columns from configuration
+        // Lấy cột từ cấu hình
         var columns = GetColumnsFromConfiguration<TData>(dataTableConfig);
         if (columns == null || columns.Length == 0)
         {
-            _logger.LogWarning("No columns configured for data table");
+            _logger.LogWarning("Không có cột nào được cấu hình cho bảng dữ liệu");
             return currentRowIndex;
         }
 
-        // Use configured row index or current position
+        // Sử dụng vị trí hàng được cấu hình hoặc vị trí hiện tại
         var headerRowIndex = Math.Max(currentRowIndex, dataTableConfig.RowIndexStart);
 
-        // Add headers
+        // Thêm header
         currentRowIndex = await AddHeadersToWorksheet(workSheet, dataTableConfig, columns, headerRowIndex);
 
-        // Add data rows
+        // Thêm các hàng dữ liệu
         currentRowIndex = await AddDataRowsToWorksheet(workSheet, dataItems, columns, dataTableConfig, currentRowIndex);
 
-        // Configure columns (width, auto-fit)
+        // Cấu hình cột (chiều rộng, auto-fit)
         ConfigureColumns(workSheet, columns, dataTableConfig);
 
         return currentRowIndex;
     }
 
     /// <summary>
-    /// Get columns from data table configuration
+    /// Lấy cột từ cấu hình bảng dữ liệu
     /// </summary>
     private OrdExcelColumnData<TData>[] GetColumnsFromConfiguration<TData>(EpplusDataTableConfiguration dataTableConfig) where TData : class
     {
         if (dataTableConfig.ColumnsConfiguration is OrdExcelColumnBuilder<TData> columnBuilder)
         {
-            // Inject AppFactory if needed
+            // Inject AppFactory nếu cần
             var builderType = columnBuilder.GetType();
             var appFactoryField = builderType.GetField("_appFactory", BindingFlags.NonPublic | BindingFlags.Instance);
             if (appFactoryField?.GetValue(columnBuilder) == null)
@@ -342,7 +279,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Add headers to worksheet
+    /// Thêm header vào worksheet
     /// </summary>
     private async Task<int> AddHeadersToWorksheet<TData>(
         ExcelWorksheet workSheet,
@@ -355,20 +292,21 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
             var column = columns[col];
             var headerCell = workSheet.Cells[headerRowIndex, col + 1];
 
-            // Set header text
+            // Thiết lập text header
             var headerText = GetHeaderText(column, col);
             if (!string.IsNullOrEmpty(headerText) && !headerText.StartsWith("field"))
             {
-                headerText = "field." + headerText;
+                headerText = "field." + headerText; // Thêm prefix cho localization
             }
-            headerCell.Value = AppFactory.GetLocalizedMessage(headerText);
+            headerCell.Value = AppFactory.GetLocalizedMessage(headerText); // Áp dụng đa ngôn ngữ
 
-            // Apply header styling
+            // Áp dụng style cho header
             dataTableConfig.HeaderStyle.ApplyTo(headerCell.Style);
             column.Header?.Style?.ApplyTo(headerCell.Style);
             column.Header?.CustomStyleAction?.Invoke(headerCell.Style, headerText);
         }
 
+        // Thiết lập chiều cao hàng header
         var rowHeight = dataTableConfig.HeaderStyle?.RowHeight;
         if (rowHeight.HasValue)
         {
@@ -379,22 +317,22 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Get header text for column
+    /// Lấy text header cho cột
     /// </summary>
     private string GetHeaderText<TData>(OrdExcelColumnData<TData> column, int columnIndex) where TData : class
     {
-        // Use column header name
+        // Sử dụng tên header của cột
         if (!string.IsNullOrEmpty(column.Header?.HeaderName))
         {
             return column.Header.HeaderName;
         }
 
-        // Default name
+        // Tên mặc định
         return $"Column {columnIndex + 1}";
     }
 
     /// <summary>
-    /// Add data rows to worksheet
+    /// Thêm các hàng dữ liệu vào worksheet
     /// </summary>
     private async Task<int> AddDataRowsToWorksheet<TData>(
         ExcelWorksheet workSheet,
@@ -404,7 +342,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
         int startRowIndex) where TData : class
     {
         if (!dataItems.Any())
-            return startRowIndex;
+            return startRowIndex; // Không có dữ liệu để thêm
 
         var currentRowIndex = startRowIndex;
         var recordIndex = 0;
@@ -413,21 +351,23 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
         {
             recordIndex++;
 
+            // Lặp qua từng cột để thiết lập giá trị
             for (int colIndex = 0; colIndex < columns.Length; colIndex++)
             {
                 var column = columns[colIndex];
                 var cell = workSheet.Cells[currentRowIndex, colIndex + 1];
 
-                // Set cell value
+                // Thiết lập giá trị ô
                 var cellValue = GetCellValue(column, dataItem, recordIndex);
                 cell.Value = cellValue;
 
-                // Apply cell styling
+                // Áp dụng style cho ô
                 dataTableConfig.DataStyle.ApplyTo(cell.Style);
                 column.Style?.ApplyTo(cell.Style);
                 column.CustomStyleAction?.Invoke(dataItem, cell.Style);
             }
 
+            // Thiết lập chiều cao hàng dữ liệu
             var dataCellRowHeight = dataTableConfig.DataStyle?.RowHeight;
             if (dataCellRowHeight.HasValue)
             {
@@ -440,18 +380,20 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Get cell value from column configuration
+    /// Lấy giá trị ô từ cấu hình cột
     /// </summary>
     private object GetCellValue<TData>(
         OrdExcelColumnData<TData> column,
         TData dataItem,
         int recordIndex) where TData : class
     {
+        // Nếu là cột số thứ tự
         if (column.IsRowIndex)
         {
             return recordIndex;
         }
 
+        // Nếu không có value selector
         if (column.ValueSelector == null)
         {
             return string.Empty;
@@ -459,7 +401,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
 
         var rawValue = column.ValueSelector(dataItem);
 
-        // Apply value formatter if available
+        // Áp dụng formatter nếu có
         if (column.ValueFormatter != null)
         {
             return column.ValueFormatter(rawValue);
@@ -469,7 +411,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Format cell value based on type
+    /// Format giá trị ô dựa trên kiểu dữ liệu
     /// </summary>
     private object FormatCellValue(object? value)
     {
@@ -478,17 +420,17 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
 
         return value switch
         {
-            DateTime dateTime => dateTime,
-            DateOnly dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
-            TimeOnly timeOnly => timeOnly.ToString("HH:mm:ss"),
-            bool boolean => boolean,
-            decimal or double or float or int or long => value,
-            _ => value.ToString() ?? string.Empty
+            DateTime dateTime => dateTime, // Giữ nguyên DateTime
+            DateOnly dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue), // Chuyển DateOnly thành DateTime
+            TimeOnly timeOnly => timeOnly.ToString("HH:mm:ss"), // Format TimeOnly
+            bool boolean => boolean, // Giữ nguyên boolean
+            decimal or double or float or int or long => value, // Giữ nguyên số
+            _ => value.ToString() ?? string.Empty // Chuyển thành string cho các kiểu khác
         };
     }
 
     /// <summary>
-    /// Configure columns (width, auto-fit)
+    /// Cấu hình cột (chiều rộng, auto-fit)
     /// </summary>
     private void ConfigureColumns<TData>(
         ExcelWorksheet workSheet,
@@ -500,7 +442,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
             var column = columns[col];
             var excelColumn = workSheet.Column(col + 1);
 
-            // Set explicit width
+            // Thiết lập chiều rộng cụ thể
             if (column.Width.HasValue)
             {
                 excelColumn.Width = column.Width.Value;
@@ -511,19 +453,21 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
             }
             else
             {
-                // Use default width
+                // Sử dụng chiều rộng mặc định
                 excelColumn.Width = 12;
             }
         }
     }
 
     /// <summary>
-    /// Apply custom configurations
+    /// Áp dụng cấu hình tùy chỉnh
     /// </summary>
     private async Task ApplyCustomConfigurations(ExcelWorksheet workSheet, EpplusExportingConfiguration configuration)
     {
+        // Thực thi action tùy chỉnh đồng bộ
         configuration.CustomWorksheetAction?.Invoke(workSheet);
 
+        // Thực thi action tùy chỉnh bất đồng bộ
         if (configuration.CustomWorksheetAsyncAction != null)
         {
             await configuration.CustomWorksheetAsyncAction(workSheet);
@@ -531,22 +475,23 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Apply worksheet protection
+    /// Áp dụng bảo vệ worksheet
     /// </summary>
     private void ApplyWorksheetProtection(ExcelWorksheet workSheet, EpplusExportingConfiguration configuration)
     {
         if (configuration.ProtectWorksheet)
         {
+            // Thiết lập mật khẩu nếu có
             if (!string.IsNullOrEmpty(configuration.WorksheetPassword))
             {
                 workSheet.Protection.SetPassword(configuration.WorksheetPassword);
             }
-            workSheet.Protection.IsProtected = true;
+            workSheet.Protection.IsProtected = true; // Bật bảo vệ
         }
     }
 
     /// <summary>
-    /// Save Excel package to byte array
+    /// Lưu Excel package thành mảng byte
     /// </summary>
     private async Task<byte[]> SaveExcelToBytes(ExcelPackage excel)
     {
@@ -556,13 +501,13 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Create worksheet from sheet configuration (for multi-sheet export)
+    /// Tạo worksheet từ cấu hình sheet (cho xuất nhiều sheet)
     /// </summary>
     private async Task CreateWorksheetFromConfiguration(ExcelPackage excel, EpplusExportSheetConfiguration sheetConfig)
     {
         var worksheet = excel.Workbook.Worksheets.Add(sheetConfig.SheetName);
 
-        // Use reflection to call the generic method
+        // Sử dụng reflection để gọi phương thức generic
         var method = typeof(EpplusExportingExcelService).GetMethod(nameof(ApplyConfigurationToWorksheet),
             BindingFlags.NonPublic | BindingFlags.Instance);
         var genericMethod = method!.MakeGenericMethod(sheetConfig.DataType);
@@ -571,29 +516,30 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
     }
 
     /// <summary>
-    /// Apply configuration to existing worksheet (for multi-sheet support)
+    /// Áp dụng cấu hình vào worksheet có sẵn (cho hỗ trợ nhiều sheet)
     /// </summary>
     private async Task ApplyConfigurationToWorksheet<T>(
         ExcelWorksheet worksheet,
         IEnumerable<T> data,
         EpplusExportingConfiguration configuration) where T : class
     {
-        // Configure worksheet defaults
+        SetExportingConfigurationGlobal(configuration);
+        // Cấu hình mặc định cho worksheet
         ConfigureWorksheetDefaults(worksheet, configuration);
 
-        // Add titles
+        // Thêm tiêu đề
         var currentRowIndex = await AddTitlesToWorksheet(worksheet, configuration.Titles);
 
-        // Add data table if configured
+        // Thêm bảng dữ liệu nếu được cấu hình
         if (configuration.DataTable != null)
         {
             currentRowIndex = await AddDataTableToWorksheet<T>(worksheet, data, configuration.DataTable, currentRowIndex);
         }
 
-        // Apply custom configurations
+        // Áp dụng cấu hình tùy chỉnh
         await ApplyCustomConfigurations(worksheet, configuration);
 
-        // Apply protection
+        // Áp dụng bảo vệ
         ApplyWorksheetProtection(worksheet, configuration);
     }
 

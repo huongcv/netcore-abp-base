@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml.Style;
+using Ord.Plugin.Contract.Factories;
 using System.Drawing;
 using System.Linq.Expressions;
 
@@ -12,10 +13,12 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
     {
         private readonly OrdExcelColumnData<T> _column;
 
-        internal OrdExcelColumnFluentBuilder()
+        internal OrdExcelColumnFluentBuilder(IAppFactory appFactory)
         {
             _column = new OrdExcelColumnData<T>(data => string.Empty);
+            AppFactory = appFactory;
         }
+        public IAppFactory AppFactory { get; }
 
         /// <summary>
         /// Thiết lập base configuration cho cột với auto property name detection
