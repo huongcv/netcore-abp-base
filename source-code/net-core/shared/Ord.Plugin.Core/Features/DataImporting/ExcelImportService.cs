@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Base;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
     /// Lớp cha trừu tượng phục vụ import dữ liệu từ Excel
     /// </summary>
     /// <typeparam name="TImportDto">Kiểu dữ liệu DTO dùng để import</typeparam>
-    public abstract class ExcelImportService<TImportDto> : OrdManagerBase
+    public abstract class ExcelImportService<TImportDto> : OrdManagerBase,IExcelImportService<TImportDto>
         where TImportDto : class, IImportDto, new()
     {
         protected readonly ILogger Logger;
@@ -39,13 +40,13 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// </summary>
         protected virtual int GetMaxRowsToProcess()
         {
-            return 2000; // Giới hạn mặc định
+            return AppConsts.MaxRowImportExcel; // Higher limit for pure reading
         }
 
         /// <summary>
         /// Xử lý kiểm tra dữ liệu và tách dữ liệu thành danh sách hợp lệ/lỗi
         /// </summary>
-        public async Task<ImportOutputDto<TImportDto>> ValidateAndProcessDataAsync(List<TImportDto> rawDataList)
+        public async Task<ImportOutputDto<TImportDto>> ValidateProcessDataAsync(List<TImportDto> rawDataList)
         {
             if (rawDataList?.Any() != true)
             {

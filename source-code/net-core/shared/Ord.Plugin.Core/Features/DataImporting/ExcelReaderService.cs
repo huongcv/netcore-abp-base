@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Contract.Utils;
 using Ord.Plugin.Core.Base;
@@ -164,7 +165,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// <returns>Maximum number of rows</returns>
         protected virtual int GetMaxRowsToProcess()
         {
-            return 2000; // Higher limit for pure reading
+            return AppConsts.MaxRowImportExcel; // Higher limit for pure reading
         }
 
         /// <summary>
