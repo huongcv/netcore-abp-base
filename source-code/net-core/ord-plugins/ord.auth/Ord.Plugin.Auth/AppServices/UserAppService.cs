@@ -46,42 +46,14 @@ namespace Ord.Plugin.Auth.AppServices
              .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
              .AddIsActiveColumn(x => x.IsActived));
             config.WithWorksheetName(AppFactory.GetLocalizedMessage("auth.user.list-user"))
-                .WithTitle(title => title
-                    .WithText(AppFactory.GetLocalizedMessage("auth.user.list-user"))
-                    .WithRowIndexStart(2)
-                    .WithRowHeight(35)
-                    .WithStyle(style => style
-                        .WithFont("Arial", 18)
-                        .WithBoldFont()
-                        .WithCenterAlignment()
-                        .WithWrapText(true)
-                        .WithFontColor(Color.DarkBlue)))
-                .WithTitle(title => title
-                    .WithText(DateTime.Now.ToString("dd/MM/yyyy"))
-                    .WithRowIndexStart(3)
-                    .WithRowHeight(35)
-                    .WithStyle(style => style
-                        .WithFont("Arial", 13)
-                        .WithBoldFont()
-                        .WithItalicFont()
-                        .WithCenterAlignment()
-                        .WithWrapText(true)
-                        )
-                )
+                .WithTitle(EpplusExportingConfigurationUtils.MainTitle(AppFactory.GetLocalizedMessage("auth.user.list-user"),
+                    2))
+                .WithTitle(EpplusExportingConfigurationUtils.SubTitle("Ngày " + DateTime.Now.ToString("dd/MM/yyyy"),
+                    3))
                 .WithDataTable<UserPagedDto>(dt => dt
                     .WithRowIndexStart(5)
-                    .WithHeaderStyle(style => style
-                        .WithBoldFont()
-                        .WithRowHeight(25)
-                        .WithFontSize(15)
-                        .WithBackgroundColor(Color.LightBlue)
-                        .WithCenterAlignment()
-                        .WithAllBorders())
-                    .WithDataStyle(style => style
-                        .WithAllBorders(ExcelBorderStyle.Thin)
-                        .WithFontSize(13)
-                        .WithRowHeight(25)
-                        .WithWrapText())
+                    .WithHeaderStyle(EpplusExportingConfigurationUtils.DefaultHeaderStyle())
+                    .WithDataStyle(EpplusExportingConfigurationUtils.DefaultDataStyle())
                     .WithColumns(columnBuilder)
                 )
                 .WithLandscapeOrientation();
