@@ -7,5 +7,6 @@ namespace Ord.Plugin.Core.Base
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
         protected IServiceProvider ServiceProvider => LazyServiceProvider.LazyGetRequiredService<IServiceProvider>();
+        protected IFlexCelExportingService FlexCelService => LazyServiceProvider.LazyGetRequiredService<IFlexCelExportingService>();
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract.Consts;
+using Ord.Plugin.Contract.Features.BlobStoring;
 using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Base;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
     /// Lớp cha trừu tượng phục vụ import dữ liệu từ Excel
     /// </summary>
     /// <typeparam name="TImportDto">Kiểu dữ liệu DTO dùng để import</typeparam>
-    public abstract class ExcelImportService<TImportDto> : OrdManagerBase,IExcelImportService<TImportDto>
+    public abstract class ExcelImportService<TImportDto> : OrdManagerBase, IExcelImportService<TImportDto>
         where TImportDto : class, IImportDto, new()
     {
         protected readonly ILogger Logger;
@@ -32,6 +33,10 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// Hàm kiểm tra logic nghiệp vụ cho mỗi dòng import
         /// </summary>
         protected abstract Task<List<string>> ValidateBusinessRulesAsync(TImportDto importDto);
+
+        protected abstract string GetFileTemplateExcel();
+        protected abstract int GetDataRowIndexTemplateExcel();
+        protected abstract Task<List<object>> GetDataCellTemplateExcelAsync(TImportDto item);
 
         #endregion
 
@@ -101,6 +106,36 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 SuccessImportList = successList,
                 ErrorImportList = errorList
             };
+        }
+
+        public async Task<byte[]> ExportExcelImportDataAsync(List<TImportDto> rawDataList)
+        {
+            FlexCelService.SetTemplateProvider(TemplateProvider.FileSystem);
+            var rowIndex = GetDataRowIndexTemplateExcel();
+            return await FlexCelService.ExportExcelAsync(GetFileTemplateExcel(), fileHandler: async resultXls =>
+            {
+                if (rawDataList?.Any() == true)
+                {
+                    foreach (var item in rawDataList)
+                    {
+                        var colIxd = 0;
+                        resultXls.SetCellValue(rowIndex, ++colIxd, rowIndex - 1);
+                        var cellDatas = await GetDataCellTemplateExcelAsync(item);
+                        if (cellDatas?.Any() == true)
+                        {
+                            foreach (var cellData in cellDatas)
+                            {
+                                resultXls.SetCellValue(rowIndex, ++colIxd, cellData);
+                            }
+                        }
+                        if (!item.IsSuccessData)
+                        {
+                            resultXls.SetCellValue(rowIndex, ++colIxd, string.Join(", ", item.ErrorMessages));
+                        }
+                        rowIndex++;
+                    }
+                }
+            });
         }
 
         /// <summary>
