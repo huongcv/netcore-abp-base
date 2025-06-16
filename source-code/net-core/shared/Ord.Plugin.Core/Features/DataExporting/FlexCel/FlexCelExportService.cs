@@ -10,7 +10,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
     public class FlexCelExportingService : OrdManagerBase, IFlexCelExportingService
     {
         private ITemplateProvider _templateProvider;
-        public async Task<byte[]> ExportExcelAsync(string templatePath, Func<FlexCelReport, Task> reportHandler)
+        public async Task<byte[]> ExportExcelAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
             var xls = await RunReportAsync(templatePath, reportHandler);
             await using var memoryStream = new MemoryStream();
@@ -27,7 +27,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
             }
             _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();
         }
-        public async Task<byte[]> ExportPdfAsync(string templatePath, Func<FlexCelReport, Task> reportHandler)
+        public async Task<byte[]> ExportPdfAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
             var xls = await RunReportAsync(templatePath, reportHandler);
             await using var memoryStream = new MemoryStream();
@@ -45,7 +45,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
 
 
 
-        private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task> reportHandler)
+        private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
             // mặc định lấy trong file
             _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();
@@ -53,7 +53,15 @@ namespace Ord.Plugin.Core.Features.DataExporting
             var xls = new XlsFile(true);
             xls.Open(templateStream);
             using var report = new FlexCelReport(true);
-            await reportHandler(report);
+            if (reportHandler != null)
+            {
+                await reportHandler(report);
+            }
+
+            if (fileHandler != null)
+            {
+                await fileHandler(xls);
+            }
             report.Run(xls);
 
             return xls;
