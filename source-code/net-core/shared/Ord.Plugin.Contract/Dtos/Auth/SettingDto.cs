@@ -10,7 +10,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public Guid? UserId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        [IgnoreColumnName]
         public string RawValue { get; set; }
         public bool? MustEncrypt { get; set; }
         public bool IsActived { get; set; }
