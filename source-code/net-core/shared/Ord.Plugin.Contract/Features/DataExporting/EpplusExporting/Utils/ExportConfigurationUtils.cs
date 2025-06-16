@@ -90,7 +90,7 @@ public static class EpplusExportingConfigurationUtils
         string inactiveText = "Inactive",
         string? headerName = null)
     {
-        return c => c.WithBase(expression, 20, headerName ?? "Status")
+        return c => c.WithProperty(expression, 20, headerName ?? "Status")
             .WithCenterAlignment()
             .WithConditionalFormat(isActiveFunc, Color.Green, Color.Red)
             .WithFormatter(value => isActiveFunc((T)value) ? activeText : inactiveText);

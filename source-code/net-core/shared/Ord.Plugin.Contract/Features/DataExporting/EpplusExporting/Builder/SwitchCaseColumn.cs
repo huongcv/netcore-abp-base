@@ -212,11 +212,12 @@ public static class SwitchCaseColumnExtensions
         this OrdExcelColumnFluentBuilder<T> builder,
         Expression<Func<T, bool?>> statusExpression,
         string? headerName = "Status",
-        double? width = 20)
+        double? width = 20,
+        bool isBold = false)
     {
         return builder.WithSwitchCase(statusExpression, cases => cases
-            .Case(true, builder.AppFactory.GetLocalizedMessage("status.active"), Color.Green, null, true)
-            .Case(false, builder.AppFactory.GetLocalizedMessage("status.inactive"), Color.Red, null, true)
+            .Case(true, builder.AppFactory.GetLocalizedMessage("status.active"), Color.Green, null, isBold)
+            .Case(false, builder.AppFactory.GetLocalizedMessage("status.inactive"), Color.Red, null, isBold)
             .Default(builder.AppFactory.GetLocalizedMessage("status.unknown"), Color.Black), headerName, width);
     }
 
@@ -249,12 +250,15 @@ public static class SwitchCaseColumnExtensions
         string falseText = "Không",
         string nullText = "N/A",
         string? headerName = null,
-        double? width = 15)
+        double? width = 15,
+        bool isBold = false)
     {
         return builder.WithSwitchCase(boolExpression, cases => cases
-            .Case(true, trueText, Color.Green, null, true)
-            .Case(false, falseText, Color.Red, null, true)
-            .Default(nullText, Color.Gray), headerName, width);
+            .Case(true, trueText, Color.Green, null, isBold)
+            .Case(false, falseText, Color.Red, null, isBold)
+            .Default(nullText, Color.Gray, null, isBold),
+            headerName,
+            width);
     }
 
     /// <summary>

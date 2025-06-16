@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml;
+using Ord.Plugin.Contract.Factories;
 
 namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 
@@ -172,9 +173,9 @@ public class EpplusDataTableBuilder<T> where T : class
     /// <summary>
     /// Thiết lập columns
     /// </summary>
-    public EpplusDataTableBuilder<T> WithColumns(Action<OrdExcelColumnBuilder<T>> columnBuilder)
+    public EpplusDataTableBuilder<T> WithColumns(Action<OrdExcelColumnBuilder<T>> columnBuilder,IAppFactory appFactory)
     {
-        _columnBuilder = new OrdExcelColumnBuilder<T>(null!); // Will be injected later
+        _columnBuilder = new OrdExcelColumnBuilder<T>(appFactory); // Will be injected later
         columnBuilder(_columnBuilder);
         _dataTable.ColumnsConfiguration = _columnBuilder;
         return this;

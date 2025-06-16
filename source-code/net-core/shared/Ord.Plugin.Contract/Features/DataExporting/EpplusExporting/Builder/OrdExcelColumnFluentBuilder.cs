@@ -23,7 +23,7 @@ namespace Ord.Plugin.Contract.Features.DataExporting.EpplusExporting
         /// <summary>
         /// Thiết lập base configuration cho cột với auto property name detection
         /// </summary>
-        public OrdExcelColumnFluentBuilder<T> WithBase<TProperty>(
+        public OrdExcelColumnFluentBuilder<T> WithProperty<TProperty>(
             Expression<Func<T, TProperty>> expression,
             double? width = 10,
             string? headerName = null)

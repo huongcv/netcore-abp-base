@@ -36,13 +36,13 @@ namespace Ord.Plugin.Auth.AppServices
         {
             var columnBuilder = new Action<OrdExcelColumnBuilder<UserPagedDto>>(columns => columns
                 .AddRowIndex()
-                .AddColumn(c => c.WithBase(x => x.UserName, 30)
+                .AddColumn(c => c.WithProperty(x => x.UserName, 30)
                     .WithBoldFont()
                     .WithWrapText())
-                .AddColumn(c => c.WithBase(x => x.Name, 30, "FullName"))
-                .AddColumn(c => c.WithBase(x => x.Email, 50))
-                .AddColumn(c => c.WithBase(x => x.PhoneNumber, 20))
-                .AddColumn(c => c.WithBase(x => x.CreationTime, 26).WithDateTimeFormat())
+                .AddColumn(c => c.WithProperty(x => x.Name, 30, "FullName"))
+                .AddColumn(c => c.WithProperty(x => x.Email, 50))
+                .AddColumn(c => c.WithProperty(x => x.PhoneNumber, 20))
+                .AddColumn(c => c.WithProperty(x => x.CreationTime, 26).WithDateTimeFormat())
                 .AddColumn(c => c.WithStatusSwitchCase(x => x.IsActived))
             );
             config.WithWorksheetName(AppFactory.GetLocalizedMessage("auth.user.list-user"))
@@ -54,7 +54,7 @@ namespace Ord.Plugin.Auth.AppServices
                     .WithRowIndexStart(5)
                     .WithHeaderStyle(EpplusExportingConfigurationUtils.DefaultHeaderStyle())
                     .WithDataStyle(EpplusExportingConfigurationUtils.DefaultDataStyle())
-                    .WithColumns(columnBuilder)
+                    .WithColumns(columnBuilder, AppFactory)
                 )
                 .WithLandscapeOrientation();
         }
