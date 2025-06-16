@@ -6,9 +6,11 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
+using Ord.Plugin.Contract.Features.DataExporting.FlexCelExporting;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -57,12 +59,31 @@ namespace Ord.Plugin.Auth.AppServices
                     .WithColumns(columnBuilder, AppFactory)
                 )
                 .WithLandscapeOrientation();
+
         }
 
         protected override string GetExportFileName(UserPagedInput input)
         {
             return FileNameHelper.GenerateFileNameExcelWithTimestamp("DanhSachNguoiDung");
         }
+
+        protected override async Task<byte[]> GenerateExcelFileAsync(PagedResultDto<UserPagedDto> pagedResult, UserPagedInput input)
+        {
+            return await FlexCelService.ExportExcelAsync("excel/ListUser.xlsx", async fr =>
+            {
+                fr.SetValue("Title", AppFactory.GetLocalizedMessage("auth.user.list-user"));
+                var tableDynamic = new FlexCelTableDynamicDto<UserPagedDto>()
+                    .AddRowIndexColumn()
+                    .AddColumn("UserName", x => x.UserName)
+                    .AddColumn("FullName", x => x.Name)
+                    .AddColumn("Email", x => x.Email)
+                    .AddColumn("PhoneNumber", x => x.PhoneNumber)
+                    .AddColumn("CreationTime", x => x.CreationTime)
+                    .AddColumn("Status", x => x.Email);
+                fr.AddDynamicTable(tableDynamic, pagedResult.Items.ToList());
+            });
+        }
+
         #endregion
 
 

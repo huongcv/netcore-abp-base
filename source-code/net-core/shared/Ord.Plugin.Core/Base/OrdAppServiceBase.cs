@@ -10,6 +10,7 @@ namespace Ord.Plugin.Core.Base
     {
         protected IAppFactory AppFactory => LazyServiceProvider.LazyGetRequiredService<IAppFactory>();
         protected IEpplusExportingExcelService EpplusService => LazyServiceProvider.LazyGetRequiredService<IEpplusExportingExcelService>();
+        protected IFlexCelExportingService FlexCelService => LazyServiceProvider.LazyGetRequiredService<IFlexCelExportingService>();
 
         #region Permission Methods
 

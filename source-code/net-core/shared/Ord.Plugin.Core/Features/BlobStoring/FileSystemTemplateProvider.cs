@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Ord.Plugin.Contract.Features.BlobStoring;
+using Volo.Abp.DependencyInjection;
 
-public class FileSystemTemplateProvider : ITemplateProvider
+public class FileSystemTemplateProvider : ITemplateProvider, ITransientDependency
 {
     private readonly string _templateRootPath;
 

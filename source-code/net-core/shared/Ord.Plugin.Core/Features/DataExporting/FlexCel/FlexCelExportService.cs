@@ -7,7 +7,7 @@ using Ord.Plugin.Core.Features.BlobStoring;
 
 namespace Ord.Plugin.Core.Features.DataExporting
 {
-    public abstract class FlexCelExportingService : OrdManagerBase, IFlexCelExportingService
+    public class FlexCelExportingService : OrdManagerBase, IFlexCelExportingService
     {
         private ITemplateProvider _templateProvider;
         public async Task<byte[]> ExportExcelAsync(string templatePath, Func<FlexCelReport, Task> reportHandler)
@@ -43,17 +43,15 @@ namespace Ord.Plugin.Core.Features.DataExporting
             return memoryStream.ToArray();
         }
 
-        
+
 
         private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task> reportHandler)
         {
             // mặc định lấy trong file
             _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();
             await using var templateStream = await _templateProvider.GetTemplateStreamAsync(templatePath);
-            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), templatePath);
             var xls = new XlsFile(true);
-            xls.Open(fullPath);
-
+            xls.Open(templateStream);
             using var report = new FlexCelReport(true);
             await reportHandler(report);
             report.Run(xls);
