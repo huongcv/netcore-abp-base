@@ -46,5 +46,62 @@ namespace Ord.Plugin.Contract.Features.DataExporting.FlexCelExporting
             });
             return this;
         }
+        public FlexCelTableDynamicDto<TItemDto> AddColumn(string columnName, Expression<Func<TItemDto, decimal?>> expression, string format = "#,##0.00")
+        {
+            columnName = AppFactory.GetLocalizedMessage(StringUtil.AddPrefixForFieldNameLocalized(columnName));
+            if (!Columns.ContainsKey(columnName))
+            {
+                Columns.Add(columnName, x =>
+                {
+                    var data = expression.Compile().Invoke(x);
+                    if (data.HasValue)
+                    {
+                        return data.Value.ToString(format);
+                    }
+                    return null;
+                });
+            }
+            return this;
+        }
+
+        public FlexCelTableDynamicDto<TItemDto> AddColumn(string columnName, Expression<Func<TItemDto, int?>> expression)
+        {
+            columnName = AppFactory.GetLocalizedMessage(StringUtil.AddPrefixForFieldNameLocalized(columnName));
+            if (!Columns.ContainsKey(columnName))
+            {
+                Columns.Add(columnName, x =>
+                {
+                    var data = expression.Compile().Invoke(x);
+                    return data?.ToString();
+                });
+            }
+            return this;
+        }
+
+        public FlexCelTableDynamicDto<TItemDto> AddColumn(string columnName, Expression<Func<TItemDto, bool?>> expression, string trueText = "Có", string falseText = "Không")
+        {
+            columnName = AppFactory.GetLocalizedMessage(StringUtil.AddPrefixForFieldNameLocalized(columnName));
+            if (!Columns.ContainsKey(columnName))
+            {
+                Columns.Add(columnName, x =>
+                {
+                    var data = expression.Compile().Invoke(x);
+                    if (data.HasValue)
+                    {
+                        return data.Value ? trueText : falseText;
+                    }
+                    return null;
+                });
+            }
+            return this;
+        }
+
+        public FlexCelTableDynamicDto<TItemDto> AddColumnIsActive(Expression<Func<TItemDto, bool?>> expression,string columnName="Status")
+        {
+            return AddColumn(columnName, expression,
+                AppFactory.GetLocalizedMessage("status.active"),
+                AppFactory.GetLocalizedMessage("status.inactive")
+            );
+        }
     }
 }
