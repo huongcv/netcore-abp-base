@@ -1,4 +1,5 @@
-﻿using FluentValidation; // Sử dụng FluentValidation
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Base;
@@ -15,15 +16,13 @@ namespace Ord.Plugin.Core.Features.DataImporting
         where TImportDto : class, IImportDto, new()
     {
         protected readonly ILogger Logger;
-        private readonly IValidator<TImportDto>? _fluentValidator;
 
         /// <summary>
         /// Constructor nhận logger và validator tùy chọn
         /// </summary>
-        protected ExcelImportService(ILogger logger, IValidator<TImportDto>? fluentValidator = null)
+        protected ExcelImportService(ILogger logger)
         {
             Logger = logger;
-            _fluentValidator = fluentValidator;
         }
 
         #region Abstract Methods - Phải được cài đặt bởi lớp con
@@ -46,8 +45,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// <summary>
         /// Xử lý kiểm tra dữ liệu và tách dữ liệu thành danh sách hợp lệ/lỗi
         /// </summary>
-        protected async Task<(List<TImportDto> successList, List<TImportDto> errorList)> ValidateAndProcessDataAsync(
-            List<TImportDto> rawDataList)
+        protected async Task<(List<TImportDto> successList, List<TImportDto> errorList)> ValidateAndProcessDataAsync(List<TImportDto> rawDataList)
         {
             if (rawDataList?.Any() != true)
             {
@@ -61,7 +59,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
 
             var successList = new List<TImportDto>();
             var errorList = new List<TImportDto>();
-
+            var fluentValidator = ServiceProvider.GetService<IValidator<TImportDto>>();
             foreach (var item in rawDataList)
             {
                 var validationErrors = new List<string>();
@@ -71,9 +69,9 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 validationErrors.AddRange(dataAnnotationErrors);
 
                 //Kiểm tra bằng FluentValidation (nếu có)
-                if (_fluentValidator != null)
+                if (fluentValidator != null)
                 {
-                    var result = await _fluentValidator.ValidateAsync(item);
+                    var result = await fluentValidator.ValidateAsync(item);
                     if (!result.IsValid)
                     {
                         validationErrors.AddRange(result.Errors.Select(e => e.ErrorMessage));
