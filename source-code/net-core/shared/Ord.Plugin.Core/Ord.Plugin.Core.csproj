@@ -11,6 +11,7 @@
 	  <None Remove="ShopSetting\**" />
 	</ItemGroup>
 	<ItemGroup>
+		
 		<PackageReference Include="Volo.Abp.Autofac" Version="$(AbpVersion)" />
 		<PackageReference Include="Volo.Abp.AutoMapper" Version="$(AbpVersion)" />
 		<PackageReference Include="Volo.Abp.Dapper" Version="$(AbpVersion)" />
@@ -29,8 +30,7 @@
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
 
-		<PackageReference Include="TMS.FlexCel" Version="7.6.4" />
-
+		
 		<PackageReference Include="Syncfusion.DocIO.Net.Core" Version="24.1.47" />
 		<PackageReference Include="Syncfusion.DocIORenderer.Net.Core" Version="24.1.47" />
 		<PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="24.1.47" />
@@ -48,6 +48,7 @@
 
 		<PackageReference Include="FirebaseAdmin" Version="3.2.0" />
 		<PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
+		<PackageReference Include="Minio" Version="6.0.2" />
 
 	</ItemGroup>
 	<ItemGroup>
