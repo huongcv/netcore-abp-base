@@ -11,7 +11,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
     /// Pure data reading without business logic
     /// </summary>
     /// <typeparam name="TDto">Type of DTO to convert to</typeparam>
-    public abstract class ExcelReaderService<TDto> : OrdManagerBase
+    public abstract class ExcelReaderService<TDto> : OrdManagerBase, IExcelReaderService<TDto>
         where TDto : class, IImportDto, new()
     {
         protected readonly ILogger Logger;

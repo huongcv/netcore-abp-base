@@ -45,7 +45,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// <summary>
         /// Xử lý kiểm tra dữ liệu và tách dữ liệu thành danh sách hợp lệ/lỗi
         /// </summary>
-        protected async Task<(List<TImportDto> successList, List<TImportDto> errorList)> ValidateAndProcessDataAsync(List<TImportDto> rawDataList)
+        public async Task<ImportOutputDto<TImportDto>> ValidateAndProcessDataAsync(List<TImportDto> rawDataList)
         {
             if (rawDataList?.Any() != true)
             {
@@ -95,7 +95,11 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 }
             }
 
-            return (successList, errorList);
+            return new ImportOutputDto<TImportDto>()
+            {
+                SuccessImportList = successList,
+                ErrorImportList = errorList
+            };
         }
 
         /// <summary>
