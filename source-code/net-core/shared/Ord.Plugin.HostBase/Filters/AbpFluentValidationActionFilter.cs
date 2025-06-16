@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Features.Validation;
+using Ord.Plugin.Contract.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.AspNetCore.Mvc;
@@ -181,11 +182,7 @@ public class AbpFluentValidationActionFilter(IAppFactory appFactory) : IAsyncAct
     private string GetLocalizedDisplayName(Type modelType, string propertyName)
     {
         var rawDisplayName = GetDisplayName(modelType, propertyName);
-        // tự động cộng thêm để dịch đa ngữ trong file field.json
-        if (!rawDisplayName.Contains("field"))
-        {
-            rawDisplayName = "field." + rawDisplayName;
-        }
+        rawDisplayName = StringUtil.AddPrefixForFieldNameLocalized(rawDisplayName);
         return appFactory.GetLocalizedMessage(rawDisplayName);
     }
 

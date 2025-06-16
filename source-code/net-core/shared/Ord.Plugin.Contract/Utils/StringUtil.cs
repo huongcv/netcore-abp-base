@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -98,25 +97,10 @@ namespace Ord.Plugin.Contract.Utils
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
-
-        public static string SHA512_ComputeHash(string text, string secretKey)
-        {
-            var secretkeyBytes = Encoding.UTF8.GetBytes(secretKey);
-            var inputBytes = Encoding.UTF8.GetBytes(text);
-            using var hmac = new HMACSHA512(secretkeyBytes);
-            var hashValue = hmac.ComputeHash(inputBytes);
-            return Convert.ToHexString(hashValue).ToLower();
-        }
-
         public static string Base64Decode(string base64EncodedData)
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-        }
-
-        public static string GenTickFromTimeNow()
-        {
-            return DateTime.Now.ToString("yyMMddHHmmssfff");
         }
 
         public static bool HasUnicodeCharacter(string input)
@@ -132,20 +116,22 @@ namespace Ord.Plugin.Contract.Utils
             return string.Equals(a.ConvertToFts(), b.ConvertToFts(), StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string GetTransactionId(long invoiceId)
+        #region String Localized
+
+        /// <summary>
+        /// tự động cộng thêm để dịch đa ngữ trong file field.json
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string? AddPrefixForFieldNameLocalized(string? name)
         {
-            string idStr = invoiceId.ToString().PadLeft(16, '0');
+            if (!string.IsNullOrEmpty(name) && !name.StartsWith("field"))
+            {
+                return  "field." + name; // Thêm prefix cho localization
+            }
 
-            string part1 = idStr.Substring(0, 8);
-            string part2 = idStr.Substring(8, 4);
-            string part3 = idStr.Substring(12, 4);
-
-            string timestamp = DateTime.Now.ToString("ddMMyyHHmmssffff"); 
-
-            string part4 = timestamp.Substring(0, 4);
-            string part5 = timestamp.Substring(4, 12);
-
-            return $"{part1}-{part2}-{part3}-{part4}-{part5}";
+            return name;
         }
+        #endregion
     }
 }

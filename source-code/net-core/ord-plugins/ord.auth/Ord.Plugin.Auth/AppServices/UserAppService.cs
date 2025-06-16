@@ -72,7 +72,7 @@ namespace Ord.Plugin.Auth.AppServices
             return await FlexCelService.ExportExcelAsync("excel/ListUser.xlsx", async fr =>
             {
                 fr.SetValue("Title", AppFactory.GetLocalizedMessage("auth.user.list-user"));
-                var tableDynamic = new FlexCelTableDynamicDto<UserPagedDto>()
+                var tableDynamic = new FlexCelTableDynamicDto<UserPagedDto>(AppFactory, pagedResult.Items.ToList())
                     .AddRowIndexColumn()
                     .AddColumn("UserName", x => x.UserName)
                     .AddColumn("FullName", x => x.Name)
@@ -80,7 +80,7 @@ namespace Ord.Plugin.Auth.AppServices
                     .AddColumn("PhoneNumber", x => x.PhoneNumber)
                     .AddColumn("CreationTime", x => x.CreationTime)
                     .AddColumn("Status", x => x.Email);
-                fr.AddDynamicTable(tableDynamic, pagedResult.Items.ToList());
+                fr.AddDynamicTable(tableDynamic);
             });
         }
 

@@ -7,13 +7,13 @@ namespace Ord.Plugin
     {
         public static void AddDynamicTable<TItemDto>(this FlexCelReport fr,
             FlexCelTableDynamicDto<TItemDto> tableDynamic,
-            List<TItemDto> dataList,
             string headerPrefix = "header",
             string valuePrefix = "Value",
             string dataTableName = "tableData")
         {
             // 1. Tạo headers cho bảng
             var headers = tableDynamic.Columns.Keys.ToArray();
+            var dataList = tableDynamic.DataItems;
 
             // 2. Set headers vào FlexCel template
             for (int i = 0; i < headers.Length; i++)

@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Core.Base;
 using System.Reflection;
+using Ord.Plugin.Contract.Utils;
 using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Core.Features.DataExporting;
@@ -294,10 +295,7 @@ public class EpplusExportingExcelService : OrdManagerBase, IEpplusExportingExcel
 
             // Thiết lập text header
             var headerText = GetHeaderText(column, col);
-            if (!string.IsNullOrEmpty(headerText) && !headerText.StartsWith("field"))
-            {
-                headerText = "field." + headerText; // Thêm prefix cho localization
-            }
+            headerText = StringUtil.AddPrefixForFieldNameLocalized(headerText);
             headerCell.Value = AppFactory.GetLocalizedMessage(headerText); // Áp dụng đa ngôn ngữ
 
             // Áp dụng style cho header

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Ord.Plugin.Contract.Localization;
 using System.ComponentModel.DataAnnotations;
+using Ord.Plugin.Contract.Utils;
 
 namespace Ord.Plugin.Contract.Features.Validation.Attributes
 {
@@ -40,11 +41,7 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
         protected virtual string GetFieldName(ValidationContext validationContext, IOrdLocalizer localizer)
         {
             var fieldName = FieldName ?? validationContext.DisplayName;
-            if (!fieldName.StartsWith("field"))
-            {
-                fieldName = "field." + fieldName;
-            }
-
+            fieldName = StringUtil.AddPrefixForFieldNameLocalized(fieldName);
             return localizer[fieldName];
         }
 
