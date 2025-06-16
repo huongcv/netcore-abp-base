@@ -1,10 +1,11 @@
 ﻿using Minio;
 using Minio.DataModel.Args;
 using Ord.Plugin.Contract.Features.BlobStoring;
+using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Core.Features.BlobStoring
 {
-    public class MinioTemplateProvider : ITemplateProvider
+    public class MinioTemplateProvider : ITemplateProvider, ITransientDependency
     {
         private readonly MinioClient _minioClient;
         private readonly string _bucketName;

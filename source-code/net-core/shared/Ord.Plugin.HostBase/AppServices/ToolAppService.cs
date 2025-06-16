@@ -7,19 +7,15 @@ using Volo.Abp.Security.Encryption;
 namespace Ord.Plugin.HostBase.AppServices
 {
     [OrdAuth("SuperAdmin")]
-    public class ToolAppService : ApplicationService
+    public class SysToolAppService(IConfiguration configuration, IAppFactory appFactory) : ApplicationService
     {
-        private readonly IConfiguration _configuration;
-        private readonly IAppFactory _appFactory;
-
-        public ToolAppService(IConfiguration configuration, IAppFactory appFactory)
+        public  Task SyncTemplatesToMinioAsync()
         {
-            _configuration = configuration;
-            _appFactory = appFactory;
+            return appFactory.GetServiceDependency<TemplateSyncService>().SyncTemplatesToMinioAsync();
         }
         public async Task ClearAllCacheInRedis()
         {
-            var connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(_configuration["Redis:Configuration"],
+            var connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(configuration["Redis:Configuration"],
                 x =>
                 {
                     x.AllowAdmin = true;
@@ -36,7 +32,7 @@ namespace Ord.Plugin.HostBase.AppServices
 
         public string GetEncrypted(string value)
         {
-            return _appFactory.GetServiceDependency<IStringEncryptionService>().Encrypt(value);
+            return appFactory.GetServiceDependency<IStringEncryptionService>().Encrypt(value);
         }
     }
 }

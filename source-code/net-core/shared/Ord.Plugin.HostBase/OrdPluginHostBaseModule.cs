@@ -67,6 +67,7 @@ namespace Ord.Plugin.HostBase
             ConfigureCache(services, configuration);
             services.AddRedisRateLimit(configuration);
             services.AddHealthCheckOpenTelemetry(configuration);
+            services.AddBlobStoring(configuration);
 #if DEBUG
             services.AddHangfireMemory();
 #else
