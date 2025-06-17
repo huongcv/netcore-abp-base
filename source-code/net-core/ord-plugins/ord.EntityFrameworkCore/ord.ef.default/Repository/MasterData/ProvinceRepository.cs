@@ -8,6 +8,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
         : OrdDefaultCrudRepository<ProvinceEntity, int, ProvincePagedInput, ProvincePagedDto, ProvinceDetailDto, CreateProvinceDto, UpdateProvinceDto>(factory),
             IProvinceRepository
     {
+        private ICountryRepository CountryRepos => AppFactory.GetServiceDependency<ICountryRepository>();
         /// <summary>
         /// Lọc và tìm kiếm dữ liệu phân trang theo điều kiện người dùng nhập
         /// </summary>
@@ -33,6 +34,8 @@ namespace Ord.EfCore.Default.Repository.MasterData
             {
                 ThrowValidationEx("message.crud.code_already_exists", createInput.Code);
             }
+
+            await CheckCountryCode(createInput.CountryCode);
         }
 
         /// <summary>
@@ -45,6 +48,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
             {
                 ThrowValidationEx("message.crud.code_already_exists", entityUpdate.Code);
             }
+            await CheckCountryCode(updateInput.CountryCode);
         }
 
         /// <summary>
@@ -76,7 +80,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
         /// <summary>
         /// Kiểm tra mã có là duy nhất hay không
         /// </summary>
-        public async Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null)
+        protected async Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null)
         {
             var queryable = await GetQueryableAsync();
             var query = queryable.AsNoTracking().Where(x => x.Code == code);
@@ -98,6 +102,20 @@ namespace Ord.EfCore.Default.Repository.MasterData
             //var provinceQueryable = await GetEntityQueryable<ProvinceEntity>();
             //var query = provinceQueryable.AsNoTracking().Where(x => x.ProvinceCode == code);
             //return await query.AnyAsync();
+        }
+
+        public Task<bool> IsCodeExistsAsync(string code)
+        {
+            return ExistsAsync(x => x.Code == code);
+        }
+
+        protected async Task CheckCountryCode(string countryCode)
+        {
+            var isCodeExists = await CountryRepos.IsCodeExistsAsync(countryCode);
+            if (!isCodeExists)
+            {
+                ThrowValidationEx("message.business.country_code_not_found", countryCode);
+            }
         }
     }
 }

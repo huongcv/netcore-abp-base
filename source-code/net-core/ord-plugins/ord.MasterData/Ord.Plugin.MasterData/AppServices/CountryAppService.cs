@@ -26,7 +26,7 @@ namespace Ord.Plugin.MasterData.AppServices
         [ActionName("GetComboOptions")]
         public async Task<CommonResultDto<List<ComboOptionDto>>> GetComboOptions(GetComboOptionInputDto input)
         {
-            var users = await CountryRepository.GetListComboOptions(input.IncludeUnActive ?? false);
+            var users = await CountryRepository.GetComboBoxOptionsAsync(input.IncludeUnActive ?? false);
             var options = users.Select(x => new ComboOptionDto
             {
                 Value = x.Code,

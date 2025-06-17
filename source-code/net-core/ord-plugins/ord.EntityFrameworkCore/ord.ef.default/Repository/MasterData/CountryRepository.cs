@@ -52,14 +52,14 @@ namespace Ord.EfCore.Default.Repository.MasterData
         /// </summary>
         protected override async Task ValidateBeforeDeleteAsync(CountryEntity entityDelete)
         {
-            var isUsed = await CheckCountryIsUsedAsync(entityDelete.Code);
+            var isUsed = await CheckIsUsedAsync(entityDelete.Code);
             if (isUsed)
             {
                 ThrowEntityUsed(entityDelete.Code);
             }
         }
 
-        public async Task<IEnumerable<CountryPagedDto>> GetListComboOptions(bool includeUnActive = false)
+        public async Task<IEnumerable<CountryPagedDto>> GetComboBoxOptionsAsync(bool includeUnActive = false)
         {
             return await GetListAsDtoAsync<CountryPagedDto>(
                 x => x.IsActived == true || includeUnActive,
@@ -76,7 +76,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
         /// <summary>
         /// Kiểm tra mã Country có là duy nhất hay không
         /// </summary>
-        public async Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null)
+        protected async Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null)
         {
             var queryable = await GetQueryableAsync();
             var query = queryable.AsNoTracking().Where(x => x.Code == code);
@@ -89,10 +89,14 @@ namespace Ord.EfCore.Default.Repository.MasterData
             return !await query.AnyAsync();
         }
 
+        public Task<bool> IsCodeExistsAsync(string code)
+        {
+            return ExistsAsync(x => x.Code == code);
+        }
         /// <summary>
         /// Kiểm tra mã Country đã được sử dụng ở bảng Province hay chưa
         /// </summary>
-        public async Task<bool> CheckCountryIsUsedAsync(string code)
+        public async Task<bool> CheckIsUsedAsync(string code)
         {
             var provinceQueryable = await GetEntityQueryable<ProvinceEntity>();
             var query = provinceQueryable.AsNoTracking().Where(x => x.CountryCode == code);

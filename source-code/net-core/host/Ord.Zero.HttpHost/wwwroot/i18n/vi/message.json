@@ -35,5 +35,8 @@
       "User": "người dùng: ",
       "Tenant": "thuê bao: "
     }
+  },
+  "business": {
+    "country_code_not_found": "Mã quốc gia '{0}' không tồn tại"
   }
 }

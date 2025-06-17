@@ -20,6 +20,9 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
 
     public class ProvinceCrudBase : IHasActived, IHasEncodedId
     {
+        [OrdMaxLengthString(ProvinceEntity.MaxLengthCountryCode)]
+        [OrdValidateRequired]
+        public string? CountryCode { get; set; }
         [OrdMaxLengthString(ProvinceEntity.MaxLengthCode)]
         [OrdValidateRequired]
         public string? Code { get; set; }
@@ -28,8 +31,7 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
         public string? Name { get; set; }
         [OrdMaxLengthString(ProvinceEntity.MaxLengthLevel)]
         public string? Level { get; set; }
-        [OrdMaxLengthString(ProvinceEntity.MaxLengthCountryCode)]
-        public string? CountryCode { get; set; }
+        
         public bool IsActived { get; set; }
         public virtual string? EncodedId { get; set; }
     }
