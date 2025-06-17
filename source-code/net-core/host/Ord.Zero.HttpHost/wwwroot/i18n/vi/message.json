@@ -37,6 +37,7 @@
     }
   },
   "business": {
-    "country_code_not_found": "Mã quốc gia '{0}' không tồn tại"
+    "country_code_not_found": "Mã quốc gia '{0}' không tồn tại",
+    "province_code_not_found": "Mã tỉnh/thành phố '{0}' không tồn tại"
   }
 }
