@@ -78,34 +78,44 @@ namespace Ord.Plugin.Core.Utils
             return WhereLikeText(query, textSearch, colums);
         }
 
-        public static IQueryable<T> WhereDateRange<T>(this IQueryable<T> query, DateRangeDto dateRange, Expression<Func<T, DateTime?>> property)
+        public static IQueryable<T> WhereDateRange<T>(this IQueryable<T> query, Expression<Func<T, DateTime?>> property, DateRangeDto dateRange)
         {
             if (dateRange == null || (!dateRange.StartDate.HasValue && !dateRange.EndDate.HasValue))
             {
                 return query;
             }
+            return query.WhereDateRange(property, dateRange?.StartDate, dateRange?.EndDate);
+        }
+        public static IQueryable<T> WhereDateRange<T>(
+            this IQueryable<T> query,
+            Expression<Func<T, DateTime?>> dateProperty,
+            DateTime? fromDate,
+            DateTime? toDate)
+        {
+            if (fromDate.HasValue)
+            {
+                var fromExpression = Expression.GreaterThanOrEqual(
+                    dateProperty.Body,
+                    Expression.Constant(fromDate.Value.Date, typeof(DateTime?))
+                );
 
-            var memberExpression = QueryableUtil.ResolveMemberExpression(property.Body);
-            var column = memberExpression.Member.Name;
-            if (string.IsNullOrEmpty(column))
-            {
-                return query;
+                var lambda = Expression.Lambda<Func<T, bool>>(fromExpression, dateProperty.Parameters);
+                query = query.Where(lambda);
             }
 
-            if (dateRange.StartDate.HasValue)
+            if (toDate.HasValue)
             {
-                var startDate = new DateTime(dateRange.StartDate.Value.Year, dateRange.StartDate.Value.Month, dateRange.StartDate.Value.Day);
-                query = query.Where(x => EF.Property<DateTime?>(x, column) >= startDate);
+                var toExpression = Expression.LessThan(
+                    dateProperty.Body,
+                    Expression.Constant(toDate.Value.AddDays(1).Date, typeof(DateTime?))
+                );
+
+                var lambda = Expression.Lambda<Func<T, bool>>(toExpression, dateProperty.Parameters);
+                query = query.Where(lambda);
             }
-            if (dateRange.EndDate.HasValue)
-            {
-                var endDate = new DateTime(dateRange.EndDate.Value.Year, dateRange.EndDate.Value.Month, dateRange.EndDate.Value.Day);
-                var endDateExclusive = endDate.AddDays(1);
-                query = query.Where(x => EF.Property<DateTime?>(x, column) < endDateExclusive);
-            }
+
             return query;
         }
-
         #region  Hỗ trợ đọc tên column từ biểu thức linq
 
         private static string[] GetColumnNames<T>(Expression<Func<T, object>> property)
