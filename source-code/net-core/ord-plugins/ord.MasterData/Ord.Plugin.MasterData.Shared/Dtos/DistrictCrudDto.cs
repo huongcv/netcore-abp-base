@@ -45,10 +45,8 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     {
         public string? ProvinceCode { get; set; }
     }
-    public class DistrictDetailDto : DistrictCrudBase, IEntityDto<int>
+    public class DistrictDetailDto : DistrictPagedDto
     {
-        public int Id { get; set; }
-        public DateTime CreationTime { get; set; }
     }
 
     public class CreateDistrictDto : DistrictCrudBase

@@ -1,6 +1,7 @@
 ﻿using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
+using System.Linq;
 
 namespace Ord.EfCore.Default.Repository.MasterData
 {
@@ -24,10 +25,46 @@ namespace Ord.EfCore.Default.Repository.MasterData
 
             return queryable;
         }
-
-        protected override Task<IQueryable<DistrictPagedDto>> TransformToPagedDtoAsync(IQueryable<DistrictEntity> entityQueryable, DistrictPagedInput input)
+        protected virtual async Task<IQueryable<DistrictJoinedProjection>> CreateDistrictJoinedQueryAsync(
+            IQueryable<DistrictEntity> queryable)
         {
-            return base.TransformToPagedDtoAsync(entityQueryable, input);
+            var provinceQueryable = await GetEntityQueryable<ProvinceEntity>();
+            return from d in queryable
+                   join p in provinceQueryable on d.ProvinceCode equals p.Code
+                   select new DistrictJoinedProjection
+                   {
+                       Province = p,
+                       District = d
+                   };
+        }
+
+
+        protected override async Task<IQueryable<DistrictPagedDto>> TransformToPagedDtoAsync(IQueryable<DistrictEntity> entityQueryable, DistrictPagedInput input)
+        {
+            var joinedQueryable = await CreateDistrictJoinedQueryAsync(entityQueryable);
+            return joinedQueryable.Select(x => new DistrictPagedDto()
+            {
+                Id = x.District.Id,
+                Name = x.District.Name,
+                Code = x.District.Code,
+                ProvinceCode = x.District.ProvinceCode,
+                CreationTime = x.District.CreationTime,
+                ProvinceName = x.Province.Name
+            });
+        }
+
+        protected override async Task<IQueryable<DistrictDetailDto>> GenerateDetailByIdQueryableAsync(IQueryable<DistrictEntity> entityQueryable)
+        {
+            var queryable = await CreateDistrictJoinedQueryAsync(entityQueryable);
+            return queryable.Select(x => new DistrictDetailDto()
+            {
+                Id = x.District.Id,
+                Name = x.District.Name,
+                Code = x.District.Code,
+                ProvinceCode = x.District.ProvinceCode,
+                CreationTime = x.District.CreationTime,
+                ProvinceName = x.Province.Name
+            });
         }
 
         /// <summary>
@@ -122,3 +159,14 @@ namespace Ord.EfCore.Default.Repository.MasterData
         }
     }
 }
+
+#region Projection class 
+
+public class DistrictJoinedProjection
+{
+    public ProvinceEntity? Province { get; set; }
+    public DistrictEntity? District { get; set; }
+}
+
+
+#endregion
