@@ -115,78 +115,11 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TenantId");
+
                     b.HasIndex("UserName", "TenantId");
 
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.NotificationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Body")
-                        .HasMaxLength(3000)
-                        .HasColumnType("varchar(3000)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<string>("Data")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("NotificationName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("TenantId");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("system_notification", (string)null);
-                });
-
-            modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.NotificationUserEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid>("NotificationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("State")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("TenantId");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("system_notificationUser", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.PermissionGrantEntity", b =>
@@ -198,7 +131,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("PermissionName")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
@@ -206,7 +138,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("ProviderName")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
@@ -218,7 +149,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasIndex("ProviderName", "ProviderId");
 
-                    b.ToTable("PermissionGrants", (string)null);
+                    b.ToTable("PermissionGrants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.PermissionUserEntity", b =>
@@ -230,7 +161,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("PermissionName")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
 
@@ -241,7 +171,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PermissionUsers", (string)null);
+                    b.ToTable("PermissionUsers");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.RoleEntity", b =>
@@ -284,6 +214,12 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("IsDeleted");
 
+                    b.Property<bool>("IsStatic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsTemplate")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("LastModificationTime");
@@ -293,9 +229,11 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
+
+                    b.Property<Guid?>("TemplateRoleId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("char(36)")
@@ -307,7 +245,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasIndex("Code", "TenantId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.SettingEntity", b =>
@@ -383,7 +321,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasIndex("Type", "TenantId", "UserId");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.TenantEntity", b =>
@@ -449,77 +387,14 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<short>("Type")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Code");
 
-                    b.ToTable("Tenants", (string)null);
-                });
-
-            modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.UserClaimEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<Guid?>("TenantId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId", "Name", "TenantId")
-                        .IsUnique();
-
-                    b.ToTable("UserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.UserFireBaseTokenEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<string>("FireBaseToken")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Platform")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("system_userFirebaseToken", (string)null);
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.UserRoleEntity", b =>
@@ -550,7 +425,143 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("Ord.Plugin.Contract.Features.Notifications.Entities.UserFirebaseDeviceEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("DeviceName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("FirebaseToken")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastLoginTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("TenantId");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_firebase_devices");
+                });
+
+            modelBuilder.Entity("Ord.Plugin.Contract.Features.Notifications.Entities.UserNotificationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("State")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("TenantId");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("system_user_notifications");
+                });
+
+            modelBuilder.Entity("Ord.Plugin.Contract.Features.Notifications.NotificationInfoEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Body")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("DataJson")
+                        .HasColumnType("json");
+
+                    b.Property<string>("NotificationName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<byte>("Severity")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("system_notifications");
                 });
 #pragma warning restore 612, 618
         }

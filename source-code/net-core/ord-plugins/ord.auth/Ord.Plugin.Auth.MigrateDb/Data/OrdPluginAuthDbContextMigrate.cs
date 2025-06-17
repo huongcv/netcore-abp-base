@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Shared.Entities;
+using Ord.Plugin.Contract.Features.Notifications;
+using Ord.Plugin.Contract.Features.Notifications.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -17,11 +19,11 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
         public virtual DbSet<PermissionUserEntity> PermissionUsers { get; set; }
         public virtual DbSet<TenantEntity> Tenants { get; set; }
         public virtual DbSet<SettingEntity> Settings { get; set; }
-        #region Notifi
-        public virtual DbSet<NotificationUserEntity> NotificationUserEntity { get; set; }
-        public virtual DbSet<NotificationEntity> NotificationEntity { get; set; }
-        public virtual DbSet<UserFireBaseTokenEntity> UserFireBaseToken { get; set; }
-        #endregion
+
+        public virtual DbSet<NotificationInfoEntity> Notifications { get; set; }
+        public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
+        public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
+
         public OrdPluginAuthDbContextMigrate(DbContextOptions<OrdPluginAuthDbContextMigrate> options) : base(options)
         {
         }
@@ -34,6 +36,10 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
                 b.HasIndex(x => new
                 {
                     x.UserName,
+                    x.TenantId
+                });
+                b.HasIndex(x => new
+                {
                     x.TenantId
                 });
             });
@@ -95,6 +101,28 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
                 });
                 b.HasIndex(x => x.UserId);
                 b.HasIndex(x => x.Name);
+            });
+            builder.Entity<NotificationInfoEntity>(b =>
+            {
+                b.ConfigureByConvention();
+            });
+            builder.Entity<UserNotificationEntity>(b =>
+            {
+                b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.UserId,
+                    x.CreationTime
+                }).IsDescending(false, true);
+            });
+            builder.Entity<UserFirebaseDeviceEntity>(b =>
+            {
+                b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.UserId,
+                    x.DeviceId
+                }).IsDescending(false, false, true);
             });
         }
     }

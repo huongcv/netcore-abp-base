@@ -9,7 +9,7 @@ namespace Ord.Plugin.Auth.Shared.Entities
     {
         public Guid UserId { get; set; }
         [MaxLength(200)]
-        public string PermissionName { get; set; }
+        public string? PermissionName { get; set; }
         public bool IsGrant { get; set; }
     }
 }

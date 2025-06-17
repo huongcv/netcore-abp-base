@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ord.Plugin.Auth.MigrateDb.Migrations
 {
     /// <inheritdoc />
-    public partial class initauth : Migration
+    public partial class authmodule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,10 +21,10 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProviderName = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    ProviderName = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProviderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PermissionName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    PermissionName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
@@ -40,7 +40,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PermissionName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    PermissionName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsGrant = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -57,12 +57,15 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsStatic = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TemplateRoleId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsTemplate = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -86,11 +89,13 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                     UserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Value = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
+                    Value = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MustEncrypt = table.Column<bool>(type: "tinyint(1)", nullable: true),
                     IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    JObjectValue = table.Column<string>(type: "json", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -102,6 +107,46 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Settings", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_notifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    NotificationName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Title = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Body = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DataJson = table.Column<string>(type: "json", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Severity = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_notifications", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_user_notifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    State = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    NotificationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_user_notifications", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -120,7 +165,9 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsStock = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -136,20 +183,33 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UserClaims",
+                name: "user_firebase_devices",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FirebaseToken = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Value = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    DeviceId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DeviceName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Platform = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastLoginTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.PrimaryKey("PK_user_firebase_devices", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -258,12 +318,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 column: "Code");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_UserId_Name_TenantId",
-                table: "UserClaims",
-                columns: new[] { "UserId", "Name", "TenantId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -274,10 +328,14 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_TenantId",
+                table: "Users",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName_TenantId",
                 table: "Users",
-                columns: new[] { "UserName", "TenantId" },
-                unique: true);
+                columns: new[] { "UserName", "TenantId" });
         }
 
         /// <inheritdoc />
@@ -296,10 +354,16 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 name: "Settings");
 
             migrationBuilder.DropTable(
+                name: "system_notifications");
+
+            migrationBuilder.DropTable(
+                name: "system_user_notifications");
+
+            migrationBuilder.DropTable(
                 name: "Tenants");
 
             migrationBuilder.DropTable(
-                name: "UserClaims");
+                name: "user_firebase_devices");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
