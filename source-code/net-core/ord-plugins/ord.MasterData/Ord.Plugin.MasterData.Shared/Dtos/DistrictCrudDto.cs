@@ -42,7 +42,7 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     }
     public class DistrictPagedInput : OrdPagedRequestDto
     {
-
+        public string? ProvinceCode { get; set; }
     }
     public class DistrictDetailDto : DistrictCrudBase, IEntityDto<int>
     {

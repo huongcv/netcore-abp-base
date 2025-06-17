@@ -19,6 +19,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 x.Code,
                 x.Name
             })
+            .WhereIfHasValue(input.ProvinceCode, x => x.ProvinceCode == input.ProvinceCode)
             .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
 
             return queryable;
