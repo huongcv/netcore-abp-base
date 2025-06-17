@@ -6,7 +6,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Validation;
 
-namespace Ord.Plugin.Auth.Base
+namespace Ord.EfCore.Default.Data
 {
     public abstract class OrdDefaultCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(IAppFactory appFactory) :

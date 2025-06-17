@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Auth.Base;
+﻿using Ord.EfCore.Default.Data;
+using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;

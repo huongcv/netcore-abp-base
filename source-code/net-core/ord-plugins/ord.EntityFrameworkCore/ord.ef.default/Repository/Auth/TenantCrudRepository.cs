@@ -1,6 +1,7 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Entities;
+using Ord.EfCore.Default.Data;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Auth.Shared.Dtos.Tenants;
