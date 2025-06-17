@@ -1,21 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Ord.Contract.Entities;
-using Ord.EfCore.Default.Data;
-using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Data;
-using Ord.Plugin.Auth.Shared.Dtos;
-using Ord.Plugin.Auth.Shared.Dtos.Roles;
-using Ord.Plugin.Auth.Shared.Entities;
-using Ord.Plugin.Auth.Shared.Repositories;
-using Ord.Plugin.Contract.Consts;
-using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Services.Security;
-using Ord.Plugin.Core.Utils;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
-using Volo.Abp.EntityFrameworkCore;
-
-namespace Ord.Plugin.Auth.Repositories
+﻿namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository(IAppFactory factory)
         : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),

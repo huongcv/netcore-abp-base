@@ -1,0 +1,12 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Ord.Contract.Entities;
+global using Ord.EfCore.Default.Data;
+global using Ord.Plugin.Auth.Shared.Dtos;
+global using Ord.Plugin.Auth.Shared.Entities;
+global using Ord.Plugin.Auth.Shared.Repositories;
+global using Ord.Plugin.Contract.Consts;
+global using Ord.Plugin.Contract.Factories;
+global using Ord.Plugin.Contract.Services.Security;
+global using Ord.Plugin.Core.Utils;
+global using Volo.Abp.Application.Dtos;
+global using Volo.Abp.Domain.Repositories;
