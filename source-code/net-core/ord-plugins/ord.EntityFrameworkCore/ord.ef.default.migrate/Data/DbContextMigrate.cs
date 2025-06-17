@@ -7,10 +7,10 @@ using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace Ord.Plugin.Auth.MigrateDb.Data
+namespace Ord.EfCore.Default.MigrateDb.Data
 {
     [ConnectionStringName("Default")]
-    public class OrdPluginAuthDbContextMigrate : AbpDbContext<OrdPluginAuthDbContextMigrate>
+    public class DbContextMigrate : AbpDbContext<DbContextMigrate>
     {
         public virtual DbSet<UserEntity> Users { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
@@ -24,7 +24,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
 
-        public OrdPluginAuthDbContextMigrate(DbContextOptions<OrdPluginAuthDbContextMigrate> options) : base(options)
+        public DbContextMigrate(DbContextOptions<DbContextMigrate> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)
@@ -122,7 +122,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
                 {
                     x.UserId,
                     x.DeviceId
-                }).IsDescending(false, false, true);
+                });
             });
         }
     }

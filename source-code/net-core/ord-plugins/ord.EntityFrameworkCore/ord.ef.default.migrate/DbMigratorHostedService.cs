@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Ord.Plugin.Contract;
+using Ord.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,22 +11,30 @@ namespace Ord.EfCore.Default.MigrateDb;
 public class DbMigratorHostedService : IHostedService
 {
     private readonly ILogger<DbMigratorHostedService> _logger;
-    private readonly IEnumerable<IOrdPluginDbSchemaMigrator> _dbSchemaMigrators;
-
+    private readonly IEnumerable<IOrdDbSchemaMigrator> _dbSchemaMigrators;
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
     public DbMigratorHostedService(
-        ILogger<DbMigratorHostedService> logger, 
-        IEnumerable<IOrdPluginDbSchemaMigrator> dbSchemaMigrators)
+        ILogger<DbMigratorHostedService> logger,
+        IEnumerable<IOrdDbSchemaMigrator> dbSchemaMigrators,
+        IHostApplicationLifetime hostApplicationLifetime)
     {
         _logger = logger;
         _dbSchemaMigrators = dbSchemaMigrators;
+        _hostApplicationLifetime = hostApplicationLifetime;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await MigrateAsync();
+        // Tắt ứng dụng sau khi migrate xong
+        _hostApplicationLifetime.StopApplication();
     }
-    public async Task MigrateAsync()
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+    protected async Task MigrateAsync()
     {
         foreach (var migrator in _dbSchemaMigrators)
         {
@@ -40,9 +48,5 @@ public class DbMigratorHostedService : IHostedService
             }
 
         }
-    }
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
     }
 }

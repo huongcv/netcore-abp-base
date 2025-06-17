@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Ord.Plugin.Auth.MigrateDb.Data;
+using Ord.EfCore.Default.MigrateDb.Data;
 using Volo.Abp.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Ord.Plugin.Auth.MigrateDb.Migrations
+namespace Ord.EfCore.Default.MigrateDb.Migrations
 {
-    [DbContext(typeof(OrdPluginAuthDbContextMigrate))]
-    [Migration("20250617015229_auth-module")]
+    [DbContext(typeof(DbContextMigrate))]
+    [Migration("20250617041821_auth-module")]
     partial class authmodule
     {
         /// <inheritdoc />
@@ -500,6 +500,8 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId", "DeviceId");
+
                     b.ToTable("user_firebase_devices");
                 });
 
@@ -526,6 +528,9 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId", "CreationTime")
+                        .IsDescending(false, true);
 
                     b.ToTable("system_user_notifications");
                 });

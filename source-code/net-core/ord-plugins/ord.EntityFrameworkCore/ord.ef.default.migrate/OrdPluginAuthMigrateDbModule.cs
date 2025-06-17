@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Ord.Domain.Services;
+using Ord.EfCore.Default.MigrateDb.Data;
 using Ord.EfCore.Default.MigrateDb.Services;
-using Ord.Plugin.Auth.MigrateDb.Data;
-using Ord.Plugin.Contract;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.MySQL;
@@ -11,7 +11,6 @@ namespace Ord.EfCore.Default.MigrateDb
 {
     [DependsOn(
         typeof(AbpAutofacModule),
-        typeof(OrdPluginContractModule),
         typeof(AbpEntityFrameworkCoreMySQLModule)
     )]
     public class OrdPluginAuthMigrateDbModule : AbpModule
@@ -19,7 +18,7 @@ namespace Ord.EfCore.Default.MigrateDb
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
-            services.AddAbpDbContext<OrdPluginAuthDbContextMigrate>();
+            services.AddAbpDbContext<DbContextMigrate>();
             Configure<AbpDbContextOptions>(options =>
             {
                 options.Configure(configurationContext =>
@@ -27,7 +26,7 @@ namespace Ord.EfCore.Default.MigrateDb
                     configurationContext.UseMySQL();
                 });
             });
-            context.Services.AddTransient<IOrdPluginDbSchemaMigrator, OrdPluginAuthDbSchemaMigrator>();
+            services.AddTransient<IOrdDbSchemaMigrator, DbSchemaMigrator>();
         }
     }
 }

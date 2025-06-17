@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Ord.Plugin.Auth.MigrateDb.Data
+namespace Ord.EfCore.Default.MigrateDb.Data
 {
-    public class OrdPluginAuthDbContextFactory : IDesignTimeDbContextFactory<OrdPluginAuthDbContextMigrate>
+    public class DbContextFactory : IDesignTimeDbContextFactory<DbContextMigrate>
     {
-        public OrdPluginAuthDbContextMigrate CreateDbContext(string[] args)
+        public DbContextMigrate CreateDbContext(string[] args)
         {
             var configuration = BuildConfiguration();
             var conn = configuration.GetConnectionString("Default");
-            var builder = new DbContextOptionsBuilder<OrdPluginAuthDbContextMigrate>()
+            var builder = new DbContextOptionsBuilder<DbContextMigrate>()
                 .UseMySql(configuration.GetConnectionString("Default"), MySqlServerVersion.LatestSupportedServerVersion);
 
-            return new OrdPluginAuthDbContextMigrate(builder.Options);
+            return new DbContextMigrate(builder.Options);
         }
         private static IConfigurationRoot BuildConfiguration()
         {

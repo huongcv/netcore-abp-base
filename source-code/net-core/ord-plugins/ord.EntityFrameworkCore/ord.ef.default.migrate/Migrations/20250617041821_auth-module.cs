@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Ord.Plugin.Auth.MigrateDb.Migrations
+namespace Ord.EfCore.Default.MigrateDb.Migrations
 {
     /// <inheritdoc />
     public partial class authmodule : Migration
@@ -313,9 +313,20 @@ namespace Ord.Plugin.Auth.MigrateDb.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_system_user_notifications_UserId_CreationTime",
+                table: "system_user_notifications",
+                columns: new[] { "UserId", "CreationTime" },
+                descending: new[] { false, true });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tenants_Code",
                 table: "Tenants",
                 column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_firebase_devices_UserId_DeviceId",
+                table: "user_firebase_devices",
+                columns: new[] { "UserId", "DeviceId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",

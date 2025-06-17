@@ -1,43 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Ord.Contract.Entities;
-using Ord.Plugin.Auth.MigrateDb.Data;
-using Ord.Plugin.Contract;
+using Ord.Domain.Services;
+using Ord.EfCore.Default.MigrateDb.Data;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Guids;
 
 namespace Ord.EfCore.Default.MigrateDb.Services
 {
-    public class OrdPluginAuthDbSchemaMigrator : IOrdPluginDbSchemaMigrator, ITransientDependency
+    public class DbSchemaMigrator : IOrdDbSchemaMigrator, ITransientDependency
     {
         private readonly IServiceProvider _serviceProvider;
-        public ILogger<OrdPluginAuthDbSchemaMigrator> Logger { get; set; }
-        public OrdPluginAuthDbSchemaMigrator(IServiceProvider serviceProvider,
-            IGuidGenerator guidGenerator)
+        public ILogger<DbSchemaMigrator> Logger { get;  }
+        public DbSchemaMigrator(IServiceProvider serviceProvider,
+            ILogger<DbSchemaMigrator> logger)
         {
             _serviceProvider = serviceProvider;
-            Logger = NullLogger<OrdPluginAuthDbSchemaMigrator>.Instance;
+            Logger = logger;
         }
 
         public async Task MigrateAsync()
         {
             Logger.LogInformation("[Plugin auth] Started database migrations ...");
             await using var dbContext = _serviceProvider
-                .GetRequiredService<OrdPluginAuthDbContextMigrate>();
+                .GetRequiredService<DbContextMigrate>();
             await dbContext.Database.MigrateAsync();
             await SeedAsync(dbContext);
             Logger.LogInformation("[Plugin auth] Successfully completed host database migrations");
         }
-        protected async Task SeedAsync(OrdPluginAuthDbContextMigrate dbContext)
+        protected async Task SeedAsync(DbContextMigrate dbContext)
         {
             await CreateUserIfNull(dbContext, "admin", "admin", "sa");
             await CreateUserIfNull(dbContext, "user", "user", "user");
         }
-        private async Task CreateUserIfNull(OrdPluginAuthDbContextMigrate dbContext, string userName, string name, string level)
+        private async Task CreateUserIfNull(DbContextMigrate dbContext, string userName, string name, string level)
         {
             try
             {
@@ -66,7 +64,7 @@ namespace Ord.EfCore.Default.MigrateDb.Services
             }
         }
 
-        private async Task CreateTriggerLastModificationTime(OrdPluginAuthDbContextMigrate dbContext,string tableName)
+        private async Task CreateTriggerLastModificationTime(DbContextMigrate dbContext,string tableName)
         {
             try
             {
