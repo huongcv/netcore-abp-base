@@ -28,6 +28,8 @@ namespace Ord.Plugin.Core.Features.DataImporting
         protected abstract string GetFilePathExportResult();
         protected abstract int GetRowIndexStartExcelResult();
         protected abstract Task<List<object>> GetDataCellExcelResultAsync(TImportDto item);
+        // tạo danh sách dữ liệu mẫu
+        protected abstract Task<List<TImportDto>> GetSampleDataOfTemplateImport();
 
         #endregion
 

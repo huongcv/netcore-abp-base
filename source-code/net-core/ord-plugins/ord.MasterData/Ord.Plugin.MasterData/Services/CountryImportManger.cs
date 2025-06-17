@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Features.DataImporting;
+﻿using Castle.Components.DictionaryAdapter;
+using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Features.DataImporting;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
@@ -36,6 +37,61 @@ namespace Ord.Plugin.MasterData.Services
         protected override Task<List<object>> GetDataCellExcelResultAsync(CountryImportDto item)
         {
             throw new NotImplementedException();
+        }
+
+        protected override async Task<List<CountryImportDto>> GetSampleDataOfTemplateImport()
+        {
+            return new List<CountryImportDto>()
+            {
+                new CountryImportDto()
+                {
+                    Code = "VN",
+                    Name = "Việt Nam",
+                    IsActived = true,
+                    PhoneCode = "+84",
+                    CurrencyCode = "VNĐ"
+                },
+                new CountryImportDto()
+                {
+                    Code = "US",
+                    Name = "United States",
+                    IsActived = true,
+                    PhoneCode = "+1",
+                    CurrencyCode = "USD"
+                },
+                new CountryImportDto()
+                {
+                    Code = "JP",
+                    Name = "Japan",
+                    IsActived = true,
+                    PhoneCode = "+81",
+                    CurrencyCode = "JPY"
+                },
+                new CountryImportDto()
+                {
+                    Code = "GB",
+                    Name = "United Kingdom",
+                    IsActived = true,
+                    PhoneCode = "+44",
+                    CurrencyCode = "GBP"
+                },
+                new CountryImportDto()
+                {
+                    Code = "DE",
+                    Name = "Germany",
+                    IsActived = true,
+                    PhoneCode = "+49",
+                    CurrencyCode = "EUR"
+                },
+                new CountryImportDto()
+                {
+                    Code = "CN",
+                    Name = "China",
+                    IsActived = true,
+                    PhoneCode = "+86",
+                    CurrencyCode = "CNY"
+                }
+            };
         }
     }
 }
