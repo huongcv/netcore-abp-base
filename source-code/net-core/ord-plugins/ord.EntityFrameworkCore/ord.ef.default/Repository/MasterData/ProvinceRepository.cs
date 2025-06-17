@@ -24,11 +24,11 @@ namespace Ord.EfCore.Default.Repository.MasterData
             .WhereIfHasValue(input.IsActived, x => x.IsActived == input.IsActived);
             return queryable;
         }
-
+        // bổ sung thêm CountryName 
         protected override async Task<IQueryable<ProvincePagedDto>> TransformToPagedDtoAsync(IQueryable<ProvinceEntity> entityQueryable, ProvincePagedInput input)
         {
             var queryable = await CreateProvinceCountryJoinQueryAsync(entityQueryable);
-          return queryable.Select(x => new ProvincePagedDto()
+          return queryable.Select(static x => new ProvincePagedDto()
             {
                 Id = x.Province.Id,
                 Name = x.Province.Name,
@@ -36,8 +36,8 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 CountryCode = x.Province.CountryCode,
                 CreationTime = x.Province.CreationTime,
                 // Thêm CountryName từ join
-                CountryName = x.CountryName
-            });
+                CountryName = x.Country.Name
+          });
         }
         // bổ sung thêm CountryName khi lấy detail by id
         protected override async Task<IQueryable<ProvinceDetailDto>> GenerateDetailByIdQueryableAsync(IQueryable<ProvinceEntity> entityQueryable)
@@ -51,7 +51,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 CountryCode = x.Province.CountryCode,
                 CreationTime = x.Province.CreationTime,
                 // Thêm CountryName từ join
-                CountryName = x.CountryName
+                CountryName = x.Country.Name
             });
         }
 
@@ -64,7 +64,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
                    select new ProvinceWithCountryProjection
                    {
                        Province = province,
-                       CountryName = country.Name
+                       Country = country
                    };
         }
 
@@ -183,8 +183,8 @@ namespace Ord.EfCore.Default.Repository.MasterData
 
 public class ProvinceWithCountryProjection
 {
-    public ProvinceEntity Province { get; set; }
-    public string? CountryName { get; set; }
+    public ProvinceEntity? Province { get; set; }
+    public CountryEntity? Country { get; set; }
 }
 
 
