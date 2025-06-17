@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using kp.Dapper.Handlers;
 using Microsoft.Extensions.DependencyInjection;
-using Ord.Plugin.Core.Data;
-using Volo.Abp.EntityFrameworkCore.DependencyInjection;
 
 namespace Ord.Plugin.Core.Configurations
 {
@@ -10,22 +8,11 @@ namespace Ord.Plugin.Core.Configurations
     {
         public static void AddDatabaseServices(this IServiceCollection services)
         {
-            // Configure ABP DbContext
-            services.AddAbpDbContext<OrdPluginCoreDbContext>(options =>
-            {
-                options.AddDefaultRepositories(includeAllEntities: true);
-                RegisterCustomRepositories(options);
-            });
-
             // Configure Dapper
             ConfigureDapperTypeHandlers();
 
             // Configure database connection resilience
             ConfigureDatabaseResilience(services);
-        }
-        private static void RegisterCustomRepositories(IAbpDbContextRegistrationOptionsBuilder options)
-        {
-           
         }
 
         private static void ConfigureDapperTypeHandlers()

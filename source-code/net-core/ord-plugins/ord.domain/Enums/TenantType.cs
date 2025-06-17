@@ -1,6 +1,6 @@
 ﻿using Ord.Plugin.Contract.Attributes;
 
-namespace Ord.Plugin.Core.Enums
+namespace Ord.Domain.Enums
 {
     public enum TenantType
     {

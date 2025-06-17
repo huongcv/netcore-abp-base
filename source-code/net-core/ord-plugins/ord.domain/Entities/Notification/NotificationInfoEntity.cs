@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ord.Domain.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Ord.Plugin.Contract.Features.Notifications

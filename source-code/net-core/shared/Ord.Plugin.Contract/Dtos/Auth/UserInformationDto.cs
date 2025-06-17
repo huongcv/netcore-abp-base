@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Consts;
+﻿using Ord.Domain.Enums;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Core.Enums;
 using Volo.Abp.Application.Dtos;
 

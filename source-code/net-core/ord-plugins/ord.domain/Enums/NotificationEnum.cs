@@ -1,4 +1,4 @@
-﻿namespace Ord.Plugin.Contract.Features.Notifications
+﻿namespace Ord.Domain.Enums
 {
     public enum NotificationSeverity : byte
     {

@@ -1,6 +1,6 @@
 ﻿using Ord.Contract.Dtos.CommonDto;
+using Ord.Domain.Enums;
 using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Features.Notifications;
 using System.ComponentModel;
 using Volo.Abp.Application.Dtos;
 

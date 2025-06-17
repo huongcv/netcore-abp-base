@@ -4,20 +4,16 @@ using Ord.Plugin.Contract.Enums;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Setting;
-using Ord.Plugin.Core.Data;
 using System.Text;
 using Volo.Abp.Caching;
-using Volo.Abp.Domain.Repositories.Dapper;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Setting
 {
     public class SettingSharedManger(
         IDistributedCache<string> cache,
         IAppFactory appFactory,
-        IDbContextProvider<OrdPluginCoreDbContext> dbContextProvider,
         ILogger<SettingSharedManger> logger)
-        : DapperRepository<OrdPluginCoreDbContext>(dbContextProvider), ISettingSharedManger
+        : ISettingSharedManger
     {
         protected ISettingSharedRepository SettingRepos => appFactory.GetServiceDependency<ISettingSharedRepository>();
         private bool _isJsonValue = false;

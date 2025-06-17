@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
+using Ord.Plugin.Auth;
 using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Localization;
 using System.Text;
@@ -23,7 +24,8 @@ namespace Ord.Plugin.Contract
         typeof(AbpFluentValidationModule),
         typeof(AbpFluentValidationModule),
         typeof(AbpLocalizationModule),
-        typeof(AbpVirtualFileSystemModule)
+        typeof(AbpVirtualFileSystemModule),
+        typeof(OrdDomainModule)
         )]
     public class OrdPluginContractModule : AbpModule
     {
@@ -44,7 +46,7 @@ namespace Ord.Plugin.Contract
             });
             LocalizationConfiguration();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            
+
         }
 
         void ConfigurationOptions(IServiceCollection services)
@@ -53,7 +55,7 @@ namespace Ord.Plugin.Contract
             TryCatchOptionAddSingleton<AppSettings>(services, "App");
             TryCatchOptionAddSingleton<AuthenticationSettings>(services, "Authentication");
         }
-       
+
         void LocalizationConfiguration()
         {
             Configure<AbpVirtualFileSystemOptions>(options =>

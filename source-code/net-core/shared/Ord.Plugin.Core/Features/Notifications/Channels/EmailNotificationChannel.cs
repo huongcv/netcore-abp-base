@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Features.Notifications;
+﻿using Ord.Domain.Enums;
+using Ord.Plugin.Contract.Features.Notifications;
 
 namespace Ord.Plugin.Core.Features.Notifications.Channels
 {

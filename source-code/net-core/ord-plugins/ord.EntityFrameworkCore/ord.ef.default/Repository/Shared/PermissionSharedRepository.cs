@@ -2,7 +2,6 @@
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Data;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace Ord.Plugin.Core.Repositories
 {

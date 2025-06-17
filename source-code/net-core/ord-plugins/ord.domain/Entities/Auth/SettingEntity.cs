@@ -1,7 +1,7 @@
 ﻿using Ord.Plugin.Contract.Base;
-using Ord.Plugin.Contract.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ord.Domain.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 

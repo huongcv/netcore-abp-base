@@ -1,13 +1,11 @@
 ﻿using Ord.Plugin.Auth;
 using Ord.Plugin.Core;
-using Ord.Plugin.Core.Data;
 using Ord.Plugin.HostBase;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Auditing;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.Minio;
-using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 
@@ -21,26 +19,13 @@ namespace Ord.PluginZero.HttpHost
         typeof(OrdPluginAuthModule),
         typeof(AbpBlobStoringMinioModule)
     )]
+    [DependsOn(typeof(OrdEfCoreDefaultModule))]
     public class OrdPosHttpHostModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
-            Configure<AbpDbContextOptions>(options =>
-            {
-                options.Configure(configurationContext => {configurationContext.UseMySQL(); });
-            });
-            Configure<AbpDbContextOptions>(options =>
-            {
-                options.Configure(configurationContext => { configurationContext.UseMySQL(); });
-                // có thể cấu hình song song các hệ quản trị csdl khác
-                options.Configure<OrdPluginCoreDbContext>(config =>
-                {
-                    config.UseMySQL(); // Hoặc UseMySql() tùy theo version
-                });
-            });
-
             //services.AddHostedService<SeedDataStartupTask>();
             Configure<AbpAuditingOptions>(options =>
             {

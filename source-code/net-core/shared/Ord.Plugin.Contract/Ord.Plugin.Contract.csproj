@@ -28,4 +28,7 @@
 		<PackageReference Include="EPPlus" Version="7.2.1" />
 		<PackageReference Include="TMS.FlexCel" Version="7.6.4" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\ord-plugins\ord.domain\Ord.Domain.csproj" />
+	</ItemGroup>
 </Project>

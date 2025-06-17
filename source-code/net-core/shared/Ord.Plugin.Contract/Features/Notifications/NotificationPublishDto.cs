@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Features.Authorization.Users;
+﻿using Ord.Domain.Enums;
+using Ord.Plugin.Contract.Features.Authorization.Users;
 
 namespace Ord.Plugin.Contract.Features.Notifications
 {
@@ -9,7 +10,7 @@ namespace Ord.Plugin.Contract.Features.Notifications
         public string Title { get; private set; }
         public string Body { get; private set; }
         public Dictionary<string, object?>? Data { get; set; }
-        public NotificationSeverity? Severity { get; set; } = Notifications.NotificationSeverity.Info;
+        public NotificationSeverity? Severity { get; set; } = NotificationSeverity.Info;
 
         protected NotificationContentDto()
         {

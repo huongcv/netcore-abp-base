@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Features.Authorization.Users;
+﻿using Ord.Domain.Enums;
+using Ord.Plugin.Contract.Features.Authorization.Users;
 
 namespace Ord.Plugin.Contract.Features.Notifications
 {
