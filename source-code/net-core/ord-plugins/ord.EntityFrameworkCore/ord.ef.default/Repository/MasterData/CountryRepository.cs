@@ -31,7 +31,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
             var isCodeUnique = await CheckCodeIsUniqueAsync(createInput.Code);
             if (!isCodeUnique)
             {
-                ThrowValidationEx("message.crud.code_already_exists", GetEntityNameLocalized(), createInput.Code);
+                ThrowValidationEx("message.crud.code_already_exists", createInput.Code);
             }
         }
 

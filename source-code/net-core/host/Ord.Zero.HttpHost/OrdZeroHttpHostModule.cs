@@ -35,17 +35,21 @@ namespace Ord.PluginZero.HttpHost
             });
             Configure<AbpBlobStoringOptions>(options =>
             {
-                options.Containers.ConfigureDefault(container =>
+                if (configuration.TryParseBoolValue("BlobStoring:Minio:IsEnabled"))
                 {
-                    container.UseMinio(minio =>
+                    options.Containers.ConfigureDefault(container =>
                     {
-                        minio.EndPoint = configuration["BlobStoring:Minio:EndPoint"]; // your minio endPoint
-                        minio.AccessKey = configuration["BlobStoring:Minio:AccessKey"]; // your minio accessKey
-                        minio.SecretKey = configuration["BlobStoring:Minio:SecretKey"]; // your minio secretKey
-                        minio.BucketName = configuration["BlobStoring:Minio:BucketName"]; // your minio bucketName
-                        minio.CreateBucketIfNotExists = true;
+                        container.UseMinio(minio =>
+                        {
+                            minio.EndPoint = configuration["BlobStoring:Minio:EndPoint"]; // your minio endPoint
+                            minio.AccessKey = configuration["BlobStoring:Minio:AccessKey"]; // your minio accessKey
+                            minio.SecretKey = configuration["BlobStoring:Minio:SecretKey"]; // your minio secretKey
+                            minio.BucketName = configuration["BlobStoring:Minio:BucketName"]; // your minio bucketName
+                            minio.CreateBucketIfNotExists = true;
+                        });
                     });
-                });
+                }
+                
             });
         }
 

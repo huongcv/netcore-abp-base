@@ -9,7 +9,8 @@
     "create_success": "Tạo mới thành công",
     "update_success": "Cập nhật thành công",
     "delete_success": "Xóa thành công",
-    "set_active_status_success": "Cập nhật thành công trạng thái active"
+    "set_active_status_success": "Cập nhật thành công trạng thái active",
+    "code_already_exists": "Mã '{0}' đã tồn tại"
   },
   "validation": {
     "required": "{0} bắt buộc nhập",

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ord.Contract.Entities;
+using Ord.Domain.Entities.MasterData;
 
 namespace Ord.Plugin.MasterData.Shared.Dtos
 {
@@ -7,10 +7,10 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     {
         public DtoMapProfile()
         {
-            CreateMap<CountryPagedDto, UserEntity>().ReverseMap();
-            CreateMap<CountryDetailDto, UserEntity>().ReverseMap();
-            CreateMap<CreateCountryDto, UserEntity>().ReverseMap();
-            CreateMap<UpdateCountryDto, UserEntity>().ReverseMap();
+            CreateMap<CountryPagedDto, CountryEntity>().ReverseMap();
+            CreateMap<CountryDetailDto, CountryEntity>().ReverseMap();
+            CreateMap<CreateCountryDto, CountryEntity>().ReverseMap();
+            CreateMap<UpdateCountryDto, CountryEntity>().ReverseMap();
 
         }
     }
