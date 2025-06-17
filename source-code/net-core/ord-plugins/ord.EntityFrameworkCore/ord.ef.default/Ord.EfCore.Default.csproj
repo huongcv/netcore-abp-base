@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\shared\Ord.Plugin.Core\Ord.Plugin.Core.csproj" />
+	  <ProjectReference Include="..\..\ord.auth\Ord.Plugin.Auth.Shared\Ord.Plugin.Auth.Shared.csproj" />
 	  <ProjectReference Include="..\..\ord.domain\Ord.Domain.csproj" />
 	</ItemGroup>
 

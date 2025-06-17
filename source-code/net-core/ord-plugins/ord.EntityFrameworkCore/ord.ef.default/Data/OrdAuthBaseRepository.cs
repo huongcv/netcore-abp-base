@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities;
 namespace Ord.Plugin.Auth.Base
 {
     public class OrdAuthBaseRepository<TEntity, TKey>(IAppFactory appFactory)
-        : OrdEfCoreRepository<OrdPluginAuthDbContext, TEntity, TKey>(appFactory)
+        : OrdEfCoreRepository<OrdDefaultDbContext, TEntity, TKey>(appFactory)
         where TEntity : class, IEntity<TKey>
     {
         protected Task<IQueryable<TenantEntity>> GetTenantQueryable(bool isNoTracking = true)

@@ -10,7 +10,7 @@ namespace Ord.Plugin.Auth.Base
 {
     public abstract class OrdAuthCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(IAppFactory appFactory) :
-        OrdCrudRepository<OrdPluginAuthDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
+        OrdCrudRepository<OrdDefaultDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(appFactory) where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
         where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
