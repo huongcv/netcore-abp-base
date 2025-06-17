@@ -9,7 +9,7 @@ using Ord.Plugin.MasterData.Shared.Repositories;
 namespace Ord.Plugin.MasterData.AppServices
 {
     [OrdAuth]
-    public class CountryAppService : OrdCrudAppService<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>
+    public partial class CountryAppService : OrdCrudAppService<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>
     {
         private ICountryRepository CountryRepository => AppFactory.GetServiceDependency<ICountryRepository>();
 

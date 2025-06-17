@@ -107,5 +107,11 @@ namespace Ord.EfCore.Default.Repository.MasterData
         {
             return GetFirstOrDefaultAsync(x => x.Code == code);
         }
+
+        public async Task<List<string>> GetAllCodesAsync()
+        {
+            var q = await GetQueryableAsNoTracking();
+            return await q.Select(x => x.Code).ToListAsync();
+        }
     }
 }

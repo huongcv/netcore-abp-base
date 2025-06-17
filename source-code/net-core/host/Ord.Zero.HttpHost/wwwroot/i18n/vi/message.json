@@ -23,7 +23,9 @@
     "confirm_password": "Mật khẩu xác nhận không khớp",
     "invalid_regex": "{0} không đúng định dạng",
     "file_size": "Kích thước file không được vượt quá {0}MB",
-    "file_extension": "Định dạng file không được hỗ trợ"
+    "file_extension": "Định dạng file không được hỗ trợ",
+    "import_code_exists_database": "Mã {0} đã tồn tại trên hệ thống",
+    "import_code_duplicate_file": "Mã {0} bị trùng trong file dữ liệu"
   },
   "RateLimit": {
     "RateLimitExceeded": "Vượt quá giới hạn truy cập",

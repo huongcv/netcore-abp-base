@@ -4,6 +4,6 @@
         where TImportDto : class, IImportDto, new()
     {
         Task<ImportOutputDto<TImportDto>> ValidateProcessDataAsync(List<TImportDto> rawDataList);
-        Task<byte[]> ExportExcelImportDataAsync(List<TImportDto> rawDataList);
+        Task<byte[]> ExportResultDataAsync(List<TImportDto> rawDataList);
     }
 }
