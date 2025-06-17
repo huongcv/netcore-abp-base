@@ -29,6 +29,7 @@ namespace Ord.EfCore.Default.MigrateDb.Data
         #region MasterData
         public virtual DbSet<CountryEntity> Countries { get; set; }
         public virtual DbSet<ProvinceEntity> Provinces { get; set; }
+        public virtual DbSet<DistrictEntity> Districts { get; set; }
         #endregion
 
         public DbContextMigrate(DbContextOptions<DbContextMigrate> options) : base(options)

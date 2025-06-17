@@ -28,6 +28,7 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
         #region MasterData
         public virtual DbSet<CountryEntity> Countries { get; set; }
         public virtual DbSet<ProvinceEntity> Provinces { get; set; }
+        public virtual DbSet<DistrictEntity> Districts { get; set; }
         #endregion
 
         public OrdDefaultDbContext(DbContextOptions<OrdDefaultDbContext> options) : base(options)

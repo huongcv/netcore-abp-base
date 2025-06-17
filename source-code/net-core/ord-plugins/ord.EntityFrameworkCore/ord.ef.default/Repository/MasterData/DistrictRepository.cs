@@ -4,15 +4,15 @@ using Ord.Plugin.MasterData.Shared.Repositories;
 
 namespace Ord.EfCore.Default.Repository.MasterData
 {
-    public class ProvinceRepository(IAppFactory factory)
-        : OrdDefaultCrudRepository<ProvinceEntity, int, ProvincePagedInput, ProvincePagedDto, ProvinceDetailDto, CreateProvinceDto, UpdateProvinceDto>(factory),
-            IProvinceRepository
+    public class DistrictRepository(IAppFactory factory)
+        : OrdDefaultCrudRepository<DistrictEntity, int, DistrictPagedInput, DistrictPagedDto, DistrictDetailDto, CreateDistrictDto, UpdateDistrictDto>(factory),
+            IDistrictRepository
     {
-        private ICountryRepository CountryRepos => AppFactory.GetServiceDependency<ICountryRepository>();
+        private IProvinceRepository ProvinceRepos => AppFactory.GetServiceDependency<IProvinceRepository>();
         /// <summary>
-        /// Lọc và tìm kiếm dữ liệu phân trang theo điều kiện người dùng nhập
+        /// Lọc và tìm kiếm dữ liệu phân trang theo điều kiện
         /// </summary>
-        protected override async Task<IQueryable<ProvinceEntity>> GetPagedQueryableAsync(IQueryable<ProvinceEntity> queryable, ProvincePagedInput input)
+        protected override async Task<IQueryable<DistrictEntity>> GetPagedQueryableAsync(IQueryable<DistrictEntity> queryable, DistrictPagedInput input)
         {
             queryable = queryable.WhereLikeText(input.TextSearch, x => new
             {
@@ -25,40 +25,35 @@ namespace Ord.EfCore.Default.Repository.MasterData
         }
 
         /// <summary>
-        /// Kiểm tra tính hợp lệ trước khi tạo mới Province (mã không được trùng)
+        /// Kiểm tra tính hợp lệ trước khi tạo mới 
         /// </summary>
-        protected override async Task ValidateBeforeCreateAsync(CreateProvinceDto createInput)
+        protected override async Task ValidateBeforeCreateAsync(CreateDistrictDto createInput)
         {
             var isCodeUnique = await CheckCodeIsUniqueAsync(createInput.Code);
             if (!isCodeUnique)
             {
                 ThrowValidationEx("message.crud.code_already_exists", createInput.Code);
             }
-
-            if (string.IsNullOrEmpty(createInput.CountryCode))
-            {
-                createInput.CountryCode = "vn";
-            }
-            await CheckCountryCode(createInput.CountryCode);
+            await CheckProvinceCode(createInput.ProvinceCode);
         }
 
         /// <summary>
-        /// Kiểm tra tính hợp lệ trước khi cập nhật Province (mã không được trùng với mã khác)
+        /// Kiểm tra tính hợp lệ trước khi cập nhật 
         /// </summary>
-        protected override async Task ValidateBeforeUpdateAsync(UpdateProvinceDto updateInput, ProvinceEntity entityUpdate)
+        protected override async Task ValidateBeforeUpdateAsync(UpdateDistrictDto updateInput, DistrictEntity entityUpdate)
         {
             var isCodeUnique = await CheckCodeIsUniqueAsync(entityUpdate.Code, entityUpdate.Id);
             if (!isCodeUnique)
             {
                 ThrowValidationEx("message.crud.code_already_exists", entityUpdate.Code);
             }
-            await CheckCountryCode(updateInput.CountryCode);
+            await CheckProvinceCode(updateInput.ProvinceCode);
         }
 
         /// <summary>
         /// Kiểm tra điều kiện trước khi xóa (nếu đã được sử dụng ở bảng tỉnh/thành thì không cho xóa)
         /// </summary>
-        protected override async Task ValidateBeforeDeleteAsync(ProvinceEntity entityDelete)
+        protected override async Task ValidateBeforeDeleteAsync(DistrictEntity entityDelete)
         {
             var isUsed = await CheckIsUsedAsync(entityDelete.Code);
             if (isUsed)
@@ -67,16 +62,16 @@ namespace Ord.EfCore.Default.Repository.MasterData
             }
         }
 
-        public async Task<IEnumerable<ProvincePagedDto>> GetListComboOptions(bool includeUnActive = false)
+        public async Task<IEnumerable<DistrictPagedDto>> GetListComboOptions(bool includeUnActive = false)
         {
-            return await GetListAsDtoAsync<ProvincePagedDto>(
+            return await GetListAsDtoAsync<DistrictPagedDto>(
                 x => x.IsActived == true || includeUnActive,
-                x => new ProvincePagedDto
+                x => new DistrictPagedDto
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Code = x.Code,
-                    CountryCode = x.CountryCode,
+                    ProvinceCode = x.ProvinceCode,
                     IsActived = x.IsActived,
                 },
                 true);
@@ -99,13 +94,11 @@ namespace Ord.EfCore.Default.Repository.MasterData
         }
 
         /// <summary>
-        /// Kiểm tra mã province  đã được sử dụng hay chưa
+        /// Kiểm tra mã District  đã được sử dụng ...  hay chưa
         /// </summary>
         public async Task<bool> CheckIsUsedAsync(string code)
         {
-            var queryable = await GetEntityQueryable<DistrictEntity>();
-            var query = queryable.AsNoTracking().Where(x => x.ProvinceCode == code);
-            return await query.AnyAsync();
+            return false;
         }
 
         public Task<bool> IsCodeExistsAsync(string code)
@@ -113,12 +106,12 @@ namespace Ord.EfCore.Default.Repository.MasterData
             return ExistsAsync(x => x.Code == code);
         }
 
-        protected async Task CheckCountryCode(string countryCode)
+        protected async Task CheckProvinceCode(string provinceCode)
         {
-            var isCodeExists = await CountryRepos.IsCodeExistsAsync(countryCode);
+            var isCodeExists = await ProvinceRepos.IsCodeExistsAsync(provinceCode);
             if (!isCodeExists)
             {
-                ThrowValidationEx("message.business.country_code_not_found", countryCode);
+                ThrowValidationEx("message.business.province_code_not_found", provinceCode);
             }
         }
     }

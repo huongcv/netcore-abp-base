@@ -21,7 +21,6 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     public class ProvinceCrudBase : IHasActived, IHasEncodedId
     {
         [OrdMaxLengthString(ProvinceEntity.MaxLengthCountryCode)]
-        [OrdValidateRequired]
         public string? CountryCode { get; set; }
         [OrdMaxLengthString(ProvinceEntity.MaxLengthCode)]
         [OrdValidateRequired]

@@ -26,6 +26,18 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                     x.CountryCode
                 });
             });
+            builder.Entity<DistrictEntity>(b =>
+            {
+                b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.Code
+                });
+                b.HasIndex(x => new
+                {
+                    x.ProvinceCode
+                });
+            });
         }
     }
 }
