@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Ord.Plugin.Contract;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.Guids;
+using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
 namespace Ord.Plugin.Auth
 {
     [DependsOn(
-         typeof(OrdPluginAuthSharedModule)
+         typeof(OrdPluginMasterDataSharedModule)
          )]
-    public class OrdPluginAuthModule : AbpModule
+    public class OrdPluginMasterDataModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
@@ -17,9 +18,9 @@ namespace Ord.Plugin.Auth
             {
                 options
                     .ConventionalControllers
-                    .Create(typeof(OrdPluginAuthModule).Assembly, opts =>
+                    .Create(typeof(OrdPluginMasterDataModule).Assembly, opts =>
                     {
-                        opts.RootPath = "auth";
+                        opts.RootPath = "master-data";
                         opts.UrlActionNameNormalizer = normalizerContext => normalizerContext.Action.ActionName;
                     });
             });
@@ -28,15 +29,11 @@ namespace Ord.Plugin.Auth
         {
             var services = context.Services;
             var configuration = context.Services.GetConfiguration();
-            Configure<AbpSequentialGuidGeneratorOptions>(options =>
-            {
-                options.DefaultSequentialGuidType = SequentialGuidType.SequentialAsBinary;
-            });
             Configure<AbpAutoMapperOptions>(options =>
             {
-                options.AddMaps<OrdPluginAuthModule>(validate: false);
+                options.AddMaps<OrdPluginMasterDataModule>(validate: false);
             });
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginAuthModule).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginMasterDataModule).Assembly));
 
         }
 

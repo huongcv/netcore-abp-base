@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.EfCore.Default", "ord-p
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.EfCore.Default.MigrateDb", "ord-plugins\ord.EntityFrameworkCore\ord.ef.default.migrate\Ord.EfCore.Default.MigrateDb.csproj", "{CD70DD0F-2A0F-D4BE-00DA-71495985DF90}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MasterData", "MasterData", "{D3DA6B64-6002-41AD-ADB0-BE37202E93AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.Plugin.MasterData", "ord-plugins\ord.MasterData\Ord.Plugin.MasterData\Ord.Plugin.MasterData.csproj", "{C7472831-4A15-A62D-25C7-95D564B71C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.Plugin.MasterData.Shared", "ord-plugins\ord.MasterData\Ord.Plugin.MasterData.Shared\Ord.Plugin.MasterData.Shared.csproj", "{2B30172D-DC3C-A281-31B7-95D79EEB2FF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +77,14 @@ Global
 		{CD70DD0F-2A0F-D4BE-00DA-71495985DF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD70DD0F-2A0F-D4BE-00DA-71495985DF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD70DD0F-2A0F-D4BE-00DA-71495985DF90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7472831-4A15-A62D-25C7-95D564B71C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7472831-4A15-A62D-25C7-95D564B71C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7472831-4A15-A62D-25C7-95D564B71C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7472831-4A15-A62D-25C7-95D564B71C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B30172D-DC3C-A281-31B7-95D79EEB2FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B30172D-DC3C-A281-31B7-95D79EEB2FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B30172D-DC3C-A281-31B7-95D79EEB2FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B30172D-DC3C-A281-31B7-95D79EEB2FF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +99,9 @@ Global
 		{6F5E5CB1-CC31-B155-75EE-C7395E50751F} = {8B8A6975-BF7D-471F-BF2B-AA847B65808F}
 		{3DA86500-01B5-365A-BF5F-50D8F7DF1127} = {6610CF6A-FA21-4756-9B8C-806AC45CB69C}
 		{CD70DD0F-2A0F-D4BE-00DA-71495985DF90} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{D3DA6B64-6002-41AD-ADB0-BE37202E93AC} = {6610CF6A-FA21-4756-9B8C-806AC45CB69C}
+		{C7472831-4A15-A62D-25C7-95D564B71C1B} = {D3DA6B64-6002-41AD-ADB0-BE37202E93AC}
+		{2B30172D-DC3C-A281-31B7-95D79EEB2FF0} = {D3DA6B64-6002-41AD-ADB0-BE37202E93AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62A59D7D-8867-4242-9489-2A5BD6E40CBF}
