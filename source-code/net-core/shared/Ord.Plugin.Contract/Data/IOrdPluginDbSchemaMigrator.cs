@@ -1,6 +1,4 @@
-﻿using Volo.Abp.DependencyInjection;
-
-namespace Ord.Plugin.Contract
+﻿namespace Ord.Plugin.Contract
 {
     public interface IOrdPluginDbSchemaMigrator
     {

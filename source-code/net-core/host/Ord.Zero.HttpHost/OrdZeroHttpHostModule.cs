@@ -16,9 +16,9 @@ namespace Ord.PluginZero.HttpHost
         typeof(AbpEntityFrameworkCoreMySQLModule),
         typeof(OrdPluginCoreModule),
         typeof(OrdPluginHostBaseModule),
-        typeof(OrdPluginAuthModule),
         typeof(AbpBlobStoringMinioModule)
     )]
+    [DependsOn(typeof(OrdPluginAuthModule))]
     [DependsOn(typeof(OrdEfCoreDefaultModule))]
     public class OrdPosHttpHostModule : AbpModule
     {

@@ -17,7 +17,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos
             CreateMap<UserLoginDto, UserEntity>().ReverseMap();
             CreateMap<TenantUserDto, UserEntity>().ReverseMap();
 
-            CreateMap<TenantDto, TenantEntity>().ReverseMap();
             CreateMap<TenantPagedDto, TenantEntity>().ReverseMap();
             CreateMap<TenantDetailDto, TenantEntity>().ReverseMap();
             CreateMap<CreateTenantDto, TenantEntity>().ReverseMap();

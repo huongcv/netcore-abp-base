@@ -32,7 +32,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="$(AbpVersion)" />
-		<PackageReference Include="Volo.Abp.BlobStoring.Minio" Version="$(AbpVersion)" />
 		<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
