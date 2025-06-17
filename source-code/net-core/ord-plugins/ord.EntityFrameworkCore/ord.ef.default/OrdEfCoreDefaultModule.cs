@@ -10,7 +10,10 @@ namespace Ord.Plugin.Auth
          typeof(OrdDomainModule),
          typeof(AbpEntityFrameworkCoreModule)
          )]
-    [DependsOn(typeof(OrdPluginAuthSharedModule))]
+    [DependsOn(
+        typeof(OrdPluginAuthSharedModule),
+        typeof(OrdPluginMasterDataSharedModule)
+        )]
     public class OrdEfCoreDefaultModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

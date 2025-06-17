@@ -10,6 +10,7 @@
 	  <ProjectReference Include="..\..\..\shared\Ord.Plugin.Core\Ord.Plugin.Core.csproj" />
 	  <ProjectReference Include="..\..\ord.auth\Ord.Plugin.Auth.Shared\Ord.Plugin.Auth.Shared.csproj" />
 	  <ProjectReference Include="..\..\ord.domain\Ord.Domain.csproj" />
+	  <ProjectReference Include="..\..\ord.MasterData\Ord.Plugin.MasterData.Shared\Ord.Plugin.MasterData.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

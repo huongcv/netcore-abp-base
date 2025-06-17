@@ -1,0 +1,88 @@
+﻿using Ord.Domain.Entities.MasterData;
+using Ord.Plugin.MasterData.Shared.Dtos;
+using Ord.Plugin.MasterData.Shared.Repositories;
+
+namespace Ord.EfCore.Default.Repository.MasterData
+{
+    public class CountryRepository(IAppFactory factory)
+        : OrdDefaultCrudRepository<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>(factory),
+            ICountryRepository
+    {
+        /// <summary>
+        /// Lọc và tìm kiếm dữ liệu phân trang theo điều kiện người dùng nhập
+        /// </summary>
+        protected override async Task<IQueryable<CountryEntity>> GetPagedQueryableAsync(IQueryable<CountryEntity> queryable, CountryPagedInput input)
+        {
+            queryable = queryable.WhereLikeText(input.TextSearch, x => new
+            {
+                x.Code,
+                x.Name
+            })
+            .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
+
+            return queryable;
+        }
+
+        /// <summary>
+        /// Kiểm tra tính hợp lệ trước khi tạo mới Country (mã không được trùng)
+        /// </summary>
+        protected override async Task ValidateBeforeCreateAsync(CreateCountryDto createInput)
+        {
+            var isCodeUnique = await CheckCodeIsUniqueAsync(createInput.Code);
+            if (!isCodeUnique)
+            {
+                ThrowValidationEx("message.crud.code_already_exists", GetEntityNameLocalized(), createInput.Code);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra tính hợp lệ trước khi cập nhật Country (mã không được trùng với mã khác)
+        /// </summary>
+        protected override async Task ValidateBeforeUpdateAsync(UpdateCountryDto updateInput, CountryEntity entityUpdate)
+        {
+            var isCodeUnique = await CheckCodeIsUniqueAsync(entityUpdate.Code, entityUpdate.Id);
+            if (!isCodeUnique)
+            {
+                ThrowValidationEx("message.crud.code_already_exists", entityUpdate.Code);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra điều kiện trước khi xóa (nếu đã được sử dụng ở bảng tỉnh/thành thì không cho xóa)
+        /// </summary>
+        protected override async Task ValidateBeforeDeleteAsync(CountryEntity entityDelete)
+        {
+            var isUsed = await CheckCountryIsUsedAsync(entityDelete.Code);
+            if (isUsed)
+            {
+                ThrowValidationEx("message.crud.entity_used", entityDelete.Code);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra mã Country có là duy nhất hay không
+        /// </summary>
+        public async Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null)
+        {
+            var queryable = await GetQueryableAsync();
+            var query = queryable.AsNoTracking().Where(x => x.Code == code);
+
+            if (excludeId.HasValue)
+            {
+                query = query.Where(x => x.Id != excludeId.Value);
+            }
+
+            return !await query.AnyAsync();
+        }
+
+        /// <summary>
+        /// Kiểm tra mã Country đã được sử dụng ở bảng Province hay chưa
+        /// </summary>
+        public async Task<bool> CheckCountryIsUsedAsync(string code)
+        {
+            var provinceQueryable = await GetEntityQueryable<ProvinceEntity>();
+            var query = provinceQueryable.AsNoTracking().Where(x => x.CountryCode == code);
+            return await query.AnyAsync();
+        }
+    }
+}

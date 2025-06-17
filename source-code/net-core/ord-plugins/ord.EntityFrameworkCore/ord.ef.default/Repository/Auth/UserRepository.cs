@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Ord.Contract.Entities;
-using Ord.Plugin.Auth.Shared.Dtos;
-using Ord.Plugin.Auth.Shared.Repositories;
-using Ord.Plugin.Contract.Factories;
-using Volo.Abp.Domain.Repositories;
-
-namespace Ord.Plugin.Auth.Repositories
+﻿namespace Ord.Plugin.Auth.Repositories
 {
     public partial class UserRepository(IAppFactory factory)
         : DefaultBaseRepository<UserEntity, Guid>(factory), IUserRepository
