@@ -10,34 +10,31 @@ namespace Ord.EfCore.Default.Repository.MasterData
             IProvinceRepository
     {
         private ICountryRepository CountryRepos => AppFactory.GetServiceDependency<ICountryRepository>();
-        /// <summary>
-        /// Lọc và tìm kiếm dữ liệu phân trang theo điều kiện người dùng nhập
-        /// </summary>
         protected override async Task<IQueryable<ProvinceEntity>> GetPagedQueryableAsync(IQueryable<ProvinceEntity> queryable, ProvincePagedInput input)
         {
-            queryable = queryable.WhereLikeText(input.TextSearch, x => new
+            return queryable.WhereLikeText(input.TextSearch, x => new
             {
                 x.Code,
                 x.Name
             })
-            .WhereIfHasValue(input.CountryCode, x => x.CountryCode == input.CountryCode)
-            .WhereIfHasValue(input.IsActived, x => x.IsActived == input.IsActived);
-            return queryable;
+                .WhereIfHasValue(input.CountryCode, x => x.CountryCode == input.CountryCode)
+                .WhereIfHasValue(input.IsActived, x => x.IsActived == input.IsActived);
         }
-        // bổ sung thêm CountryName 
-        protected override async Task<IQueryable<ProvincePagedDto>> TransformToPagedDtoAsync(IQueryable<ProvinceEntity> entityQueryable, ProvincePagedInput input)
+        protected override async Task<IQueryable<ProvincePagedDto>> GeneratePagedDtoQueryableAsync(ProvincePagedInput input)
         {
-            var queryable = await CreateProvinceCountryJoinQueryAsync(entityQueryable);
-          return queryable.Select(static x => new ProvincePagedDto()
+            var queryable = (await GetQueryableAsNoTracking());
+            queryable = await GetPagedQueryableAsync(queryable, input);
+            queryable = ApplySortDefault(queryable, input);
+            var joinedQueryable = await CreateProvinceCountryJoinQueryAsync(queryable);
+            return joinedQueryable.Select(x => new ProvincePagedDto()
             {
                 Id = x.Province.Id,
                 Name = x.Province.Name,
                 Code = x.Province.Code,
                 CountryCode = x.Province.CountryCode,
                 CreationTime = x.Province.CreationTime,
-                // Thêm CountryName từ join
                 CountryName = x.Country.Name
-          });
+            });
         }
         // bổ sung thêm CountryName khi lấy detail by id
         protected override async Task<IQueryable<ProvinceDetailDto>> GenerateDetailByIdQueryableAsync(IQueryable<ProvinceEntity> entityQueryable)
@@ -50,7 +47,6 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 Code = x.Province.Code,
                 CountryCode = x.Province.CountryCode,
                 CreationTime = x.Province.CreationTime,
-                // Thêm CountryName từ join
                 CountryName = x.Country.Name
             });
         }
@@ -67,6 +63,8 @@ namespace Ord.EfCore.Default.Repository.MasterData
                        Country = country
                    };
         }
+
+
 
         protected override async Task<ProvinceDetailDto> MapToGetByIdDtoAsync(ProvinceEntity entity)
         {
