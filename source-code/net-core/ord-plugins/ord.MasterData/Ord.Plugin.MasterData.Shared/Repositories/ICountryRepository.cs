@@ -9,5 +9,6 @@ namespace Ord.Plugin.MasterData.Shared.Repositories
         Task<IEnumerable<CountryPagedDto>> GetComboBoxOptionsAsync(bool includeUnActive = false);
         Task<bool> IsCodeExistsAsync(string code);
         Task<bool> CheckIsUsedAsync(string code);
+        Task<CountryEntity> GetByCodeAsync(string code);
     }
 }

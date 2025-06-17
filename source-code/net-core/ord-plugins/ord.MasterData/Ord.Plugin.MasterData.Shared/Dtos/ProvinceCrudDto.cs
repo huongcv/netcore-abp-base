@@ -30,7 +30,7 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
         public string? Name { get; set; }
         [OrdMaxLengthString(ProvinceEntity.MaxLengthLevel)]
         public string? Level { get; set; }
-        
+
         public bool IsActived { get; set; }
         public virtual string? EncodedId { get; set; }
     }
@@ -44,10 +44,9 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     {
         public string? CountryCode { get; set; }
     }
-    public class ProvinceDetailDto : ProvinceCrudBase, IEntityDto<int>
+    public class ProvinceDetailDto : ProvincePagedDto
     {
-        public int Id { get; set; }
-        public DateTime CreationTime { get; set; }
+
     }
 
     public class CreateProvinceDto : ProvinceCrudBase

@@ -41,6 +41,17 @@ namespace Ord.EfCore.Default.Repository.MasterData
                         };
             return query;
         }
+        // bổ sung thêm CountryName khi lấy detail by id
+        protected override async Task<ProvinceDetailDto> MapToGetByIdDtoAsync(ProvinceEntity entity)
+        {
+            var dto = await base.MapToGetByIdDtoAsync(entity);
+            if (!string.IsNullOrEmpty(entity.CountryCode))
+            {
+                var countryEnt = await CountryRepos.GetByCodeAsync(entity.CountryCode);
+                dto.CountryName = countryEnt?.Name;
+            }
+            return dto;
+        }
 
         /// <summary>
         /// Kiểm tra tính hợp lệ trước khi tạo mới Province (mã không được trùng)

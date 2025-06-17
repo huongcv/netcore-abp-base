@@ -102,5 +102,10 @@ namespace Ord.EfCore.Default.Repository.MasterData
             var query = provinceQueryable.AsNoTracking().Where(x => x.CountryCode == code);
             return await query.AnyAsync();
         }
+
+        public Task<CountryEntity> GetByCodeAsync(string code)
+        {
+            return GetFirstOrDefaultAsync(x => x.Code == code);
+        }
     }
 }
