@@ -27,6 +27,7 @@ namespace Ord.EfCore.Default.MigrateDb
                 });
             });
             services.AddTransient<IOrdDbSchemaMigrator, DbSchemaMigrator>();
+            services.AddTransient<IOrdDbSchemaMigrator, CountrySeedDataService>();
         }
     }
 }

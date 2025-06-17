@@ -95,7 +95,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
         }
 
         /// <summary>
-        /// Kiểm tra mã  đã được sử dụng  hay chưa
+        /// Kiểm tra mã province  đã được sử dụng ...  hay chưa
         /// </summary>
         public async Task<bool> CheckIsUsedAsync(string code)
         {

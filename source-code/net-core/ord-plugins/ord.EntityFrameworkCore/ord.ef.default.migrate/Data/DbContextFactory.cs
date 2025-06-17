@@ -24,5 +24,6 @@ namespace Ord.EfCore.Default.MigrateDb.Data
 
             return builder.Build();
         }
+       
     }
 }
