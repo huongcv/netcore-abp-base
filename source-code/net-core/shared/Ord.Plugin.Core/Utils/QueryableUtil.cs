@@ -78,6 +78,31 @@ namespace Ord.Plugin.Core.Utils
             return WhereLikeText(query, textSearch, colums);
         }
 
+        public static IQueryable<T> WhereIfHasValue<T>(this IQueryable<T> query, string? input,
+            Expression<Func<T, bool>> predicate)
+        {
+            return query.WhereIf(!string.IsNullOrEmpty(input), predicate);
+        }
+        public static IQueryable<T> WhereIfHasValue<T>(this IQueryable<T> query, bool? input,
+            Expression<Func<T, bool>> predicate)
+        {
+            return query.WhereIf(input.HasValue, predicate);
+        }
+        public static IQueryable<T> WhereIfHasValue<T>(this IQueryable<T> query, int? input,
+            Expression<Func<T, bool>> predicate)
+        {
+            return query.WhereIf(input.HasValue, predicate);
+        }
+        public static IQueryable<T> WhereIfHasValue<T>(this IQueryable<T> query, long? input,
+            Expression<Func<T, bool>> predicate)
+        {
+            return query.WhereIf(input.HasValue, predicate);
+        }
+        public static IQueryable<T> WhereIfHasValue<T>(this IQueryable<T> query, Guid? input,
+            Expression<Func<T, bool>> predicate)
+        {
+            return query.WhereIf(input.HasValue, predicate);
+        }
         public static IQueryable<T> WhereDateRange<T>(this IQueryable<T> query, Expression<Func<T, DateTime?>> property, DateRangeDto dateRange)
         {
             if (dateRange == null || (!dateRange.StartDate.HasValue && !dateRange.EndDate.HasValue))
@@ -145,7 +170,7 @@ namespace Ord.Plugin.Core.Utils
         public static IQueryable<TEntity> ToQueryable<TEntity>(this IRepository<TEntity> repository, bool isAsNoTracking = true)
         where TEntity : class, IEntity
         {
-            var q = AsyncHelper.RunSync(repository.GetQueryableAsync);;
+            var q = AsyncHelper.RunSync(repository.GetQueryableAsync); ;
             if (isAsNoTracking)
             {
                 q.AsNoTracking();

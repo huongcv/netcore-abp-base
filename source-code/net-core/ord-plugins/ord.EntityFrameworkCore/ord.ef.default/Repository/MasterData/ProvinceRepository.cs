@@ -19,8 +19,8 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 x.Code,
                 x.Name
             })
-            .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
-
+            .WhereIfHasValue(input.CountryCode, x => x.CountryCode == input.CountryCode)
+            .WhereIfHasValue(input.IsActived, x => x.IsActived == input.IsActived);
             return queryable;
         }
 

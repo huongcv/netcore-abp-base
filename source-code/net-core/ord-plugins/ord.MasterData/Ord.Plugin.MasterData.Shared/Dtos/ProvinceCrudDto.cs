@@ -41,7 +41,7 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     }
     public class ProvincePagedInput : OrdPagedRequestDto
     {
-
+        public string? CountryCode { get; set; }
     }
     public class ProvinceDetailDto : ProvinceCrudBase, IEntityDto<int>
     {
