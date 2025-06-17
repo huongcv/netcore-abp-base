@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Ord.EfCore.Default.MigrateDb.Services;
 using Ord.Plugin.Auth.MigrateDb.Data;
-using Ord.Plugin.Auth.MigrateDb.Services;
 using Ord.Plugin.Contract;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 
-namespace Ord.Plugin.Auth.MigrateDb
+namespace Ord.EfCore.Default.MigrateDb
 {
     [DependsOn(
         typeof(AbpAutofacModule),

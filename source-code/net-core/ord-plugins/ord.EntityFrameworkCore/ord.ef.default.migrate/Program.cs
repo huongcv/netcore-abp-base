@@ -1,4 +1,3 @@
-using Acme.BookStore.DbMigrator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 
-namespace Acme.MyConsoleApp;
+namespace Ord.EfCore.Default.MigrateDb;
 
 public class Program
 {

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.MigrateDb.Data;
 using Ord.Plugin.Contract;
+using System;
+using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 
-namespace Ord.Plugin.Auth.MigrateDb.Services
+namespace Ord.EfCore.Default.MigrateDb.Services
 {
     public class OrdPluginAuthDbSchemaMigrator : IOrdPluginDbSchemaMigrator, ITransientDependency
     {

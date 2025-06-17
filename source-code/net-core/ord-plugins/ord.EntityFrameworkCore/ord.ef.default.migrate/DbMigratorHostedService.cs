@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Acme.BookStore.DbMigrator;
+namespace Ord.EfCore.Default.MigrateDb;
 
 public class DbMigratorHostedService : IHostedService
 {
