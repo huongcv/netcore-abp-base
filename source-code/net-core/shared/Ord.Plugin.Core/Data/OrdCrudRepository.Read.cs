@@ -6,6 +6,7 @@ using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Services.Security;
+using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
 using Volo.Abp.Data;
@@ -94,33 +95,40 @@ namespace Ord.Plugin.Core.Data
         public virtual async Task<PagedResultDto<TGetPagedItemDto>> GetPagedListAsync(TGetPagedInputDto input)
         {
             // Lấy queryable gốc
-            var queryable = (await GetQueryableAsync()).AsNoTracking();
-            queryable = ApplySortDefault(queryable, input);
-            queryable = await GetPagedQueryableAsync(queryable, input);
-            var dtoQueryable = await TransformToPagedDtoAsync(queryable, input);
-
+            var queryable = (await GeneratePagedDtoQueryableAsync(input));
             // Đếm tổng số record
-            var totalCount = await dtoQueryable.CountAsync();
+            var totalCount = await queryable.CountAsync();
             if (totalCount == 0)
             {
                 return new PagedResultDto<TGetPagedItemDto>();
             }
 
             // Áp dụng sorting
-            dtoQueryable = await ApplySortingAsync(dtoQueryable, input);
+            queryable = await ApplySortingAsync(queryable, input);
 
             // Áp dụng paging
-            dtoQueryable = dtoQueryable
+            queryable = queryable
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
 
-            var items = await dtoQueryable.ToListAsync();
+            var items = await queryable.ToListAsync();
             if (items?.Any() == true)
             {
                 await ProcessPagedItemsAsync(items, input);
             }
 
             return new PagedResultDto<TGetPagedItemDto>(totalCount, items);
+        }
+        /// <summary>
+        /// Tạo ra một truy vấn dạng IQueryable cho danh sách DTO  phân trang.
+        /// override lại hàm này nếu where join ở các bảng khác
+        /// <returns>Truy vấn IQueryable của DTO dùng cho danh sách phân trang</returns>
+        protected virtual async Task<IQueryable<TGetPagedItemDto>> GeneratePagedDtoQueryableAsync(TGetPagedInputDto input)
+        {  // Lấy queryable gốc
+            var queryable = (await GetQueryableAsync()).AsNoTracking();
+            queryable = ApplySortDefault(queryable, input);
+            queryable = await GetPagedQueryableAsync(queryable, input);
+            return await TransformToPagedDtoAsync(queryable, input);
         }
 
         /// <summary>

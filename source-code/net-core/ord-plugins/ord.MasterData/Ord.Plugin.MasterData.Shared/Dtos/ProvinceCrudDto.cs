@@ -37,6 +37,7 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
     public class ProvincePagedDto : ProvinceCrudBase, IEntityDto<int>
     {
         public int Id { get; set; }
+        public string? CountryName { get; set; }
         public DateTime CreationTime { get; set; }
     }
     public class ProvincePagedInput : OrdPagedRequestDto

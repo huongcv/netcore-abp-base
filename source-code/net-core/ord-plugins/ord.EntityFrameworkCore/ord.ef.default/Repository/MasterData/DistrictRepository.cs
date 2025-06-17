@@ -25,6 +25,11 @@ namespace Ord.EfCore.Default.Repository.MasterData
             return queryable;
         }
 
+        protected override Task<IQueryable<DistrictPagedDto>> TransformToPagedDtoAsync(IQueryable<DistrictEntity> entityQueryable, DistrictPagedInput input)
+        {
+            return base.TransformToPagedDtoAsync(entityQueryable, input);
+        }
+
         /// <summary>
         /// Kiểm tra tính hợp lệ trước khi tạo mới 
         /// </summary>

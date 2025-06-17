@@ -31,13 +31,14 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
         public string? Name { get; set; }
         [OrdMaxLengthString(DistrictEntity.MaxLengthLevel)]
         public string? Level { get; set; }
-        
+
         public bool IsActived { get; set; }
         public virtual string? EncodedId { get; set; }
     }
     public class DistrictPagedDto : DistrictCrudBase, IEntityDto<int>
     {
         public int Id { get; set; }
+        public string? ProvinceName { get; set; }
         public DateTime CreationTime { get; set; }
     }
     public class DistrictPagedInput : OrdPagedRequestDto

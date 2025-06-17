@@ -24,6 +24,24 @@ namespace Ord.EfCore.Default.Repository.MasterData
             return queryable;
         }
 
+        protected override async Task<IQueryable<ProvincePagedDto>> TransformToPagedDtoAsync(IQueryable<ProvinceEntity> entityQueryable, ProvincePagedInput input)
+        {
+            var countryQuery = await GetEntityQueryable<CountryEntity>();
+            var query = from p in entityQueryable
+                        join c in countryQuery on p.CountryCode equals c.Code
+                        select new ProvincePagedDto()
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Code = p.Code,
+                            CountryCode = p.CountryCode,
+                            CreationTime = p.CreationTime,
+                            // Thêm CountryName từ join
+                            CountryName = c.Name
+                        };
+            return query;
+        }
+
         /// <summary>
         /// Kiểm tra tính hợp lệ trước khi tạo mới Province (mã không được trùng)
         /// </summary>
