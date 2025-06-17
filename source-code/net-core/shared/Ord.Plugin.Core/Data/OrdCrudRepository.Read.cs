@@ -7,6 +7,7 @@ using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Utils;
+using Syncfusion.DocIO.DLS;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
 using Volo.Abp.Data;
@@ -35,7 +36,7 @@ namespace Ord.Plugin.Core.Data
         where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
         where TGetPagedItemDto : class
-        where TGetByIdDto : class
+        where TGetByIdDto : class, IEntityDto<TKey>
         where TCreateInputDto : class
         where TUpdateInputDto : class, IHasEncodedId
     {
@@ -209,13 +210,27 @@ namespace Ord.Plugin.Core.Data
         /// <returns>DTO chi tiết entity</returns>
         public virtual async Task<TGetByIdDto> GetDetailByIdAsync(TKey id)
         {
-            var entity = await GetByIdAsync(id, true);
-            if (entity == null)
+            TGetByIdDto dto = null;
+            var entityQueryable = (await GetQueryableAsync()).AsNoTracking();
+            var queryable = await GenerateDetailByIdQueryableAsync(entityQueryable);
+            if (queryable != null)
             {
-                return null;
+                dto = await queryable.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+                if (dto == null)
+                {
+                    return null;
+                }
+                await CheckPermissionViewDetailAsync(dto);
             }
-
-            var dto = await MapToGetByIdDtoAsync(entity);
+            else
+            {
+                var entity = await GetByIdAsync(id, true);
+                if (entity == null)
+                {
+                    return null;
+                }
+                dto = await MapToGetByIdDtoAsync(entity);
+            }
             if (dto != null)
             {
                 if (dto is IHasEncodedId encodedDto and IEntityDto<TKey> entityDto)
@@ -225,6 +240,22 @@ namespace Ord.Plugin.Core.Data
             }
 
             return dto;
+        }
+
+        protected virtual async Task<IQueryable<TGetByIdDto>> GenerateDetailByIdQueryableAsync(IQueryable<TEntity> entityQueryable)
+        {
+            // để null để chạy vào luồng mặc định GetByIdAsync
+            return null;
+        }
+        /// <summary>
+        /// Kiểm tra quyền xem dữ liệu của hàm GetByIdAsync
+        /// throw NotAccessPermissionException nếu không được xem
+        /// </summary>
+        /// <param name="entity">Entity cần kiểm tra quyền</param>
+        /// <returns>Task</returns>
+        protected virtual Task CheckPermissionViewDetailAsync(TGetByIdDto detailDto)
+        {
+            return Task.CompletedTask;
         }
 
         /// <summary>

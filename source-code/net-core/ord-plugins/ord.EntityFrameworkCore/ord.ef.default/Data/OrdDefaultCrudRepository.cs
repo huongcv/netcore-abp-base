@@ -12,7 +12,7 @@ namespace Ord.EfCore.Default.Data
         TUpdateInputDto>(appFactory) where TEntity : class, IEntity<TKey>
         where TGetPagedInputDto : PagedAndSortedResultRequestDto
         where TGetPagedItemDto : class, IHasEncodedId, IEntityDto<TKey>
-        where TGetByIdDto : class
+        where TGetByIdDto : class, IEntityDto<TKey>
         where TCreateInputDto : class
         where TUpdateInputDto : class, IHasEncodedId
     {

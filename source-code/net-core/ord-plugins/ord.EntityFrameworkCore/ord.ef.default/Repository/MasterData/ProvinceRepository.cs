@@ -1,6 +1,7 @@
 ﻿using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
+using System.Linq.Dynamic.Core;
 
 namespace Ord.EfCore.Default.Repository.MasterData
 {
@@ -26,22 +27,47 @@ namespace Ord.EfCore.Default.Repository.MasterData
 
         protected override async Task<IQueryable<ProvincePagedDto>> TransformToPagedDtoAsync(IQueryable<ProvinceEntity> entityQueryable, ProvincePagedInput input)
         {
-            var countryQuery = await GetEntityQueryable<CountryEntity>();
-            var query = from p in entityQueryable
-                        join c in countryQuery on p.CountryCode equals c.Code
-                        select new ProvincePagedDto()
-                        {
-                            Id = p.Id,
-                            Name = p.Name,
-                            Code = p.Code,
-                            CountryCode = p.CountryCode,
-                            CreationTime = p.CreationTime,
-                            // Thêm CountryName từ join
-                            CountryName = c.Name
-                        };
-            return query;
+            var queryable = await CreateProvinceCountryJoinQueryAsync(entityQueryable);
+          return queryable.Select(x => new ProvincePagedDto()
+            {
+                Id = x.Province.Id,
+                Name = x.Province.Name,
+                Code = x.Province.Code,
+                CountryCode = x.Province.CountryCode,
+                CreationTime = x.Province.CreationTime,
+                // Thêm CountryName từ join
+                CountryName = x.CountryName
+            });
         }
         // bổ sung thêm CountryName khi lấy detail by id
+        protected override async Task<IQueryable<ProvinceDetailDto>> GenerateDetailByIdQueryableAsync(IQueryable<ProvinceEntity> entityQueryable)
+        {
+            var queryable = await CreateProvinceCountryJoinQueryAsync(entityQueryable);
+            return queryable.Select(x => new ProvinceDetailDto()
+            {
+                Id = x.Province.Id,
+                Name = x.Province.Name,
+                Code = x.Province.Code,
+                CountryCode = x.Province.CountryCode,
+                CreationTime = x.Province.CreationTime,
+                // Thêm CountryName từ join
+                CountryName = x.CountryName
+            });
+        }
+
+        protected virtual async Task<IQueryable<ProvinceWithCountryProjection>> CreateProvinceCountryJoinQueryAsync(
+            IQueryable<ProvinceEntity> provinceQueryable)
+        {
+            var countryQueryable = await GetEntityQueryable<CountryEntity>();
+            return from province in provinceQueryable
+                   join country in countryQueryable on province.CountryCode equals country.Code
+                   select new ProvinceWithCountryProjection
+                   {
+                       Province = province,
+                       CountryName = country.Name
+                   };
+        }
+
         protected override async Task<ProvinceDetailDto> MapToGetByIdDtoAsync(ProvinceEntity entity)
         {
             var dto = await base.MapToGetByIdDtoAsync(entity);
@@ -152,3 +178,14 @@ namespace Ord.EfCore.Default.Repository.MasterData
         }
     }
 }
+
+#region Projection class 
+
+public class ProvinceWithCountryProjection
+{
+    public ProvinceEntity Province { get; set; }
+    public string? CountryName { get; set; }
+}
+
+
+#endregion

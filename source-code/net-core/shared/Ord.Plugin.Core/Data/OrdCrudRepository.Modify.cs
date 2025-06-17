@@ -17,8 +17,8 @@ namespace Ord.Plugin.Core.Data
 		where TEntity : class, IEntity<TKey>
 		where TGetPagedInputDto : PagedAndSortedResultRequestDto
 		where TGetPagedItemDto : class
-		where TGetByIdDto : class
-		where TCreateInputDto : class
+		where TGetByIdDto : class, IEntityDto<TKey>
+        where TCreateInputDto : class
 		where TUpdateInputDto : class, IHasEncodedId
 	{
 		#region Abstract Methods - Must be implemented by derived classes
