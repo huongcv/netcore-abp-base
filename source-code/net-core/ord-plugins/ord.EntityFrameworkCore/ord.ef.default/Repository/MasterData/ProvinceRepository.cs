@@ -72,6 +72,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
                     Id = x.Id,
                     Name = x.Name,
                     Code = x.Code,
+                    CountryCode = x.CountryCode,
                     IsActived = x.IsActived,
                 },
                 true);
