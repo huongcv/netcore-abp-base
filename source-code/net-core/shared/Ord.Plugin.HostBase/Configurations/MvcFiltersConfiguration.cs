@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
-using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Filters;
-using System.Text.Json.Serialization;
 
 namespace Ord.Plugin.Core.Configurations
 {
@@ -20,7 +18,7 @@ namespace Ord.Plugin.Core.Configurations
             services.Configure<MvcOptions>(options =>
             {
                 // Add custom exception filter
-                options.Filters.Add<TrimStringsActionFilter>();
+                options.Filters.Add<TrimStringActionFilter>();
                 options.Filters.Add<GlobalExceptionFilter>();
                 options.Filters.Add<AbpFluentValidationActionFilter>(modelStateInvalidFilter.Order - 1);
                 ConfigureApiBehavior(options);
