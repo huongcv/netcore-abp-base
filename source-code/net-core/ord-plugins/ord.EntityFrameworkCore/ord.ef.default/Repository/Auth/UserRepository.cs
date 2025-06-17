@@ -9,7 +9,7 @@ using Volo.Abp.Domain.Repositories;
 namespace Ord.Plugin.Auth.Repositories
 {
     public partial class UserRepository(IAppFactory factory)
-        : OrdAuthBaseRepository<UserEntity, Guid>(factory), IUserRepository
+        : DefaultBaseRepository<UserEntity, Guid>(factory), IUserRepository
     {
         public async Task<UserLoginDto?> GetLoginByUserName(string? userName)
         {

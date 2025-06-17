@@ -9,7 +9,7 @@ using Volo.Abp.Validation;
 namespace Ord.Plugin.Auth.Repositories
 {
     public class UserRoleRepository(IAppFactory factory)
-        : OrdAuthBaseRepository<UserRoleEntity, int>(factory), IUserRoleRepository
+        : DefaultBaseRepository<UserRoleEntity, int>(factory), IUserRoleRepository
     {
 
         #region Basic User-Role Operations

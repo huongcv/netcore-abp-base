@@ -6,7 +6,7 @@ using Ord.Plugin.Contract.Features.Notifications.Entities;
 namespace Ord.Plugin.Auth.Repositories
 {
     public class UserFirebaseDeviceRepository(IAppFactory appFactory)
-        : OrdAuthBaseRepository<UserFirebaseDeviceEntity, Guid>(appFactory), IUserFirebaseDeviceRepository
+        : DefaultBaseRepository<UserFirebaseDeviceEntity, Guid>(appFactory), IUserFirebaseDeviceRepository
     {
         public Task<UserFirebaseDeviceEntity?> FindByDeviceIdAsync(Guid userId, string deviceId)
         {

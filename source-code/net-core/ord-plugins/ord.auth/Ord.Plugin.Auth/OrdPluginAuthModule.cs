@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Ord.Plugin.Auth.Data;
 using Ord.Plugin.Contract;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AutoMapper;
@@ -41,11 +40,6 @@ namespace Ord.Plugin.Auth
             {
                 options.AddMaps<OrdPluginAuthModule>(validate: false);
             });
-            services.AddAbpDbContext<OrdPluginAuthDbContext>(options =>
-            {
-                options.AddDefaultRepositories(includeAllEntities: true);
-            });
-
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginAuthModule).Assembly));
 
         }

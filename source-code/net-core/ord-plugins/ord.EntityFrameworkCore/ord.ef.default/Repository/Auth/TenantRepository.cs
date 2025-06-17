@@ -10,7 +10,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Auth.Repositories
 {
     public class TenantRepository(IAppFactory factory)
-        : OrdAuthBaseRepository<TenantEntity, Guid>(factory), ITenantRepository
+        : DefaultBaseRepository<TenantEntity, Guid>(factory), ITenantRepository
     {
         public async Task<Guid?> GetIdByCode(string? tenantCode)
         {

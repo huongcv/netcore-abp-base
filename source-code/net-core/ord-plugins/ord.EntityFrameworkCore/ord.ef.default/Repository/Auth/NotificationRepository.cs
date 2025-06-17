@@ -11,7 +11,7 @@ using Volo.Abp.Application.Dtos;
 namespace Ord.Plugin.Auth.Repositories;
 
 public class NotificationRepository(IAppFactory factory)
-    : OrdAuthBaseRepository<NotificationInfoEntity, Guid>(factory), INotificationRepository
+    : DefaultBaseRepository<NotificationInfoEntity, Guid>(factory), INotificationRepository
 {
     public async Task<PagedResultDto<UserNotificationDto>> GetUserNotificationsAsync(Guid userId, GetUserNotificationInput input)
     {

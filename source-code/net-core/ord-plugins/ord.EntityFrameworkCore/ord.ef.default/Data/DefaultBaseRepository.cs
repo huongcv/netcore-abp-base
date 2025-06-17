@@ -6,7 +6,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace Ord.Plugin.Auth.Base
 {
-    public class OrdAuthBaseRepository<TEntity, TKey>(IAppFactory appFactory)
+    public class DefaultBaseRepository<TEntity, TKey>(IAppFactory appFactory)
         : OrdEfCoreRepository<OrdDefaultDbContext, TEntity, TKey>(appFactory)
         where TEntity : class, IEntity<TKey>
     {

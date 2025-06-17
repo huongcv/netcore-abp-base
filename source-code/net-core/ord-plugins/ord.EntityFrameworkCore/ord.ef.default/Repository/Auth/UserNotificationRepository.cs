@@ -6,7 +6,7 @@ using Ord.Plugin.Contract.Features.Notifications.Entities;
 
 namespace Ord.Plugin.Auth.Repositories
 {
-    public class UserNotificationRepository(IAppFactory appFactory) : OrdAuthBaseRepository<UserNotificationEntity, Guid>(appFactory), IUserNotificationRepository
+    public class UserNotificationRepository(IAppFactory appFactory) : DefaultBaseRepository<UserNotificationEntity, Guid>(appFactory), IUserNotificationRepository
     {
         public async Task MarkAsReadAsync(Guid userId, Guid notificationId)
         {
