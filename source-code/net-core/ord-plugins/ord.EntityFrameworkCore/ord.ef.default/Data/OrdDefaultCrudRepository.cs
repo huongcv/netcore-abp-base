@@ -8,7 +8,7 @@ using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Base
 {
-    public abstract class OrdAuthCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
+    public abstract class OrdDefaultCrudRepository<TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(IAppFactory appFactory) :
         OrdCrudRepository<OrdDefaultDbContext, TEntity, TKey, TGetPagedInputDto, TGetPagedItemDto, TGetByIdDto, TCreateInputDto,
         TUpdateInputDto>(appFactory) where TEntity : class, IEntity<TKey>

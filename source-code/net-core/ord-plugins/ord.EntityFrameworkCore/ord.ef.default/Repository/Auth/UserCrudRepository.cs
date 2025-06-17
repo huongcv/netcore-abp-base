@@ -13,7 +13,7 @@ using Volo.Abp.Domain.Repositories;
 namespace Ord.Plugin.Auth.Repositories
 {
     public class UserCrudRepository(IAppFactory factory)
-        : OrdAuthCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(factory),
+        : OrdDefaultCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto>(factory),
             IUserCrudRepository
     {
         #region CRUD Overrides

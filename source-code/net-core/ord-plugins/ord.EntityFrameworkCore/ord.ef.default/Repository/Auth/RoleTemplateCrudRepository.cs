@@ -7,7 +7,7 @@ using Ord.Plugin.Auth.Shared.Repositories;
 namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository
-        : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>,
+        : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>,
             IRoleCrudRepository
     {
         public async Task<RoleEntity> CreateTemplateRoleAsync(CreateTemplateRoleDto input)

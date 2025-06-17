@@ -17,7 +17,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository(IAppFactory factory)
-        : OrdAuthCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
+        : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
             IRoleCrudRepository
     {
         protected IRepository<PermissionGrantEntity, long> PermissionGrantRepository =>

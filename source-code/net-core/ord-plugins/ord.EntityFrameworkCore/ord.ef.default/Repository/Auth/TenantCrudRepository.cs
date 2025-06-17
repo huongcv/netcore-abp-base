@@ -16,7 +16,7 @@ using Volo.Abp.MultiTenancy;
 namespace Ord.Plugin.Auth.Repositories
 {
     public class TenantCrudRepository(IAppFactory factory)
-         : OrdAuthCrudRepository<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto, UpdateTenantDto>(factory),
+         : OrdDefaultCrudRepository<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto, UpdateTenantDto>(factory),
              ITenantCrudRepository
     {
 
