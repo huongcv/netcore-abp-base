@@ -21,6 +21,12 @@ namespace Ord.EfCore.Default.Data
         {
             throw new AbpValidationException(AppFactory.GetLocalizedMessage(key, formatArgs));
         }
+        protected void ThrowEntityUsed(params object[] formatArgs)
+        {
+            // Gộp tên entity với các tham số khác
+            var args = new object[] { GetEntityNameLocalized() }.Concat(formatArgs).ToArray();
+            ThrowValidationEx("message.crud.entity_used", args);
+        }
 
         /// <summary>
         /// Lấy tên entity từ resource i18n dạng `entity.name.[EntityName]`.

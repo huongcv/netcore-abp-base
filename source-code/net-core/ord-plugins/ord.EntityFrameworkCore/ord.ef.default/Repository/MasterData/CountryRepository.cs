@@ -55,7 +55,7 @@ namespace Ord.EfCore.Default.Repository.MasterData
             var isUsed = await CheckCountryIsUsedAsync(entityDelete.Code);
             if (isUsed)
             {
-                ThrowValidationEx("message.crud.entity_used", entityDelete.Code);
+                ThrowEntityUsed(entityDelete.Code);
             }
         }
 
