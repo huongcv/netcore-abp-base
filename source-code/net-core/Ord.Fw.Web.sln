@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migrate", "migrate", "{02EA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.Zero.HttpHost", "host\Ord.Zero.HttpHost\Ord.Zero.HttpHost.csproj", "{701BD284-E51C-39C0-82EC-6872E5AAEEB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ord.Domain", "ord-plugins\ord.domain\Ord.Domain.csproj", "{6F5E5CB1-CC31-B155-75EE-C7395E50751F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{701BD284-E51C-39C0-82EC-6872E5AAEEB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701BD284-E51C-39C0-82EC-6872E5AAEEB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{701BD284-E51C-39C0-82EC-6872E5AAEEB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5E5CB1-CC31-B155-75EE-C7395E50751F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5E5CB1-CC31-B155-75EE-C7395E50751F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5E5CB1-CC31-B155-75EE-C7395E50751F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5E5CB1-CC31-B155-75EE-C7395E50751F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{40BA1F60-C275-43C4-9F55-06C49C48C3C0} = {6610CF6A-FA21-4756-9B8C-806AC45CB69C}
 		{A4E5F6AB-AC9C-4E41-AB2B-089E104A9970} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5A897037-54A1-0729-42CC-E79487691953} = {40BA1F60-C275-43C4-9F55-06C49C48C3C0}
+		{6F5E5CB1-CC31-B155-75EE-C7395E50751F} = {6610CF6A-FA21-4756-9B8C-806AC45CB69C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62A59D7D-8867-4242-9489-2A5BD6E40CBF}

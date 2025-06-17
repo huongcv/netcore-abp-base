@@ -9,7 +9,7 @@ using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Ord.Plugin.Auth.MigrateDb.Data
 {
-    [ConnectionStringName("OrdPluginAuth")]
+    [ConnectionStringName("Default")]
     public class OrdPluginAuthDbContextMigrate : AbpDbContext<OrdPluginAuthDbContextMigrate>
     {
         public virtual DbSet<UserEntity> Users { get; set; }

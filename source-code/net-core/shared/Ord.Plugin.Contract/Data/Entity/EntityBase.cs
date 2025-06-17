@@ -8,11 +8,4 @@ namespace Ord.Plugin.Contract.Base
     {
         bool IsActived { get; set; }
     }
-    public class EntityActivedSoftDelete<TKey> : Entity<TKey>, IHasActived, ISoftDelete, IHasDeletionTime, IDeletionAuditedObject
-    {
-        public bool IsActived { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime? DeletionTime { get; set; }
-        public Guid? DeleterId { get; set; }
-    }
 }

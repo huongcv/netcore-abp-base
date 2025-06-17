@@ -1,51 +1,46 @@
-﻿using System.Threading;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Ord.Plugin.Contract;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Ord.Plugin.Auth.MigrateDb;
-using Ord.PluginZero.DbMigrator;
-using Serilog;
-using Volo.Abp;
-using Volo.Abp.Data;
-using Volo.Abp.Modularity.PlugIns;
 
 namespace Acme.BookStore.DbMigrator;
 
 public class DbMigratorHostedService : IHostedService
 {
-    private readonly IHostApplicationLifetime _hostApplicationLifetime;
-    private readonly IConfiguration _configuration;
+    private readonly ILogger<DbMigratorHostedService> _logger;
+    private readonly IEnumerable<IOrdPluginDbSchemaMigrator> _dbSchemaMigrators;
 
-    public DbMigratorHostedService(IHostApplicationLifetime hostApplicationLifetime, IConfiguration configuration)
+
+    public DbMigratorHostedService(
+        ILogger<DbMigratorHostedService> logger, 
+        IEnumerable<IOrdPluginDbSchemaMigrator> dbSchemaMigrators)
     {
-        _hostApplicationLifetime = hostApplicationLifetime;
-        _configuration = configuration;
+        _logger = logger;
+        _dbSchemaMigrators = dbSchemaMigrators;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using (var application = await AbpApplicationFactory.CreateAsync<OrdPluginAuthMigrateDbModule>(options =>
+        await MigrateAsync();
+    }
+    public async Task MigrateAsync()
+    {
+        foreach (var migrator in _dbSchemaMigrators)
         {
-           options.Services.ReplaceConfiguration(_configuration);
-           options.UseAutofac();
-           options.Services.AddLogging(c => c.AddSerilog());
-           options.AddDataMigrationEnvironment();
-        }))
-        {
-            await application.InitializeAsync();
+            try
+            {
+                await migrator.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
-            await application
-                .ServiceProvider
-                .GetRequiredService<DbMigrationService>()
-                .MigrateAsync();
-
-            await application.ShutdownAsync();
-
-            _hostApplicationLifetime.StopApplication();
         }
     }
-
     public Task StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;

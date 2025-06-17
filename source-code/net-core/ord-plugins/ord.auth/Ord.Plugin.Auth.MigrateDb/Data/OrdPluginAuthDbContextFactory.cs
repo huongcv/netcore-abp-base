@@ -10,7 +10,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Data
         public OrdPluginAuthDbContextMigrate CreateDbContext(string[] args)
         {
             var configuration = BuildConfiguration();
-
+            var conn = configuration.GetConnectionString("Default");
             var builder = new DbContextOptionsBuilder<OrdPluginAuthDbContextMigrate>()
                 .UseMySql(configuration.GetConnectionString("Default"), MySqlServerVersion.LatestSupportedServerVersion);
 

@@ -16,13 +16,11 @@ namespace Ord.Plugin.Auth.MigrateDb.Services
     public class OrdPluginAuthDbSchemaMigrator : IOrdPluginDbSchemaMigrator, ITransientDependency
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IGuidGenerator _guidGenerator;
         public ILogger<OrdPluginAuthDbSchemaMigrator> Logger { get; set; }
         public OrdPluginAuthDbSchemaMigrator(IServiceProvider serviceProvider,
             IGuidGenerator guidGenerator)
         {
             _serviceProvider = serviceProvider;
-            _guidGenerator = guidGenerator;
             Logger = NullLogger<OrdPluginAuthDbSchemaMigrator>.Instance;
         }
 
@@ -39,15 +37,6 @@ namespace Ord.Plugin.Auth.MigrateDb.Services
         {
             await CreateUserIfNull(dbContext, "admin", "admin", "sa");
             await CreateUserIfNull(dbContext, "user", "user", "user");
-            var triggerTableLastModificationTime = new List<string>()
-            {
-                "system_product","system_product_unit","stock_inventory_line_details","system_partner"
-            };
-            foreach (var tbl in triggerTableLastModificationTime)
-            {
-                await CreateTriggerLastModificationTime(dbContext, tbl);
-            }
-
         }
         private async Task CreateUserIfNull(OrdPluginAuthDbContextMigrate dbContext, string userName, string name, string level)
         {
@@ -56,7 +45,7 @@ namespace Ord.Plugin.Auth.MigrateDb.Services
                 var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
                 if (user == null)
                 {
-                    user = new UserEntity(_guidGenerator.Create())
+                    user = new UserEntity(Guid.NewGuid())
                     {
                         UserName = userName,
                         Name = name,
