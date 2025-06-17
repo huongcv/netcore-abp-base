@@ -8,13 +8,19 @@ namespace Ord.Domain.Entities.MasterData
     [Table("system_provinces")]
     public class ProvinceEntity : FullAuditedEntity<int>, IHasActived
     {
-        [MaxLength(50)]
+
+        public const int MaxLengthCode = 20;
+        public const int MaxLengthName = 200;
+        public const int MaxLengthLevel = 50;
+        public const int MaxLengthCountryCode = 20;
+
+        [MaxLength(MaxLengthCode)]
         public string? Code { get; set; }
-        [MaxLength(200)]
+        [MaxLength(MaxLengthName)]
         public string? Name { get; set; }
-        [MaxLength(100)]
+        [MaxLength(MaxLengthLevel)]
         public string? Level { get; set; }
-        [MaxLength(20)]
+        [MaxLength(MaxLengthCountryCode)]
         public string? CountryCode { get; set; }
         public bool IsActived { get; set; }
     }

@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Ord.Domain.Entities.MasterData;
+using Ord.Plugin.MasterData.Shared.Dtos;
 
-namespace Ord.Plugin.MasterData.Shared.Dtos
+namespace Ord.Plugin.MasterData.Shared.Mapper
 {
-    public class DtoMapProfile : Profile
+    public class AutoMapperDtoMapProfile : Profile
     {
-        public DtoMapProfile()
+        public AutoMapperDtoMapProfile()
         {
             CreateMap<CountryPagedDto, CountryEntity>().ReverseMap();
             CreateMap<CountryDetailDto, CountryEntity>().ReverseMap();
             CreateMap<CreateCountryDto, CountryEntity>().ReverseMap();
             CreateMap<UpdateCountryDto, CountryEntity>().ReverseMap();
-
         }
     }
 }
