@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Entities;
+using Ord.Domain.Entities.MasterData;
+using Ord.EfCore.Default.MigrateDb.ModelBuilders;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Contract.Features.Notifications;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
@@ -24,106 +26,19 @@ namespace Ord.EfCore.Default.MigrateDb.Data
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
 
+        #region MasterData
+        public virtual DbSet<CountryEntity> Countries { get; set; }
+        public virtual DbSet<ProvinceEntity> Provinces { get; set; }
+        #endregion
+
         public DbContextMigrate(DbContextOptions<DbContextMigrate> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<UserEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.UserName,
-                    x.TenantId
-                });
-                b.HasIndex(x => new
-                {
-                    x.TenantId
-                });
-            });
-            builder.Entity<RoleEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.TenantId,
-                });
-                b.HasIndex(x => new
-                {
-                    x.Code,
-                    x.TenantId,
-                });
-            });
-            builder.Entity<UserRoleEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => x.UserId);
-                b.HasIndex(x => x.RoleId);
-            });
-            builder.Entity<PermissionGrantEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.ProviderName,
-                    x.ProviderId
-                });
-            });
-            builder.Entity<PermissionUserEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.UserId
-                });
-            });
-            builder.Entity<TenantEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => x.Code);
-            });
-            builder.Entity<SettingEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.TenantId,
-                    x.Name,
-                    x.UserId
-                }).IsUnique();
-                b.HasIndex(x => new
-                {
-                    x.Type,
-                    x.TenantId,
-                    x.UserId
-                });
-                b.HasIndex(x => x.UserId);
-                b.HasIndex(x => x.Name);
-            });
-            builder.Entity<NotificationInfoEntity>(b =>
-            {
-                b.ConfigureByConvention();
-            });
-            builder.Entity<UserNotificationEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.UserId,
-                    x.CreationTime
-                }).IsDescending(false, true);
-            });
-            builder.Entity<UserFirebaseDeviceEntity>(b =>
-            {
-                b.ConfigureByConvention();
-                b.HasIndex(x => new
-                {
-                    x.UserId,
-                    x.DeviceId
-                });
-            });
+            AuthDataModelBuilder.OnModelCreating(builder);
+            MasterDataModelBuilder.OnModelCreating(builder);
         }
     }
 }

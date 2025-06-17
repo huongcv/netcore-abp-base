@@ -18,7 +18,8 @@ namespace Ord.PluginZero.HttpHost
         typeof(OrdPluginHostBaseModule),
         typeof(AbpBlobStoringMinioModule)
     )]
-    [DependsOn(typeof(OrdPluginAuthModule))]
+    [DependsOn(typeof(OrdPluginAuthModule),
+        typeof(OrdPluginMasterDataModule))]
     [DependsOn(typeof(OrdEfCoreDefaultModule))]
     public class OrdPosHttpHostModule : AbpModule
     {

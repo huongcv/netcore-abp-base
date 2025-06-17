@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.Contract.Features.Notifications;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
 using Ord.Plugin.Core.Logging;
@@ -10,6 +11,7 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
     [ConnectionStringName("Default")]
     public class OrdDefaultDbContext : AbpDbContext<OrdDefaultDbContext>
     {
+        #region user,role,auth,notification
         public virtual DbSet<UserEntity> Users { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
         public virtual DbSet<UserRoleEntity> UserAuthorities { get; set; }
@@ -20,6 +22,13 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
         public virtual DbSet<NotificationInfoEntity> Notifications { get; set; }
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
+        #endregion
+
+
+        #region MasterData
+        public virtual DbSet<CountryEntity> Countries { get; set; }
+        public virtual DbSet<ProvinceEntity> Provinces { get; set; }
+        #endregion
 
         public OrdDefaultDbContext(DbContextOptions<OrdDefaultDbContext> options) : base(options)
         {
