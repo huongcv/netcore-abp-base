@@ -1,10 +1,7 @@
-﻿using Ord.Contract.Entities;
-using Ord.Plugin.Auth.Data;
-using Ord.Plugin.Auth.Shared.Entities;
-using Ord.Plugin.Contract.Factories;
+﻿using Ord.EfCore.Default.EntityFrameworkCore;
 using Volo.Abp.Domain.Entities;
 
-namespace Ord.Plugin.Auth.Base
+namespace Ord.EfCore.Default.Data
 {
     public class DefaultBaseRepository<TEntity, TKey>(IAppFactory appFactory)
         : OrdEfCoreRepository<OrdDefaultDbContext, TEntity, TKey>(appFactory)

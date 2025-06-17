@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Ord.Contract.Entities;
-using Ord.Plugin.Auth.Shared.Entities;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Ord.Plugin.Contract.Features.Notifications;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
 using Ord.Plugin.Core.Logging;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace Ord.Plugin.Auth.Data
+namespace Ord.EfCore.Default.EntityFrameworkCore
 {
     [ConnectionStringName("Default")]
     public class OrdDefaultDbContext : AbpDbContext<OrdDefaultDbContext>

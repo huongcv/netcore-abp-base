@@ -1,8 +1,6 @@
-﻿using Ord.Plugin.Auth.Data;
+﻿using Ord.EfCore.Default.EntityFrameworkCore;
 using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Data;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Validation;
 

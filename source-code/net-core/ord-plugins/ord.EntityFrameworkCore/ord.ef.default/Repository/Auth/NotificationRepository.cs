@@ -1,5 +1,4 @@
-﻿using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Shared.Dtos.Notifications;
+﻿using Ord.Plugin.Auth.Shared.Dtos.Notifications;
 using Ord.Plugin.Contract.Features.Notifications;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
 

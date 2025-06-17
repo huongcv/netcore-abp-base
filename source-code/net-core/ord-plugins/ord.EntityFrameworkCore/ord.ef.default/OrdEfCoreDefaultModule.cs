@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Ord.Plugin.Auth.Data;
+using Ord.EfCore.Default.EntityFrameworkCore;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;

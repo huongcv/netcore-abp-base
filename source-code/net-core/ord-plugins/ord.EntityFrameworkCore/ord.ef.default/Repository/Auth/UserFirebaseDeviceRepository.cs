@@ -1,5 +1,4 @@
-﻿using Ord.Plugin.Auth.Base;
-using Ord.Plugin.Auth.Shared.Repositories;
+﻿using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
 

@@ -1,7 +1,7 @@
-﻿using Ord.Plugin.Auth.Data;
-using Ord.Plugin.Contract.Factories;
+﻿using Ord.EfCore.Default.EntityFrameworkCore;
+using Ord.Plugin.Core.Data;
 
-namespace Ord.Plugin.Core.Data
+namespace Ord.EfCore.Default.Data
 {
     public class DapperDefaultDbRepository(IAppFactory appFactory) : DapperRepositoryBase<OrdDefaultDbContext>(appFactory)
     {
