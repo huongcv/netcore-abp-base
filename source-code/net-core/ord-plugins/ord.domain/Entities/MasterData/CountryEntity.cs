@@ -8,13 +8,19 @@ namespace Ord.Domain.Entities.MasterData
     [Table("system_countries")]
     public class CountryEntity : FullAuditedEntity<int>, IHasActived
     {
-        [MaxLength(20)]
+
+        public const int MaxLengthCode = 20;
+        public const int MaxLengthName = 200;
+        public const int MaxLengthPhoneCode = 50;
+        public const int MaxLengthCurrencyCode = 20;
+
+        [MaxLength(MaxLengthCode)]
         public string? Code { get; set; }
-        [MaxLength(200)]
+        [MaxLength(MaxLengthName)]
         public string? Name { get; set; }
-        [MaxLength(50)]
+        [MaxLength(MaxLengthPhoneCode)]
         public string? PhoneCode { get; set; }
-        [MaxLength(20)]
+        [MaxLength(MaxLengthCurrencyCode)]
         public string? CurrencyCode { get; set; }
         [MaxLength(100)]
         public string? ImageUrl { get; set; }

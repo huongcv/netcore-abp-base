@@ -59,6 +59,20 @@ namespace Ord.EfCore.Default.Repository.MasterData
             }
         }
 
+        public async Task<IEnumerable<CountryPagedDto>> GetListComboOptions(bool includeUnActive = false)
+        {
+            return await GetListAsDtoAsync<CountryPagedDto>(
+                x => x.IsActived == true || includeUnActive,
+                x => new CountryPagedDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Code = x.Code,
+                    IsActived = x.IsActived,
+                },
+                true);
+        }
+
         /// <summary>
         /// Kiểm tra mã Country có là duy nhất hay không
         /// </summary>

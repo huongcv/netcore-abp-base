@@ -6,6 +6,7 @@ namespace Ord.Plugin.MasterData.Shared.Repositories
 {
     public interface ICountryRepository : IOrdCrudRepository<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>
     {
+        Task<IEnumerable<CountryPagedDto>> GetListComboOptions(bool includeUnActive = false);
         Task<bool> CheckCodeIsUniqueAsync(string code, int? excludeId = null);
         Task<bool> CheckCountryIsUsedAsync(string code);
     }
