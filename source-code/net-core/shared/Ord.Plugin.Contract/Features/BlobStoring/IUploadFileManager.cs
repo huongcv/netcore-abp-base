@@ -5,9 +5,9 @@ namespace Ord.Plugin.Contract.Features.BlobStoring
 {
     public interface IUploadFileManager : IDomainService
     {
-        Task<FileUploadDto> UploadFile(IFormFile file, string blobContainerPath);
-        Task<FileUploadDto> UploadFile(byte[] fileByte, string fileName, string mimeType, string blobContainerPath);
-        Task RemoveFile(Guid fileId);
-        Task<FileUploadDto> Get(Guid fileId);
+        Task<FileUploadDto> GetByFileIdAsync(Guid fileId);
+        Task<FileUploadDto> UploadFileAsync(IFormFile file, string blobContainerPath);
+        Task<FileUploadDto> UploadFileAsync(byte[] fileByte, string fileName, string mimeType, string blobContainerPath);
+        Task RemoveFileAsync(Guid fileId);
     }
 }
