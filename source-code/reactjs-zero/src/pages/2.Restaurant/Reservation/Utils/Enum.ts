@@ -1,8 +1,0 @@
-export const RESERVATION_STATUS_ENUM = {
-    NHAP: 0,
-    CHO_XAC_NHAN: 100,
-    DA_XAC_NHAN: 200,
-    KHACH_DA_TOI: 300,
-    DA_CHON_CHO: 900,
-    DA_HUY: 100000,
-}

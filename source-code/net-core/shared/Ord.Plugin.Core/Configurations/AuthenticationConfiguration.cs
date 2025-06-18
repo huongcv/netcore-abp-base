@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Ord.Plugin.Contract.Configurations;
+using Polly;
 using System.Text;
 
 namespace Ord.Plugin.Core.Configurations;
@@ -24,6 +25,11 @@ public static class AuthenticationConfiguration
         {
             options.ForwardDefaultSelector = ctx =>
             {
+                var cookieToken = ctx.Request.Cookies["jwt"];
+                if (!string.IsNullOrEmpty(cookieToken))
+                {
+                    return "LocalCookie";
+                }
                 var authHeader = ctx.Request.Headers["Authorization"].FirstOrDefault();
                 if (string.IsNullOrEmpty(authHeader))
                 {
@@ -65,6 +71,54 @@ public static class AuthenticationConfiguration
                 OnAuthenticationFailed = context =>
                 {
                     LogAuthenticationFailure(context);
+                    return Task.CompletedTask;
+                },
+                OnMessageReceived = context =>
+                {
+                    // ✅ Ưu tiên lấy từ Header nếu có
+                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+                    {
+                        context.Token = authHeader.Substring("Bearer ".Length).Trim();
+                    }
+                    else
+                    {
+                        // ✅ Nếu không có header, fallback sang Cookie
+                        var cookieToken = context.HttpContext.Request.Cookies["jwt"];
+                        if (!string.IsNullOrEmpty(cookieToken))
+                        {
+                            context.Token = cookieToken;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
+        });
+        authenticationBuilder.AddJwtBearer("LocalCookie", options =>
+        {
+            options.SaveToken = true;
+            options.TokenValidationParameters = CreateTokenValidationParameters(tokenAuthConfig);
+            options.Events = new JwtBearerEvents
+            {
+                OnTokenValidated = async context =>
+                {
+                    await ValidateJwtTokenAsync(context);
+                },
+                OnAuthenticationFailed = context =>
+                {
+                    LogAuthenticationFailure(context);
+                    return Task.CompletedTask;
+                },
+                OnMessageReceived = context =>
+                { 
+                    // ✅ Nếu không có header, fallback sang Cookie
+                    var cookieToken = context.HttpContext.Request.Cookies["jwt"];
+                    if (!string.IsNullOrEmpty(cookieToken))
+                    {
+                        context.Token = cookieToken;
+                    }
+
                     return Task.CompletedTask;
                 }
             };

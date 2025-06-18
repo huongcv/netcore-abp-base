@@ -1,18 +1,4 @@
-import {
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, getConfigs, IRequestConfig, IRequestOptions} from './index.defs';
 
 export class PingService {
   /** Generate by swagger-axios-codegen */

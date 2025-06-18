@@ -1,25 +1,13 @@
 import {
-  SendEmailForgotPasswordQuery,
-  CommonResultDtoOfBoolean,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  CheckCodeForgotPasswordQuery,
-  CommonResultDtoOfUserBaseDto,
-  UserBaseDto,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CheckCodeForgotPasswordQuery,
+    CommonResultDtoOfBoolean,
+    CommonResultDtoOfUserBaseDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    SendEmailForgotPasswordQuery
 } from './index.defs';
 
 export class ForgotPasswordService {

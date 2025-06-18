@@ -1,19 +1,4 @@
-import {
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, getConfigs, IRequestConfig, IRequestOptions} from './index.defs';
 
 export class ToolService {
   /** Generate by swagger-axios-codegen */

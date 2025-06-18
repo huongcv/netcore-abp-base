@@ -1,26 +1,13 @@
 import {
-  GolfReasonPagedReq,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfReasonDto,
-  GolfReasonDto,
-  number,
-  CommonResultDtoOfGolfReasonDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfGolfReasonDto,
+    getConfigs,
+    GolfReasonDto,
+    GolfReasonPagedReq,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfGolfReasonDto
 } from './index.defs';
 
 export class GolfReasonService {

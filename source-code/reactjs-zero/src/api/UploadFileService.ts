@@ -1,21 +1,11 @@
 import {
-  string,
-  FileUploadDto,
-  boolean,
-  ValueTupleOfStringString,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    FileUploadDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    ValueTupleOfStringString
 } from './index.defs';
 
 export class UploadFileService {

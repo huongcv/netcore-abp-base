@@ -1,23 +1,12 @@
 import {
-  string,
-  ProductUnitDto,
-  UpdateListUnitCommand,
-  CommonResultDtoOfBoolean,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfBoolean,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    ProductUnitDto,
+    UpdateListUnitCommand
 } from './index.defs';
 
 export class ProductUnitService {

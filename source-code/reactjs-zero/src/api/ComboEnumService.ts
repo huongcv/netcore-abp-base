@@ -1,22 +1,12 @@
 import {
-  ComboOptionDto,
-  ShopType,
-  string,
-  ACCOUNT_MOVE_TYPE,
-  boolean,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    ACCOUNT_MOVE_TYPE,
+    axios,
+    basePath,
+    ComboOptionDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    ShopType
 } from './index.defs';
 
 export class ComboEnumService {

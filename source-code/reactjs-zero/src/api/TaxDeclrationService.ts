@@ -1,26 +1,13 @@
 import {
-  ReportTaxDeclarationDto,
-  TimeSpan,
-  CommonResultDtoOfReportTaxDeclarationDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  string,
-  number,
-  boolean,
-  PagedResultDtoOfReportTaxDeclarationDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfReportTaxDeclarationDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfReportTaxDeclarationDto,
+    ReportTaxDeclarationDto,
+    TimeSpan
 } from './index.defs';
 
 export class TaxDeclrationService {

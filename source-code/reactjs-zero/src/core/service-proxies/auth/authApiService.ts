@@ -18,7 +18,7 @@ class AuthApiService {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'api/auth-plugin/auth/login',
+            url: 'api/auth/auth/login',
             headers: {
                 'Content-Type': 'application/json'
             },

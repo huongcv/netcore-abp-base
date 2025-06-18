@@ -1,28 +1,14 @@
 import {
-  NationalPharmacyIntegrationPaging,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  IntegrateStatusTypeEnum,
-  NationalPharmacyIntegrationCountDto,
-  PagedResultDtoOfNationalPharmacyIntegrationDto,
-  NationalPharmacyIntegrationDto,
-  CommonResultDtoOfBoolean,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfBoolean,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    NationalPharmacyIntegrationCountDto,
+    NationalPharmacyIntegrationDto,
+    NationalPharmacyIntegrationPaging,
+    PagedResultDtoOfNationalPharmacyIntegrationDto
 } from './index.defs';
 
 export class IntegrateService {

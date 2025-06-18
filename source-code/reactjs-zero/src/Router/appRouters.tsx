@@ -1,6 +1,5 @@
 import {lazy} from 'react';
 import {OrdRouterItem} from "@ord-core/model/ordRouter.model";
-import {AdminRouter} from "@pages/Admin/AdminRouter";
 import {PartnerRouter} from "@pages/Partner/PartnerRouter";
 import {SalesInvoiceRouter} from "@pages/SalesInvoice/SalesInvoiceRouter";
 import {ProductManagementRouter} from "@pages/ProductManagement/ProductManagementRouter";
@@ -11,8 +10,6 @@ import {SystemRouter} from "@pages/System/SystemRouter";
 import {ReportRouter} from "@pages/Report/ReportRouter";
 import {HumanResourceRouter} from "@pages/HumanResource/HumanResourceRouter";
 import {OrderRouter} from '@pages/Order/OrderRouter';
-import {golfRoutes} from "@pages/1.Golf/golflRouter";
-import {restaurantRoutes} from "./restaurantRouter";
 import {AppExtendCode} from "@ord-core/AppConst";
 import { SalesOrderRouter } from '@pages/SaleOrder/SalesOrderRouter';
 const prefix = AppExtendCode.proShop;
@@ -49,8 +46,5 @@ export const appRouters: OrdRouterItem[] = [
     ...WorkShiftRouter,
     ...SystemRouter,
     ...HumanResourceRouter,
-    ...ReportRouter,
-
-    ...golfRoutes,
-    ...restaurantRoutes
+    ...ReportRouter
 ]

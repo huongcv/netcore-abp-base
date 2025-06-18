@@ -25,7 +25,8 @@ const dateTransformer: AxiosRequestTransformer = (data: any) => {
 };
 export const AxiosBaseHttpApi = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    timeout: import.meta.env.VITE_API_TIMEOUT?? 30000,
+    timeout: -1,
+    withCredentials: true,
     paramsSerializer: {
         // @ts-ignore
         encode: qs.parse,

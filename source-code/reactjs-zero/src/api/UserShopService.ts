@@ -1,24 +1,12 @@
 import {
-  string,
-  TreeUserShopAssignDto,
-  TreeUserShopNode,
-  AssignUserShopDto,
-  CommonResultDtoOfInt32,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    AssignUserShopDto,
+    axios,
+    basePath,
+    CommonResultDtoOfInt32,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    TreeUserShopAssignDto
 } from './index.defs';
 
 export class UserShopService {

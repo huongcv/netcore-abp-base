@@ -1,24 +1,12 @@
 import {
-  LoginQuery,
-  CommonResultDtoOfJwtDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  JwtDto,
-  ChangeShopQuery,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ChangeShopQuery,
+    CommonResultDtoOfJwtDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    LoginQuery
 } from './index.defs';
 
 export class AuthService {

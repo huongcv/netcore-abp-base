@@ -1,28 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfWardDto,
-  WardDto,
-  number,
-  CommonResultDtoOfWardDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  string,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfWardDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfWardDto,
+    WardDto
 } from './index.defs';
 
 export class WardService {

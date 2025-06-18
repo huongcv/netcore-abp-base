@@ -1,27 +1,14 @@
 import {
-  PagingCustomerRevenueReportDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedResultDtoOfEmployeeRevenueReportDto,
-  EmployeeRevenueReportDto,
-  EmployeeProductReportDto,
-  PagedResultDtoOfEmployeeRevenueReportDetailDto,
-  EmployeeRevenueReportDetailDto,
-  PagedResultDtoOfEmployeeProductReportDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    EmployeeProductReportDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfEmployeeProductReportDto,
+    PagedResultDtoOfEmployeeRevenueReportDetailDto,
+    PagedResultDtoOfEmployeeRevenueReportDto,
+    PagingCustomerRevenueReportDto
 } from './index.defs';
 
 export class EmployeeReportService {

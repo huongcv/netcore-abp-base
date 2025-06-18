@@ -1,27 +1,13 @@
 import {
-  DrugRecallGetPagedInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedResultDtoOfDrugRecallDto,
-  DrugRecallDto,
-  CommonResultDtoOfDrugRecallDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfDrugRecallDto,
+    DrugRecallDto,
+    DrugRecallGetPagedInputDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfDrugRecallDto
 } from './index.defs';
 
 export class DrugRecallService {

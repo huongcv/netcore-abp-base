@@ -1,30 +1,11 @@
 import {
-  SaleOrderDto,
-  ORDER_STATUS,
-  PAYMENT_METHOD,
-  PAYMENT_STATUS,
-  SaleOrderDetailDto,
-  ComboOptionDto,
-  SaleOrderDeliveryDto,
-  DELIVERY_TYPE,
-  PARTNER_TYPE,
-  CommonResultDtoOfSaleOrderDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfSaleOrderDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    SaleOrderDto
 } from './index.defs';
 
 export class OrderCustomerService {

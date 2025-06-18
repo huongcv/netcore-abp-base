@@ -4,7 +4,6 @@ import AuthApiService from "@ord-core/service-proxies/auth/authApiService";
 import paths from "@ord-core/config/paths";
 import {LangUtil} from "@ord-core/language/lang.utils";
 import {AxiosBaseHttpApi} from "@ord-core/service-proxies/axios.base";
-import CurrentShopUtil from "@ord-core/utils/currentShop.util";
 import UiUtils from "@ord-core/utils/ui.utils";
 
 let isRefreshing = false;
@@ -14,11 +13,11 @@ const baseHttpApi = AxiosBaseHttpApi;
 
 baseHttpApi.interceptors.request.use(
     function (config) {
-        const token = window.localStorage.getItem('auth-token');
-        if (!!token) {
-            // @ts-ignore
-            config.headers.common['Authorization'] = 'Bearer ' + token;
-        }
+        // const token = window.localStorage.getItem('auth-token');
+        // if (!!token) {
+        //     // @ts-ignore
+        //     config.headers.common['Authorization'] = 'Bearer ' + token;
+        // }
         // @ts-ignore
         config.headers.common['Accept-Language'] = LangUtil.getLang();
 

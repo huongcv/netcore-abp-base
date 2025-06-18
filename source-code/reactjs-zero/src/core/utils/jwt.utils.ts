@@ -12,8 +12,8 @@ class JwtUtils {
     }
 
     saveToken(token: string): void {
-        window.localStorage.removeItem(TOKEN_KEY);
-        window.localStorage.setItem(TOKEN_KEY, token);
+        //  window.localStorage.removeItem(TOKEN_KEY);
+        // window.localStorage.setItem(TOKEN_KEY, token);
     }
 
     saveRefreshToken(token: string): void {

@@ -1,23 +1,12 @@
 import {
-  ShopSettingPagingInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfShopSettingDto,
-  ShopSettingDto,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfShopSettingDto,
+    ShopSettingDto,
+    ShopSettingPagingInputDto
 } from './index.defs';
 
 export class ShopSettingService {

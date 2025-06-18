@@ -1,26 +1,13 @@
 import {
-  ComboOptionDto,
-  VietQrImgInputDto,
-  VietQrBaseResOfVietQrImgOutputDto,
-  VietQrImgOutputDto,
-  string,
-  number,
-  CommonResultDtoOfString,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfString,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    VietQrBaseResOfVietQrImgOutputDto,
+    VietQrImgInputDto
 } from './index.defs';
 
 export class VietQrService {

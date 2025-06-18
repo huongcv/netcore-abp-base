@@ -29,8 +29,8 @@ namespace Ord.Plugin.Contract.Dtos
         [System.Text.Json.Serialization.JsonPropertyOrder(100)]
         public object? Extend { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
+        //[Newtonsoft.Json.JsonIgnore]
+        //[System.Text.Json.Serialization.JsonIgnore]
         public bool IsSuccessful => string.Equals(CommonResultCode.Success, Code);
 
         public static CommonResultDto<T> Ok(T dataSuccess, string message = "")

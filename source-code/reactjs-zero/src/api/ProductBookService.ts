@@ -1,24 +1,11 @@
 import {
-  ProductBookReportGetPagedInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedResultDtoOfProductBookReportDto,
-  ProductBookReportDto,
-  ProductBookReportDetailDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfProductBookReportDto,
+    ProductBookReportGetPagedInputDto
 } from './index.defs';
 
 export class ProductBookService {

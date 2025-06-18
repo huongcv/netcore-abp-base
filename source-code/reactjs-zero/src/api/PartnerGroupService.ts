@@ -1,20 +1,4 @@
-import {
-  PARTNER_TYPE,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, ComboOptionDto, getConfigs, IRequestConfig, IRequestOptions, PARTNER_TYPE} from './index.defs';
 
 export class PartnerGroupService {
   /** Generate by swagger-axios-codegen */

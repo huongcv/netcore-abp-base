@@ -1,28 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfDistrictDto,
-  DistrictDto,
-  number,
-  CommonResultDtoOfDistrictDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  string,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfDistrictDto,
+    DistrictDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfDistrictDto
 } from './index.defs';
 
 export class DistrictService {

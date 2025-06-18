@@ -1,27 +1,13 @@
 import {
-  DictionaryRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DictionaryTypeEnum,
-  PagedResultDtoOfDictionaryDto,
-  DictionaryDto,
-  number,
-  CommonResultDtoOfDictionaryDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfDictionaryDto,
+    DictionaryDto,
+    DictionaryRequestDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfDictionaryDto
 } from './index.defs';
 
 export class DictionaryService {

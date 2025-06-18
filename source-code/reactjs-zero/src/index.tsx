@@ -11,11 +11,7 @@ import './i18n';
 import i18n from "i18next";
 import {serviceOptions} from "@api/index.defs";
 import httpService from "@ord-core/service-proxies/httpService";
-import {fetchSyncDataProducts} from "@ord-core/db/services/syncDataProducts";
-import {fetchSyncDataInventoryLine} from "@ord-core/db/services/syncDataInventoryLine";
-import {fetchSyncDataPartners} from "@ord-core/db/services/syncDataPartners";
 import {OrdDbClient} from "@ord-core/db";
-import {fetchSyncDataProductPriceLists} from "@ord-core/db/services/syncDataProductPriceLists";
 import {Helmet, HelmetProvider} from 'react-helmet-async';
 import OrdThemeConfig from "@ord-core/theme/ord-theme.config";
 

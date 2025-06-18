@@ -1,19 +1,4 @@
-import {
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, ComboOptionDto, getConfigs, IRequestConfig, IRequestOptions} from './index.defs';
 
 export class CashBookService {
   /** Generate by swagger-axios-codegen */

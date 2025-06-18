@@ -30,7 +30,6 @@ import { saleInvoicePart } from "@ord-store/salesInvoice";
 import SelectDataSourceStore from "@ord-store/selectDataSourceStore";
 import UiStore from "@ord-store/uiStore";
 import { createContext, useContext } from "react";
-import { commonGolfStorePart } from "./Golf";
 import { integrationStorePart } from "./Integration";
 import { commonRestaurantStorePart } from "./Restaurant";
 import HostRoleListStore from "./admin/hostRoleListStore";
@@ -88,7 +87,6 @@ export const rootStore = {
   ...reportStorePart,
   notificationStore: new NotificationStore(),
   ...integrationStorePart,
-  ...commonGolfStorePart,
   ...commonRestaurantStorePart,
 };
 export type TRootStore = typeof rootStore;

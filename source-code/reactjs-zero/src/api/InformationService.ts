@@ -1,28 +1,14 @@
 import {
-  AppBootstrapDto,
-  UserInformationDto,
-  TenantType,
-  UserCurrentShopAssign,
-  ShopType,
-  OrdThemeDto,
-  ChangePasswordCommand,
-  CommonResultDtoOfBoolean,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  UpdateUserInformationCommand,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    AppBootstrapDto,
+    axios,
+    basePath,
+    ChangePasswordCommand,
+    CommonResultDtoOfBoolean,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    UpdateUserInformationCommand,
+    UserInformationDto
 } from './index.defs';
 
 export class InformationService {

@@ -1,28 +1,13 @@
 import {
-  SettingPagedRequestDto,
-  SettingType,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfSettingDto,
-  SettingDto,
-  SetValueSettingCommand,
-  CommonResultDtoOfSettingDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfSettingDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfSettingDto,
+    SettingPagedRequestDto,
+    SetValueSettingCommand
 } from './index.defs';
 
 export class SettingService {

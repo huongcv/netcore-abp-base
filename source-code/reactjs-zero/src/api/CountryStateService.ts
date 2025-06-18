@@ -1,27 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfCountryStateDto,
-  CountryStateDto,
-  number,
-  CommonResultDtoOfCountryStateDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfCountryStateDto,
+    CountryStateDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfCountryStateDto
 } from './index.defs';
 
 export class CountryStateService {
