@@ -63,7 +63,8 @@ namespace Ord.Plugin.Core.Features.BlobStoring
                 {
                     FileName = fileName,
                     MimeType = file.ContentType,
-                    BlobContainerPath = blobPath
+                    BlobContainerPath = blobPath,
+                    FileStoreProvider = storeProvider
                 };
 
                 // Lưu vào database

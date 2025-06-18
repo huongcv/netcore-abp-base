@@ -24,7 +24,7 @@ namespace Ord.Plugin.Auth.AppServices
             var fileDtos = new List<FileUploadDto>();
             foreach (var file in files)
             {
-                var uploadDto = await UploadFileManager.UploadFileAsync(FileStoreProvider.FileSystem, file, "Upload/Images");
+                var uploadDto = await UploadFileManager.UploadFileAsync(FileStoreProvider.MinIO, file, "Upload/Images");
                 fileDtos.Add(uploadDto);
             }
 

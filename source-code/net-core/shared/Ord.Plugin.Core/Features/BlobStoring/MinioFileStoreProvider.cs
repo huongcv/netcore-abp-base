@@ -1,6 +1,8 @@
-﻿using Minio;
+﻿using Microsoft.Extensions.Options;
+using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
+using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.DependencyInjection;
@@ -12,10 +14,11 @@ namespace Ord.Plugin.Core.Features.BlobStoring
         private readonly MinioClient _minioClient;
         private readonly string _bucketName;
 
-        public MinioFileStoreProvider(MinioClient minioClient, string bucketName)
+        public MinioFileStoreProvider(MinioClient minioClient, 
+            IOptions<MinioOptions> options)
         {
             _minioClient = minioClient;
-            _bucketName = bucketName;
+            _bucketName = options.Value.BucketName;
         }
 
         public async Task<Stream> GetStreamAsync(string templatePath)

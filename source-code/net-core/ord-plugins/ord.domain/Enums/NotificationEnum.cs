@@ -1,6 +1,6 @@
 ﻿namespace Ord.Domain.Enums
 {
-    public enum NotificationSeverity : byte
+    public enum NotificationSeverity
     {
         /// <summary>Info.</summary>
         Info = 1,
@@ -15,10 +15,10 @@
     }
     public enum NotificationChannel
     {
-        Firebase,
-        SocketIo,
-        Sms,
-        Email,
-        InApp
+        Firebase = 1,
+        SocketIo = 2,
+        Sms = 3,
+        Email = 4,
+        InApp = 5
     }
 }

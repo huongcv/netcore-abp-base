@@ -41,14 +41,6 @@ namespace Ord.Plugin.HostBase.Configurations
                     .WithTimeout(options.TimeoutInSeconds * 1000);
                 return (MinioClient)clientBuilder.Build();
             });
-
-            // Đăng ký ITemplateProvider
-            services.AddScoped<IFileStoreProvider>(serviceProvider =>
-            {
-                var minioClient = serviceProvider.GetRequiredService<MinioClient>();
-                var options = serviceProvider.GetRequiredService<IOptions<MinioOptions>>().Value;
-                return new MinioFileStoreProvider(minioClient, options.BucketName);
-            });
         }
 
         private static void ValidateMinioOptions(MinioOptions options)
