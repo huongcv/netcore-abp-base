@@ -43,4 +43,7 @@
 	<ItemGroup>
 	  <Content Include="Contents\**" CopyToPublishDirectory="PreserveNewest" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Contents\host\Upload\Images\" />
+	</ItemGroup>
 </Project>
