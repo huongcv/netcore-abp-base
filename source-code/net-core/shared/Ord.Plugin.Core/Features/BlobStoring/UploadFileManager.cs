@@ -11,10 +11,9 @@ namespace Ord.Plugin.Core.Features.BlobStoring
     {
         private IBlobContainerManager BlobManager => AppFactory.GetServiceDependency<IBlobContainerManager>();
         private IRepository<FileUploadEntity, Guid> Repository => AppFactory.GetServiceDependency<IRepository<FileUploadEntity, Guid>>();
-        private ILogger<UploadFileManager> _logger => AppFactory.GetServiceDependency<ILogger<UploadFileManager>>();
         public async Task<FileUploadDto> GetByFileIdAsync(Guid fileId)
         {
-            var fileEntity = await Repository.GetAsync(fileId);
+            var fileEntity = await Repository.FirstOrDefaultAsync(x => x.Id == fileId);
             if (fileEntity == null)
             {
                 return null;
@@ -26,16 +25,15 @@ namespace Ord.Plugin.Core.Features.BlobStoring
                 FileName = fileEntity.FileName,
                 MimeType = fileEntity.MimeType
             };
-            // Lấy bytes từ blob storage nếu cần
             if (!string.IsNullOrEmpty(fileEntity.BlobContainerPath))
             {
                 try
                 {
-                    result.Bytes = await BlobManager.GetAllBytesOrNullAsync(fileEntity.FileStoreProvider, fileEntity.FileName);
+                    result.BlobStream = await BlobManager.GetAsync(fileEntity.FileStoreProvider, fileEntity.BlobContainerPath);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error retrieving blob for file ID: {fileId}");
+                    Logger.LogError(ex, $"Error retrieving blob for file ID: {fileId}");
                 }
             }
 
@@ -50,9 +48,9 @@ namespace Ord.Plugin.Core.Features.BlobStoring
             }
 
             var fileName = file.FileName;
-            var blobPath = Path.Combine(blobContainerPath, fileName);
+            var blobPath = BlobNameCalculate(blobContainerPath, file);
 
-            _logger.LogInformation("Uploading file: {FileName}, Size: {Size} bytes", fileName, file.Length);
+            Logger.LogInformation("Uploading file: {FileName}, Size: {Size} bytes", fileName, file.Length);
 
             try
             {
@@ -71,7 +69,7 @@ namespace Ord.Plugin.Core.Features.BlobStoring
                 // Lưu vào database
                 await Repository.InsertAsync(fileEntity, autoSave: true);
 
-                _logger.LogInformation("File uploaded successfully: {FileName} with ID: {FileId}", fileName, fileEntity.Id);
+                Logger.LogInformation("File uploaded successfully: {FileName} with ID: {FileId}", fileName, fileEntity.Id);
 
                 return new FileUploadDto
                 {
@@ -82,7 +80,7 @@ namespace Ord.Plugin.Core.Features.BlobStoring
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error uploading file: {FileName}", fileName);
+                Logger.LogError(ex, "Error uploading file: {FileName}", fileName);
                 throw;
             }
         }
@@ -97,6 +95,30 @@ namespace Ord.Plugin.Core.Features.BlobStoring
                 await BlobManager.DeleteAsync(fileEntity.FileStoreProvider, fileEntity.BlobContainerPath);
                 await Repository.DeleteAsync(fileEntity);
             }
+        }
+
+        public virtual string BlobNameCalculate(string blobName, IFormFile file, bool isMustUsingGuidFileName = true)
+        {
+            // Lấy phần mở rộng của file (vd: ".pdf")
+            var fileExtension = Path.GetExtension(file.FileName);
+
+            // Tạo tên file mới nếu cần dùng GUID
+            var finalFileName = isMustUsingGuidFileName
+                ? $"{Guid.NewGuid():N}{fileExtension}"
+                : file.FileName;
+
+            // Nếu có blobName được truyền, dùng như thư mục gốc
+            if (!string.IsNullOrEmpty(blobName))
+            {
+                finalFileName = Path.Combine(blobName, finalFileName);
+            }
+
+            // Thêm prefix theo tenant hoặc host
+            var tenantPrefix = CurrentTenant.Id == null
+                ? "host"
+                : $"tenants/{CurrentTenant.Id.Value:D}";
+
+            return Path.Combine(tenantPrefix, finalFileName).Replace("\\", "/"); // normalize to blob path format
         }
     }
 }

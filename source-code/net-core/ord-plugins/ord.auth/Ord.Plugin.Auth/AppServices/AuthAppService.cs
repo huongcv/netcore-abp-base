@@ -3,15 +3,14 @@ using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Factories;
-using Volo.Abp.Application.Services;
+using Ord.Plugin.Core.Base;
 namespace Ord.Plugin.Auth.AppServices
 {
-    public class AuthAppService(IAppFactory appFactory) : ApplicationService
+    public class AuthAppService : OrdAppServiceBase
     {
-        private IAuthManager AuthManager => appFactory.GetServiceDependency<IAuthManager>();
-        private IHttpContextAccessor HttpContextAccessor => appFactory.GetServiceDependency<IHttpContextAccessor>();
-        private ILoginFirebaseManager LoginFirebaseManager => appFactory.GetServiceDependency<ILoginFirebaseManager>();
+        private IAuthManager AuthManager => AppFactory.GetServiceDependency<IAuthManager>();
+        private IHttpContextAccessor HttpContextAccessor => AppFactory.GetServiceDependency<IHttpContextAccessor>();
+        private ILoginFirebaseManager LoginFirebaseManager => AppFactory.GetServiceDependency<ILoginFirebaseManager>();
         public async Task<CommonResultDto<JwtDto>> Login(LoginInputDto input)
         {
             var result = await AuthManager.LoginAsync(input);
@@ -75,6 +74,11 @@ namespace Ord.Plugin.Auth.AppServices
             };
 
             HttpContextAccessor.HttpContext?.Response.Cookies.Append("jwt", "", cookieOptions);
+        }
+
+        protected override string GetBasePermissionName()
+        {
+            return "";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Application.Dtos;
+﻿using System.Text.Json.Serialization;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Contract.Features.BlobStoring
 {
@@ -6,6 +7,7 @@ namespace Ord.Plugin.Contract.Features.BlobStoring
     {
         public string FileName { get; set; }
         public string MimeType { get; set; }
-        public byte[]? Bytes { get; set; }
+        [JsonIgnore]
+        public Stream? BlobStream { get; set; }
     }
 }

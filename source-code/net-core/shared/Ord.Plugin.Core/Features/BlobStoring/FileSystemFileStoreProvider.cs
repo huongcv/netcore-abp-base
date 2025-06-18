@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Polly;
+using Volo.Abp.BlobStoring;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.IO;
 public class FileSystemFileStoreProvider : IFileStoreProvider, ITransientDependency
@@ -15,20 +16,32 @@ public class FileSystemFileStoreProvider : IFileStoreProvider, ITransientDepende
 
     public Task<Stream> GetStreamAsync(string templateRelativePath)
     {
-        var filePath = FilePathCalculator(templateRelativePath);
-
-        if (!File.Exists(filePath))
-        {
-            throw new FileNotFoundException($"Template not found at path: {filePath}");
-        }
-
-        Stream stream = File.OpenRead(filePath);
-        return Task.FromResult(stream);
+        return GetOrNullAsync(templateRelativePath);
     }
 
-    public Task SaveAsync(string templatePath, Stream blobStream, bool overrideExisting)
+    public async Task SaveAsync(string templateRelativePath, Stream blobStream, bool overrideExisting)
     {
-        throw new NotImplementedException();
+        var filePath = FilePathCalculator(templateRelativePath);
+
+        if (!overrideExisting && await ExistsAsync(filePath))
+        {
+            throw new BlobAlreadyExistsException($"Saving BLOB  does already exists in the container.");
+        }
+
+        DirectoryHelper.CreateIfNotExists(Path.GetDirectoryName(filePath)!);
+
+        var fileMode = overrideExisting
+            ? FileMode.Create
+            : FileMode.CreateNew;
+
+        await Policy.Handle<IOException>()
+            .WaitAndRetryAsync(2, retryCount => TimeSpan.FromSeconds(retryCount))
+            .ExecuteAsync(async () =>
+            {
+                await using var fileStream = File.Open(filePath, fileMode, FileAccess.Write);
+                await blobStream.CopyToAsync(fileStream);
+                await fileStream.FlushAsync();
+            });
     }
 
     public Task<bool> DeleteAsync(string templatePath)
@@ -44,8 +57,7 @@ public class FileSystemFileStoreProvider : IFileStoreProvider, ITransientDepende
     public async Task<Stream?> GetOrNullAsync(string templateRelativePath)
     {
         var filePath = FilePathCalculator(templateRelativePath);
-
-        if (!File.Exists(templateRelativePath))
+        if (!File.Exists(filePath))
         {
             return null;
         }
