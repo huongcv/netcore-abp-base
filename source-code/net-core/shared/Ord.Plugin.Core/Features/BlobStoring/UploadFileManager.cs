@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Ord.Domain.Entities.Auth;
 using Ord.Plugin.Contract.Features.BlobStoring;
-using Ord.Plugin.Contract.Utils;
 using Ord.Plugin.Core.Base;
-using Volo.Abp.BlobStoring;
 using Volo.Abp.Domain.Repositories;
 
 namespace Ord.Plugin.Core.Features.BlobStoring
@@ -48,97 +46,48 @@ namespace Ord.Plugin.Core.Features.BlobStoring
         {
             if (file == null || file.Length == 0)
             {
-                throw new ArgumentException("File is empty or null");
+                throw new ArgumentException("File is empty or null", nameof(file));
             }
 
-            _logger.LogInformation($"Uploading file: {file.FileName}, Size: {file.Length} bytes");
+            var fileName = file.FileName;
+            var blobPath = Path.Combine(blobContainerPath, fileName);
 
-            // Đọc file thành byte array
-            byte[] fileBytes;
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                fileBytes = memoryStream.ToArray();
-            }
-
-            var mimeType = file.ContentType ?? file.FileName.GetMimeType();
-
-            return await UploadFileAsync(storeProvider, fileBytes, file.FileName, mimeType, blobContainerPath);
-        }
-
-        public async Task<FileUploadDto> UploadFileAsync(
-            FileStoreProvider storeProvider,
-            byte[] fileByte,
-            string fileName,
-            string mimeType,
-            string blobContainerPath)
-        {
-            if (fileByte == null || fileByte.Length == 0)
-            {
-                throw new ArgumentException("File bytes is empty or null");
-            }
-
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentException("File name is required");
-            }
-
-            _logger.LogInformation($"Uploading file: {fileName}, Size: {fileByte.Length} bytes");
-
-            var fileId = Guid.NewGuid();
-            var fileExtension = Path.GetExtension(fileName);
-            var blobPath = Path.Combine(blobContainerPath, $"{fileId}{fileExtension}").Replace('\\', '/');
+            _logger.LogInformation("Uploading file: {FileName}, Size: {Size} bytes", fileName, file.Length);
 
             try
             {
+                await using var fileStream = file.OpenReadStream();
                 // Lưu file vào blob storage
-                await BlobManager.SaveAsync(storeProvider, blobPath, fileByte, overrideExisting: true);
+                await BlobManager.SaveAsync(storeProvider, blobPath, fileStream, overrideExisting: true);
 
                 // Tạo entity để lưu thông tin file
                 var fileEntity = new FileUploadEntity
                 {
-                    Id = fileId,
                     FileName = fileName,
-                    MimeType = mimeType ?? fileName.GetMimeType(),
-                    FileSize = fileByte.Length,
-                    BlobPath = blobPath,
-                    StoreProvider = storeProvider,
-                    UploadedAt = DateTime.UtcNow
+                    MimeType = file.ContentType,
+                    BlobContainerPath = blobPath
                 };
 
                 // Lưu vào database
                 await Repository.InsertAsync(fileEntity, autoSave: true);
 
-                _logger.LogInformation($"File uploaded successfully: {fileName} with ID: {fileId}");
+                _logger.LogInformation("File uploaded successfully: {FileName} with ID: {FileId}", fileName, fileEntity.Id);
 
                 return new FileUploadDto
                 {
-                    Id = fileId,
-                    FileName = fileName,
-                    MimeType = fileEntity.MimeType,
-                    Bytes = fileByte // Trả về bytes cho client nếu cần
+                    Id = fileEntity.Id,
+                    FileName = fileEntity.FileName,
+                    MimeType = fileEntity.MimeType
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error uploading file: {fileName}");
-
-                // Cleanup: Xóa blob nếu đã lưu thành công nhưng lưu DB thất bại
-                try
-                {
-                    if (await BlobContainer.ExistsAsync(blobPath))
-                    {
-                        await BlobContainer.DeleteAsync(blobPath);
-                    }
-                }
-                catch (Exception cleanupEx)
-                {
-                    _logger.LogError(cleanupEx, $"Error during cleanup for file: {fileName}");
-                }
-
+                _logger.LogError(ex, "Error uploading file: {FileName}", fileName);
                 throw;
             }
         }
+
+
 
         public async Task RemoveFileAsync(Guid fileId)
         {
