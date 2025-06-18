@@ -1,0 +1,21 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo cuối ngày",
+  "titlePage": "Báo cáo bàn giao",
+  "fileExcel": {
+    "Title": "Báo cáo cuối ngày/ Bàn giao",
+    "FileName": "ban-giao.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "shift": "Ca: {{name}}",
+  "creationTime": "Ngày bàn giao",
+  "openingEmployeeName": "Nhân viên bàn giao",
+  "shiftTime": "Ca làm việc",
+  "openingCash": "Tiền nhận đầu ca",
+  "closingCash": "Tiền bàn giao cuối ca",
+  "closingEmployeeName": "Nhân viện nhận bàn giao",
+  "notes": "Ghi chú"
+}
+

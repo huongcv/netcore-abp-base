@@ -1,0 +1,22 @@
+.lot-table-form {
+  thead tr {
+    background: #EEEEEE !important;
+  }
+  thead th{
+    padding: 10px;
+  }
+
+  tr td {
+    padding: 10px 20px 2px 0;
+
+  }
+
+  tr:nth-child(odd) {
+    background-color: #ffffff; /* Màu nền cho hàng chẵn */
+  }
+
+  tr:nth-child(even) {
+    background-color: #F7F7F7; /* Màu nền cho hàng lẻ */
+
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo bán hàng",
+  "titlePage": "Doanh thu chi tiết",
+
+  "fileExcel": {
+    "Title": "Báo cáo bán hàng / Doanh thu chi tiết",
+    "FileName": "doanh-thu-chi-tiet-hang-thang.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "invoiceCode": "Mã hóa đơn",
+  "partnerName": "Khách hàng",
+  "productName": "Sản phẩm",
+  "rangeDate": "Thời gian",
+  "order": "STT",
+  "invoiceDate": "Ngày thanh toán",
+  "taxAmount": "Tiền VAT",
+  "discountAmountAllocation": "Chiết khấu",
+  "discountAmount": "Giảm giá",
+  "paymentAmount": "Tổng tiền thanh toán",
+  "revenueAmount": "Doanh thu",
+  "totalAmountBeforeDiscount": "Thành tiền",
+  "returnTotalAmount": "Tổng tiền trả hàng",
+  "totalAmount": "Tổng tiền",
+  "debtAmount": "Công nợ",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng",
+  "count": "Số lượng"
+}

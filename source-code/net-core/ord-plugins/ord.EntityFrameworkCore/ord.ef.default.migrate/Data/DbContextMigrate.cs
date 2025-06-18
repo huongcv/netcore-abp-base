@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Ord.Domain.Entities.Auth;
 using Ord.Domain.Entities.MasterData;
 using Ord.EfCore.Default.MigrateDb.ModelBuilders;
 using System;
@@ -25,6 +26,7 @@ namespace Ord.EfCore.Default.MigrateDb.Data
         public virtual DbSet<NotificationInfoEntity> Notifications { get; set; }
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
+        public virtual DbSet<FileUploadEntity> FileUploads { get; set; }
 
         #region MasterData
         public virtual DbSet<CountryEntity> Countries { get; set; }

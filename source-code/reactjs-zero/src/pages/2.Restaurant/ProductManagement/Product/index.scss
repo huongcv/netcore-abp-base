@@ -1,0 +1,16 @@
+.img-product-detail {
+  border-radius: 12px;
+  border: 1px dashed #c9c6c6;
+  padding: 10px;
+}
+.avatar-uploader {
+  .ant-upload-select {
+    height: 206px !important;
+    width: 200px !important;
+  }
+}
+
+.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child {
+  padding-bottom: 3px !important;
+  padding-top: 3px !important;
+}

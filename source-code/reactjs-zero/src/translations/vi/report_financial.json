@@ -1,0 +1,30 @@
+
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePage": "Báo cáo tài chính",
+  "fileExcel": {
+    "Title": "Báo cáo tài chính",
+    "FileName": "bao-cao-tai-chinh.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "rangeDate": "Thời gian",
+  "order": "#",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "totalAmount": "Tổng",
+  "formula": "Công thức",
+  "name": "Khoản mục",
+
+  "totalRevenue": "Doanh thu bán hàng",
+  "totalReturnAmount": "Khách hàng trả lại",
+  "totalCost": "Tiền vốn",
+  "totalAmountForCancel": "Xuất hủy hàng hóa",
+  "totalAmountForOtherGoods": "Xuất khác",
+  "grossProfit": "Lợi nhuận bán hàng",
+  "totalReceipts": "Thu nhập khác",
+  "totalPaymentVoucher": "Chi phí khác",
+  "revenueAndExpenditure": "Kết quả kinh doanh",
+  "profit": "Tổng lợi nhuận"
+}

@@ -1,0 +1,24 @@
+{
+  "dictionaryType": {
+    "1": "Gender",
+    "2": "Job"
+  },
+  "title": {
+    "addNew": "Thêm mới",
+    "update": "Chỉnh sửa",
+    "viewDetail": "Chi tiết"
+  },
+  "Code": "Mã",
+  "Name": "Tên",
+  "RelatedDictionaryCode": "Mã từ điển liên quan",
+  "RelatedDictionaryName": "Tên từ điển liên quan",
+  "PCode": "Mã cấp cha",
+  "filterDictionaryType": "Danh mục",
+  "NameOther": "Tên khác",
+  "OrderNumber": "Số lượng",
+  "Notes": "Ghi chú",
+  "UnexpectedError": "Xảy ra lỗi",
+  "placeholderName": "Tên...",
+  "placeholderNameOther": "Tên khác...",
+  "placeholderCode": "Hệ thống có cơ chế tự sinh mã, Bạn có thể để trống hoặc điền..."
+}

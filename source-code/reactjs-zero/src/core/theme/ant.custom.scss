@@ -1,0 +1,98 @@
+.ord-status-counter {
+  .ant-segmented {
+    padding: 6px;
+  }
+
+  .ant-badge {
+    min-width: 32px !important;
+  }
+
+  .ant-badge .ant-badge-count {
+    background: #D0D0D0 !important;
+  }
+
+  .ant-segmented-item-label {
+    padding: 1px 20px !important;
+  }
+
+
+  .ant-segmented-item-selected {
+    .ant-badge .ant-badge-count {
+      background: var(--active-color) !important;
+    }
+
+    .ant-scroll-number {
+      color: white;
+    }
+    .ant-space-item {
+       font-weight: 500;
+    }
+  }
+
+  .ant-space-item {
+   // font-weight: 500;
+    font-size: 16px;
+  }
+
+  .ant-scroll-number {
+    color: black;
+  }
+
+  .ant-space {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before, :where(.css-dev-only-do-not-override-mpba8h).ant-table-wrapper .ant-table-thead > tr > td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+  content: none;
+}
+
+.ant-select-dropdown {
+  min-width: 150px;
+}
+
+.ant-menu-submenu-selected > .ant-menu-submenu-title {
+  color: #323232 !important;
+}
+
+textarea {
+  min-height: 38px !important;
+}
+
+@media (max-width: 768px) {
+  .ord-status-counter {
+    .ant-segmented-item-label {
+      padding: 1px 6px !important;
+    }
+  }
+}
+
+.modal-custom-centered {
+  .ant-modal {
+    max-height: 90vh;
+    overflow: hidden;
+  }
+
+  .ant-modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+  font-weight: normal;
+}
+a:hover{
+  color: #101010;
+}
+//style Ẩn hiện nút xoá trong input
+.ant-form-item-control-input-content{
+  .ant-input-clear-icon{
+    display: none;
+  }
+}
+.ant-form-item-control-input-content:hover{
+  .ant-input-clear-icon{
+    display: block;
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "pageTitle": "Cấu hình hệ thống",
+  "title": {
+    "addNew": "Thêm mới cấu hình",
+    "update": "Cập nhật thông tin cấu hình",
+    "viewDetail": "Chi tiết cấu hình"
+  },
+  "updateSuccess": "Thiết lập thành công cấu hình",
+  "addNewSuccess": "Thiết lập thành công cấu hình",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{code}}</bold> này không",
+  "removeSuccess": "Xóa thành công cấu hình: {{code}}",
+  "value": "Giá trị",
+  "name": "Tên cấu hình",
+  "mustEncrypt": "Mã hóa giá trị",
+  "type": "Loại cấu hình",
+  "forApp": "Cho toàn ứng dụng",
+  "forTenant": "Cho thuê bao",
+  "forUser": "Cho người dùng",
+  "validateError": {
+    "type_app_only_super_admin": "Loại cấu hình không áp dụng cho tài khoản này"
+  },
+  "App": {
+    "Setting": {
+      "LockInSecond": "Thời gian khóa tài khoản (theo giây)",
+      "MaxAccessFailedCount": "Số lần cho phép đăng nhập thất bại",
+      "Mailing": {
+        "Smtp": {
+          "Host": "Cấu hình email - Host",
+          "Port": "Cấu hình email - Port",
+          "UserName": "Cấu hình email - UserName",
+          "Password": "Cấu hình email - Password",
+          "DisplayName": "Cấu hình email - DisplayName"
+        }
+      },
+      "FrontEndUrl": "Đường dẫn FrontEnd",
+      "HtmlTemplate": {
+        "News": "Trang chủ - Tin tức",
+        "UpdatedVersion": "Trang chủ - Thông tin cập nhật phiên bản",
+        "maintenanceNotice": "Thông báo bảo trì"
+      }
+    }
+  },
+  "settingType": {
+    "1": "Cho toàn ứng dụng",
+    "2": "Cho thuê bao",
+    "3": "Cho người dùng"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "buggyGroup": {
+    "title": "Loại xe",
+    "addNew": "Thêm mới",
+    "list": "Danh sách"
+  },
+  "updateSuccess": "Sửa thành công",
+  "addNewSuccess": "Thêm mới thành công",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{buggyGroupName}}</bold> này không",
+  "removeSuccess": "Xóa thành công",
+  "buggyGroupCode": "Mã loại xe",
+  "buggyGroupName": "Tên loại xe",
+  "notes": "Ghi chú",
+  "isActived": "Trạng thái",
+  "duplicate_buggyGroupCode": "Mã loại xe đã tồn tại. Vui lòng thử lại",
+  "duplicate_buggyGroupName": "Tên loại xe đã tồn tại. Vui lòng thử lại",
+  "GROUP_IN_USE_UPDATE": "Loại xe xe golf đang được sử dụng, không thể thay đổi trạng thái",
+  "GROUP_IN_USE_DELETE": "Loại xe xe golf đang được sử dụng, không thể xoá",
+  "title": {
+    "addNew": "Thêm mới loại xe",
+    "update": "Chỉnh sửa loại xe"
+  },
+  "buggyGroupModal": {
+    "title": "Danh sách loại xe"
+  }
+}

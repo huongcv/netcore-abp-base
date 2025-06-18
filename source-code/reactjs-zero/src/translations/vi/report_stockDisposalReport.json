@@ -1,0 +1,28 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo kho",
+  "titlePage": "Báo cáo xuất hủy",
+  "fileExcel": {
+    "Title": "Báo cáo kho / Báo cáo xuất hủy",
+    "FileName": "bc-xuat-huy.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "productName": "Sản phẩm",
+  "rangeDate": "Thời gian",
+  "isActived": "Trạng thái",
+  "inventoryId": "Kho",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng",
+  "numberOfDestruction": "Số lượng hủy",
+  "valueOfDestruction": "Giá trị hủy",
+  "basicUnitName": "ĐVT",
+  "productCode": "Mã SP",
+  "import": "Nhập",
+  "export": "Xuất",
+  "endingBalance": "Tồn cuối kỳ",
+  "searchPlaceHolder": "Nhập từ khoá tìm kiếm (F3)"
+}

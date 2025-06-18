@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Danh sách quốc gia",
+  "ten": "Tên quốc gia",
+  "ma": "Mã quốc gia",
+  "phoneCode": "Mã vùng điện thoại",
+  "currencyCode": "Mã đơn vị tiền tệ",
+  "stt": "STT",
+  "status": "Trạng thái",
+  "title": {
+    "addNew": "Thêm mới quốc gia",
+    "update": "Cập nhật thông tin quốc gia",
+    "viewDetail": "Chi tiết quốc gia"
+  },
+  "updateSuccess": "Sửa thành công quốc gia: {{name}}",
+  "addNewSuccess": "Thêm mới thành công quốc gia: {{name}}",
+  "trung_ma_tinh": "Mã quốc gia: {{ma}} đã tồn tại trên hệ thống",
+  "Crud.Tinh.UpdateSuccess": "Sửa thành công quốc gia: {{name}}",
+  "Crud.Tinh.InsertSuccess": "Thêm mới thành công quốc gia: {{name}}",
+  "Crud.Tinh.RemoveSuccess": "Xóa thành công quốc gia: {{name}}",
+  "fileExcel": {
+    "Title": "Danh sách tỉnh/thành phố",
+    "FileName": "ds-tinh.xlsx"
+  },
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{name}}</bold> này không",
+  "removeSuccess": "Xóa thành công quốc gia: {{name}}"
+}

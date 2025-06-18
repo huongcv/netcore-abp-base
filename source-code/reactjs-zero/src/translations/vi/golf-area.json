@@ -1,0 +1,17 @@
+{
+    "code": "Mã khu vực",
+    "name": "Tên khu vực",
+    "description": "Mô tả",
+    "btnGolfArea": "Quản lý khu vực",
+    "golfAreaBtnGroup": {
+        "addNew": "Thêm mới khu vực",
+        "list": "Danh sách khu vực"
+    },
+    "title": {
+        "addNew": "Thêm mới khu vực"
+    },
+    "updateSuccess": "Sửa thành công khu vực: {{code}}",
+  "addNewSuccess": "Thêm mới thành công khu vực: {{code}}",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{code}}</bold> này không",
+  "removeSuccess": "Xóa thành công khu vực: {{code}}"
+}

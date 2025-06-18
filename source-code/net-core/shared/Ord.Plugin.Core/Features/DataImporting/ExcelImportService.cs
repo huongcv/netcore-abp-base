@@ -111,7 +111,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
         public async Task<byte[]> ExportResultDataAsync(List<TImportDto> rawDataList, Func<XlsFile, Task> funResultXls = null)
         {
             var filePath = GetFilePathExportResult();
-            FlexCelService.SetTemplateProvider(TemplateProvider.FileSystem);
+            FlexCelService.SetTemplateProvider(FileStoreProvider.FileSystem);
             var rowIndex = GetRowIndexStartExcelResult();
             return await FlexCelService.ExportExcelAsync(filePath, fileHandler: async resultXls =>
             {

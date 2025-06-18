@@ -9,6 +9,6 @@ namespace Ord.Plugin
     {
         Task<byte[]> ExportExcelAsync(string fileTemplatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null);
         Task<byte[]> ExportPdfAsync(string fileTemplatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null);
-        void SetTemplateProvider(TemplateProvider provider);
+        void SetTemplateProvider(FileStoreProvider provider);
     }
 }

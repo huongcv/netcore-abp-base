@@ -18,9 +18,9 @@ namespace Ord.Plugin.Core.Features.DataExporting
             memoryStream.Position = 0;
             return memoryStream.ToArray();
         }
-        public void SetTemplateProvider(TemplateProvider provider)
+        public void SetTemplateProvider(FileStoreProvider provider)
         {
-            if (provider == TemplateProvider.MinIO)
+            if (provider == FileStoreProvider.MinIO)
             {
                 _templateProvider = AppFactory.GetServiceDependency<MinioTemplateProvider>();
                 return;

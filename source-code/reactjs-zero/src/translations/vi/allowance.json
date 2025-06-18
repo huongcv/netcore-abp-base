@@ -1,0 +1,31 @@
+{
+  "code": "Mã phụ cấp",
+  "name": "Tên phụ cấp",
+  "amount": "Giá trị",
+  "notes": "Ghi chú",
+  "updateSuccess": "Sửa thành công phụ cấp: {{name}}",
+  "addNewSuccess": "Thêm mới thành công phụ cấp: {{name}}",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{name}}</bold> này không",
+  "removeSuccess": "Xóa thành công phụ cấp: {{name}}",
+  "title": {
+    "addNew": "Thêm mới phụ cấp",
+    "update": "Cập nhật thông tin phụ cấp",
+    "viewDetail": "Chi tiết phụ cấp"
+  },
+  "type": "Loại phụ cấp",
+  "fileExcel": {
+    "Title": "Phụ Cấp Nhân Sự",
+    "FileName": "PhụCấp.xlsx"
+  },
+  "workCalendar": "Thời gian làm việc",
+  "salaryAmount": "Lương",
+  "employeeAllowanceTitle": "Danh sách phụ cấp",
+  "changeIsActive": {
+    "active": "Kích hoạt",
+    "unActive": "Tạm dừng"
+  },
+  "updateIsActiveSuccessfully": "Cập nhật trạng thái phụ cấp thành công",
+  "updateIsActiveFaild": "Cập nhật trạng thái phụ cấp không thành công",
+  "updateIsActiveFaildErr500": "Lỗi hệ thống: ",
+  "numberOfDependentPerson": "Số người phụ thuộc"
+}

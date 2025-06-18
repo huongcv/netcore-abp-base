@@ -1,0 +1,17 @@
+{
+  "titlePage": "Lý do",
+  "title": {
+    "addNew": "Thêm mới lý do",
+    "update": "Cập nhật thông tin lý do",
+    "viewDetail": "Chi tiết"
+  },
+  "updateSuccess": "Sửa thành công",
+  "addNewSuccess": "Thêm mới thành công",
+  "confirmRemove": "Bạn có muốn xóa lý do: <bold>{{reasonName}}</bold> không",
+  "removeSuccess": "Xóa thành công",
+  "duplicate_ReasonCode": "Mã lý do đã tồn tại. Vui lòng thử lại",
+  "duplicate_ReasonName": "Tên lý do đã tồn tại. Vui lòng thử lại",
+  "reasonCode": "Mã lý do",
+  "reasonName": "Tên lý do",
+  "reasonNote": "Ghi chú"
+}

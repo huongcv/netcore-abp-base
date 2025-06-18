@@ -1,0 +1,74 @@
+//.modal-invoice {
+//  .ant-modal-header {
+//    background-color: #389e0d !important;
+//    .ant-modal-title {
+//      color: white !important;
+//    }
+//  }
+//  .ant-modal-close {
+//    color: white;
+//    &:hover {
+//      color: white !important;
+//    }
+//  }
+//}
+//
+//.modal-return {
+//  .ant-modal-header {
+//    background-color: orange !important;
+//    .ant-modal-title {
+//      color: white !important;
+//    }
+//  }
+//  .ant-modal-close {
+//    color: white;
+//    &:hover {
+//      color: white !important;
+//    }
+//  }
+//}
+
+// dùng chung cả 2 modal
+.ant-modal-footer {
+  .footer-button {
+    margin: 0px 5px;
+
+    &.fixed-left {
+      margin-left: 0px !important;
+    }
+
+    &.fixed-right {
+      margin-right: 0px !important;
+    }
+  }
+}
+
+
+.ant-table-tbody {
+  .ant-table-cell {
+    &.ant-table-cell-custome-p0 {
+      padding: 0 !important;
+    }
+  }
+}
+
+.cs-input {
+  border-bottom: 1px dashed #ccc;
+  border-radius: 0;
+
+  .ant-select-selector,
+  .ant-input-number {
+    border-radius: 0;
+    border: none !important;
+    text-align: right;
+  }
+
+  input {
+    text-align: right;
+  }
+
+  .ant-input-suffix {
+    display: none;
+  }
+
+}

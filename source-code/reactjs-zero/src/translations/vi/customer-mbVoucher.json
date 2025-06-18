@@ -1,0 +1,11 @@
+{
+  "rangeDate": "Thời gian",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "voucherType": "Loại ưu đãi",
+  "voucherCode": "Mã ưu đãi",
+  "voucherName": "Tên ưu đãi",
+  "expirationDate": "Ngày hết hạn",
+  "view": "Xem"
+}

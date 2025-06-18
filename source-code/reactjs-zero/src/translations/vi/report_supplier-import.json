@@ -1,0 +1,34 @@
+
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo nhà cung cấp",
+  "titlePage": "Giá trị nhập",
+  "fileExcel": {
+    "Title": "Báo cáo nhà cung cấp/ Hàng nhập theo nhà cung cấp",
+    "FileName": "nhap-hang-theo-ncc.xlsx"
+  },
+
+  "supplierName": "Tên nhà cung cấp",
+  "supplierCode": "Mã nhà cung cấp",
+  "productName": "Tên sản phẩm",
+  "productCode": "Mã sản phẩm",
+  "lotNumber": "Số lô",
+  "expiryDate": "HSD",
+  "unitName": "ĐVT",
+  "moveCode": "Mã hóa đơn",
+  "totalAmount": "Giá trị nhập",
+  "returnTotalAmount": "Giá trị trả lại",
+  "moveQty": "SL nhập",
+  "returnQty": "SL trả",
+  "price": "Giá nhập",
+  "totalMove": "Tổng tiền nhập",
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "rangeDate": "Thời gian",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng",
+  "transactionDate": "Ngày thực hiện giao dịch"
+}

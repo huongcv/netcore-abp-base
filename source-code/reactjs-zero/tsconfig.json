@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "vite/client"
+    ],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strictPropertyInitialization": false,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@ord-core/*": [
+        "./src/core/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@ord-components/*": [
+        "./src/components/*"
+      ],
+      "@ord-store/*": [
+        "./src/stores/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@api/*": [
+        "./src/api/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}

@@ -1,0 +1,16 @@
+.btn-itemTop.not-active{
+  //background-color: #1AB01A;
+  .ant-badge .ant-badge-count{
+    background: #d0d0d0;
+    color: black;
+    border-color:  #EEEEEE;
+    box-shadow: 0 0 0 0 #d0d0d0;
+  }
+}
+.btn-itemTop.active{
+  background-color: white;
+  .item-label{
+    color: black;
+    font-weight: bold;
+  }
+}

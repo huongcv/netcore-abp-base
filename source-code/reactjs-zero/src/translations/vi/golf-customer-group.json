@@ -1,0 +1,63 @@
+{
+  "groupNo": "Mã nhóm",
+  "groupName": "Tên nhóm",
+  "representative": "Người đại diện",
+  "phoneNumber": "Số điện thoại",
+  "membership": "Số hội viên",
+  "createdDate": "Ngày tạo",
+  "groupType": "Loại nhóm",
+  "status": "Trạng thái",
+  "notes": "Ghi chú",
+  "title": {
+    "addNew": "Thêm mới nhóm Golfer",
+    "update": "Cập nhật nhóm Golfer",
+    "viewDetail": "Chi tiết nhóm Golfer"
+  },
+  "changeIsActive": {
+    "active": "Kích hoạt",
+    "unActive": "Tạm dừng"
+  },
+  "editGroupCustomer": "Sửa nhóm khách hàng",
+  "removeGroupCustomer": "Xóa nhóm khách hàng",
+  "groupId": "Nhóm khách hàng",
+  "backWard": "Quay lại",
+  "titlePageLvl1": "Khách hàng",
+  "titlePageLvl2": "Nhóm khách hàng",
+  "titlePage": "Chi tiết nhóm",
+  "updateIsActiveSuccessfully": "Cập nhật trạng thái nhóm khách hàng thành công",
+  "updateIsActiveFaild": "Cập nhật trạng thái nhóm khách hàng không thành công",
+  "updateIsActiveFaildErr500": "Lỗi hệ thống: ",
+  "golferGroupSearching": "Nhập tên nhóm để tìm kiếm",
+  "partnerName": "Tên thành viên",
+  "dateOfBirth": "Ngày sinh",
+  "role": "Chức danh",
+  "memberShipFee": "Phí thành viên",
+  "memberShipCard": "Thẻ thành viên",
+  "daThanhToan": "Đã thanh toán",
+  "chuaThanhToan": "Chưa thanh toán",
+  "editInfo": "Sửa thông tin",
+  "updateCard": "Cập nhật thẻ",
+  "addMember": "Thêm thành viên",
+  "updateMember": "Cập nhật thông tin thành viên",
+  "ConfirmRemoveMembershipTitle": "Xác nhận xoá thành viên",
+  "ConfirmRemoveMembership": "Bạn có chắc muốn xoá thành viên <bold>{{partnerName}}</bold> không ?",
+  "titleMember": {
+    "addNew": "Thêm mới thành viên",
+    "update": "Cập nhật thông tin thành viên",
+    "viewDetail": "Chi tiết thành viên"
+  },
+  "updateSuccess": "Cập nhật thông tin thành viên thành công",
+  "addNewSuccess": "Thêm mới thành viên thành công",
+  "importExcelTitle": "Nhập danh mục nhóm golfer bằng excel",
+  "fileExcel": {
+    "Title": "DANH SÁCH NHÓM GOLFER",
+    "FileName": "ds-nhom-golfer.xlsx",
+    "FileImportName": "mau-nhom-golfer.xlsx",
+    "importModalTitle": "Nhập nhóm golfer từ excel",
+    "requireImport": "Nhập nhóm golfer yêu cầu:",
+    "importSystem": "Nhập danh sách nhóm golfer vào hệ thống.",
+    "noteImport": "Lưu ý: Vui lòng import tệp Excel có tối đa 2000 nhóm golfer."
+  },
+  "updateIsActiveMembershipSuccessfully": "Cập nhật trạng thái thành viên thành công",
+  "updateMembershipIsActiveFaild": "Cập nhật trạng thái thành viên không thành công"
+}

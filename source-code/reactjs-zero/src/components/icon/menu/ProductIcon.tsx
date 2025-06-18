@@ -1,0 +1,28 @@
+import {CustomIconComponentProps} from "@ant-design/icons/es/components/Icon";
+import Icon from "@ant-design/icons";
+
+const Svg = () => {
+    return (
+
+
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M0.75 1.25L2.83 1.61L3.793 13.083C3.87 14.02 4.653 14.739 5.593 14.736H16.502C17.399 14.738 18.16 14.078 18.287 13.19L19.236 6.632C19.342 5.899 18.833 5.219 18.101 5.113C18.037 5.104 3.164 5.099 3.164 5.099"
+               stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M12.125 8.79492H14.898"stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+            <path fillRule="evenodd" clipRule="evenodd"
+                  d="M5.15435 18.2026C5.45535 18.2026 5.69835 18.4466 5.69835 18.7466C5.69835 19.0476 5.45535 19.2916 5.15435 19.2916C4.85335 19.2916 4.61035 19.0476 4.61035 18.7466C4.61035 18.4466 4.85335 18.2026 5.15435 18.2026Z"
+                  fill="#636363"stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path fillRule="evenodd" clipRule="evenodd"
+                  d="M16.4346 18.2026C16.7356 18.2026 16.9796 18.4466 16.9796 18.7466C16.9796 19.0476 16.7356 19.2916 16.4346 19.2916C16.1336 19.2916 15.8906 19.0476 15.8906 18.7466C15.8906 18.4466 16.1336 18.2026 16.4346 18.2026Z"
+                  fill="#636363"stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+
+
+    );
+}
+
+export const ProductIcon = (props: Partial<CustomIconComponentProps>) => (
+    <Icon component={Svg} {...props} />
+);

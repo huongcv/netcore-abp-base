@@ -1,0 +1,43 @@
+{
+  "pageTitleLvl1": "Hệ thống",
+  "pageTitleLvl2": "{{type}}",
+  "pageTitleCreate": "Thêm mới: {{name}}",
+  "pageTitleUpdate": "Cập nhật phiếu",
+  "sample-sales-order": "Đơn bán mẫu",
+  "sample-receipt": "Phiếu nhập mẫu",
+  "type": "Loại mẫu",
+  "name": "Tên mẫu",
+  "notes": "Mô tả",
+  "isActive": "Kích hoạt",
+  "actionBtn": {
+    "addNew": "Thêm mới",
+    "addNewSampleSalesOrder": "Thêm mới đơn bán mẫu",
+    "addNewSampleReceipt": "Thêm mới phiếu nhập mẫu",
+    "back": "Quay lại",
+    "export": "Xuất Excel"
+  },
+  "stt": "STT",
+  "status": "Trạng thái",
+  "title": {
+    "addNew": "Thêm mới phiếu nhập mẫu",
+    "update": "Cập nhật thông tin phiếu nhập mẫu",
+    "viewDetail": "Chi tiết phiếu nhập mẫu"
+  },
+  "fileExcel": {
+    "FileName": "PhieuNhapMau.xlsx"
+  },
+  "updateSuccess": "Sửa thành công phiếu nhập mẫu: {{name}}",
+  "addNewSuccess": "Thêm mới thành công phiếu nhập mẫu: {{name}}",
+  "Crud.ShopTemplate.UpdateSuccess": "Sửa thành công phiếu nhập mẫu: {{name}}",
+  "Crud.ShopTemplate.InsertSuccess": "Thêm mới thành công phiếu nhập mẫu: {{name}}",
+  "Crud.ShopTemplate.RemoveSuccess": "Xóa thành công phiếu nhập mẫu: {{name}}",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{name}}</bold> này không",
+  "removeSuccess": "Xóa thành công phiếu nhập mẫu: {{name}}",
+  "addProductToShopTemplate": "Thêm sản phẩm vào danh sách",
+  "productCode": "Mã sản phẩm",
+  "productName": "Tên sản phẩm",
+  "productUnitName": "Đơn vị tính",
+  "qty": "Số lượng",
+  "productUnitId": "Đơn vị tính",
+  "action": "Thao tác"
+}

@@ -1,0 +1,25 @@
+{
+  "pageTitle": "Danh mục vai trò",
+  "title": {
+    "addNew": "Thêm mới vai trò",
+    "update": "Cập nhật thông tin vai trò",
+    "viewDetail": "Chi tiết vai trò"
+  },
+  "updateSuccess": "Sửa thành công vai trò: {{code}}",
+  "addNewSuccess": "Thêm mới thành công vai trò: {{code}}",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{code}}</bold> này không",
+  "removeSuccess": "Xóa thành công vai trò: {{code}}",
+  "fileExcel": {
+    "Title": "Danh sách vai trò",
+    "FileName": "ds-vai-tro.xlsx"
+  },
+  "name": "Tên vai trò",
+  "code": "Mã vai trò",
+  "description": "Mô tả vai trò",
+  "tabInfor": "Thông tin vai trò",
+  "tabPermissions": "Danh sách quyền",
+  "ListUserAssignTitleModal": "Danh sách người dùng được gán cho vai trò: {{code}} - {{name}}",
+  "confirmUnassignRoleForUserTitle": "Xác nhận trước khi bỏ gán vai trò",
+  "confirmUnassignRoleForUser": "Bạn có muốn bỏ vai trò {{roleName}} cho người dùng {{userName}}",
+  "unassignRoleSuccess": "Bỏ gán vai trò thành công"
+}

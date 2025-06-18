@@ -1,0 +1,40 @@
+{
+  "invalidErr": {
+    "NotFoundProductCode": "Mã sản phẩm không tồn tại trên hệ thống",
+    "QtyInvalid": "Số lượng phải lớn hơn 0",
+    "NotFoundUnitName": "Đơn vị đo không tồn tại trên hệ thống",
+    "UnitNameNull": "Đơn vị đo không để trống",
+    "PriceInvalid": "Đơn giá không hợp lệ",
+    "DiscountPercentInvalid": "Chiết khấu(%) không hợp lệ",
+    "DiscountAmountGreaterTotalAmount": "Giảm giá không được lớn hơn thành tiền",
+    "LotNumberNull": "Số lô không để trống",
+    "ExpiryDateNull": "Hạn sử dụng sai định dạng dd/MM/yyyy",
+    "NotFoundLotNumber": "Số lô không tồn tại trên hệ thống"
+  },
+  "rowIndex": "Dòng",
+  "listData": "Danh sách dữ liệu",
+  "listInvalid": "Không hợp lệ",
+  "listValid": "Hợp lệ",
+  "continueAddValidList": "Thêm dữ liệu hợp lệ",
+  "detailError": "Chi tiết lỗi",
+  "code": "Mã sản phẩm",
+  "name": "Tên sản phẩm",
+  "lotNumber": "Số lô",
+  "productCode": "Mã sản phẩm",
+  "discountPercent": "Chiết khấu %",
+  "discountAmount": "Tổng chiết khấu",
+  "unitName": {
+    "import": "Đơn vị nhập",
+    "transfer": "Đơn vị tính",
+    "exportOther": "Đơn vị tính"
+  },
+  "expiryDate": "Hạn sử dụng",
+  "price": {
+    "import": "Giá nhập",
+    "transfer": "Giá chuyển"
+  },
+  "closingInventoryQty": "Tồn sau kiểm",
+  "note": {
+    "exportOther": "Lý do huỷ"
+  }
+}

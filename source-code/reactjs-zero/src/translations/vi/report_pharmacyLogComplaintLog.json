@@ -1,0 +1,40 @@
+{
+  "createdTime": "Thời gian",
+  "informationRecipientName": "Người nhận tin",
+  "informationRecipient": "Người thông tin",
+  "patientInfo": "Thông tin bệnh nhân",
+  "productRecalledName": "Sản phẩm thu hồi",
+  "productRecalledCode": "Mã sản phẩm thu hồi",
+  "phoneNumber": "Số ĐT",
+  "patientName": "Bệnh nhân",
+  "productName": "SP thu hồi",
+  "lotNumber": "Số lô",
+  "qty": "Số lượng",
+  "basicUnitName": "Đơn vị tính",
+  "complaintContent": "Nội dung khiếu nại",
+  "notes": "Ghi chú",
+  "title": {
+    "addNew": "Thêm mới",
+    "update": "Chỉnh sửa",
+    "viewDetail": "Chi tiết"
+  },
+  "fileExcel": {
+    "Title": "Sổ sách nhà thuốc/ Sổ theo dõi khiếu nại",
+    "FileName": "so-theo-doi-khieu-nai.xlsx"
+  },
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Sổ sách nhà thuốc",
+  "titlePage": "Sổ theo dõi khiếu nại",
+  "validDate": "Thời gian",
+  "address": "Địa chỉ",
+  "search": "Nhập từ khoá tìm kiếm (F3)",
+  "backIndex": "Quay lại",
+  "processingDirection": "Hướng giải quyết",
+  "productNamePlaceHolder": "Sản phẩm thu hồi",
+  "placeHolderSearch": "Tìm kiếm theo tên sản phẩm,bệnh nhân,người nhận tin,...",
+  "SoldUnitName": "ĐVT",
+  "order": "STT",
+  "addNewSuccess": "Thêm mới thành công",
+  "updateSuccess": "Sửa thành công",
+  "deleteSuccess": "Xoá thành công"
+}

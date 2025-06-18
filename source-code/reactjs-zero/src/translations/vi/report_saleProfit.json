@@ -1,0 +1,46 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo bán hàng",
+  "titlePage": "Lợi nhuận",
+  "rangeDate": "Thời gian",
+  "reportTypeShow": "Kiểu hiện thị",
+  "reportType": {
+    "time": "Thời gian",
+    "bill": "Hóa đơn",
+    "product": "Hàng hóa"
+  },
+  "actionBtn": {
+    "back": "Trở lại"
+  },
+  "invoiceDate": "Thời gian",
+  "total": "Tổng",
+  "paymentAmount": "Tổng tiền hóa đơn",
+  "taxAmount": "Tổng tiền thuế",
+  "discountAmount": "Tiền giảm trừ",
+  "totalRefund": "Tổng tiền trả lại",
+  "debtAmount": "Nợ",
+  "finalPrice": "Giá vốn",
+  "partnerName": "Khách hàng",
+  "totalAmount": "Tổng tiền",
+  "totalCostAmount": "Tổng giá vốn",
+  "totalProfit": "Lợi nhuận",
+  "invoiceCode": "Mã hóa đơn",
+  "totalRevenue": "Doanh thu",
+  "productCode": "Mã hàng hóa",
+  "productName": "Tên hàng hóa",
+  "lotNumber": "Số lô",
+  "lotExpiryDate": "Hạn dùng",
+  "totalQty": "Số lượng bán",
+  "totalPaymentAmount": "Tổng tiền hóa đơn",
+  "totalQtyReturn": "Số lượng trả",
+  "fileExcel": {
+    "Title": "Báo cáo lợi nhuận",
+    "FileName": "bao-cao-ban-hang-loi-nhuan.xlsx",
+    "importModalTitle": "Nhập nhà cung cấp từ excel",
+    "requireImport": "Nhập nhà cung cấp yêu cầu:",
+    "importSystem": "Nhập danh sách nhà cung cấp vào hệ thống VPos.",
+    "noteImport": "Lưu ý: Vui lòng import tệp Excel có tối đa 2000 nhà cung cấp."
+  },
+  "order": "STT",
+  "time": "Thời gian"
+}

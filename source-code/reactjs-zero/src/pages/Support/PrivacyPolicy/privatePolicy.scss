@@ -1,0 +1,40 @@
+.policy-wrap {
+
+    .container-width,
+    .full-width .ubermenu-nav,
+    .container,
+    .row {
+        max-width: 1410px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+
+    .page-wrapper {
+        padding-bottom: 30px;
+        padding-top: 30px;
+        font-family: Inter, sans-serif;
+        line-height: 1.6;
+    }
+
+    .policy-title {
+        font-size: 1.7em;
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    .policy-content {
+        padding-bottom: 1.5em;
+        padding-top: 1.5em;
+    }
+
+    strong {
+        font-weight: bolder;
+        font-style: normal;
+    }
+
+    .policy-wrap p {
+        margin-bottom: 1.3rem;
+    }
+}

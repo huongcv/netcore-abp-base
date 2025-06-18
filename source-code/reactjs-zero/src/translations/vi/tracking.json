@@ -1,0 +1,28 @@
+{
+  "titlePage": "Sổ Theo dõi nhiệt độ - độ ẩm",
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Sổ sách nhà thuốc",
+  "title": {
+    "addNew": "Thêm mới phiếu theo dõi nhiệt độ - độ ẩm",
+    "update": "Cập nhật thông tin phiếu theo dõi nhiệt độ - độ ẩm",
+    "viewDetail": "Chi tiết phiếu theo dõi"
+  },
+  "measureDate": " Ngày đo",
+  "validDate": "Thời gian",
+  "tempAt9AM": "9h",
+  "tempAt3PM": "15h",
+  "humidityAt9AM": "9h",
+  "humidityAt3PM": "15h",
+  "executorId": "Người thực hiện",
+  "reviewerId": "Người giám sát",
+  "notes": "Ghi chú",
+  "removeSuccess": "Xóa thành công",
+  "updateSuccess": "Sửa thành công",
+  "addNewSuccess": "Thêm mới thành công",
+  "pickMonth": "Chọn tháng",
+  "searchString": "Tìm kiếm theo ghi chú, tên người thực hiện, người giám sát",
+  "temp": "Nhiệt độ (°C)",
+  "humidity": "Độ ẩm (%)",
+  "backToIndex": "Quay lại",
+  "confirmRemove": "Bạn có muốn xóa các bản ghi thuộc: <bold>{{measureDate}}</bold> không?"
+}

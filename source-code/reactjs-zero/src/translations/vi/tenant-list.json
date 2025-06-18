@@ -1,0 +1,43 @@
+{
+  "pageTitle": "Danh mục cửa hàng",
+  "title": {
+    "addNew": "Thêm mới cửa hàng",
+    "update": "Cập nhật thông tin cửa hàng",
+    "viewDetail": "Chi tiết cửa hàng"
+  },
+  "updateSuccess": "Sửa thành công cửa hàng: {{code}}",
+  "addNewSuccess": "Thêm mới thành công cửa hàng: {{code}}",
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{code}}</bold> này không",
+  "removeSuccess": "Xóa thành công cửa hàng: {{code}}",
+  "fileExcel": {
+    "Title": "Danh sách cửa hàng",
+    "FileName": "ds-tenant.xlsx"
+  },
+  "actionBtn": {
+    "back" : "Quay lại"
+  },
+  "name": "Tên",
+  "code": "Mã",
+  "passwordAdminTenant": "Mật khẩu tài khoản quản trị",
+  "userNameAdminTenant": "Tài khoản quản trị",
+  "ListUserAssignTitleModal": "Danh sách người dùng của cửa hàng: {{code}}",
+  "DetailTitle": "Thông tin chi tiết cửa hàng : {{name}}",
+  "listShop": "Danh sách chi nhánh",
+  "listUser": "Danh sách người dùng",
+  "owner": "Chủ sở hữu",
+  "OwnerName": "Họ tên",
+  "OwnerIdentityNumber": "CCCD",
+  "OwnerPhone": "Điện thoại",
+  "mainShop": "Cửa hàng chính",
+  "MainShopCode": "Mã",
+  "MainShopName": "Tên",
+  "MainShopAddress": "Địa chỉ",
+  "listStockInventory": "Danh sách kho hàng",
+  "resetRoleAdmin": "Khôi phục quyền admin Tenant",
+  "resetSuccess": "Khôi phục quyền admin Tenant thành công",
+  "shopType": "Loại kinh doanh",
+  "tenantCode": "Mã thuê bao",
+  "shopCode": "Mã cửa hàng",
+  "packages": "Gói cước",
+  "businessType": "Loại cửa hàng"
+}

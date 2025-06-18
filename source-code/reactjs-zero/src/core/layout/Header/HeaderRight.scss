@@ -1,0 +1,133 @@
+.header-right {
+  display: flex;
+  align-items: end;
+  margin-inline-end: 26px;
+
+  .ant-btn {
+    margin-top: 18px;
+    background: #eeeeee !important;
+  }
+
+  .ant-select-selector {
+    background: #eeeeee !important;
+    border: none !important;
+  }
+
+  .ant-select-selection-item {
+    font-weight: 500 !important;
+  }
+
+  .style-child {
+    .ant-space-item {
+      .ant-btn-icon {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+
+.notifications {
+  .ant-list-items {
+    overflow-y: scroll;
+    max-height: 450px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+    scrollbar-width: thin;
+  }
+
+  .ant-list-item {
+    position: relative !important;
+  }
+
+  .ant-list-item-meta {
+    align-items: center !important;
+  }
+
+  .ant-list-item-action {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+  }
+
+  .ant-badge-status-dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+}
+
+.shop-list-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0;
+  }
+}
+
+.group-wrapper {
+  margin-bottom: 32px;
+
+  &.last-group {
+    margin-bottom: 0;
+  }
+}
+
+.group-header.align-with-avatar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  color: #374151;
+  min-height: 40px;
+}
+
+.group-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+label {
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selected-shop {
+  background-color: #e0f2ff;
+  border: 1px solid #60a5fa;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.5);
+}

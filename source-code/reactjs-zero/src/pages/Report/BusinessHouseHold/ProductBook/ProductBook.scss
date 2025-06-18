@@ -1,0 +1,10 @@
+.nested-table-custom {
+  .ant-table {
+    margin-block: -8px !important;
+    margin-inline: 38px 0 !important;
+  }
+}
+
+.ant-table-expanded-row > .ant-table-cell {
+  padding-right: 0px !important;
+}

@@ -1,0 +1,38 @@
+{
+    "productCode": "Mã thuốc", 
+    "productName": "Tên thuốc",
+    "moveCode": "Mã phiếu", 
+    "partnerName": "Tên nhà cung cấp", 
+    "product": "Hàng hoá", 
+    "integration": "Liên thông", 
+    "confirmIntegrateTitle": "Xác nhận trước khi liên thông", 
+    "confirmIntegrate": "Hệ thống sẽ liên thông lên dược quốc gia cho những bản ghi đã chọn", 
+    "moveTicket": "Phiếu", 
+    "moveDate": "Ngày giao dịch", 
+    "unitName": "Đơn vị tính",
+    "integraionProductSuccess": "Liên thông hàng hoá thành công",
+    "integraionTicketSuccess": "Liên thông phiếu thành công", 
+    "drugNationalPlaceholder": "Nhập mã, tên thuốc để tìm kiếm (F3)",
+    "ticketNationalPlaceholder": "Nhập mã phiếu để tìm kiếm (F3)",
+    "integraionError": "Có {{count}} bản ghi liên thông thất bại",
+    "moveStatus": "Trạng thái",
+    "move_status": {
+        "1": "Nháp",
+        "2": "Chờ thanh toán",
+        "3": "Đã hủy",
+        "4": "Hoàn thành",
+        "5": "Chờ xử lý",
+        "6": "Từ chối"
+    },
+    "moveType": "Loại phiếu",
+    "move_type": {
+        "101": "Phiếu nhập từ nhà cung cấp",
+        "102": "Phiếu nhập tồn",
+        "103": "Phiếu khách hàng trả lại",
+        "104": "Phiếu xuất trả nhà cung cấp",
+        "105": "Phiếu xuất hủy",
+        "106": "Phiếu điều chỉnh kho",
+        "107": "Hóa đơn",
+        "108": "Phiếu điều chuyển"
+  }
+}

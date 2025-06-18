@@ -1,0 +1,15 @@
+{
+  "documentDate": "Ngày chứng từ",
+  "documentNumber": "Số chứng từ",
+  "note2": "Diễn giải",
+  "unitName2": "ĐVT",
+  "price": "Đơn giá",
+  "import": "Nhập",
+  "export": "Xuất",
+  "inventory": "Tồn",
+  "amount": "Giá trị",
+  "placeHolderSearchProductBook": "Nhập tên sản phẩm hoặc mã phiếu để tìm kiếm",
+  "fileExcel": {
+    "FileName": "Sổ chi tiết vật liệu, dụng cụ, sản phẩm, hàng hóa.xlsx"
+  }
+}

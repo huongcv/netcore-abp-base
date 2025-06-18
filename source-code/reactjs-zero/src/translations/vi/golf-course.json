@@ -1,0 +1,38 @@
+{
+    "titleCourseList": "Danh sách sân",
+    "code": "Mã sân",
+    "name": "Tên sân",
+    "holeCount": "Số lỗ",
+    "areaName": "Khu vực",
+    "courseType": "Loại sân",
+    "currentStatus": "Trạng thái",
+    "date": "Ngày",
+    "title": {
+        "addNew": "Thêm mới sân",
+        "update": "Thông tin sân"
+    },
+    "information": "Thông tin chung",
+    "description": "Mô tả",
+    "tabCourseMaintenance": "Lịch sử bảo trì",
+    "informationHoles": "Thông tin số lỗ",
+    "actionBtn": {
+        "create-maintenamce-log": "Thêm lịch sử bảo trì sân"
+    },
+    "modalCreateMaintenanceLog": "Thêm mới lịch sử bảo trì",
+    "maintenanceDate": "Ngày bảo trì",
+    "performedById": "Người thực hiện",
+    "notes": "Nội dung",
+    "expectedDurationPerRound": "Thời gian",
+    "expectedDurationPerRoundPlace": "Thời gian dự kiến hoàn thành",
+    "expectedHolePerRound": "Số hố tiêu chuẩn",
+    "gameTypeDefault": "Loại chơi mặc định",
+    "timeSecond": "phút",
+    "performedName": "Người thực hiện",
+    "gameTypeAllowIds": "Loại chơi áp dụng",
+    "tabTeeTimes": "Tee times",
+    "updateSuccess": "Sửa thông tin sân thành công",
+    "addNewSuccess": "Thêm mới thông tin sân thành công",
+    "gameTypeSetting": "Hình thức chơi",
+    "confirmRemove": "Bạn có chắc muốn xóa sân: <bold>{{name}}</bold> này không",
+    "removeSuccess": "Xóa thông tin sân thành công"
+}

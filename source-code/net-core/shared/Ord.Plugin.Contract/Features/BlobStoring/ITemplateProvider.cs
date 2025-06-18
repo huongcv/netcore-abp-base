@@ -4,10 +4,4 @@
     {
         Task<Stream> GetTemplateStreamAsync(string templatePath);
     }
-
-    public enum TemplateProvider
-    {
-        FileSystem,
-        MinIO
-    }
 }

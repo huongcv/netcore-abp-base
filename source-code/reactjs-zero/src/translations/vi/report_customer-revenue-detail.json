@@ -1,0 +1,31 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo khách hàng",
+  "titlePage": "Doanh thu chi tiết",
+
+  "fileExcel": {
+    "Title": "Báo cáo khách hàng/ Doanh thu chi tiết",
+    "FileName": "doanh-thu-chi-tiet-khach-hang.xlsx"
+  },
+
+  "customerName": "Tên khách hàng",
+  "customerCode": "Mã khách hàng",
+  "totalPurchase": "Tổng tiền hàng",
+  "totalDiscount": "Tổng giảm giá",
+  "totalVAT": "Tổng VAT",
+  "totalPayment": "Đã trả",
+  "totalDebt": "Tổng nợ",
+  "totalPayAgain": "Tổng tiền hàng trả lại",
+  "totalRevenue": "Doanh thu",
+  "invoiceDate": "Ngày thanh toán",
+  "invoiceCode": "Mã hóa đơn",
+
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "rangeDate": "Thời gian",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng"
+}

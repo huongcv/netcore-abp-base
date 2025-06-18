@@ -1,0 +1,13 @@
+{
+  "shopCode": "Mã cửa hàng",
+  "shopName": "Tên cửa hàng",
+  "packageRegistrationCode": "Mã gói cước",
+  "packageRegistrationName": "Tên gói cước",
+  "packageRegistrationDate": "",
+  "packageRegistrationStartDate": "Ngày bắt đầu",
+  "packageRegistrationExpiryDate": "Ngày hết hạn",
+  "packageAccountNumber": "Số tài khoản",
+  "packageShopNumber": "Số cửa hàng",
+  "totalAmount": "Tổng tiền",
+  "status": "Trạng thái"
+}

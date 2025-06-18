@@ -1,4 +1,6 @@
-﻿namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
+﻿using Ord.Domain.Entities.Auth;
+
+namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
 {
     public  class AuthDataModelBuilder
     {
@@ -97,6 +99,10 @@
                     x.UserId,
                     x.DeviceId
                 });
+            });
+            builder.Entity<FileUploadEntity>(b =>
+            {
+                b.ConfigureByConvention();
             });
         }
     }

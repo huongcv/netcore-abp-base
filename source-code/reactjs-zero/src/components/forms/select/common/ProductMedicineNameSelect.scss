@@ -1,0 +1,15 @@
+.rowOptionsProductMedicineDto{
+    white-space: normal;
+    word-break: break-word;
+    border-right: 1px solid #eee;
+    padding: 4px;
+    &:last-child{
+        border-right: 0;
+    }
+}
+.popupClassNameCustome {
+    width: 50% !important;
+    position: absolute !important;
+    left: 27.5% !important;
+}
+  

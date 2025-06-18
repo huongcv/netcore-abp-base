@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Ord.Domain.Entities.Auth;
 using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.Contract.Features.Notifications;
 using Ord.Plugin.Contract.Features.Notifications.Entities;
@@ -22,6 +23,7 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
         public virtual DbSet<NotificationInfoEntity> Notifications { get; set; }
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
+        public virtual DbSet<FileUploadEntity> FileUploads { get; set; }
         #endregion
 
 

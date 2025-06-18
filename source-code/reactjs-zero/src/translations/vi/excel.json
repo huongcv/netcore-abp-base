@@ -1,0 +1,25 @@
+{
+  "error": {
+    "onlyUploadExcel": "File có định dạng không chính xác",
+    "maxSizeUploadExcel": "File có dung lượng vuợt quá giới hạn cho phép",
+    "maxRowExcelPlaceholder": "Tối đa {{maxRows}} dòng. ",
+    "maxSizeExcelPlaceholder": "Dung lượng file không vượt quá {{maxSize}}MB. "
+
+  },
+  "selectFileExcelPlaceholder": "Chọn file hoặc kéo thả file vào đây để tải lên",
+  "infoImportPlaceholder": "Hỗ trợ tải lên tệp định dạng .xls, .xlsx. ",
+  "maxSizeExcelPlaceholder": "Dung lượng file không vượt quá {{maxSize}} MB. ",
+  "importDownloadTemplate": "Để upload dữ liệu được chính xác nhất, vui lòng điền thông tin theo mẫu file. Xin cảm ơn!",
+  "importDownloadTemplateBtn": "Tải file mẫu tại đây",
+  "notDataOrIncorrectFile": "File không có dữ liệu hợp lệ hoặc sai định dạng file mẫu, vui lòng điền thông tin theo mẫu file",
+  "listValid": "Hợp lệ",
+  "listInvalid": "Không hợp lệ",
+  "downloadListInValid": "Tải danh sách không hợp lệ",
+  "saveListValid": "Lưu dữ liệu hợp lệ",
+  "listImportSuccess": "Thành công",
+  "listImportError": "Lỗi",
+  "close": "Đóng",
+  "success": "Thành công",
+  "failed": "Thất bại",
+  "detailError": "Ghi chú lỗi"
+}

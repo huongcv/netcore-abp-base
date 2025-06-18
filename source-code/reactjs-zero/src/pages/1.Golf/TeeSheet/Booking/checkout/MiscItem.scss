@@ -1,0 +1,43 @@
+.tran-misc-item {
+  .ant-transfer-list {
+    min-height: 100px;
+  }
+
+  .ant-transfer-operation {
+    flex-direction: row-reverse;
+
+    padding: 4px;
+
+    .ant-btn {
+      transform: rotate(90deg);
+      /* Xoay 90 độ */
+    }
+  }
+}
+
+.input-qty-misc-item {
+  .ant-input-number-input-wrap {
+    input {
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px dashed;
+      border-radius: 0;
+    }
+  }
+}
+
+.ant-cus-golf-checkout-modal {
+  margin-top: 20px;
+
+  .ant-table-title {
+    text-align: end;
+    padding: 0 !important;
+  }
+}
+
+.ant-card-cus-checkout-modal {
+  .ant-card-body {
+    padding-top: 15px !important;
+  }
+}

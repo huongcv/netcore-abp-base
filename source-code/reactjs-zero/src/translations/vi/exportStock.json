@@ -1,0 +1,29 @@
+{
+  "pageTitle": "Xuất huỷ",
+  "title": {
+    "addNew": "Tạo mới",
+    "detail": "Phiếu xuất hủy"
+  },
+  "addNewDone": "Thao tác thành công",
+  "moveType104": "Xuất trả nhà cung cấp",
+  "moveType105": "Xuất hủy",
+  "actionBtn.addNew": "Thêm mới",
+  "actionStock": {
+    "print": "In phiếu",
+    "printBarCode": "In mã vạch",
+    "edit": "Sửa phiếu",
+    "cancel": "Hủy phiếu",
+    "delete": "Xóa phiếu",
+    "clone": "Sao chép phiếu"
+  },
+  "price": "Giá xuất",
+  "totalAmount": "Thành tiền",
+  "moveCode": "Mã phiếu",
+  "productCode": "Mã sản phẩm",
+  "product": "Sản phẩm",
+  "moveInformation": "Thông tin phiếu",
+  "moveDate": "Ngày tạo phiếu",
+  "status": "Trạng thái",
+  "notes": "Ghi chú",
+  "unitNameShort": "ĐVT"
+}

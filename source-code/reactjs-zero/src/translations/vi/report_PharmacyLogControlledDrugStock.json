@@ -1,0 +1,39 @@
+﻿{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Sổ sách nhà thuốc",
+  "titlePage": "Xuất nhập tồn thuốc kiểm soát đặc biệt",
+  "fileExcel": {
+    "Title": "Sổ sách nhà thuốc/ Xuất nhập tồn thuốc kiểm soát đặc biệt",
+    "FileName": "xuat-nhap-ton-kiem-soat-dac-biet.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "productName": "Sản phẩm",
+  "rangeDate": "Thời gian",
+  "isActived": "Trạng thái",
+  "inventoryId": "Kho",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng",
+  "qty": "Số lượng",
+  "value": "Số tiền",
+  "beginningBalance": "Tồn đầu kỳ",
+  "basicUnitName": "ĐVT",
+  "productCode": "Mã SP",
+  "expiryDate": "Ngày hết hạn",
+  "endingBalance": "Tồn cuối kỳ",
+  "inGoodUse": "Sử dụng tốt",
+  "nearExpiration": "Sắp hết hạn",
+  "expired": "Quá hạn",
+  "lotNumber": "Số lô",
+  "endingBalanceQty": "Tồn cuối",
+  "shrinkage": "Hao hụt",
+  "beginningBalanceQty": "Tồn đầu",
+  "importQty": "Nhập",
+  "exportQty": "Xuất",
+  "transferQty": "Điều chuyển",
+  "errorLoss": "Thất thoát nhầm lẫn",
+  "filterPlaceholder": "Tìm kiếm theo mã hoặc tên hàng hóa"
+}

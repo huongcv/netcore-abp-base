@@ -1,0 +1,28 @@
+.excel-uploaded {
+
+  .ant-upload-list-item-error {
+    color: unset !important;
+  }
+
+  .ant-upload-list-item-name {
+    color: var(--main-color);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+
+  .ant-upload-list-item-action {
+    color: #EA1B00;
+  }
+
+  .ant-upload-icon {
+    svg {
+      height: 21px;
+      width: 21px;
+    }
+  }
+
+  .ant-upload-list-item-name {
+    flex: none !important;
+  }
+}

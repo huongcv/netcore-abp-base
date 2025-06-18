@@ -1,0 +1,13 @@
+.custom-tabs >.ant-tabs-nav >.ant-tabs-nav-wrap >.ant-tabs-nav-list >.ant-tabs-tab {
+  @apply px-4 py-2  text-gray-600 transition;
+}
+
+.custom-tabs >.ant-tabs-nav >.ant-tabs-nav-wrap >.ant-tabs-nav-list >.ant-tabs-tab-active {
+  @apply bg-gray-200 text-black font-semibold;
+  //border-bottom: 1px solid var(--main-color);
+  font-weight: 600;
+}
+
+.custom-tabs >.ant-tabs-nav::before {
+  border-bottom: none !important;
+}

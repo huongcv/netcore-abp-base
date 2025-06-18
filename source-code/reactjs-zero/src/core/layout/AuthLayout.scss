@@ -1,0 +1,21 @@
+.main-content {
+  min-height: 100vh;
+  position: relative;
+  // background: #f4f5f7;
+  //background: url('/images/bg-login3.png') no-repeat bottom;
+  //background-size: cover;
+}
+
+
+.container-fluid {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, .75rem);
+  padding-left: var(--bs-gutter-x, .75rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+//.bg-w {
+//  background: url('/images/bg-vt.png') no-repeat bottom;
+//  background-size: contain;
+//}

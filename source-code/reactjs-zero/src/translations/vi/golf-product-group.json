@@ -1,0 +1,19 @@
+{
+    "golfProductBtnGroup":{
+        "addNew": "Thêm mới nhóm dịch vụ",
+        "list": "Danh sách nhóm dịch vụ"
+    },
+    "golfProductBtnGroupTitle":  "Nhóm dịch vụ",
+    "groupCode": "Mã nhóm",
+    "groupName": "Tên nhóm",
+    "notes": "Ghi chú",
+    "title": {
+        "addNew": "Thêm mới nhóm dịch vụ",
+        "update": "Cập nhật thông tin nhóm dịch vụ"
+    },
+    "addNewSuccess": "Thêm mới nhóm dịch vụ thành công",
+    "updateSuccess": "Sửa thông tin nhóm dịch vụ thành công",
+    "confirmRemove": "Bạn có chắc muốn xóa nhóm dịch vụ: <bold>{{groupName}}</bold> này không",
+    "removeSuccess": "Xóa thông tin nhóm dịch vụ thành công",
+    "UpdateIsActiveFaildBecauseInUse": "Không thể cập nhật trạng thái vì nhóm sản phẩm đang được sử dụng"
+}

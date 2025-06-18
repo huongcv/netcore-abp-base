@@ -1,0 +1,390 @@
+{
+  "List": "Danh sách",
+  "GENDER": {
+    "MALE": "Nam",
+    "FEMALE": "Nữ",
+    "1": "Nam",
+    "2": "Nữ"
+  },
+  "ComboEnum": {
+    "MoveStatusEnum": {
+      "DangSoan": "Nháp",
+      "ChoXuLyKho": "Chờ xử lý kho",
+      "DaHuy": "Đã hủy",
+      "DaHoanThanh": "Hoàn thành",
+      "ChoTiepNhan": "Chờ tiếp nhận",
+      "HuyTiepNhan": "Hủy tiếp nhận"
+    }
+  },
+  "receipt": "Phiếu thu",
+  "paymentVoucher": "Phiếu chi",
+  "moveType": {
+    "PhieuNhapNhaCungCap": "Phiếu nhập từ NCC",
+    "PhieuNhapTon": "Phiếu nhập tồn",
+    "PhieuKhachHangTraLai": "Phiếu khách hàng trả lại",
+    "PhieuXuatTraNhaCungCap": "Phiếu xuất trả NCC",
+    "PhieuXuatHuy": "Phiếu xuất hủy",
+    "PhieuKiemKho": "Phiếu điều chỉnh kho",
+    "HoaDon": "Hóa đơn",
+    "PhieuDieuChuyen": "Phiếu điều chuyển",
+    "PhieuDieuChuyenNhan": "Phiếu điều chuyển nhận",
+    "PhieuThu": "Phiếu thu",
+    "PhieuChi": "Phiếu chi",
+    "PhieuDieuChinhNoKhachHang": "Phiếu điều chỉnh nợ khách hàng",
+    "PhieuDieuChinhNoNhaCungCap": "Phiếu điều chỉnh nợ nhà cung cấp"
+  },
+  "partnerType": {
+    "Customer": "Cá nhân",
+    "Supplier": "Nhà cung cấp",
+    "Sale": "Nhân viên bán hàng",
+    "Employee": "Nhân viên",
+    "Company": "Tổ chức",
+    "Doctor": "Bác sĩ",
+    "Other": "Khác"
+  },
+  "SaleInvoiceStatus": {
+    "All": "Tất cả",
+    "Draft": "Tạm tính",
+    "Completed": "Hoàn thành",
+    "Canceled": "Đã hủy",
+    "4": "Hoàn thành",
+    "3": "Đã hủy",
+    "1": "Nháp"
+  },
+  "paymentMethod": {
+    "TienMat": "Tiền mặt",
+    "ChuyenKhoan": "Chuyển khoản",
+    "The": "Quẹt thẻ",
+    "ViDienTu": "Ví điện tử",
+    "KetHop": "Kết hợp"
+  },
+  "TrangThaiPhieu": {
+    "DangSoan": "Đang soạn",
+    "ChoXuLyKho": "Chờ xử lý kho",
+    "DaHuy": "Đã hủy",
+    "DaHoanThanh": "Hoàn thành",
+    "ChoTiepNhan": "Chờ tiếp nhận",
+    "HuyTiepNhan": "Hủy tiếp nhận"
+  },
+  "GameTypeEnum": {
+    "Game9": "Game 9 hố",
+    "Game18": "Game 18 hố",
+    "Game27": "Game 27 hố",
+    "Game36": "Game 36 hố",
+    "Game9x": "Game 9x hố",
+    "1": "Game 9 hố",
+    "2": "Game 18 hố",
+    "3": "Game 27 hố",
+    "4": "Game 36 hố",
+    "5": "Game 9x hố"
+  },
+  "TemplatePrinter": {
+    "HoaDon": "Hóa đơn",
+    "PhieuThu": "Phiếu thu",
+    "PhieuChi": "Phiếu chi",
+    "PhieuNhapTon": "Phiếu nhập tồn",
+    "PhieuNhapTuNCC": "Phiếu nhập ncc",
+    "PhieuXuatHuy": "Phiếu xuất hủy",
+    "PhieuDieuChuyen": "Phiếu điều chuyển",
+    "PhieuKiemKho": "Phiếu kiểm kho",
+    "PhieuXuatTraNCC": "Phiếu xuất trả ncc",
+    "PhieuKhachTra": "Phiếu khách trả"
+  },
+  "PackageType": {
+    "Trial": "Gói cước trải nghiệm",
+    "Main": "Gói cước chính",
+    "Additional": "Gói cước bổ sung",
+    "FeatureDevelop": "Gói cước phát triển tính năng",
+    "MessageIntegration": "Gói cước tích hợp tin nhắn"
+  },
+  "TimeUnit": {
+    "Day": "Ngày",
+    "Week": "Tuần",
+    "Month": "Tháng",
+    "Year": "Năm"
+  },
+  "TimeUnitFilterEnum": {
+    "CurrentDay": "Hôm nay",
+    "ThisWeek": "Tuần này",
+    "ThisMonth": "Tháng này",
+    "LastMonth": "Tháng trước",
+    "ThirtyDayRecent": "30 ngày gần nhất",
+    "1": "Hôm nay",
+    "2": "Tuần này",
+    "3": "Tháng này",
+    "4": "Tháng trước",
+    "5": "30 ngày gần nhất"
+  },
+  "channelType": {
+    "Direct.Sales": "Bán trực tiếp",
+    "Lazada": "Lazada",
+    "Sendo": "Sendo",
+    "Shopee": "Shopee",
+    "Facebook": "Facebook",
+    "Tiktok": "Tiktok",
+    "Website": "Website",
+    "Other": "Khác"
+  },
+  "ShopType": {
+    "ThoiTrang": "Thời trang",
+    "DienThoaiDienMay": "Điện thoại & Điện máy",
+    "VatLieuXayDung": "Vật liệu xây dựng",
+    "NhaThuoc": "Nhà thuốc",
+    "MeVaBe": "Mẹ và Bé",
+    "SachVanPhongPham": "Sách & Văn phòng phẩm",
+    "SanXuat": "Sản xuất",
+    "TapHoaVaSieuThi": "Tạp hóa & Siêu thị",
+    "MyPham": "Mỹ phẩm",
+    "NongSangThucPham": "Nông sản & Thực phẩm",
+    "XeMayMoc": "Xe & Máy móc",
+    "NoiThatGiaDung": "Nội thất & Gia dụng",
+    "HoaQuaTang": "Hoa & Quà tặng",
+    "Khac": "Khác",
+    "NhaHang": "Nhà hàng",
+    "QuanAn": "Quán ăn",
+    "CafeTraSua": "Cà phê & Trà sữa",
+    "KaraokeBia": "Karaoke & Bia",
+    "BarPubClub": "Bar, Pub & Club",
+    "CangTinTramDungNghi": "Căng tin & Trạm dừng nghỉ",
+    "BeautySpaMassage": "Beauty Spa & Massage",
+    "HairSalon": "Hair Salon",
+    "KhachSanNhaNghi": "Khách sạn & Nhà nghỉ",
+    "HomestayVillaResort": "Homestay, Villa & Resort",
+    "FitnessYoga": "Fitness & Yoga",
+    "PhongKham": "Phòng khám",
+    "Golf": "Sân Golf",
+    "ProShop": "ProShop",
+    "NhaKinhDoanhPhanPhoiDuocPham": "Nhà kinh doanh phân phối dược phẩm"
+  },
+  "dayOfWeek": {
+    "SUNDAY": "Chủ nhật",
+    "MONDAY": "Thứ Hai",
+    "TUESDAY": "Thứ Ba",
+    "WEDNESDAY": "Thứ Tư",
+    "THURSDAY": "Thứ Năm",
+    "FRIDAY": "Thứ Sáu",
+    "SATURDAY": "Thứ Bảy"
+  },
+  "ShopTemplate": {
+    "SampleSalesOrder": "Đơn bán mẫu",
+    "SampleReceipt": "Phiếu nhập mẫu"
+  },
+  "allowance": {
+    "Month": "Phụ cấp tính theo tháng",
+    "Day": "Phụ cấp tính theo ngày công"
+  },
+  "timesheet": {
+    "detail.valid": "Hợp lệ",
+    "detail.authorized.leave": "Nghỉ có phép",
+    "detail.unauthorized.leave": "Nghỉ không phép"
+  },
+  "discountType": {
+    "Percent": "Phần trăm",
+    "Value": "Giảm trực tiếp"
+  },
+  "discountStatus": {
+    "Active": "Hoạt động",
+    "Inactive": "Tạm dừng",
+    "Expired": "Hết hiệu lực"
+  },
+  "timeType": {
+    "day": "Ngày",
+    "month": "Tháng"
+  },
+  "IntegrateStatusTypeEnum": {
+    "0": "Chưa liên thông",
+    "1": "Đã liên thông"
+  },
+  "partnerAccountMoveType": {
+    "Customer": "Khách hàng",
+    "Supplier": "Nhà cung cấp",
+    "Employee": "Nhân viên",
+    "Doctor": "Bác sĩ",
+    "Other": "Khác"
+  },
+  "ProductCategory": {
+    "Thuoc": {
+      "ThuocKhangSinhKhangVirus": "Thuốc kháng sinh - kháng virus",
+      "ThuocTimMachHuyetAp": "Thuốc tim mạch - huyết áp",
+      "ThuocDaiThaoDuong": "Thuốc đái tháo đường",
+      "ThuocMoMau": "Thuốc mỡ máu",
+      "ThuocDaDay": "Thuốc dạ dày",
+      "ThuocHoHap": "Thuốc hô hấp",
+      "ThuocTiemThuocDichTruyen": "Thuốc tiêm - thuốc dịch truyền",
+      "ThuocGanMat": "Thuốc gan mật",
+      "ThuocNhoMatMuiTai": "Thuốc nhỏ mắt - mũi - tai",
+      "ThuocXitMuiHong": "Thuốc xịt mũi họng",
+      "ThuocKhangViemChongPhuNe": "Thuốc kháng viêm - chống phù nề",
+      "ThuocMoKemPomat": "Thuốc mỡ - kem - pomat",
+      "ThuocNuoc": "Thuốc nước",
+      "ThuocKhangHistaminH1": "Thuốc kháng histamin H1",
+      "ThuocKhangHistaminH2": "Thuốc kháng histamin H2",
+      "ThuocTuyenGiap": "Thuốc tuyến giáp",
+      "ThuocAcidUric": "Thuốc acid uric",
+      "ThuocTuyenTienLiet": "Thuốc tuyến tiền liệt",
+      "ThuocHormon": "Thuốc hormon",
+      "ThuocDongKinh": "Thuốc động kinh",
+      "ThuocTramCam": "Thuốc trầm cảm",
+      "ThuocAnThan": "Thuốc an thần",
+      "ThuocTacDongTrenHeThanKinh": "Thuốc tác động trên hệ thần kinh",
+      "ThuocGiamDauKhangViem": "Thuốc giảm đau - kháng viêm",
+      "ThuocGiamDauCoTron": "Thuốc giảm đau - cơ trơn",
+      "ThuocGiamDauCoVan": "Thuốc giảm đau - cơ vân",
+      "ThuocCorticoid": "Thuốc corticoid",
+      "ThuocKhangNam": "Thuốc kháng nấm",
+      "ThuocTriGiunSan": "Thuốc trị giun sán",
+      "VacxinKhangHuyetThanhVaThuocMienDich": "Vaccin, kháng huyết thanh và thuốc miễn dịch",
+      "ThuocDieuTriUngThu": "Thuốc điều trị ung thư",
+      "ThuocXuongKhop": "Thuốc xương khớp",
+      "ThuocGianCo": "Thuốc giãn cơ",
+      "ThuocTinhMach": "Thuốc tĩnh mạch",
+      "ThuocCamMau": "Thuốc cầm máu",
+      "ThuocKhangLao": "Thuốc kháng lao",
+      "ThuocChongDiUng": "Thuốc chống dị ứng",
+      "VitaminKhoangChatAcidAmin": "Vitamin - khoáng chất - acid amin",
+      "ThuocChongUngThu": "Thuốc chống ung thư",
+      "ThuocGiaiDoc": "Thuốc giải độc",
+      "ThuocChongSotRet": "Thuốc chống sốt rét",
+      "ThuocChongDong": "Thuốc chống đông",
+      "ThucPhamChucNang": "Thực phẩm chức năng",
+      "MyPham": "Mỹ phẩm",
+      "Ksdb": {
+        "ThuocGayNghienPlI": "KSĐB - Thuốc gây nghiện (PL I)",
+        "ThuocHuongThanPlII": "KSĐB - Thuốc hướng thần (PL II)",
+        "ThuocTienChatPlIII": "KSĐB - Thuốc tiền chất (PL III)",
+        "ThuocBiCamSuDungTrongMotSoNganhLinhVucPlIV": "KSĐB - Thuốc bị cấm sử dụng trong một số ngành, lĩnh vực (PL IV)",
+        "ThuocDangPhoiHopCoChuaDuocChatGayNghienPlIVVVVI": "KSĐB - Thuốc dạng phối hợp có chứa dược chất gây nghiện (PL IV, V, VI)",
+        "ThuocDangPhoiHopCoChuaDuocChatHuongThanPlVVI": "KSĐB - Thuốc dạng phối hợp có chứa dược chất hướng thần (PL V, VI)",
+        "ThuocDangPhoiHopCoChuaTienChatPlVI": "KSĐB - Thuốc dạng phối hợp có chứa tiền chất (PL VI)",
+        "ThuocDoc": "KSĐB - Thuốc độc"
+      },
+      "ThietBiYTeGiaDinh": "Thiết bị y tế gia đình",
+      "DungCuYYe": "Dụng cụ y yế"
+    },
+    "All.Khac": "Khác"
+  },
+  "TenantType": {
+    "Other": "Khác",
+    "Golf": "Golf"
+  },
+  "GolfLockerStatusEnum": {
+    "InUse": "Đang dùng",
+    "Available": "Đang trống",
+    "UnderMaintenance": "Bảo trì",
+    "Locked": "Locked"
+  },
+  "TeetimeTypeEnum": {
+    "Standard": "Standard",
+    "Shotgun": "Shotgun",
+    "Crossover": "Crossover",
+    "Customstandard": "Custom Standard"
+  },
+  "ApplymodeEnum": {
+    "Daily": "Hàng ngày",
+    "Weekly": "Hàng tuần"
+  },
+  "PaymentModeEnum": {
+    "PayLater": "Thanh toán trực tiếp",
+    "PayBefore": "Trả trước",
+    "Deposit": "Đặt cọc"
+  },
+  "ReservationStatus": {
+    "All": "Tất cả",
+    "0": "Nháp",
+    "100": "Chờ xác nhận",
+    "200": "Đã xác nhận",
+    "300": "Khách đã tới",
+    "900": "Đã chọn chỗ",
+    "100000": "Đã huỷ"
+  },
+  "GolferMemberTypeEnum": {
+    "Member": "Thành viên",
+    "Leader": "Trưởng nhóm"
+  },
+  "AccessCardTypeEnum": {
+    "Member": "Hội viên",
+    "Guest": "Khách mời",
+    "Temporary": "Vãng lai",
+    "Staff": "Nhân viên sân",
+    "1": "Hội viên",
+    "2": "Khách mời",
+    "3": "Vãng lai",
+    "4": "Nhân viên sân"
+  },
+  "AccessCardStatusEnum": {
+    "Available": "Chưa sử dụng",
+    "Assigned": "Đã sử dụng",
+    "Lost": "Thất lạc",
+    "1": "Chưa sử dụng",
+    "2": "Đã sử dụng",
+    "3": "Thất lạc"
+  },
+  "GolfUserBlockTypeEnum": {
+    "Maintenance": "Bảo trì",
+    "PrivateUse": "Giữ chỗ - Sử dụng riêng"
+  },
+  "CheckinStatusEnum": {
+    "1": "Chưa checkin",
+    "2": "Đã checkin",
+    "3": "Đến muộn",
+    "4": "Không đến"
+  },
+  "BookingStatusEnum": {
+    "1": "Chưa xác nhận",
+    "2": "Đã xác nhận",
+    "3": "Đã hủy",
+    "4": "Hoàn thành",
+    "5": "Đã thanh toán"
+  },
+  "ProductTypeGolfServiceEnum": {
+    "GreenFee": "Gree fee (phí sân)",
+    "RentalBuggy": "Thuê xe",
+    "RentalCaddy": "Thuê caddy",
+    "MemberCard": "Phí thẻ thành viên",
+    "Other": "Dịch vụ khác",
+    "RentalItems": "Thuê đồ",
+    "600": "Gree fee (phí sân)",
+    "601": "Thuê xe",
+    "602": "Thuê caddy",
+    "603": "Phí thẻ thành viên",
+    "604": "Dịch vụ khác",
+    "605": "Thuê đồ"
+  },
+  "ShopPackageRegistrationStatusEnum": {
+    "IsPending": "Chờ kích hoạt",
+    "IsActived": "Đang kích hoạt",
+    "IsExpiration": "Hết hạn",
+    "IsCancel": "Hủy bỏ"
+  },
+  "BusinessType": {
+    "PrivateEnterprise": "Doanh nghiệp tư nhân",
+    "StateOwnedEnterprise": "Doanh nghiệp nhà nước",
+    "JointVentureCompany": "Doanh nghiệp liên doanh",
+    "ForeignOwnedEnterprise": "Doanh nghiệp vốn nước ngoài",
+    "LimitedLiabilityCompany": "Công ty trách nhiệm hữu hạn",
+    "JointStockCompany": "Công ty cổ phần",
+    "PartnershipCompany": "Công ty hợp danh",
+    "BusinessHouseholds": "Hộ kinh doanh",
+    "Cooperative": "Hợp tác xã"
+  },
+  "BookingSourceEnum": {
+    "Online": "Website hoặc app",
+    "Walkin": "Đến trực tiếp sân ",
+    "Call": "Đặt lịch qua điện thoại với nhân viên",
+    "1": "Website hoặc app",
+    "2": "Đến trực tiếp sân ",
+    "3": "Đặt lịch qua điện thoại với nhân viên"
+  },
+  "ProductRentalBuggyType": {
+    "RentAll": "1",
+    "RentHalf": "1/2"
+  },
+  "ProductRentalOtherType": {
+    "FavoriteCaddySurcharge": "Phụ phí caddy yêu thích",
+    "Other": "Khác"
+  },
+  "EinvoiceMethod": {
+    "Manual": "Phát hành thủ công", 
+    "AutoExportMerge": "Phát hành gộp tự động"
+  }
+}

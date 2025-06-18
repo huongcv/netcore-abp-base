@@ -1,0 +1,35 @@
+{
+  "pageTitle": "Danh sách cửa hàng",
+  "code": "Mã cửa hàng",
+  "name": "Tên cửa hàng",
+  "package": "Gói cước",
+  "actionBtn.subscribe.package": "Đăng ký gói cước",
+  "title": {
+    "addNew": "Thêm mới cửa hàng",
+    "update": "Cập nhật thông tin cửa hàng",
+    "viewDetail": "Chi tiết cửa hàng"
+  },
+  "updateSuccess": "Sửa thành công cửa hàng: {{name}}",
+  "addNewSuccess": "Thêm mới thành công cửa hàng: {{name}}",
+  "trung_ma_tinh": "Mã cửa hàng: {{ma}} đã tồn tại trên hệ thống",
+  "Crud.Tinh.UpdateSuccess": "Sửa thành công cửa hàng: {{name}}",
+  "Crud.Tinh.InsertSuccess": "Thêm mới thành công cửa hàng: {{name}}",
+  "Crud.Tinh.RemoveSuccess": "Xóa thành công cửa hàng: {{name}}",
+  "fileExcel": {
+    "Title": "Danh sách cửa hàng",
+    "FileName": "ds-cua-hang.xlsx"
+  },
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{name}}</bold> này không",
+  "removeSuccess": "Xóa thành công cửa hàng: {{name}}",
+  "tenantCode": "Mã thuê bao",
+  "tenantName": "Tên thuê bao",
+  "type": "Loại kinh doanh",
+  "isMain": "Cửa hàng chính",
+  "ExitsPackageMain": "Cửa hàng đã dùng gói cước chính không thể sử dụng lại gói dùng thử",
+  "changeShop": "Đổi cửa hàng",
+  "duplicate_code": "Mã cửa hàng đã tồn tại",
+  "duplicate_main_shop": "Cửa hàng chính đã tồn tại",
+  "userNameAdminShop": "Tài khoản quản trị",
+  "passwordAdminShop": "Mật khẩu",
+  "businessType": "Loại cửa hàng"
+}

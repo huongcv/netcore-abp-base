@@ -1,0 +1,9 @@
+{
+  "pageTitle": "Kiểm kho",
+  "title": {
+    "addNew": "Tạo mới"
+  },
+  "addNewDone": "Thao tác thành công",
+  "fileNameExcelTemplate": "phieu-kiem-kho.xlsx",
+  "addNewFromExcel": "Thêm từ file Excel"
+}

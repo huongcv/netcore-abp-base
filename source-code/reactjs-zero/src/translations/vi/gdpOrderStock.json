@@ -1,0 +1,39 @@
+{
+  "gdp-order": {
+    "pageTitle": "Duyệt đơn hàng"
+  },
+  "orderStore": "Nơi đặt hàng",
+  "productInfo": "Thông tin hàng hóa",
+  "selectProductButton": "Chọn sản phẩm cần đặt hàng",
+  "fileNameExcelTemplate": "phieu-dieu-chuyen-mau.xlsx",
+  "addNewDone": "Thao tác thành công",
+  "addNewFromExcel": "Thêm từ file Excel",
+  "orderCode": "Mã đặt hàng",
+  "orderStock.totalAmount": "Tiền hàng tạm tính",
+  "supplierInfo": "Nhà cung cấp",
+  "creationUserName": "Người tạo",
+  "TotalAmountCol": "Tiền hàng tạm tính",
+  "desiredDeliveryDate": "Ngày nhận hàng mong muốn",
+  "orderDate": "Ngày đặt hàng",
+  "move_status_all": "Danh sách",
+  "orderInfo": "Thông tin đơn hàng",
+  "qtyOrderInfo": "Số lượng đặt hàng",
+  "expQty": "Số lượng",
+  "expPrice": "Giá",
+  "expTotalAmount": "Thành tiền",
+  "exportInfo": "Thông tin xuất kho",
+  "paymentMethod": "Phương thức thanh toán",
+  "move_status": {
+    "1": "Nháp",
+    "2": "Chờ thanh toán",
+    "3": "Đã hủy",
+    "4": "Hoàn thành",
+    "5": "Chờ xử lý",
+    "6": "Từ chối"
+  },
+  "moveStatus": "Trạng thái",
+  "totalAmount": "Tổng tiền",
+  "supplierId": "Nhà cung cấp",
+  "paymentStatus": "Trạng thái thanh toán",
+  "title-view-detail-order-stock": "Chi tiết đơn đặt hàng"
+}

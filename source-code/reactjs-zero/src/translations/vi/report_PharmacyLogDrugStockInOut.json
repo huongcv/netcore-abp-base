@@ -1,0 +1,39 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Sổ sách nhà thuốc",
+  "titlePage": "Sổ theo dõi xuất nhập thuốc",
+  "fileExcel": {
+    "Title": "Sổ sách nhà thuốc/ Sổ theo dõi xuất nhập thuốc",
+    "FileName": "so-theo-doi-xuat-nhap-thuoc.xlsx"
+  },
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "productName": "Sản phẩm",
+  "rangeDate": "Thời gian",
+  "isActived": "Trạng thái",
+  "inventoryId": "Kho",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng",
+  "qty": "Số lượng",
+  "value": "Số tiền",
+  "beginningBalance": "Tồn đầu kỳ",
+  "basicUnitName": "ĐVT",
+  "productCode": "Mã SP",
+  "expiryDate": "Ngày hết hạn",
+  "endingBalance": "Tồn cuối kỳ",
+  "inGoodUse": "Sử dụng tốt",
+  "nearExpiration": "Sắp hết hạn",
+  "expired": "Quá hạn",
+  "lotNumber": "Số lô",
+  "endingBalanceQty": "Tồn cuối",
+  "returnsQty": "Khách hàng trả lại",
+  "beginningBalanceQty": "Tồn đầu",
+  "importQty": "Nhập",
+  "exportQty": "Xuất",
+  "transferQty": "Điều chuyển",
+  "inventoryCheckQty": "Kiểm kho",
+  "filterPlaceholder": "Tìm kiếm theo mã hoặc tên hàng hóa"
+}

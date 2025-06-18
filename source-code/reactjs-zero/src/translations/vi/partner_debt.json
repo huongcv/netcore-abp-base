@@ -1,0 +1,23 @@
+{
+  "debtInfo": "Công nợ",
+  "invoiceDate": "Ngày giao dịch",
+  "moveDate": "Ngày giao dịch",
+  "invoiceCode": "Mã phiếu",
+  "moveCode": "Mã phiếu",
+  "paymentAmount": "Thanh toán",
+  "debtAmount": "Công nợ",
+  "rangeDate": "Thời gian",
+  "titleDebt.update": "Điều chỉnh công nợ khách hàng ",
+  "titleDebt.addNew": "Điều chỉnh công nợ khách hàng ",
+  "titleDebtSupplier.update": "Điều chỉnh công nợ nhà cung cấp ",
+  "titleDebtSupplier.addNew": "Điều chỉnh công nợ nhà cung cấp ",
+  "transactionDate": "Ngày điều chỉnh",
+  "currentDebtAmount": "Nợ hiện tại",
+  "amount": "Nợ thực tế",
+  "debt": "Nợ thực tế",
+  "customerName": "Tên khách hàng", 
+  "supplierName": "Tên nhà cung cấp", 
+  "adjustment": "Chênh lệch", 
+  "addNewSuccess": "Cập nhật thành công",
+  "textSearch": "Nhập từ khóa tìm kiếm (F3)"
+}

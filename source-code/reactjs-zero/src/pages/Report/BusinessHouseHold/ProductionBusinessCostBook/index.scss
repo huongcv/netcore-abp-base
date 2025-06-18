@@ -1,0 +1,33 @@
+.custom-collapse .ant-collapse-item {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.custom-panel .ant-collapse-header {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ant-table-body {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c0c0c0 transparent;
+}
+
+.ant-table-body::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ant-table-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+}

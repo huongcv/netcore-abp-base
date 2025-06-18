@@ -1,0 +1,33 @@
+.access-card-qr-search {
+
+  .ant-select-selection-placeholder {
+    //margin-left: 20px;
+  }
+
+  .ant-select-selection-item {
+    //margin-left: 20px;
+  }
+
+  .ant-select-selector {
+
+    &::before {
+      content: " ";
+      //background-color: yellow;
+      //color: red;
+      font-weight: bold;
+      width: 25px;
+      height: 25px;
+      top: 5px;
+      right: 6px;
+      position: absolute;
+      background-image: url(/icon-svg/qr-simple.svg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 1;
+    }
+
+    .ant-select-selection-search {
+      //padding-left: 20px;
+    }
+  }
+}

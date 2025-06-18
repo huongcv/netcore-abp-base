@@ -1,0 +1,72 @@
+.card-search{
+  .ant-card-body{
+    padding-bottom: 0;
+  }
+}
+.card-static.red{
+  border: 1px solid #FF0000 !important;
+  .value{
+    color: #FF0000;
+  }
+}
+.card-static.green{
+  border: 1px solid var(--main-color) !important;
+  .value{
+    color: var(--main-color);
+  }
+}
+
+.card-static{
+  border: 1px solid !important;
+}
+
+.card-table-cashbook{
+  .ant-card-body{
+    padding: 0 0 10px;
+  }
+  .custom-pagination{
+    padding: 0 18px;
+  }
+}
+
+.status-label {
+  .as-label {
+    left: -4px;
+  }
+}
+
+.ord-cell-1{
+  color: #FA9E1E;
+  background: #FFF8D7;
+  border-color: #FA9E1E;
+  min-width: 120px;
+  text-align: center;
+}
+.ord-cell-2{
+  color: #1B85FF;
+  background: #E0F4FF;
+  border-color: #1B85FF;
+  min-width: 120px;
+  text-align: center;
+}
+.ord-cell-3{
+  color: #FF334B;
+  background: #FEEAED;
+  border-color: #FF334B;
+  min-width: 120px;
+  text-align: center;
+}
+.ord-cell-4{
+  color: #22BA4F;
+  background: #E6FAE5;
+  border-color: #22BA4F;
+  min-width: 120px;
+  text-align: center;
+}
+.ord-cell-5{
+  color: #63B82F;
+  background: #F6FFEF;
+  border-color: #63B82F;
+  min-width: 120px;
+  text-align: center;
+}

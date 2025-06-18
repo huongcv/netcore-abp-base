@@ -1,0 +1,14 @@
+{
+    "name": "Tên",
+    "code": "Mã",
+    "title": {
+        "addNew": "Thêm mới khu vực", 
+        "update": "Chỉnh sửa khu vực"
+    },
+    "description": "Mô tả",
+    "updateSuccess": "Sửa thành công: {{name}}",
+    "addNewSuccess": "Thêm mới thành công: {{groupName}}",
+    "Crud.Partner.CustomerGroup.UpdateSuccess": "Sửa thành công: {{name}}",
+    "Crud.Partner.CustomerGroup.InsertSuccess": "Thêm mới thành công: {{name}}",
+    "Crud.Partner.CustomerGroup.RemoveSuccess": "Xóa thành công: {{name}}"
+}

@@ -1,0 +1,13 @@
+.notification {
+  button {
+    background-color: #fff !important;
+    border: 1px solid #e5e7eb !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: rgb(69 73 78 / var(--tw-border-opacity, 1)) !important;
+      background-color: transparent !important;
+    }
+  }
+}

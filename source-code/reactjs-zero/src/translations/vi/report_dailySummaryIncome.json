@@ -1,0 +1,51 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo cuối ngày",
+  "titlePage": "Thu chi",
+  "fileExcel": {
+    "Title": "Báo cáo cuối ngày / Thu chi",
+    "FileName": "bao-cao-cuoi-ngay-thu-chi.xlsx"
+  },
+  "reportDate": "Ngày báo cáo",
+  "creator": "Người bán",
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "income": "Thu/Chi",
+  "total": "Tổng",
+  "order": "STT",
+  "accountMoveType": "Loại chứng từ",
+  "reasonType": "Loại phiếu",
+  "rangeDate": "Khoảng ngày",
+  "filter": "Từ khóa",
+  "paymentMethod": "Phương thức TT",
+  "beginningBalance": "Tồn đầu kỳ",
+  "totalIncome": "Tổng thu",
+  "totalCost": "Tổng chi",
+  "endingBalance": "Tồn cuối kỳ",
+  "accountMoveDate": "Thời gian tạo",
+  "accountMoveReasonType": "Loại phiếu",
+  "partnerReceiptName": "Tên người nộp",
+  "partnerPaymentVoucherName": "Tên người nhận",
+  "currentDebt": "Nợ hiện tại",
+  "debtLater": "Nợ sau",
+  "pay": "Giá trị",
+  "notes": "Ghi chú",
+  "moveCode": "Mã phiếu",
+  "strPaymentMethod": "Phương thức TT",
+  "accountMoveReasonName": "Loại thu/chi",
+  "partnerInfo": "Người nhận/nộp",
+  "amount": "Tổng tiền",
+  "accountMoveCode": "Mã phiếu",
+  "statusDraft": "Nháp",
+  "partnerType": {
+    "Customer": "Khách hàng",
+    "Supplier": "Nhà cung cấp",
+    "Sale": "Bán hàng",
+    "Employee": "Nhân viên",
+    "Other": "Khác"
+  },
+  "searchPlaceHolder": "Nhập từ khoá tìm kiếm (F3)"
+}

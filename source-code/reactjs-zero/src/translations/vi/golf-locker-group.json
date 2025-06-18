@@ -1,0 +1,30 @@
+{
+    "actionBtn": {
+        "title": "aa",
+        "create-maintenamce-log": "Thêm lịch sử bảo trì",
+        "view-update": "Xem chi tiết",
+        "checked-out": "Checkout tủ",
+        "history-locker": "Lịch sử tủ",
+        "provide-locker": "Cấp phát",
+        
+        "remove": "Xoá nhóm tủ đồ",
+        "history-maintenamce-log": "Lịch sử bảo trì"
+    },
+    "title": {
+        "addNew": "Thêm mới nhóm tủ đồ",
+        "btnGolfLockerGroup": "Nhóm tủ đồ",
+        "update":"Thông tin nhóm tủ đồ"
+    },
+    "updateSuccess": "Sửa thành công thông tin",
+    "addNewSuccess": "Thêm mới thành công thông tin",
+    "confirmRemove": "Bạn có muốn xóa: <bold>{{code}}</bold> này không",
+    "removeSuccess": "Xóa thành công thông tin",
+    "golfLockerBtnGroup": {
+        "addNew": "Thêm mới nhóm tủ đồ",
+        "list": "Danh sách nhóm tủ đồ"
+    },
+    "btnGolfLockerGroup": "Nhóm tủ đồ",
+    "name": "Tên nhóm tủ",
+    "notes": "Ghi chú",
+    "lockertype": "Loại"
+}

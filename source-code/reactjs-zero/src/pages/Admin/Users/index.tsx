@@ -1,0 +1,95 @@
+import React, {lazy} from "react";
+import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import {useStore} from "@ord-store/index";
+import {UserDto} from "@api/index.defs";
+import UserCreateOrUpdateForm from "@pages/Admin/Users/CreateOrUpdateForm";
+import {UnlockOutlined} from "@ant-design/icons";
+import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
+import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
+import TableUtil from "@ord-core/utils/table.util";
+import UnlockAction from "@pages/Admin/Users/actions/unlockAction";
+import {UserUtil} from "@pages/Admin/Users/user.util";
+
+
+const User: React.FC = () => {
+    const {useHostListStore : mainStore, sessionStore} = useStore();
+    const policies = {
+        base: 'AuthPlugin.User',
+        addNew: 'AuthPlugin.User.Create',
+        edit: 'AuthPlugin.User.Update',
+        remove: 'AuthPlugin.User.Remove',
+        resetPassword: 'AuthPlugin.User.ResetPassword',
+        assignRole: 'AuthPlugin.User.AssignRole',
+        loginWithAccount: 'AuthPlugin.User.LoginPasswordless'
+    };
+    const topActions: IActionBtn[] = [{
+        title: 'exportExcel',
+        permission: policies.base,
+        onClick: () => {
+            mainStore.exportExcelPagedResult().then();
+        }
+    },
+        {
+            title: 'addNew',
+            permission: policies.addNew,
+            onClick: () => {
+                mainStore.openCreateModal();
+            },
+        }];
+
+    const columns = TableUtil.getColumns<UserDto>(UserDataColumns, {
+        actions: [
+            {
+                title: 'changePassword',
+                permission: policies.resetPassword,
+                contentLazy: lazy(() => import("./actions/changePwdAction")),
+                hiddenIf: (u: UserDto) => {
+                    return u?.id == sessionStore.userId;
+                }
+            },
+            {
+                title: 'unlockUser',
+                icon: <UnlockOutlined/>,
+                permission: policies.edit,
+                content: (user) => <UnlockAction user={user}/>,
+                hiddenIf: (value: UserDto) => {
+                    return !UserUtil.isLocked(value);
+                },
+            },
+            {
+                title: 'loginWithAccount',
+                permission: policies.loginWithAccount,
+                contentLazy: lazy(() => import("./actions/loginWithAccount")),
+                hiddenIf: (u: UserDto) => {
+                    return u?.id == sessionStore.userId;
+                }
+            },
+            {
+                title: 'remove',
+                onClick: (d) => {
+                    mainStore.openRemoveById(d);
+                },
+                permission: policies.remove,
+                hiddenIf: (u: UserDto) => {
+                    return u?.id == sessionStore.userId;
+                }
+            }
+        ],
+        viewAction: (d) => {
+            mainStore.openUpdateModal(d)
+        },
+        ns: mainStore.getNamespaceLocale()
+    });
+    return (
+        <>
+            <OrdCrudPage stored={mainStore}
+                         topActions={topActions}
+                         columns={columns}
+                         searchForm={(searchFormRef) => <UserSearchForm searchFormRef={searchFormRef}/>}
+                         entityForm={form => <UserCreateOrUpdateForm form={form}/>}
+            ></OrdCrudPage>
+        </>)
+        ;
+}
+export default User;
+

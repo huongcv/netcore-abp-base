@@ -1,0 +1,38 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo kho",
+  "titlePage": "Báo cáo hàng cận date",
+  "fileExcel": {
+    "Title": "Báo cáo kho / Báo cáo hàng cận date",
+    "FileName": "bc-hang-can-date.xlsx",
+    "sapHetHan": "ds-hang-hoa-sap-het-han.xlsx",
+    "daHetHan": "ds-hang-hoa-da-het-han.xlsx",
+    "suDungTot": "ds-hang-hoa-su-dung-tot.xlsx"
+  },
+  "dsDaHetHan": "Danh sách sản phẩm đã hết hạn",
+  "dsGanHetHan": "Danh sách sản phẩm sắp hết hạn",
+  "dsSuDungTot": "Danh sách sản phẩm sử dụng tốt",
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "productName": "Sản phẩm",
+  "rangeDate": "Thời gian",
+  "isActived": "Trạng thái",
+  "inventoryId": "Kho",
+  "order": "STT",
+  "basicUnitName": "ĐVT",
+  "productCode": "Mã SP",
+  "lotNumber": "Số lô",
+  "expiryDay": "Ngày hết hạn",
+  "qty": "Số lượng",
+  "expiryDate": "Hạn sử dụng",
+  "daysRemaining": "Số ngày còn lại",
+  "days": "ngày",
+  "List": "Danh sách",
+  "GoodStockQty":"Sử dụng tốt",
+  "NearExpiryQty": "Gần hết hạn",
+  "ExpiredStockQty": "Hết hạn",
+  "stock": "Tồn kho",
+  "outOfDate": "Quá hạn",
+  "searchPlaceHolder": "Nhập từ khoá tìm kiếm (F3)"
+}

@@ -1,0 +1,40 @@
+.float-label {
+  position: relative;
+  margin-bottom: 18px !important;
+}
+
+.label {
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 12px;
+  top: 2px;
+  transition: 0.2s ease all;
+  z-index: 2;
+}
+
+.as-placeholder {
+  color: gray;
+}
+
+.as-label {
+  top: -12px;
+  padding: 0 8px 0 3px;
+  position: absolute;
+  height: fit-content;
+
+  &::before {
+    position: absolute;
+    background: white;
+    content: '';
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 13px;
+  }
+}
+
+.text-required {
+  color: #f5413d;
+}

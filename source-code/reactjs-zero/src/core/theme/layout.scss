@@ -1,0 +1,79 @@
+
+.btn-other {
+  background: #D0D0D0 !important;
+  color: #323232 !important;
+  font-weight: 500;
+}
+
+.btn-other:hover {
+  background: #9b9797 !important;
+  color: #101010 !important;
+  border-color: #D0D0D0 !important;
+}
+
+.btn-secondary {
+  background: var(--secondary-color) !important;
+  color: white;
+}
+
+.btn-secondary:hover {
+  color: white !important;
+  background: color-mix(in srgb, var(--secondary-color) 80%, black 20%) !important;
+}
+
+.box-content {
+  background: white !important;
+}
+
+.ord-page-breadcrumb {
+  .title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+  }
+
+  .primary {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+  }
+}
+
+.search-btn {
+  width: 44px !important;
+}
+
+.ord-container-box {
+  background: white;
+  padding: 22px 12px 8px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.ant-modal-body {
+  .ord-container-box {
+    background: white;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+.status-true {
+  color: var(--main-color);
+}
+
+.ant-radio-wrapper{
+  font-weight: normal;
+}
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner{
+  border-color: var(--active-color);
+  background-color: white;
+}
+.ant-radio-wrapper .ant-radio-inner::after{
+  background-color: var(--active-color)
+}
+.float-label{
+  .ant-radio-group{
+    padding-top: 14px;
+  }
+}

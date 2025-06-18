@@ -1,0 +1,92 @@
+{
+  "ProductType": {
+    "HangHoa": "Hàng hóa",
+    "DichVu": "Dịch vụ",
+    "GoiDichVuLieuTrinh": "Gói dịch vụ - liệu trình",
+    "DuocPham": "Dược phẩm",
+    "VatTuYTe": "Vật tư y tế",
+    "Khac": "Khác"
+  },
+  "ProductTypeStock_": {
+    "HangHoa": "Hàng hóa",
+    "GoiDichVuLieuTrinh": "Gói dịch vụ - liệu trình",
+    "DuocPham": "Dược phẩm",
+    "VatTuYTe": "Vật tư y tế",
+    "Khac": "Khác"
+  },
+  "ProductGroupType": {
+    "ThucPhamChucNang": "Thực phẩm chức năng",
+    "QueThuThai": "Que thử thai",
+    "MyPham": "Mỹ phẩm",
+    "BaoCaoSu": "Bao cao su",
+    "BomTiem": "Bơm tiêm",
+    "BongBang": "Bông băng",
+    "DungCuYTe": "Dụng cụ y tế",
+    "KhangViem": "Kháng viêm",
+    "DiUng": "Dị ứng",
+    "DongDuoc": "Đông dược",
+    "HaSotGiamDau": "Hạ sốt - Giảm đau",
+    "KhangSinh": "Kháng sinh",
+    "KiemSoatDacBiet": "Kiểm soát đặc biệt",
+    "SanPhuKhoaTranhThai": "Sản - Phụ khoa - Tránh thai",
+    "ThanKinh": "Thần kinh",
+    "TieuHoa": "Tiêu hóa",
+    "TimMachHuyetAp": "Tim mạch - Huyết áp",
+    "VitaminKhoangChat": "Vitamin - Khoáng chất",
+    "XuongKhop": "Xương khớp",
+    "DaDay": "Dạ dày",
+    "GianCo": "Giãn cơ",
+    "TieuDuong": "Tiểu đường",
+    "NhoMat": "Nhỏ mắt",
+    "SatTrung": "Sát trùng",
+    "HormonNoiTietTo": "Hormon và Nội tiết tố",
+    "HoHap": "Hô hấp",
+    "SoiThanSoiMat": "Sỏi thận - Sỏi mật",
+    "NhoMui": "Nhỏ mũi",
+    "NhoTai": "Nhỏ tai",
+    "TuanHoanNaoAnThan": "Tuần hoàn não - An thần",
+    "Khac": "Khác"
+  },
+
+  "stock": {
+    "movetype": {
+      "import": {
+        "NhapNCC": "Nhập nhà cung cấp",
+        "NhapKhac": "Nhập khác"
+      },
+      "export": {
+        "XuatTraNcc": "Trả nhà cung cấp",
+        "XuatHuy": "Xuất hủy"
+      }
+    }
+  },
+  "StockType": {
+    "1": "Kho chính",
+    "2": "Kho hàng hóa",
+    "3": "Khác"
+  },
+  "BarcodeLayout.Page2Tem": "Cuộn 2 tem (khổ 72x22 mm)",
+  "BarcodeLayout.Page3Tem": "Cuộn 3 nhãn (khổ 104x22mm)",
+  "buggyType": {
+    "1": "Xe bảo trì kỹ thuật",
+    "2": "Xe phục vụ golfer",
+    "3": "Xe vật tư/hỗ trợ",
+    "4": "Xe nhân viên",
+    "5": "Xe VIP"
+  },
+  "batteryType": {
+    "1": "Ắc quy chì",
+    "2": "Lithium-ion",
+    "3": "Ắc quy AGM",
+    "4": "Gel",
+    "5": "Ắc quy sâu"
+  },
+  "golfBuggyStatus": {
+    "1": "Khả dụng",
+    "2": "Đang sử dụng",
+    "3": "Đang bảo trì",
+    "4": "Đang sạc",
+    "5": "Hỏng"
+  }
+}
+

@@ -1,0 +1,46 @@
+.tab-cru-customer {
+   &.ant-tabs {
+       width: 100% !important;
+   }
+
+//    .ant-tabs-tab.ant-tabs-tab-active {
+//        background-color: #dcffe1;
+//        color: var(--main-color);
+//        border: none;
+//        font-weight: 600;
+//        border-radius: 6px;
+
+//        .ant-tabs-tab-btn {
+//            color: inherit !important;
+//        }
+//    }
+
+//    .ant-tabs-tab.ant-tabs-tab-active:hover {
+//        color: var(--main-color);
+
+//        .ant-tabs-tab-btn {
+//            color: inherit !important;
+//        }
+//    }
+
+//    .ant-tabs-tab {
+//        margin-right: 20px !important;
+//    }
+
+//    .ant-tabs .ant-tabs-ink-bar {
+//        background-color: unset;
+//    }
+
+//    .ant-tabs-tab:hover {
+//        background-color: rgba(0, 0, 0, 0.06);
+//        color: rgba(0, 0, 0, 0.88);
+//    }
+}
+
+.employee-form {
+    width: 100%;
+
+    .ant-row {
+        width: 100% !important;
+    }
+}

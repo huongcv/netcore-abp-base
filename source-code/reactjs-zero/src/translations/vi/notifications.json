@@ -1,0 +1,17 @@
+{
+  "titlePage": "Danh sách thông báo",
+  "list": "Danh sách",
+  "setAllAsRead": "Đánh dấu tất cả đã đọc",
+  "markAsRead": "Đánh dấu đã đọc",
+  "notifications": "Thông báo",
+  "notificationName": "Loại thông báo",
+  "title": "Tiêu đề",
+  "body": "Nội dung",
+  "state": "Trạng thái",
+  "notRead": "Chưa đọc",
+    "read": "Đã đọc",
+  "notNotification": "Không có thông báo nào",
+  "actionBtn": {
+    "setAsRead": "Đánh dấu đã đọc"
+  }
+}

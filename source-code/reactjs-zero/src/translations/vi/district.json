@@ -1,0 +1,29 @@
+{
+  "pageTitle": "Danh sách Quận/ Huyện",
+  "ten": "Tên Quận/ Huyện",
+  "ma": "Mã Quận/ Huyện",
+  "phoneCode": "Mã vùng điện thoại",
+  "currencyCode": "Mã đơn vị tiền tệ",
+  "stt": "STT",
+  "status": "Trạng thái",
+  "title": {
+    "addNew": "Thêm mới Quận/ Huyện",
+    "update": "Cập nhật thông tin Quận/ Huyện",
+    "viewDetail": "Chi tiết Quận/ Huyện"
+  },
+  "updateSuccess": "Sửa thành công Quận/ Huyện: {{districtName}}",
+  "addNewSuccess": "Thêm mới thành công Quận/ Huyện: {{districtName}}",
+  "trung_ma_tinh": "Mã Quận/ Huyện: {{ma}} đã tồn tại trên hệ thống",
+  "Crud.Tinh.UpdateSuccess": "Sửa thành công Quận/ Huyện: {{districtName}}",
+  "Crud.Tinh.InsertSuccess": "Thêm mới thành công Quận/ Huyện: {{districtName}}",
+  "Crud.Tinh.RemoveSuccess": "Xóa thành công Quận/ Huyện: {{districtName}}",
+  "fileExcel": {
+    "Title": "Danh sách Quận/ Huyện",
+    "FileName": "ds-tinh.xlsx"
+  },
+  "confirmRemove": "Bạn có muốn xóa: <bold>{{districtName}}</bold> này không",
+  "removeSuccess": "Xóa thành công Quận/ Huyện: {{districtName}}",
+  "stateSelect": "Chọn Tỉnh/ Thành phố",
+  "state": "Tỉnh/ Thành phố",
+  "districtLevel": "Cấp"
+}

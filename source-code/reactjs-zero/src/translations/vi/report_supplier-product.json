@@ -1,0 +1,28 @@
+{
+  "titlePageLvl1": "Báo cáo",
+  "titlePageLvl2": "Báo cáo nhà cung cấp",
+  "titlePage": "Hàng hóa",
+  "fileExcel": {
+    "Title": "Báo cáo nhà cung cấp/ Hàng hóa",
+    "FileName": "hang-hoa-theo-ncc.xlsx"
+  },
+
+  "supplierName": "Tên nhà cung cấp",
+  "supplierCode": "Mã nhà cung cấp",
+  "productName": "Tên sản phẩm",
+  "productCode": "Mã sản phẩm",
+  "totalAmount": "Giá trị nhập",
+  "returnTotalAmount": "Giá trị trả lại",
+  "moveQty": "SL nhập",
+  "returnQty": "SL trả",
+  "price": "Giá nhập",
+  "totalMove": "Tổng tiền nhập",
+  "actionBtn": {
+    "back": "Quay lại"
+  },
+  "rangeDate": "Thời gian",
+  "order": "STT",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày",
+  "total": "Tổng"
+}
