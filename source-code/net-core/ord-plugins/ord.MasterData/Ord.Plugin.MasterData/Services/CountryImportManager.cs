@@ -7,7 +7,7 @@ using Ord.Plugin.MasterData.Shared.Services;
 
 namespace Ord.Plugin.MasterData.Services
 {
-    public class CountryImportManger : ExcelImportService<CountryImportDto>, ICountryImportManger
+    public class CountryImportManager : ExcelImportService<CountryImportDto>, ICountryImportManager
     {
         private ICountryRepository CountryRepository => AppFactory.GetServiceDependency<ICountryRepository>();
         private ImportCheckStringDuplicate codeDuplicateValidate = new();

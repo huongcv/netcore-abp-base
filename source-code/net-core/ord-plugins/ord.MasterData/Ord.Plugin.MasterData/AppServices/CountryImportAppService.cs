@@ -13,16 +13,16 @@ namespace Ord.Plugin.MasterData.AppServices
     [OrdAuth]
     public class CountryImportAppService : OrdAppServiceBase
     {
-        private readonly ICountryImportManger _importManger;
+        private readonly ICountryImportManager _importManager;
         private readonly ICountryRepository _countryRepository;
         protected override string GetBasePermissionName()
         {
             return "MasterData.Country";
         }
-        public CountryImportAppService(ICountryImportManger importManger,
+        public CountryImportAppService(ICountryImportManager importManager,
             ICountryRepository countryRepository)
         {
-            _importManger = importManger;
+            _importManager = importManager;
             _countryRepository = countryRepository;
         }
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<IActionResult> DownloadSampleTemplateAsync()
         {
             await CheckPermissionForActionName("Import");
-            return await TryReturnExcelAsync(() => _importManger.ExportSampleTemplateExcel(DoHandlerXlsFileAfterBindData),
+            return await TryReturnExcelAsync(() => _importManager.ExportSampleTemplateExcel(DoHandlerXlsFileAfterBindData),
                 "file.ImportSampleTemplate.Country", false);
 
         }
@@ -42,7 +42,7 @@ namespace Ord.Plugin.MasterData.AppServices
             var fileName = input.IsSuccessList
                 ? "file.ImportResultSuccess.Country"
                 : "file.ImportResultErrors.Country";
-            return await TryReturnExcelAsync(() => _importManger.ExportResultDataAsync(input?.Items ?? new(), DoHandlerXlsFileAfterBindData),
+            return await TryReturnExcelAsync(() => _importManager.ExportResultDataAsync(input?.Items ?? new(), DoHandlerXlsFileAfterBindData),
                 fileName, false);
 
         }
@@ -60,7 +60,7 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ValidateDataImportAsync(List<CountryImportDto> dataImports)
         {
             await CheckPermissionForActionName("Import");
-            var result = await _importManger.ValidateProcessDataAsync(dataImports);
+            var result = await _importManager.ValidateProcessDataAsync(dataImports);
             return AppFactory.CreateSuccessResult(result);
         }
         [HttpPost]
@@ -77,7 +77,7 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ImportAsync(List<CountryImportDto> dataImports)
         {
             await CheckPermissionForActionName("Import");
-            var result = await _importManger.ValidateProcessDataAsync(dataImports);
+            var result = await _importManager.ValidateProcessDataAsync(dataImports);
             if (result.SuccessImportList?.Any() == true)
             {
                 await DoBulkImportDataAsync(result.SuccessImportList);

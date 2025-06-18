@@ -3,7 +3,7 @@ using Ord.Plugin.MasterData.Shared.Dtos;
 
 namespace Ord.Plugin.MasterData.Shared.Services
 {
-    public interface ICountryImportManger : IExcelImportService<CountryImportDto>
+    public interface ICountryReaderManager : IExcelReaderService<CountryImportDto>
     {
     }
 }

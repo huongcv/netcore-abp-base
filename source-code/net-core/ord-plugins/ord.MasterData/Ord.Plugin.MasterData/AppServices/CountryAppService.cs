@@ -14,7 +14,7 @@ namespace Ord.Plugin.MasterData.AppServices
     public partial class CountryAppService : OrdCrudAppService<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>
     {
         private ICountryRepository CountryRepository => AppFactory.GetServiceDependency<ICountryRepository>();
-        private ICountryImportManger CountryImportManger => AppFactory.GetServiceDependency<ICountryImportManger>();
+        private ICountryImportManager CountryImportManager => AppFactory.GetServiceDependency<ICountryImportManager>();
 
         protected override
             IOrdCrudRepository<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto,
@@ -51,7 +51,7 @@ namespace Ord.Plugin.MasterData.AppServices
             // sử dụng chung file mẫu khi xuất với file mẫu import
             var dataExport = pagedResult.Items
                 .Select(x => AppFactory.ObjectMap<CountryPagedDto, CountryImportDto>(x)).ToList();
-            return await CountryImportManger.ExportResultDataAsync(dataExport);
+            return await CountryImportManager.ExportResultDataAsync(dataExport);
         }
     }
 }
