@@ -24,4 +24,14 @@ public class FileSystemFileStoreProvider : IFileStoreProvider, ITransientDepende
         Stream stream = File.OpenRead(fullPath);
         return Task.FromResult(stream);
     }
+
+    public Task SaveAsync(string templatePath, Stream blobStream, bool overrideExisting)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteAsync(string templatePath)
+    {
+        throw new NotImplementedException();
+    }
 }

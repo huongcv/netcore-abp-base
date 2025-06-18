@@ -3,7 +3,7 @@ using FlexCel.Report;
 using FlexCel.XlsAdapter;
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Ord.Plugin.Core.Base;
-using Ord.Plugin.Core.Features.BlobStoring;
+using Ord.Plugin.Core.Factories.Extensions;
 
 namespace Ord.Plugin.Core.Features.DataExporting
 {
@@ -20,12 +20,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         }
         public void SetTemplateProvider(FileStoreProvider provider)
         {
-            if (provider == FileStoreProvider.MinIO)
-            {
-                _fileStoreProvider = AppFactory.GetServiceDependency<MinioFileStoreProvider>();
-                return;
-            }
-            _fileStoreProvider ??= AppFactory.GetServiceDependency<FileSystemFileStoreProvider>();
+            _fileStoreProvider = AppFactory.GetStoreProvider(provider);
         }
         public async Task<byte[]> ExportPdfAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {

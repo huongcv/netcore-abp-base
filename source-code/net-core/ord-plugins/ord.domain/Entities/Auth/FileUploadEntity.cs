@@ -15,7 +15,7 @@ namespace Ord.Domain.Entities.Auth
         public string? MimeType { get; set; }
         [MaxLength(300)]
         public string? BlobContainerPath { get; set; }
-        public FileStoreProvider? FileStoreProvider { get; set; }
+        public FileStoreProvider FileStoreProvider { get; set; }
         public Guid? TenantId { get; }
     }
 }
