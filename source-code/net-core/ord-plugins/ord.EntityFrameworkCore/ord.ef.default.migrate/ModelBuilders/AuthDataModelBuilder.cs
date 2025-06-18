@@ -103,6 +103,10 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
             builder.Entity<FileUploadEntity>(b =>
             {
                 b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.TenantId
+                });
             });
         }
     }

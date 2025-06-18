@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Ord.Domain.Entities.Auth;
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Ord.Plugin.Core.Base;
+using Volo.Abp.Domain.Repositories;
 
 namespace Ord.Plugin.Core.Features.BlobStoring
 {
     public class UploadFileManager : OrdManagerBase, IUploadFileManager
     {
+        private IRepository<FileUploadEntity, Guid> Repository => AppFactory.GetServiceDependency<IRepository<FileUploadEntity, Guid>>();
         public Task<FileUploadDto> GetByFileIdAsync(Guid fileId)
         {
             throw new NotImplementedException();
