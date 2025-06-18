@@ -34,7 +34,6 @@ namespace Ord.Plugin.Contract.Utils
                     String.Empty).Replace('\u0111', 'd')
                 .Replace('\u0110', 'D');
         }
-
         public static string RemoveMultiSpace(this string s)
         {
             return string.IsNullOrEmpty(s) ? s : Regex.Replace(s.Trim(), @"\s+", " ");

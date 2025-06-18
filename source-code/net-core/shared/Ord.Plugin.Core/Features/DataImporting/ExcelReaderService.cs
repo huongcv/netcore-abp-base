@@ -36,7 +36,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 Logger.LogError(ex, "Error occurred during Excel reading process");
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
             if (string.IsNullOrWhiteSpace(headerText))
                 return string.Empty;
 
-            return StringUtil.ConvertToUnsign(headerText.Trim().ToLower());
+            return StringUtil.ConvertToUnsign(headerText.Trim().RemoveMultiSpace().Replace(" ", "_").ToLower());
         }
 
         /// <summary>

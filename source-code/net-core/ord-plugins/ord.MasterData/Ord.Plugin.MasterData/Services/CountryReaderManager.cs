@@ -9,8 +9,8 @@ namespace Ord.Plugin.MasterData.Services
 
         protected override string? MapHeader(string headerExcel)
         {
-            if (headerExcel.Contains("dien thoai")) return "PhoneCode";
-            if (headerExcel.Contains("tien te")) return "CurrencyCode";
+            if (headerExcel.Contains("dien_thoai")) return "PhoneCode";
+            if (headerExcel.Contains("tien_te")) return "CurrencyCode";
             if (headerExcel.Contains("ma")) return "Code";
             if (headerExcel.Contains("ten")) return "Name";
             return null; // Ignore unknown headers
