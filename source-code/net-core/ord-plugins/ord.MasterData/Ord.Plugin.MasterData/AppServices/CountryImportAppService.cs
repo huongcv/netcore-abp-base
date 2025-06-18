@@ -1,10 +1,10 @@
-﻿using FlexCel.Core;
-using FlexCel.XlsAdapter;
+﻿using FlexCel.XlsAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.MasterData.Shared.Dtos;
+using Ord.Plugin.MasterData.Shared.Repositories;
 using Ord.Plugin.MasterData.Shared.Services;
 using Volo.Abp.Validation;
 
@@ -14,13 +14,16 @@ namespace Ord.Plugin.MasterData.AppServices
     public class CountryImportAppService : OrdAppServiceBase
     {
         private readonly ICountryImportManger _importManger;
+        private readonly ICountryRepository _countryRepository;
         protected override string GetBasePermissionName()
         {
             return "MasterData.Country";
         }
-        public CountryImportAppService(ICountryImportManger importManger)
+        public CountryImportAppService(ICountryImportManger importManger,
+            ICountryRepository countryRepository)
         {
             _importManger = importManger;
+            _countryRepository = countryRepository;
         }
         [HttpPost]
         [ActionName("DownloadSampleTemplate")]
@@ -67,7 +70,21 @@ namespace Ord.Plugin.MasterData.AppServices
         {
             await CheckPermissionForActionName("Import");
             var result = await _importManger.ValidateProcessDataAsync(dataImports);
+            if (result.SuccessImportList?.Any() == true)
+            {
+                await DoBulkImportDataAsync(result.SuccessImportList);
+            }
             return AppFactory.CreateSuccessResult(result);
+        }
+
+        protected async Task DoBulkImportDataAsync(List<CountryImportDto> bulkItems)
+        {
+            var bulkCreateDto = bulkItems.Select(importDto =>
+            {
+                var createDto = AppFactory.ObjectMap<CountryImportDto, CreateCountryDto>(importDto);
+                return createDto;
+            });
+            var entities = await _countryRepository.CreateManyAsync(bulkCreateDto);
         }
     }
 }
