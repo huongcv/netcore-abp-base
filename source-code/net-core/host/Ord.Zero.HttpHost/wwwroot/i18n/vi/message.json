@@ -27,8 +27,8 @@
     "file_extension": "Định dạng file không được hỗ trợ",
     "import_code_exists_database": "Mã {0} đã tồn tại trên hệ thống",
     "import_code_duplicate_file": "Mã {0} bị trùng trong file dữ liệu",
-    "AllowedFileExtensions": "Không hỗ trợ loại file {0}",
-    "MaxFileSize": "Kích thước file không được vượt quá {0}"
+    "AllowedFileExtensions": "Không hỗ trợ loại file {1}",
+    "MaxFileSize": "Kích thước file không được vượt quá {1}"
   },
   "RateLimit": {
     "RateLimitExceeded": "Vượt quá giới hạn truy cập",

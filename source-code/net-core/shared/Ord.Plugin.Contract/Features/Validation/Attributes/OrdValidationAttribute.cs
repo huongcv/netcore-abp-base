@@ -58,10 +58,12 @@ namespace Ord.Plugin.Contract.Features.Validation.Attributes
         protected override string GetErrorMessage(ValidationContext validationContext, string fieldName, object value)
         {
             var parameters = GetMessageParameters();
-            var allParams = new object[] { fieldName }.Concat(parameters).ToArray();
-            allParams.AddLast(value);
+            var allParams = new List<object> { fieldName };
+            allParams.AddRange(parameters);
+            allParams.Add(value);
             var errorMessage = ErrorMessage ?? "common.validation_err_base";
-            return _appFactory.GetLocalizedMessage(errorMessage, allParams);
+            return _appFactory.GetLocalizedMessage(errorMessage, allParams.ToArray());
+
         }
         protected abstract object[] GetMessageParameters();
     }
