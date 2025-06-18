@@ -28,7 +28,8 @@
     "import_code_exists_database": "Mã {0} đã tồn tại trên hệ thống",
     "import_code_duplicate_file": "Mã {0} bị trùng trong file dữ liệu",
     "AllowedFileExtensions": "Không hỗ trợ loại file {1}",
-    "MaxFileSize": "Kích thước file không được vượt quá {1}"
+    "MaxFileSize": "Kích thước file không được vượt quá {1}",
+    "file_not_data": "File không có dữ liệu"
   },
   "RateLimit": {
     "RateLimitExceeded": "Vượt quá giới hạn truy cập",

@@ -1,9 +1,11 @@
-﻿namespace Ord.Plugin.Contract.Features.DataImporting
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Ord.Plugin.Contract.Features.DataImporting
 {
     public interface IExcelReaderService<TDto>
         where TDto : IImportDto, new()
     {
-        Task<List<TDto>> ReadFromExcelAsync(byte[] fileBytes, string fileName);
-        Task<bool> ValidateExcelStructureAsync(byte[] fileBytes, string fileName);
+        Task<List<TDto>> ReadFromExcelAsync(IFormFile file);
+        Task<List<TDto>> ReadFromExcelAsync(byte[] fileBytes);
     }
 }

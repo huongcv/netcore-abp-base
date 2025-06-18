@@ -1,29 +1,46 @@
-﻿using Microsoft.Extensions.Logging;
-using Ord.Plugin.Contract.Features.DataImporting;
-using Ord.Plugin.Core.Features.DataImporting;
+﻿using Ord.Plugin.Core.Features.DataImporting;
 using Ord.Plugin.MasterData.Shared.Dtos;
+using Ord.Plugin.MasterData.Shared.Services;
 
 namespace Ord.Plugin.MasterData.Services
 {
-    public class CountryReaderManager: ExcelReaderService<CountryImportDto>,IExcelReaderService<CountryImportDto>
+    public class CountryReaderManager : ExcelReaderService<CountryImportDto>, ICountryReaderManager
     {
-        public CountryReaderManager(ILogger logger) : base(logger)
-        {
-        }
 
         protected override string? MapHeader(string headerExcel)
         {
-            throw new NotImplementedException();
+            if (headerExcel.Contains("dien thoai")) return "PhoneCode";
+            if (headerExcel.Contains("tien te")) return "CurrencyCode";
+            if (headerExcel.Contains("ma")) return "Code";
+            if (headerExcel.Contains("ten")) return "Name";
+            return null; // Ignore unknown headers
         }
 
         protected override void ParseCellValueToDto(string propertyName, object? cellValue, CountryImportDto dto)
         {
-            throw new NotImplementedException();
+            switch (propertyName)
+            {
+                case "Code":
+                    dto.Code = cellValue?.ToString();
+                    break;
+                case "Name":
+                    dto.Name = cellValue?.ToString();
+                    break;
+                case "PhoneCode":
+                    dto.PhoneCode = cellValue?.ToString();
+                    break;
+                case "CurrencyCode":
+                    dto.CurrencyCode = cellValue?.ToString();
+                    break;
+            }
         }
 
         protected override bool ValidateFileStructure(List<string> headers)
         {
-            throw new NotImplementedException();
+            // Check if required headers exist
+            return headers.Any(h => h.Contains("stt")) &&
+                   headers.Any(h => h.Contains("ma")) &&
+                   headers.Any(h => h.Contains("ten"));
         }
     }
 }

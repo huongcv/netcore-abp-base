@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Configurations;
@@ -35,7 +36,11 @@ namespace Ord.Plugin.Core
             //Sync 24.1.47
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF1cXmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEFjW31XcHBUQmNeVEx2Ww==");
 
-
+            services.AddSingleton<ILogger>(sp =>
+            {
+                var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+                return loggerFactory.CreateLogger("DefaultLogger");
+            });
         }
     }
 }

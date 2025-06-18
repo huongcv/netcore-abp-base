@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Features.DataImporting;
@@ -15,34 +16,17 @@ namespace Ord.Plugin.Core.Features.DataImporting
     public abstract class ExcelReaderService<TDto> : OrdManagerBase, IExcelReaderService<TDto>
         where TDto : class, IImportDto, new()
     {
-        protected readonly ILogger Logger;
-
-        protected ExcelReaderService(ILogger logger)
-        {
-            Logger = logger;
-            // Set EPPlus license context
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        }
-
+        protected ILogger Logger => AppFactory.GetServiceDependency<ILogger>();
         #region Public Methods
 
-        /// <summary>
-        /// Read Excel file and convert to DTO list
-        /// </summary>
-        /// <param name="fileBytes">Excel file content as byte array</param>
-        /// <param name="fileName">Original file name for validation</param>
-        /// <returns>List of DTOs read from Excel</returns>
-        public async Task<List<TDto>> ReadFromExcelAsync(byte[] fileBytes, string fileName)
+        public virtual async Task<List<TDto>> ReadFromExcelAsync(IFormFile file)
         {
             try
             {
-                Logger.LogInformation("Starting Excel reading process for file: {FileName}", fileName);
-
-                // Validate file format
-                ValidateFileFormat(fileName);
-
+                Logger.LogInformation("Starting Excel reading process");
+                await using var stream = file.OpenReadStream();
                 // Read Excel file
-                var dtoList = await ReadExcelFileAsync(fileBytes);
+                var dtoList = await ReadExcelFileAsync(stream);
 
                 Logger.LogInformation("Successfully read {Count} records from Excel file", dtoList.Count);
                 return dtoList;
@@ -52,34 +36,30 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 Logger.LogError(ex, "Error occurred during Excel reading process");
                 throw;
             }
+            
         }
 
         /// <summary>
-        /// Validate Excel file structure only (without reading data)
+        /// Read Excel file and convert to DTO list
         /// </summary>
-        /// <param name="fileBytes">Excel file content</param>
-        /// <param name="fileName">File name</param>
-        /// <returns>True if file structure is valid</returns>
-        public async Task<bool> ValidateExcelStructureAsync(byte[] fileBytes, string fileName)
+        /// <param name="fileBytes">Excel file content as byte array</param>
+        /// <param name="fileName">Original file name for validation</param>
+        /// <returns>List of DTOs read from Excel</returns>
+        public virtual async Task<List<TDto>> ReadFromExcelAsync(byte[] fileBytes)
         {
             try
             {
-                ValidateFileFormat(fileName);
-
-                using var package = new ExcelPackage(new MemoryStream(fileBytes));
-                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-                if (worksheet?.Dimension == null)
-                    return false;
-
-                var headerRowIndex = FindHeaderRow(worksheet);
-                var headers = ExtractHeaders(worksheet, headerRowIndex);
-
-                return ValidateFileStructure(headers);
+                Logger.LogInformation("Starting Excel reading process");
+                using var stream = new MemoryStream(fileBytes);
+                // Read Excel file
+                var dtoList = await ReadExcelFileAsync(stream);
+                Logger.LogInformation("Successfully read {Count} records from Excel file", dtoList.Count);
+                return dtoList;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                Logger.LogError(ex, "Error occurred during Excel reading process");
+                throw;
             }
         }
 
@@ -112,20 +92,6 @@ namespace Ord.Plugin.Core.Features.DataImporting
         #endregion
 
         #region Virtual Methods - Can be overridden by derived classes
-
-        /// <summary>
-        /// Validate file format (extension, size, etc.)
-        /// </summary>
-        /// <param name="fileName">File name to validate</param>
-        protected virtual void ValidateFileFormat(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentException("File name cannot be empty");
-
-            var extension = Path.GetExtension(fileName).ToLower();
-            if (extension != ".xlsx" && extension != ".xls")
-                throw new ArgumentException("Only Excel files (.xlsx, .xls) are supported");
-        }
 
         /// <summary>
         /// Normalize header text for comparison (remove accents, lowercase, etc.)
@@ -222,13 +188,9 @@ namespace Ord.Plugin.Core.Features.DataImporting
         #endregion
 
         #region Private Methods
-
-        /// <summary>
-        /// Read Excel file using EPPlus with column mapping
-        /// </summary>
-        private async Task<List<TDto>> ReadExcelFileAsync(byte[] fileBytes)
+        private async Task<List<TDto>> ReadExcelFileAsync(Stream fileStream)
         {
-            using var package = new ExcelPackage(new MemoryStream(fileBytes));
+            using var package = new ExcelPackage(fileStream);
             var worksheet = package.Workbook.Worksheets.FirstOrDefault();
 
             if (worksheet == null)

@@ -13,24 +13,19 @@ namespace Ord.Plugin.MasterData.AppServices
     [OrdAuth]
     public class CountryImportAppService : OrdAppServiceBase
     {
-        private readonly ICountryImportManager _importManager;
-        private readonly ICountryRepository _countryRepository;
+        private ICountryImportManager ImportManager => AppFactory.GetServiceDependency<ICountryImportManager>();
+        private ICountryRepository Repository => AppFactory.GetServiceDependency<ICountryRepository>();
+        private ICountryReaderManager ReaderManager => AppFactory.GetServiceDependency<ICountryReaderManager>();
         protected override string GetBasePermissionName()
         {
             return "MasterData.Country";
-        }
-        public CountryImportAppService(ICountryImportManager importManager,
-            ICountryRepository countryRepository)
-        {
-            _importManager = importManager;
-            _countryRepository = countryRepository;
         }
         [HttpPost]
         [ActionName("DownloadSampleTemplate")]
         public virtual async Task<IActionResult> DownloadSampleTemplateAsync()
         {
             await CheckPermissionForActionName("Import");
-            return await TryReturnExcelAsync(() => _importManager.ExportSampleTemplateExcel(DoHandlerXlsFileAfterBindData),
+            return await TryReturnExcelAsync(() => ImportManager.ExportSampleTemplateExcel(DoHandlerXlsFileAfterBindData),
                 "file.ImportSampleTemplate.Country", false);
 
         }
@@ -42,7 +37,7 @@ namespace Ord.Plugin.MasterData.AppServices
             var fileName = input.IsSuccessList
                 ? "file.ImportResultSuccess.Country"
                 : "file.ImportResultErrors.Country";
-            return await TryReturnExcelAsync(() => _importManager.ExportResultDataAsync(input?.Items ?? new(), DoHandlerXlsFileAfterBindData),
+            return await TryReturnExcelAsync(() => ImportManager.ExportResultDataAsync(input?.Items ?? new(), DoHandlerXlsFileAfterBindData),
                 fileName, false);
 
         }
@@ -60,14 +55,19 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ValidateDataImportAsync(List<CountryImportDto> dataImports)
         {
             await CheckPermissionForActionName("Import");
-            var result = await _importManager.ValidateProcessDataAsync(dataImports);
+            var result = await ImportManager.ValidateProcessDataAsync(dataImports);
             return AppFactory.CreateSuccessResult(result);
         }
         [HttpPost]
         [ActionName("ValidateFile")]
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ValidateFileAsync([FromForm] ExcelImportFileRequest input)
         {
-            return null;
+            var dataExcel = await ReaderManager.ReadFromExcelAsync(input.File);
+            if (dataExcel?.Any() != true)
+            {
+                return AppFactory.CreateBadRequestResult<ImportOutputDto<CountryImportDto>>(AppFactory.GetLocalizedMessage("message.validation.file_not_data"));
+            }
+            return await ValidateDataImportAsync(dataExcel);
         }
 
 
@@ -77,14 +77,14 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ImportAsync(List<CountryImportDto> dataImports)
         {
             await CheckPermissionForActionName("Import");
-            var result = await _importManager.ValidateProcessDataAsync(dataImports);
+            var result = await ImportManager.ValidateProcessDataAsync(dataImports);
             if (result.SuccessImportList?.Any() == true)
             {
                 await DoBulkImportDataAsync(result.SuccessImportList);
             }
             return AppFactory.CreateSuccessResult(result);
         }
-       
+
 
         protected async Task DoBulkImportDataAsync(List<CountryImportDto> bulkItems)
         {
@@ -93,7 +93,7 @@ namespace Ord.Plugin.MasterData.AppServices
                 var createDto = AppFactory.ObjectMap<CountryImportDto, CreateCountryDto>(importDto);
                 return createDto;
             });
-            var entities = await _countryRepository.CreateManyAsync(bulkCreateDto);
+            var entities = await Repository.CreateManyAsync(bulkCreateDto);
         }
     }
 }
