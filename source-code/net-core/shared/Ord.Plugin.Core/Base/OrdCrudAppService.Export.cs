@@ -24,16 +24,10 @@ namespace Ord.Plugin.Core.Services
             {
                 input.MaxResultCount = Int32.MaxValue;
                 var pagedResultCommon = await GetPaged(input);
-
                 // Xuất dữ liệu
                 var excelBytes = await GenerateExcelFileAsync(pagedResultCommon.Data, input);
                 var fileName = GetExportFileName(input);
-
-                // Trả về file
-                return new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                {
-                    FileDownloadName = fileName
-                };
+                return await ReturnExcelFileAsync(excelBytes, fileName);
             }
             catch (Exception ex)
             {

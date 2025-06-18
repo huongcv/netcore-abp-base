@@ -12,7 +12,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         private ITemplateProvider _templateProvider;
         public async Task<byte[]> ExportExcelAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
-            var xls = await RunReportAsync(templatePath, reportHandler);
+            var xls = await RunReportAsync(templatePath, reportHandler, fileHandler);
             await using var memoryStream = new MemoryStream();
             xls.Save(memoryStream);
             memoryStream.Position = 0;
@@ -29,7 +29,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
         }
         public async Task<byte[]> ExportPdfAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
-            var xls = await RunReportAsync(templatePath, reportHandler);
+            var xls = await RunReportAsync(templatePath, reportHandler, fileHandler);
             await using var memoryStream = new MemoryStream();
 
             using (var pdf = new FlexCelPdfExport(xls, true))
@@ -45,7 +45,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
 
 
 
-        private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
+        private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler, Func<XlsFile, Task>? fileHandler)
         {
             // mặc định lấy trong file
             _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();

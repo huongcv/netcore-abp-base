@@ -4,11 +4,12 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
 using Ord.Plugin.Contract.Localization;
 using Ord.Plugin.Contract.Services;
 using Ord.Plugin.Contract.Services.Shop;
 using Ord.Plugin.Core.Caching;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
@@ -66,6 +67,21 @@ namespace Ord.Plugin.Core.Factories
             return formatArgs?.Length > 0
                 ? l[key, formatArgs]
                 : l[key];
+        }
+
+        public string GetCurrentCulture()
+        {
+            var culture = CultureInfo.CurrentUICulture.Name;
+            if (string.IsNullOrEmpty(culture))
+            {
+                return "vi";
+            }
+            if (culture.Contains('-'))
+            {
+                return culture.Split('-')[0].ToLower();
+            }
+
+            return culture.ToLower();
         }
 
         public IHttpContextAccessor HttpContextAccessor => LazyService<IHttpContextAccessor>();

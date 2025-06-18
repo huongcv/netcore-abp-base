@@ -69,7 +69,7 @@ namespace Ord.Plugin.Auth.AppServices
 
         protected override async Task<byte[]> GenerateExcelFileAsync(PagedResultDto<UserPagedDto> pagedResult, UserPagedInput input)
         {
-            return await FlexCelService.ExportExcelAsync("excel/ListUser.xlsx", async fr =>
+            return await FlexCelService.ExportExcelAsync("Excel/Auth/ListUser.xlsx", async fr =>
             {
                 fr.SetValue("Title", AppFactory.GetLocalizedMessage("auth.user.list-user"));
                 var items = pagedResult.Items.ToList();

@@ -9,7 +9,7 @@ public class FileSystemTemplateProvider : ITemplateProvider, ITransientDependenc
     public FileSystemTemplateProvider(IWebHostEnvironment env)
     {
         // Gốc là: wwwroot/template
-        _templateRootPath = Path.Combine(env.WebRootPath, "template");
+        _templateRootPath = Path.Combine("Contents");
     }
 
     public Task<Stream> GetTemplateStreamAsync(string templateRelativePath)

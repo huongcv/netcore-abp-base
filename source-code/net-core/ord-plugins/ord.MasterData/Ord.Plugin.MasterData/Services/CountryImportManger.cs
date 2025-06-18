@@ -1,5 +1,5 @@
-﻿using Castle.Components.DictionaryAdapter;
-using Ord.Plugin.Contract.Features.DataImporting;
+﻿using Ord.Plugin.Contract.Features.DataImporting;
+using Ord.Plugin.Core.Factories.Extensions;
 using Ord.Plugin.Core.Features.DataImporting;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
@@ -11,12 +11,12 @@ namespace Ord.Plugin.MasterData.Services
     {
         private ICountryRepository CountryRepository => AppFactory.GetServiceDependency<ICountryRepository>();
         private ImportCheckStringDuplicate codeDuplicateValidate = new();
-        protected override async Task PrepareDataForValidationAsync()
+        protected override async Task PrepareDataForValidationAsync(List<CountryImportDto> rawDataList)
         {
             codeDuplicateValidate.SetListValueDb(() => CountryRepository.GetAllCodesAsync());
         }
 
-        protected override async Task<List<string>> ValidateBusinessRulesAsync(CountryImportDto importDto)
+        protected override async Task<List<string>> ValidateBusinessRulesForRowAsync(CountryImportDto importDto)
         {
             var errors = new List<string>();
             var errorCodeDuplicate = codeDuplicateValidate.Validate(AppFactory, importDto.Code, importDto.RowNumber);
@@ -26,17 +26,24 @@ namespace Ord.Plugin.MasterData.Services
 
         protected override string GetFilePathExportResult()
         {
-            throw new NotImplementedException();
+            return AppFactory.BuildLocalizedExcelFilePath("ListCountry", "MasterData");
         }
 
         protected override int GetRowIndexStartExcelResult()
         {
-            throw new NotImplementedException();
+            return 2;
         }
 
-        protected override Task<List<object>> GetDataCellExcelResultAsync(CountryImportDto item)
+        protected override async Task<List<object>> GetDataCellExcelResultAsync(CountryImportDto item)
         {
-            throw new NotImplementedException();
+            return new()
+            {
+                item.Code,
+                item.Name,
+                item.PhoneCode,
+                item.CurrencyCode,
+                AppFactory.GetLocalizedIsActive(item.IsActived)
+            };
         }
 
         protected override async Task<List<CountryImportDto>> GetSampleDataOfTemplateImport()

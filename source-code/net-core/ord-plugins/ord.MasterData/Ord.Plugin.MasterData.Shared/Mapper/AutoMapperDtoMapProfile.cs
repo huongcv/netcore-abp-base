@@ -12,6 +12,7 @@ namespace Ord.Plugin.MasterData.Shared.Mapper
             CreateMap<CountryDetailDto, CountryEntity>().ReverseMap();
             CreateMap<CreateCountryDto, CountryEntity>().ReverseMap();
             CreateMap<UpdateCountryDto, CountryEntity>().ReverseMap();
+            CreateMap<CountryPagedDto, CountryImportDto>().ReverseMap();
         }
     }
 }

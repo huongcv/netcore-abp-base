@@ -5,6 +5,8 @@ using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
+using Ord.Plugin.MasterData.Shared.Services;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.MasterData.AppServices
 {
@@ -12,6 +14,7 @@ namespace Ord.Plugin.MasterData.AppServices
     public partial class CountryAppService : OrdCrudAppService<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto, CreateCountryDto, UpdateCountryDto>
     {
         private ICountryRepository CountryRepository => AppFactory.GetServiceDependency<ICountryRepository>();
+        private ICountryImportManger CountryImportManger => AppFactory.GetServiceDependency<ICountryImportManger>();
 
         protected override
             IOrdCrudRepository<CountryEntity, int, CountryPagedInput, CountryPagedDto, CountryDetailDto,
@@ -41,6 +44,14 @@ namespace Ord.Plugin.MasterData.AppServices
                 }
             }).ToList();
             return AppFactory.CreateSuccessResult(options);
+        }
+
+        protected override async Task<byte[]> GenerateExcelFileAsync(PagedResultDto<CountryPagedDto> pagedResult, CountryPagedInput input)
+        {
+            // sử dụng chung file mẫu khi xuất với file mẫu import
+            var dataExport = pagedResult.Items
+                .Select(x => AppFactory.ObjectMap<CountryPagedDto, CountryImportDto>(x)).ToList();
+            return await CountryImportManger.ExportResultDataAsync(dataExport);
         }
     }
 }

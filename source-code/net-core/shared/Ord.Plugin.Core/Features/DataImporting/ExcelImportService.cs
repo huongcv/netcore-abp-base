@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using FlexCel.Core;
+using FlexCel.XlsAdapter;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Features.BlobStoring;
@@ -18,14 +20,15 @@ namespace Ord.Plugin.Core.Features.DataImporting
     {
         #region Abstract Methods - Phải được cài đặt bởi lớp con
 
-        protected abstract Task PrepareDataForValidationAsync();
+        protected abstract Task PrepareDataForValidationAsync(List<TImportDto> rawDataList);
 
         /// <summary>
         /// Hàm kiểm tra logic nghiệp vụ cho mỗi dòng import
         /// </summary>
-        protected abstract Task<List<string>> ValidateBusinessRulesAsync(TImportDto importDto);
+        protected abstract Task<List<string>> ValidateBusinessRulesForRowAsync(TImportDto importDto);
 
         protected abstract string GetFilePathExportResult();
+        // vị trí dòng data trong file excel mẫu
         protected abstract int GetRowIndexStartExcelResult();
         protected abstract Task<List<object>> GetDataCellExcelResultAsync(TImportDto item);
         // tạo danh sách dữ liệu mẫu
@@ -56,7 +59,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 throw new AbpValidationException(AppFactory.GetLocalizedMessage(PrefixMessage() + "veryManyData", GetMaxRowsToProcess().ToString()));
             }
 
-            await PrepareDataForValidationAsync();
+            await PrepareDataForValidationAsync(rawDataList);
             var successList = new List<TImportDto>();
             var errorList = new List<TImportDto>();
             var fluentValidator = ServiceProvider.GetService<IValidator<TImportDto>>();
@@ -79,7 +82,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
                 }
 
                 //Kiểm tra nghiệp vụ
-                var businessRuleErrors = await ValidateBusinessRulesAsync(item);
+                var businessRuleErrors = await ValidateBusinessRulesForRowAsync(item);
                 validationErrors.AddRange(businessRuleErrors);
 
                 // Gán lỗi vào property `ErrorMessages` nếu tồn tại
@@ -106,11 +109,12 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// </summary>
         /// <param name="rawDataList"></param>
         /// <returns></returns>
-        public async Task<byte[]> ExportResultDataAsync(List<TImportDto> rawDataList)
+        public async Task<byte[]> ExportResultDataAsync(List<TImportDto> rawDataList, Func<XlsFile, Task> funResultXls = null)
         {
+            var filePath = GetFilePathExportResult();
             FlexCelService.SetTemplateProvider(TemplateProvider.FileSystem);
             var rowIndex = GetRowIndexStartExcelResult();
-            return await FlexCelService.ExportExcelAsync(GetFilePathExportResult(), fileHandler: async resultXls =>
+            return await FlexCelService.ExportExcelAsync(filePath, fileHandler: async resultXls =>
             {
                 if (rawDataList?.Any() == true)
                 {
@@ -132,8 +136,21 @@ namespace Ord.Plugin.Core.Features.DataImporting
                         }
                         rowIndex++;
                     }
+
+                    if (funResultXls != null)
+                    {
+                        await funResultXls(resultXls);
+                    }
+                    
                 }
+                resultXls.DeleteRange(new TXlsCellRange(1, 5, FlxConsts.Max_Rows, 5), TFlxInsertMode.ShiftColRight);
             });
+        }
+
+        public async Task<byte[]> ExportSampleTemplateExcel(Func<XlsFile, Task> funResultXls = null)
+        {
+            var dataSamples = await GetSampleDataOfTemplateImport();
+            return await ExportResultDataAsync(dataSamples, funResultXls);
         }
 
         /// <summary>

@@ -1,7 +1,10 @@
-﻿using Ord.Plugin.Contract.Exceptions;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace Ord.Plugin.Core.Base
@@ -63,7 +66,7 @@ namespace Ord.Plugin.Core.Base
         /// <summary>
         /// Lấy base permission name - override trong derived class
         /// </summary>
-        protected  abstract string GetBasePermissionName();
+        protected abstract string GetBasePermissionName();
 
         #endregion
 
@@ -97,6 +100,52 @@ namespace Ord.Plugin.Core.Base
         {
             return $"{GetMessagePrefix()}access_denied";
         }
+        #endregion
+
+        #region Export file
+        protected virtual async Task<IActionResult> ReturnExcelFileAsync(byte[] excelBytes, string fileNameWithoutExtension, bool hasTimeStamp)
+        {
+            var timeStamp = hasTimeStamp ? $"_{DateTime.Now:yyyyMMdd_HHmmss}" : string.Empty;
+            var fileName = $"{fileNameWithoutExtension}{timeStamp}.xlsx";
+            return await ReturnExcelFileAsync(excelBytes, fileName);
+        }
+        protected virtual async Task<IActionResult> ReturnExcelFileAsync(byte[] excelBytes, string fileName)
+        {
+            try
+            {
+                if (excelBytes == null || excelBytes.Length == 0)
+                {
+                    throw new UserFriendlyException("exception.export_empty_data");
+                }
+                return new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                {
+                    FileDownloadName = fileName
+                };
+            }
+            catch (Exception)
+            {
+                throw new UserFriendlyException(AppFactory.GetLocalizedMessage("exception.export_failed"));
+            }
+        }
+        protected async Task<IActionResult> TryReturnExcelAsync(
+            Func<Task<byte[]>> exportFunc,
+            string fileNameWithoutExtension,
+            bool hasTimeStamp = true,
+            string errorMessage = "exception.export_failed")
+        {
+            try
+            {
+                var excelBytes = await exportFunc.Invoke();
+                fileNameWithoutExtension = AppFactory.GetLocalizedMessage(fileNameWithoutExtension);
+                return await ReturnExcelFileAsync(excelBytes, fileNameWithoutExtension, hasTimeStamp);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Lỗi xuất Excel");
+                throw new UserFriendlyException(AppFactory.GetLocalizedMessage(errorMessage));
+            }
+        }
+
         #endregion
     }
 }
