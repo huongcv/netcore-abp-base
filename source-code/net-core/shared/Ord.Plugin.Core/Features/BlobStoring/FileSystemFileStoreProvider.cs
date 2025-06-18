@@ -2,17 +2,17 @@
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Volo.Abp.DependencyInjection;
 
-public class FileSystemTemplateProvider : ITemplateProvider, ITransientDependency
+public class FileSystemFileStoreProvider : IFileStoreProvider, ITransientDependency
 {
     private readonly string _templateRootPath;
 
-    public FileSystemTemplateProvider(IWebHostEnvironment env)
+    public FileSystemFileStoreProvider(IWebHostEnvironment env)
     {
         // Gốc là: wwwroot/template
         _templateRootPath = Path.Combine("Contents");
     }
 
-    public Task<Stream> GetTemplateStreamAsync(string templateRelativePath)
+    public Task<Stream> GetStreamAsync(string templateRelativePath)
     {
         var fullPath = Path.Combine(_templateRootPath, templateRelativePath);
 

@@ -43,11 +43,11 @@ namespace Ord.Plugin.HostBase.Configurations
             });
 
             // Đăng ký ITemplateProvider
-            services.AddScoped<ITemplateProvider>(serviceProvider =>
+            services.AddScoped<IFileStoreProvider>(serviceProvider =>
             {
                 var minioClient = serviceProvider.GetRequiredService<MinioClient>();
                 var options = serviceProvider.GetRequiredService<IOptions<MinioOptions>>().Value;
-                return new MinioTemplateProvider(minioClient, options.BucketName);
+                return new MinioFileStoreProvider(minioClient, options.BucketName);
             });
         }
 

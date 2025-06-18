@@ -5,7 +5,9 @@ using Minio;
 using Minio.DataModel.Args;
 using Ord.Plugin.Contract.Configurations;
 using Volo.Abp.DependencyInjection;
-
+/// <summary>
+/// mục đích đồng bộ file lên minio
+/// </summary>
 public class TemplateSyncService : ITransientDependency
 {
     private readonly IWebHostEnvironment _env;

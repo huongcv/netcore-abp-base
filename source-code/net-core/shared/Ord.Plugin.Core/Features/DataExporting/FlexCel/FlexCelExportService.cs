@@ -9,7 +9,7 @@ namespace Ord.Plugin.Core.Features.DataExporting
 {
     public class FlexCelExportingService : OrdManagerBase, IFlexCelExportingService
     {
-        private ITemplateProvider _templateProvider;
+        private IFileStoreProvider _fileStoreProvider;
         public async Task<byte[]> ExportExcelAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
             var xls = await RunReportAsync(templatePath, reportHandler, fileHandler);
@@ -22,10 +22,10 @@ namespace Ord.Plugin.Core.Features.DataExporting
         {
             if (provider == FileStoreProvider.MinIO)
             {
-                _templateProvider = AppFactory.GetServiceDependency<MinioTemplateProvider>();
+                _fileStoreProvider = AppFactory.GetServiceDependency<MinioFileStoreProvider>();
                 return;
             }
-            _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();
+            _fileStoreProvider ??= AppFactory.GetServiceDependency<FileSystemFileStoreProvider>();
         }
         public async Task<byte[]> ExportPdfAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler = null, Func<XlsFile, Task>? fileHandler = null)
         {
@@ -48,8 +48,8 @@ namespace Ord.Plugin.Core.Features.DataExporting
         private async Task<XlsFile> RunReportAsync(string templatePath, Func<FlexCelReport, Task>? reportHandler, Func<XlsFile, Task>? fileHandler)
         {
             // mặc định lấy trong file
-            _templateProvider ??= AppFactory.GetServiceDependency<FileSystemTemplateProvider>();
-            await using var templateStream = await _templateProvider.GetTemplateStreamAsync(templatePath);
+            _fileStoreProvider ??= AppFactory.GetServiceDependency<FileSystemFileStoreProvider>();
+            await using var templateStream = await _fileStoreProvider.GetStreamAsync(templatePath);
             var xls = new XlsFile(true);
             xls.Open(templateStream);
             using var report = new FlexCelReport(true);

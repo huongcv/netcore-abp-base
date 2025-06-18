@@ -5,18 +5,18 @@ using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Core.Features.BlobStoring
 {
-    public class MinioTemplateProvider : ITemplateProvider, ITransientDependency
+    public class MinioFileStoreProvider : IFileStoreProvider, ITransientDependency
     {
         private readonly MinioClient _minioClient;
         private readonly string _bucketName;
 
-        public MinioTemplateProvider(MinioClient minioClient, string bucketName)
+        public MinioFileStoreProvider(MinioClient minioClient, string bucketName)
         {
             _minioClient = minioClient;
             _bucketName = bucketName;
         }
 
-        public async Task<Stream> GetTemplateStreamAsync(string templatePath)
+        public async Task<Stream> GetStreamAsync(string templatePath)
         {
             var stream = new MemoryStream();
 
