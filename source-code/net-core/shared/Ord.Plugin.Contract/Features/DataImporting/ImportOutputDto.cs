@@ -1,4 +1,7 @@
-﻿namespace Ord.Plugin.Contract.Features.DataImporting
+﻿using Microsoft.AspNetCore.Http;
+using Ord.Plugin.Contract.Features.Validation.Attributes;
+
+namespace Ord.Plugin.Contract.Features.DataImporting
 {
     public class ImportOutputDto<TImportDto>
     {
@@ -15,5 +18,13 @@
     {
         public List<TImportDto>? Items { get; set; }
         public bool IsSuccessList { get; set; }
+    }
+
+    public class ExcelImportFileRequest
+    {
+        [OrdValidateRequired(ErrorMessage = "message.validation.file_required")]
+        [OrdAllowedFileExtensions(".xlsx", ".xls")]
+        [OrdMaxFileSize(15)]
+        public virtual IFormFile File { get; set; }
     }
 }

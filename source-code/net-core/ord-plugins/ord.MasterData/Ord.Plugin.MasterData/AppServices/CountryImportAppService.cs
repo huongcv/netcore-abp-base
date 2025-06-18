@@ -64,6 +64,14 @@ namespace Ord.Plugin.MasterData.AppServices
             return AppFactory.CreateSuccessResult(result);
         }
         [HttpPost]
+        [ActionName("ValidateFile")]
+        public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ValidateFileAsync([FromForm] ExcelImportFileRequest input)
+        {
+            return null;
+        }
+
+
+        [HttpPost]
         [ActionName("Import")]
         [DisableValidation]
         public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ImportAsync(List<CountryImportDto> dataImports)
@@ -76,6 +84,7 @@ namespace Ord.Plugin.MasterData.AppServices
             }
             return AppFactory.CreateSuccessResult(result);
         }
+       
 
         protected async Task DoBulkImportDataAsync(List<CountryImportDto> bulkItems)
         {
