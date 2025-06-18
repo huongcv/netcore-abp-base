@@ -1,4 +1,5 @@
 ﻿using FlexCel.Core;
+using FlexCel.XlsAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.DataImporting;
@@ -26,13 +27,30 @@ namespace Ord.Plugin.MasterData.AppServices
         public virtual async Task<IActionResult> DownloadSampleTemplateAsync()
         {
             await CheckPermissionForActionName("Import");
-            return await TryReturnExcelAsync(() => _importManger.ExportSampleTemplateExcel(async (xls) =>
-            {
-                // xóa cột trạng thái
-                xls.DeleteRange(new TXlsCellRange(1, 5, 1, 5), TFlxInsertMode.ShiftColRight);
-            }), "file.ImportSampleTemplate.Country", false);
+            return await TryReturnExcelAsync(() => _importManger.ExportSampleTemplateExcel(DoHandlerXlsFileAfterBindData),
+                "file.ImportSampleTemplate.Country", false);
 
         }
+        [HttpPost]
+        [ActionName("DownloadImportResult")]
+        public virtual async Task<IActionResult> DownloadImportResultAsync(DownloadResultFileImport<CountryImportDto> input)
+        {
+            await CheckPermissionForActionName("Import");
+            var fileName = input.IsSuccessList
+                ? "file.ImportResultSuccess.Country"
+                : "file.ImportResultErrors.Country";
+            return await TryReturnExcelAsync(() => _importManger.ExportResultDataAsync(input?.Items ?? new(), DoHandlerXlsFileAfterBindData),
+                fileName, false);
+
+        }
+
+        private async Task DoHandlerXlsFileAfterBindData(XlsFile xls)
+        {
+            // xóa cột trạng thái
+            xls.DeleteColumn(5);
+        }
+
+
         [HttpPost]
         [ActionName("ValidateDataImport")]
         [DisableValidation]
@@ -42,6 +60,14 @@ namespace Ord.Plugin.MasterData.AppServices
             var result = await _importManger.ValidateProcessDataAsync(dataImports);
             return AppFactory.CreateSuccessResult(result);
         }
-
+        [HttpPost]
+        [ActionName("Import")]
+        [DisableValidation]
+        public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ImportAsync(List<CountryImportDto> dataImports)
+        {
+            await CheckPermissionForActionName("Import");
+            var result = await _importManger.ValidateProcessDataAsync(dataImports);
+            return AppFactory.CreateSuccessResult(result);
+        }
     }
 }

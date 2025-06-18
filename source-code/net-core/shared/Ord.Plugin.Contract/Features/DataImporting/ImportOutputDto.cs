@@ -11,4 +11,9 @@
         List<string>? ErrorMessages { get; set; }
         bool IsSuccessData => ErrorMessages?.Any() != true;
     }
+    public class DownloadResultFileImport<TImportDto>
+    {
+        public List<TImportDto>? Items { get; set; }
+        public bool IsSuccessList { get; set; }
+    }
 }

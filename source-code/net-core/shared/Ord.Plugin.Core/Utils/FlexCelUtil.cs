@@ -1,4 +1,6 @@
-﻿using FlexCel.Report;
+﻿using FlexCel.Core;
+using FlexCel.Report;
+using FlexCel.XlsAdapter;
 using Ord.Plugin.Contract.Features.DataExporting.FlexCelExporting;
 
 namespace Ord.Plugin
@@ -59,6 +61,11 @@ namespace Ord.Plugin
 
             // 4. Thêm bảng dữ liệu vào FlexCel
             fr.AddTable(dataTableName, dataTable);
+        }
+
+        public static void DeleteColumn(this XlsFile xls, int columnIndex, TFlxInsertMode insertMode = TFlxInsertMode.ShiftColRight)
+        {
+            xls.DeleteRange(new TXlsCellRange(1, columnIndex, FlxConsts.Max_Rows, columnIndex), insertMode);
         }
     }
 }

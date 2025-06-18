@@ -136,7 +136,8 @@ namespace Ord.Plugin.Core.Features.DataImporting
                         }
                         if (!item.IsSuccessData)
                         {
-                            resultXls.SetCellValue(rowIndex, ++colIxd, string.Join(", ", item.ErrorMessages));
+                            var errorValue = string.Join(Environment.NewLine, item?.ErrorMessages?.Select(x => $@"- {x}").ToList());
+                            resultXls.SetCellValue(rowIndex, ++colIxd, errorValue);
                         }
                         rowIndex++;
                     }
@@ -145,9 +146,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
                     {
                         await funResultXls(resultXls);
                     }
-
                 }
-                resultXls.DeleteRange(new TXlsCellRange(1, 5, FlxConsts.Max_Rows, 5), TFlxInsertMode.ShiftColRight);
             });
         }
 
