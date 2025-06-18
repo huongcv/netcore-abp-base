@@ -52,7 +52,7 @@ namespace Ord.Plugin.Auth.AppServices
             var fileDto = await UploadFileManager.GetByFileIdAsync(id);
             if (fileDto == null || fileDto.BlobStream == null)
             {
-                throw new EntityNotFoundException("fileNotExists");
+                throw new EntityNotFoundException("message.fileNotExists");
             }
 
             var stream = fileDto.BlobStream;

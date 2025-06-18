@@ -3,7 +3,9 @@
   "error": "Có lỗi xảy ra",
   "loading": "Đang tải...",
   "noData": "Không có dữ liệu",
+  "not_found": "Không có dữ liệu",
   "not_support": "Không hỗ trợ",
+  "fileNotExists": "File không tồn tại",
   "crud": {
     "not_found": "Không tìm thấy dữ liệu",
     "create_success": "Tạo mới thành công",

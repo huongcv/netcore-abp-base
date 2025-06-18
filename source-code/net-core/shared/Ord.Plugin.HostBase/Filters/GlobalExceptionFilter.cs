@@ -6,6 +6,7 @@ using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.HostBase.Filters
@@ -28,6 +29,7 @@ namespace Ord.Plugin.HostBase.Filters
                 BusinessException businessEx => HandleBusinessException(businessEx),
                 IdDecodeException idDecodeEx => HandleIdDecodeException(idDecodeEx),
                 OrdCommonException commonEx => HandleOrdCommonException(commonEx),
+                EntityNotFoundException notFoundEx => HandleEntityNotFoundException(notFoundEx),
                 _ => HandleGeneralException(context.Exception)
             };
 
@@ -51,7 +53,6 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleBusinessException(BusinessException ex)
         {
             _logger.LogWarning(ex, "Business logic error occurred");
-
             return CommonResultDto<object>.Failed(
                 ex.Message,
                 errorCode: "422"
@@ -59,7 +60,7 @@ namespace Ord.Plugin.HostBase.Filters
         }
         private CommonResultDto<object> HandleOrdCommonException(OrdCommonException ex)
         {
-            _logger.LogWarning(ex, "ord common logic error occurred ");
+            _logger.LogWarning(ex, "ORD common logic error occurred");
             var message = ex.Message;
             if (ex.IsMustGetLocalized)
             {
@@ -79,6 +80,15 @@ namespace Ord.Plugin.HostBase.Filters
             return CommonResultDto<object>.ServerFailure(ex, GetLocalizedMessage("exception.server_err"));
         }
 
+        private CommonResultDto<object> HandleEntityNotFoundException(EntityNotFoundException ex)
+        {
+            _logger.LogWarning(ex, "Entity not found");
+            var message = GetLocalizedMessage(ex.Message);
+            return CommonResultDto<object>.Failed(
+                message,
+                errorCode: "404"
+            );
+        }
 
 
         public string GetLocalizedMessage(string key, params object[] formatArgs)

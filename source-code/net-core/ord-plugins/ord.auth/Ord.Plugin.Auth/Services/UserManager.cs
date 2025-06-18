@@ -6,6 +6,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Auth.Util;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Core.Utils;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
@@ -52,7 +53,7 @@ namespace Ord.Plugin.Auth.Services
             var userEnt = await userCrudRepository.GetByIdAsync(userId);
             if (userEnt == null)
             {
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("message.not_found");
             }
 
             return userEnt;
