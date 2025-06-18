@@ -1,7 +1,11 @@
 ﻿using FlexCel.Core;
 using Microsoft.AspNetCore.Mvc;
+using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Base;
+using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Services;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.MasterData.AppServices
 {
@@ -28,6 +32,15 @@ namespace Ord.Plugin.MasterData.AppServices
                 xls.DeleteRange(new TXlsCellRange(1, 5, 1, 5), TFlxInsertMode.ShiftColRight);
             }), "file.ImportSampleTemplate.Country", false);
 
+        }
+        [HttpPost]
+        [ActionName("ValidateDataImport")]
+        [DisableValidation]
+        public virtual async Task<CommonResultDto<ImportOutputDto<CountryImportDto>>> ValidateDataImportAsync(List<CountryImportDto> dataImports)
+        {
+            await CheckPermissionForActionName("Import");
+            var result = await _importManger.ValidateProcessDataAsync(dataImports);
+            return AppFactory.CreateSuccessResult(result);
         }
 
     }

@@ -2,12 +2,16 @@
 using FlexCel.XlsAdapter;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using NUglify;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Features.BlobStoring;
 using Ord.Plugin.Contract.Features.DataImporting;
+using Ord.Plugin.Contract.Features.Validation;
 using Ord.Plugin.Core.Base;
+using Ord.Plugin.Core.Factories;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Validation;
+using YamlDotNet.Core.Tokens;
 
 namespace Ord.Plugin.Core.Features.DataImporting
 {
@@ -141,7 +145,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
                     {
                         await funResultXls(resultXls);
                     }
-                    
+
                 }
                 resultXls.DeleteRange(new TXlsCellRange(1, 5, FlxConsts.Max_Rows, 5), TFlxInsertMode.ShiftColRight);
             });
@@ -174,11 +178,7 @@ namespace Ord.Plugin.Core.Features.DataImporting
         /// </summary>
         private List<string> ValidateDataAnnotations(TImportDto dto)
         {
-            var validationResults = new List<ValidationResult>();
-            var validationContext = new ValidationContext(dto);
-
-            Validator.TryValidateObject(dto, validationContext, validationResults, true);
-
+            var validationResults = DataAnnotationsValidator.ValidateObject(AppFactory.GetServiceDependency<IServiceProvider>(), dto, true);
             return validationResults.Select(vr => vr.ErrorMessage ?? "Validation error").ToList();
         }
     }

@@ -11,5 +11,12 @@ namespace Ord.Plugin.Contract.Features.Validation
             Validator.TryValidateObject(instance, context, results, validateAllProperties);
             return results;
         }
+        public static IList<ValidationResult> ValidateObject(IServiceProvider serviceProvider, object instance, bool validateAllProperties = true)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(instance, serviceProvider, null);
+            Validator.TryValidateObject(instance, context, results, validateAllProperties);
+            return results;
+        }
     }
 }

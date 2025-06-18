@@ -13,14 +13,14 @@ namespace Ord.Plugin.MasterData.Services
         private ImportCheckStringDuplicate codeDuplicateValidate = new();
         protected override async Task PrepareDataForValidationAsync(List<CountryImportDto> rawDataList)
         {
-            codeDuplicateValidate.SetListValueDb(() => CountryRepository.GetAllCodesAsync());
+            await codeDuplicateValidate.SetListValueDbAsync(() => CountryRepository.GetAllCodesAsync());
         }
 
         protected override async Task<List<string>> ValidateBusinessRulesForRowAsync(CountryImportDto importDto)
         {
             var errors = new List<string>();
             var errorCodeDuplicate = codeDuplicateValidate.Validate(AppFactory, importDto.Code, importDto.RowNumber);
-            errors.Concat(errorCodeDuplicate);
+            errors.AddRange(errorCodeDuplicate);
             return errors;
         }
 

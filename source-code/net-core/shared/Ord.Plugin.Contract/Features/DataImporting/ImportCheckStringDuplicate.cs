@@ -8,11 +8,11 @@ namespace Ord.Plugin.Contract.Features.DataImporting
         private HashSet<string> _currentFile = new();
         private Dictionary<string, int> _codeRowMapping = new();
 
-        public async Task SetListValueDb(Func<Task<List<string>>> funGetValues)
+        public async Task SetListValueDbAsync(Func<Task<List<string>>> funGetValues)
         {
             var valueDbs = await funGetValues() ?? new();
             _existingInDb = valueDbs.Where(c => !string.IsNullOrWhiteSpace(c))
-                .Select(c => c.Trim().ToUpperInvariant())
+                .Select(c => c.Trim().ToUpper())
                 .ToHashSet();
             _currentFile.Clear();
             _codeRowMapping.Clear();
@@ -23,8 +23,13 @@ namespace Ord.Plugin.Contract.Features.DataImporting
             string messageExistsDatabase = "message.validation.import_code_exists_database",
             string messageDuplicateFile = "message.validation.import_code_duplicate_file")
         {
+            
             var errors = new List<string>();
-            var normalizedCode = valueImport.Trim().ToUpperInvariant();
+            if (string.IsNullOrEmpty(valueImport))
+            {
+                return errors;
+            }
+            var normalizedCode = valueImport.Trim().ToUpper();
             // 1. Kiểm tra trùng với dữ liệu trong DB
             if (_existingInDb.Contains(normalizedCode))
             {
