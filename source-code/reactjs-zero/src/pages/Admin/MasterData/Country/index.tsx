@@ -77,22 +77,17 @@ const Country: React.FC = () => {
             }
         }
     ];
-
-    const TableContent = (<>
-
-        <PagedTable columns={columns} fetcher={CountryService.getPaged}
-                    tableStore={tableStore}/>
-    </>);
     return (
         <>
             <PageLayoutWithTable
                 topActions={topActions}
                 searchFields={<SearchFilterText span={12}/>}
-                tableContent={TableContent}
-                tableStore={tableStore}
-                tabCounterStatus={<OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
-                                                               fetcher={CountryService.getCountByActive}/>}
-            />
+                tableStore={tableStore}>
+                <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
+                                             fetcher={CountryService.getCountByActive}/>
+                <PagedTable columns={columns} fetcher={CountryService.getPaged}
+                            tableStore={tableStore}/>
+            </PageLayoutWithTable>
             <ModifyModalForm
                 width={680}
                 modalStore={modalStore}

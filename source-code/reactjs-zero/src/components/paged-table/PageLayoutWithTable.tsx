@@ -15,8 +15,7 @@ interface PageLayoutWithTableProps {
     hiddenTopAction?: boolean;
     searchFields: React.ReactNode;
     searchInitData?: any;
-    tabCounterStatus?: React.ReactNode;
-    tableContent?: React.ReactNode;
+    children: React.ReactNode;
     tableStore?: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
 }
 
@@ -24,8 +23,7 @@ export const PageLayoutWithTable = ({
                                         topActions,
                                         topActionContent,
                                         hiddenTopAction,
-                                        tabCounterStatus,
-                                        tableContent,
+                                        children,
                                         searchFields,
                                         tableStore,
                                         searchInitData
@@ -84,15 +82,8 @@ export const PageLayoutWithTable = ({
                     }
                 </Form>
                 <div className={'ord-container-box ord-crud-list'}>
-                    {
-                        tabCounterStatus &&
-                        <div>
-                            {tabCounterStatus}
-                        </div>
-
-                    }
                     {/* Table */}
-                    {tableContent}
+                    {children}
                 </div>
             </div>
         </HotkeysProvider>
