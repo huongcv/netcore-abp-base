@@ -1,13 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {StaticApiFetcher} from "@ord-components/paged-table/types";
-import {v4 as uuidv4} from "uuid";
-import _ from "lodash";
+import {debounce} from "lodash";
 
 export interface PagedTableProps<T> extends TableProps<T> {
     fetcher: StaticApiFetcher;
-    tableStore: ReturnType<typeof import('./useTableStoreFactory').createTableStore>;
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
 }
 
 export const PagedTable = <T extends object>({
@@ -22,6 +21,7 @@ export const PagedTable = <T extends object>({
         page,
         pageSize,
         searchParams,
+        searchForm,
         setLoading,
         setPagination,
         onLoadData
@@ -35,9 +35,24 @@ export const PagedTable = <T extends object>({
             setLoading(false);
         }
     };
+    const debouncedLoadData = useMemo(
+        () =>
+            debounce(async () => {
+                setLoading(true);
+                try {
+                    await onLoadData();
+                } finally {
+                    setLoading(false);
+                }
+            }, 100),
+        [] // chỉ tạo một lần
+    );
 
     useEffect(() => {
-        loadData().then();
+        debouncedLoadData();
+        return () => {
+            debouncedLoadData.cancel(); // cleanup nếu component unmount
+        };
     }, [page, pageSize, searchParams]);
 
     return (

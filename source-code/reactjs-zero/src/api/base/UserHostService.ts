@@ -3,10 +3,10 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfIEnumerableOfGuid,
     CommonResultDtoOfIEnumerableOfString,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfPagedResultDtoOfUserPagedDto,
     CommonResultDtoOfUserDetailDto,
     CreateUserDto,
@@ -345,7 +345,7 @@ export class UserHostService {
       body?: UserPagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/user-host/get-count-by-active';
 

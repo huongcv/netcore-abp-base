@@ -8,8 +8,8 @@ import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
-    modalStore: ReturnType<typeof import('./useModalFormStoreFactory').createModalFormStore>;
-    tableStore?: ReturnType<typeof import('./useTableStoreFactory').createTableStore>;
+    modalStore: ReturnType<typeof import('@ord-components/paged-table/useModalFormStoreFactory').createModalFormStore>;
+    tableStore?: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
     formFields: React.ReactNode;
     form?: FormInstance;
     translationNs?: string; // namespace cho đa ngữ

@@ -1,19 +1,20 @@
-import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
-import { CommonListStore } from "@ord-core/base/CommonListStore";
+import {observer} from "mobx-react-lite";
+import React, {useEffect} from "react";
+import {CommonListStore} from "@ord-core/base/CommonListStore";
 import uiUtils from "@ord-core/utils/ui.utils";
 import UiUtils from "@ord-core/utils/ui.utils";
-import { Form, FormInstance, Row, TableColumnsType } from "antd";
-import { Trans, useTranslation } from "react-i18next";
-import { TableRowSelection } from "antd/es/table/interface";
-import { TopAction } from "@ord-components/crud/TopAction";
-import { AntTableWithDataPaged } from "@ord-components/table/AntTableWithDataPaged";
-import { useWatch } from "antd/es/form/Form";
-import { debounce } from "lodash";
-import { HotkeysProvider } from "react-hotkeys-hook";
+import {Form, FormInstance, Row, TableColumnsType} from "antd";
+import {Trans, useTranslation} from "react-i18next";
+import {TableRowSelection} from "antd/es/table/interface";
+import {TopAction} from "@ord-components/crud/TopAction";
+import {AntTableWithDataPaged} from "@ord-components/table/AntTableWithDataPaged";
+import {useWatch} from "antd/es/form/Form";
+import {debounce} from "lodash";
+import {HotkeysProvider} from "react-hotkeys-hook";
 import OrdCreateOrUpdateModal from "@ord-components/crud/OrdCreateOrUpdateModal";
-import { HotKeyScope } from "@ord-core/AppConst";
-import { PageTopTitleAndAction } from "@ord-components/common/page/PageTopTitleAndAction";
+import {HotKeyScope} from "@ord-core/AppConst";
+import {PageTopTitleAndAction} from "@ord-components/common/page/PageTopTitleAndAction";
+import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
 
 interface IProp {
     searchForm?: (form: FormInstance) => React.ReactNode,
@@ -56,21 +57,21 @@ export interface IActionBtn {
 
 
 const OrdCrudPage = (prop: IProp) => {
-    const { stored, hiddenTopAction } = prop;
-    const { t } = useTranslation([prop.stored.getNamespaceLocale() || 'common']);
-    const { t: tCommon } = useTranslation(['common']);
+    const {stored, hiddenTopAction} = prop;
+    const {t} = useTranslation([prop.stored.getNamespaceLocale() || 'common']);
+    const {t: tCommon} = useTranslation(['common']);
 
     const [searchFormRef] = Form.useForm();
     useEffect(() => {
         if (!!prop.stored.removeRecord) {
-            const { removeRecord } = prop.stored;
+            const {removeRecord} = prop.stored;
             UiUtils.showConfirm({
                 title: tCommon('confirmDelete'),
                 icon: "remove",
                 content: (<Trans ns={stored.getNamespaceLocale()}
-                    i18nKey="confirmRemove"
-                    values={removeRecord}
-                    components={{ italic: <i />, bold: <strong /> }}></Trans>),
+                                 i18nKey="confirmRemove"
+                                 values={removeRecord}
+                                 components={{italic: <i/>, bold: <strong/>}}></Trans>),
                 onOk: (d) => {
                     stored.removeEntity().then(() => {
                         if (prop.onEntitySavedSuccess) {
@@ -114,13 +115,13 @@ const OrdCrudPage = (prop: IProp) => {
                     </PageTopTitleAndAction>
                 }
                 <Form form={searchFormRef} className={'crud-search-box'}
-                    initialValues={prop?.initSearchFormData}
-                    layout='vertical'
-                    disabled={stored.disableFormSearch}
-                    onFinish={debounce((d) => {
-                        stored.searchData(d)
-                    }, 250)}
-                    onFinishFailed={() => uiUtils.showCommonValidateForm()}>
+                      initialValues={prop?.initSearchFormData}
+                      layout='vertical'
+                      disabled={stored.disableFormSearch}
+                      onFinish={debounce((d) => {
+                          stored.searchData(d)
+                      }, 250)}
+                      onFinishFailed={() => uiUtils.showCommonValidateForm()}>
                     {
 
                         (prop.searchForm) &&
@@ -129,7 +130,7 @@ const OrdCrudPage = (prop: IProp) => {
                                 {prop.searchForm(searchFormRef)}
                             </Row>
                             <div hidden>
-                                <Form.Item name={'onSearchBeginning'} initialValue={0} noStyle />
+                                <Form.Item name={'onSearchBeginning'} initialValue={0} noStyle/>
                             </div>
 
                         </div>
@@ -140,55 +141,55 @@ const OrdCrudPage = (prop: IProp) => {
                 </Form>
                 <div className={'ord-container-box ord-crud-list' + prop?.classNameTable}>
                     <Form form={searchFormRef} className={'crud-search-box'}
-                        initialValues={prop?.initSearchFormData}
-                        layout='vertical'
-                        onFinish={debounce((d) => {
-                            stored.searchData(d)
-                            if (prop.onSearchSuccess) {
-                                prop.onSearchSuccess(d)
-                            }
-                        }, 250)}
-                        onFinishFailed={() => uiUtils.showCommonValidateForm()}>
+                          initialValues={prop?.initSearchFormData}
+                          layout='vertical'
+                          onFinish={debounce((d) => {
+                              stored.searchData(d)
+                              if (prop.onSearchSuccess) {
+                                  prop.onSearchSuccess(d)
+                              }
+                          }, 250)}
+                          onFinishFailed={() => uiUtils.showCommonValidateForm()}>
                         {
                             prop.contentTopTable
                         }
                         <Form.Item hidden name={'hotKeyScopeId'} initialValue={scopeId}></Form.Item>
                     </Form>
                     <AntTableWithDataPaged searchForm={searchFormRef}
-                        rowKey={prop?.tableRowKey}
-                        getPageResult={(d) => {
-                            return stored.apiService().getPaged({
-                                body: {
-                                    ...prop.initSearchFormData,
-                                    ...d.body, 
-                                }
-                            }, {})
-                        }}
-                        dataSource={prop.dataSource}
-                        summary={prop?.tableSummary}
-                        bordered={prop?.tableBordered}
+                                           rowKey={prop?.tableRowKey}
+                                           getPageResult={(d) => {
+                                               return stored.apiService().getPaged({
+                                                   body: {
+                                                       ...prop.initSearchFormData,
+                                                       ...d.body,
+                                                   }
+                                               }, {})
+                                           }}
+                                           dataSource={prop.dataSource}
+                                           summary={prop?.tableSummary}
+                                           bordered={prop?.tableBordered}
 
-                        columns={prop.columns}
-                        searchData={stored.searchDataState}
-                        refreshDatasource={stored.refreshDataState}
-                        rowSelection={prop.rowSelection}
-                        onChangePageResult={(d) => {
+                                           columns={prop.columns}
+                                           searchData={stored.searchDataState}
+                                           refreshDatasource={stored.refreshDataState}
+                                           rowSelection={prop.rowSelection}
+                                           onChangePageResult={(d) => {
 
 
-                            if (stored) {
-                                stored.setPageResult(d);
-                            }
+                                               if (stored) {
+                                                   stored.setPageResult(d);
+                                               }
 
-                        }}
+                                           }}
                     />
                 </div>
                 {
                     (!!prop.entityForm || !!prop.entityFormMore) &&
                     <OrdCreateOrUpdateModal stored={prop.stored}
-                        entityFormMore={prop.entityFormMore}
-                        entityForm={prop.entityForm}
-                        hotkeyScope={scopeId}
-                        onSavedSuccess={prop.onEntitySavedSuccess}
+                                            entityFormMore={prop.entityFormMore}
+                                            entityForm={prop.entityForm}
+                                            hotkeyScope={scopeId}
+                                            onSavedSuccess={prop.onEntitySavedSuccess}
                     />
                 }
 

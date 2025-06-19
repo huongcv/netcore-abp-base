@@ -13,4 +13,12 @@
         public bool IsActived { get; set; }
         public int TotalCount { get; set; }
     }
+
+    public class CounterByStatusItemDto
+    {
+        public object? StatusValue { get; set; }
+        public string StatusDescription { get; set; }
+        public int TotalCount { get; set; }
+        public bool IsTotalItem { get; set; }
+    }
 }

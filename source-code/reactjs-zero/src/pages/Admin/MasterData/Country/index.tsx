@@ -13,6 +13,8 @@ import {CountryService} from "@api/base/CountryService";
 import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
 import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
 import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
+import {SaleOrderStatusSegmented} from "@pages/SaleOrder/Order/Utils/SaleOrderStatusSegmented";
+import {OrdStatusSegmented} from "@ord-components/crud/counter-list/OrdStatusSegmented";
 
 export const CreateOrUpdateForm = () => {
     const {t} = useTranslation('country');
@@ -45,6 +47,7 @@ const modalStore = createModalFormStore(CountryService, {});
 const Country: React.FC = () => {
     const {countryStore: mainStore} = useStore();
     const {openView, openCreate, openEdit} = modalStore();
+    const {searchForm} = tableStore();
     const columns: TableColumnsType<any> = TableUtil.getColumns([
         {
             title: 'ma',
@@ -113,9 +116,17 @@ const Country: React.FC = () => {
                          entityForm={form => <CreateOrUpdateForm/>}
             ></OrdCrudPage>
             <PageLayoutWithTable
-                searchForm={<PagedTableSearchForm tableStore={tableStore} searchFields={<SearchFilterAndIsActived/>}/>}
-                tableContent={<PagedTable columns={columns} fetcher={CountryService.getPaged}
-                                          tableStore={tableStore}/>}
+                topActions={topActions}
+                searchForm={<PagedTableSearchForm initialValues={{'filter': 'vn'}} tableStore={tableStore}
+                                                  searchFields={<SearchFilterAndIsActived/>}/>}
+                tableContent={<>
+                    <Form form={searchForm}>
+                        <OrdStatusSegmented tableStore={tableStore} name={'isActived'}
+                                            fetcher={CountryService.getCountByActive}/>
+                    </Form>
+                    <PagedTable columns={columns} fetcher={CountryService.getPaged}
+                                tableStore={tableStore}/>
+                </>}
             />
             <ModifyModalForm
                 width={680}

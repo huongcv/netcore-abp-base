@@ -2,8 +2,8 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfPagedResultDtoOfTenantPagedDto,
     CommonResultDtoOfTenantDetailDto,
     CreateTenantDto,
@@ -185,7 +185,7 @@ export class TenantService {
       body?: TenantPagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/tenant/get-count-by-active';
 

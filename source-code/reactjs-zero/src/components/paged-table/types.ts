@@ -23,6 +23,25 @@ export interface StaticApiFetcher {
     }>>;
 }
 
+export interface StaticCounterByStatusApiFetcher {
+    (
+        params?: {
+            body?: {
+                maxResultCount?: number;
+                skipCount?: number;
+            }
+        },
+        options?: IRequestOptions
+    ): Promise<ICommonResultDtoApi<CounterByStatusItemDto[]>>;
+}
+
+export interface CounterByStatusItemDto {
+    statusValue?: any | null;
+    statusDescription?: string;
+    totalCount?: number;
+    isTotalItem?: boolean;
+}
+
 
 export interface IModifyApiService {
     create: (params: { body?: any; }, options?: IRequestOptions) => Promise<ICommonResultDtoApi<any>>;

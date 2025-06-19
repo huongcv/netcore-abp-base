@@ -352,23 +352,6 @@ export interface CommonResultDtoOfBoolean {
   isSuccessful?: boolean;
 }
 
-export interface CommonResultDtoOfCounterByIsActivedDto {
-  /**  */
-  code?: string;
-
-  /**  */
-  message?: string;
-
-  /**  */
-  data?: CounterByIsActivedDto;
-
-  /**  */
-  extend?: any | null;
-
-  /**  */
-  isSuccessful?: boolean;
-}
-
 export interface CommonResultDtoOfCountryDetailDto {
   /**  */
   code?: string;
@@ -497,6 +480,23 @@ export interface CommonResultDtoOfListOfComboOptionDto {
 
   /**  */
   data?: ComboOptionDto[];
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfListOfCounterByStatusItemDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: CounterByStatusItemDto[];
 
   /**  */
   extend?: any | null;
@@ -797,26 +797,18 @@ export interface ControllerInterfaceApiDescriptionModel {
   methods?: InterfaceMethodApiDescriptionModel[];
 }
 
-export interface CounterByIsActivedDto {
+export interface CounterByStatusItemDto {
   /**  */
-  totalTrue?: number;
+  statusValue?: any | null;
 
   /**  */
-  totalFalse?: number;
-
-  /**  */
-  total?: number;
-
-  /**  */
-  items?: CounterByIsActivedItemDto[];
-}
-
-export interface CounterByIsActivedItemDto {
-  /**  */
-  isActived?: boolean;
+  statusDescription?: string;
 
   /**  */
   totalCount?: number;
+
+  /**  */
+  isTotalItem?: boolean;
 }
 
 export interface CountryDetailDto {

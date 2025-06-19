@@ -3,8 +3,8 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfListOfString,
     CommonResultDtoOfPagedResultDtoOfRolePagedDto,
     CommonResultDtoOfPagedResultDtoOfUserInRoleDto,
@@ -300,7 +300,7 @@ export class RoleHostService {
       body?: RolePagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/role-host/get-count-by-active';
 

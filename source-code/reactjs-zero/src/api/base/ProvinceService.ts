@@ -2,8 +2,8 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfPagedResultDtoOfProvincePagedDto,
     CommonResultDtoOfProvinceDetailDto,
     CreateProvinceDto,
@@ -185,7 +185,7 @@ export class ProvinceService {
       body?: ProvincePagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/master-data/province/get-count-by-active';
 

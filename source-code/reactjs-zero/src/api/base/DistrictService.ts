@@ -2,9 +2,9 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfDistrictDetailDto,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfPagedResultDtoOfDistrictPagedDto,
     CreateDistrictDto,
     DistrictPagedInput,
@@ -185,7 +185,7 @@ export class DistrictService {
       body?: DistrictPagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/master-data/district/get-count-by-active';
 

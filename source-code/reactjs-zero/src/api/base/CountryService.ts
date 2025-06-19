@@ -2,9 +2,9 @@ import {
     axios,
     basePath,
     CommonResultDtoOfBoolean,
-    CommonResultDtoOfCounterByIsActivedDto,
     CommonResultDtoOfCountryDetailDto,
     CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
     CommonResultDtoOfPagedResultDtoOfCountryPagedDto,
     CountryPagedInput,
     CreateCountryDto,
@@ -185,7 +185,7 @@ export class CountryService {
       body?: CountryPagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfCounterByIsActivedDto> {
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/master-data/country/get-count-by-active';
 

@@ -27,11 +27,33 @@ namespace Ord.Plugin.Core.Services
         /// </summary>
         [HttpPost]
         [ActionName("GetCountByActive")]
-        public virtual async Task<CommonResultDto<CounterByIsActivedDto>> GetCountByIsActived(TGetPagedInputDto input)
+        public virtual async Task<CommonResultDto<List<CounterByStatusItemDto>>> GetCountByActive(TGetPagedInputDto input)
         {
             await CheckPermissionForOperation(CrudOperationType.GetPaged);
             var counter = await CrudRepository.GetCountGroupByIsActivedAsync(input);
-            return AppFactory.CreateSuccessResult(counter);
+            var result = new List<CounterByStatusItemDto>()
+            {
+                new ()
+                {
+                    StatusValue = null,
+                    TotalCount = counter.Total,
+                    IsTotalItem = true,
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.all")
+                },
+                new ()
+                {
+                    StatusValue = true,
+                    TotalCount = counter.TotalTrue,
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.active")
+                },
+                new ()
+                {
+                    StatusValue = false,
+                    TotalCount = counter.TotalFalse,
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.inactive")
+                }
+            };
+            return AppFactory.CreateSuccessResult(result);
         }
 
         /// <summary>
