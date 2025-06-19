@@ -26,7 +26,7 @@ class TableUtil {
         config?: ColumnConfig<T>,
         ignoreRowIndex = false
     ) {
-        const ns = config?.ns || "common";
+        const ns = config?.ns || "field";
         let propColumns: ColumnType<any>[] = [
             {
                 key: "rowIndex",

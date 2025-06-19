@@ -31,7 +31,10 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
     setLoading: (loading) => set({loading}),
     setData: (data, total) => set({data, total}),
     setPagination: (page, pageSize) => set({page, pageSize}),
-    setSearchParams: (params) => set({searchParams: params, page: 1}),
+    setSearchParams: (params) => {
+        const {searchParams} = get();
+        set({searchParams: {...searchParams, ...params}, page: 1})
+    },
     reset: () =>
         set({
             data: [],
@@ -49,7 +52,7 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
             skipCount,
             maxResultCount,
             ...searchParams
-        }, 'isShowAdvanceSearch');
+        }, 'isShowAdvanceSearch', 'extendResetTick');
         try {
             const resultApi = await service.getPaged({
                 body: body

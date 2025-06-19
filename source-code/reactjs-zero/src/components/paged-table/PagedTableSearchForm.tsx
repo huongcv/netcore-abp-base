@@ -4,6 +4,7 @@ import {Form, Row} from 'antd';
 import uiUtils from "@ord-core/utils/ui.utils";
 import {debounce} from "lodash";
 import {useWatch} from "antd/es/form/Form";
+import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableSearchFormProps {
     searchFields: React.ReactNode;
@@ -20,7 +21,6 @@ export const PagedTableSearchForm = ({
                                      }: PagedTableSearchFormProps) => {
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
-
     const {setSearchParams} = tableStore();
 
     useEffect(() => {
@@ -29,10 +29,12 @@ export const PagedTableSearchForm = ({
             setSearchParams(initialValues); // tự động gọi search ban đầu nếu có
         }
     }, []);
-
+    const onFinishFormSearch = () => {
+        onSearch().then();
+    }
     const onSearch = async () => {
-        const values = await usedForm.validateFields();
-        setSearchParams(values);
+        const values = usedForm.getFieldsValue();
+        setSearchParams({...values});
     };
     const extendResetTick_w = useWatch('extendResetTick', usedForm);
     useEffect(() => {
@@ -47,9 +49,7 @@ export const PagedTableSearchForm = ({
             className={'crud-search-box'}
             layout="vertical"
             initialValues={initialValues}
-            onFinish={debounce((d) => {
-                onSearch().then();
-            }, 250)}
+            onFinish={onFinishFormSearch}
             onFinishFailed={() => uiUtils.showCommonValidateForm()}
         >
             <Row gutter={[16, 8]}>

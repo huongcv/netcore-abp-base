@@ -59,8 +59,12 @@ export const ModifyModalForm = <T extends object>({
     const handlerAfterSaved = async (result: ICommonResultDtoApi<any>) => {
         if (result.isSuccessful) {
             if (tableStore) {
+                const tableSate = tableStore.getState();
                 try {
-                    await tableStore.getState().onLoadData();
+                    await tableSate.onLoadData();
+                    if (tableSate.searchForm) {
+                        tableSate.searchForm.setFieldValue('triggerReloadCounter', Number(new Date()));
+                    }
                 } catch {
 
                 }

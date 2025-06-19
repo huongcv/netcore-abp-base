@@ -32,7 +32,7 @@ const App = (props: IAppProp) => {
     const {sessionStore, uiStore, entityModalStore} = useStore();
     sessionStore!.setSession(props.boostrapResultDto);
     const [antLocale, setAntLocale] = useState(vi_VN);
-    const {t} = useTranslation(['menu', 'permission', 'common']);
+    const {t} = useTranslation(['menu', 'permission', 'common', 'field']);
     useEffect(() => {
         document.documentElement.style.setProperty('--main-color', ThemeUtil.PrimaryColor);
         document.documentElement.style.setProperty('--secondary-color', ThemeUtil.SecondaryColor);

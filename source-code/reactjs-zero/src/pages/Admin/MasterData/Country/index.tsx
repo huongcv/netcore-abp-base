@@ -1,45 +1,18 @@
 import React from "react";
-import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
-import {Checkbox, Form, Input, TableColumnsType} from "antd";
-import {useTranslation} from "react-i18next";
-import ValidateUtils from "@ord-core/utils/validate.utils";
+import {TableColumnsType} from "antd";
 import TableUtil from "@ord-core/utils/table.util";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
-import {SearchFilterAndIsActived} from "@ord-components/forms/search/SearchFilterAndIsActived";
 import {createTableStore, PagedTable} from "@ord-components/paged-table";
 import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
 import {CountryService} from "@api/base/CountryService";
 import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
-import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
 import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
-import {OrdStatusSegmented} from "@ord-components/crud/counter-list/OrdStatusSegmented";
+import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
+import {EntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
 
-export const CreateOrUpdateForm = () => {
-    const {t} = useTranslation('country');
-    const {t: tCommon} = useTranslation('common');
-
-    return (<>
-        <Form.Item label={t('ma')} name='code' rules={[ValidateUtils.required]}>
-            <Input maxLength={10}/>
-        </Form.Item>
-        <Form.Item label={t('ten')} name='name' rules={[ValidateUtils.required]}>
-            <Input maxLength={100}/>
-        </Form.Item>
-        <div className="flex gap-4">
-            <Form.Item className="w-6/12" label={t('phoneCode')} name='phoneCode'>
-                <Input maxLength={50}/>
-            </Form.Item>
-            <Form.Item className="w-6/12" label={t('currencyCode')} name='currencyCode'>
-                <Input maxLength={50} type="tel"/>
-            </Form.Item>
-        </div>
-        <Form.Item name='isActived' valuePropName="checked">
-            <Checkbox>{tCommon('dang_hoat_dong')}</Checkbox>
-        </Form.Item>
-    </>)
-}
 
 const tableStore = createTableStore(CountryService);
 const modalStore = createModalFormStore(CountryService, {});
@@ -47,17 +20,15 @@ const modalStore = createModalFormStore(CountryService, {});
 const Country: React.FC = () => {
     const {countryStore: mainStore} = useStore();
     const {openView, openCreate, openEdit} = modalStore();
-    const [searchForm] = Form.useForm();
     const columns: TableColumnsType<any> = TableUtil.getColumns([
         {
-            title: 'ma',
+            title: 'ma_quoc_gia',
             dataIndex: 'code',
-            width: 200,
-            sorter: true
+            width: 200
         },
         {
+            title: 'ten_quoc_gia',
             dataIndex: 'name',
-            title: 'ten',
         },
         {
             dataIndex: 'phoneCode',
@@ -88,62 +59,46 @@ const Country: React.FC = () => {
                     mainStore.openRemoveById(d);
                 }
             }
-        ],
-        ns: mainStore.getNamespaceLocale()
+        ]
     });
     const topActions: IActionBtn[] = [
         {
             title: 'exportExcel',
-            permission: 'MasterData.Tinh',
+            permission: 'MasterData.Country',
             onClick: () => {
                 mainStore.exportExcelPagedResult().then();
             }
         },
         {
             title: 'addNew',
-            permission: 'MasterData.Tinh.Create',
+            permission: 'MasterData.Country.Create',
             onClick: () => {
                 openCreate();
             }
         }
     ];
+
+    const TableContent = (<>
+
+        <PagedTable columns={columns} fetcher={CountryService.getPaged}
+                    tableStore={tableStore}/>
+    </>);
     return (
         <>
-            <OrdCrudPage stored={mainStore}
-                         topActions={topActions}
-                         columns={columns}
-                         searchForm={(f) => <SearchFilterAndIsActived/>}
-                         entityForm={form => <CreateOrUpdateForm/>}
-            ></OrdCrudPage>
             <PageLayoutWithTable
                 topActions={topActions}
-                searchForm={<PagedTableSearchForm form={searchForm}
-                                                  tableStore={tableStore}
-                                                  searchFields={<>
-                                                      <SearchFilterText span={12}/>
-                                                  </>}/>}
-                tableContent={<>
-                    {
-                        searchForm && <Form form={searchForm}>
-                            <OrdStatusSegmented tableStore={tableStore} name={'isActived'}
-                                                fetcher={CountryService.getCountByActive}/>
-                        </Form>
-                    }
-
-                    <PagedTable columns={columns} fetcher={CountryService.getPaged}
-                                tableStore={tableStore}/>
-                </>}
+                searchFields={<SearchFilterText span={12}/>}
+                tableContent={TableContent}
+                tableStore={tableStore}
+                tabCounterStatus={<OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
+                                                               fetcher={CountryService.getCountByActive}/>}
             />
             <ModifyModalForm
                 width={680}
                 modalStore={modalStore}
                 tableStore={tableStore}
                 translationNs="country"
-                formFields={
-                    <>
-                        <CreateOrUpdateForm/>
-                    </>
-                }
+                formFields={<EntityForm/>}
             />
         </>)
         ;
