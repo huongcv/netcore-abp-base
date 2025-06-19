@@ -2,8 +2,9 @@
 {
     public class RateLimitOptions
     {
+    
         public const string SectionName = "RateLimit";
-
+        public bool IsEnabled { get; set; } = false;
         public string KeyPrefix { get; set; } = "rate_limit";
 
         public IpRateLimitPolicy IpPolicy { get; set; } = new();
@@ -15,7 +16,7 @@
 
     public class IpRateLimitPolicy
     {
-        public bool Enabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = false;
 
         // IP trắng không bị giới hạn
         public List<string> Whitelist { get; set; } = new();
@@ -29,7 +30,7 @@
 
     public class UserRateLimitPolicy
     {
-        public bool Enabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = false;
 
         // Rule riêng theo từng UserId
         public Dictionary<string, List<RateLimitRule>> UserSpecificRules { get; set; } = new();
@@ -37,7 +38,7 @@
 
     public class TenantRateLimitPolicy
     {
-        public bool Enabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = false;
 
         // Rule riêng theo từng TenantId
         public Dictionary<string, List<RateLimitRule>> TenantSpecificRules { get; set; } = new();

@@ -25,7 +25,8 @@
   "search": "Tìm kiếm",
   "showSearchAdvance": "Tìm kiếm nâng cao",
   "hiddenSearchAdvance": "Ẩn nâng cao",
-  "filterSearch": "Nhập từ khóa tìm kiếm (F3)",
+  "filterSearch": "Từ khóa tìm kiếm",
+  "filterSearchPlaceholder": "Nhập từ khóa để tìm kiếm (F3)",
   "sttRow": "STT",
   "LoginInvalid": "Tên đăng nhập hoặc mật khẩu không chính xác",
   "actionBtn": {
@@ -272,20 +273,20 @@
     }
   },
   "CourseTypeEnum": {
-    "Practice":"Sân tập",
-    "Standard":"Sân thi đấu",
-    "VIP":"Sân Vip",
-    "ShortCourse":"Sân ngắn",
-    "1":"Sân tập",
-    "2":"Sân thi đấu",
-    "3":"Sân Vip",
-    "4":"Sân ngắn"
+    "Practice": "Sân tập",
+    "Standard": "Sân thi đấu",
+    "VIP": "Sân Vip",
+    "ShortCourse": "Sân ngắn",
+    "1": "Sân tập",
+    "2": "Sân thi đấu",
+    "3": "Sân Vip",
+    "4": "Sân ngắn"
   },
   "FieldStatusEnum": {
-    "Active":"Đang hoạt động",
-    "Maintenance":"Bảo trì",
-    "Closed":"Đóng cửa",
-    "Unactive":"Ngưng hoạt động"
+    "Active": "Đang hoạt động",
+    "Maintenance": "Bảo trì",
+    "Closed": "Đóng cửa",
+    "Unactive": "Ngưng hoạt động"
   },
   "code": "Mã",
   "inventoryQty": "Tồn kho",
@@ -313,14 +314,14 @@
   "You can only upload JPG/PNG file!": "Bạn chỉ có thể tải lên file JPG/PNG!",
   "tenantType": "Loại chuỗi cửa hàng",
   "cropImage": "Cắt ảnh",
-   "Monday": "Thứ hai",
+  "Monday": "Thứ hai",
   "Tuesday": "Thứ ba",
   "Wednesday": "Thứ tư",
   "Thursday": "Thứ năm",
   "Friday": "Thứ sáu",
   "Saturday": "Thứ bảy",
-  "Sunday": "Chủ nhật", 
-  "isTaxable": "Chịu thuế", 
+  "Sunday": "Chủ nhật",
+  "isTaxable": "Chịu thuế",
   "isInsurance": "Đóng bảo hiểm",
   "Show": "Hiển thị"
 }

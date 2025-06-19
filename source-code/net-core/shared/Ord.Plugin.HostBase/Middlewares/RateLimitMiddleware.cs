@@ -37,6 +37,11 @@ namespace Ord.Plugin.Core.Features.RateLimits
         public async Task InvokeAsync(HttpContext context)
         {
             var options = _options;
+            if (options.IsEnabled != true)
+            {
+                await _next(context);
+                return;
+            }
             var endpoint = GetEndpoint(context);
             var whiteListEndpoints = options.EndpointWhitelist;
             if (whiteListEndpoints?.Any() == true)
@@ -53,7 +58,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
 
             _endpointHash = SecurityHelper.Sha256(endpoint);
             // 1. Kiểm tra IP Policy
-            if (options.IpPolicy.Enabled)
+            if (options.IpPolicy.IsEnabled)
             {
                 var ipAddress = GetClientIpAddress(context);
 
@@ -103,7 +108,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
             }
 
             // 2. Kiểm tra User Policy
-            if (options.UserPolicy.Enabled)
+            if (options.UserPolicy.IsEnabled)
             {
                 var userId = GetUserId(context);
                 if (!string.IsNullOrEmpty(userId))
@@ -129,7 +134,7 @@ namespace Ord.Plugin.Core.Features.RateLimits
             }
 
             // 3. Kiểm tra Tenant Policy
-            if (options.TenantPolicy.Enabled)
+            if (options.TenantPolicy.IsEnabled)
             {
                 var tenantId = GetTenantId(context);
                 if (!string.IsNullOrEmpty(tenantId))

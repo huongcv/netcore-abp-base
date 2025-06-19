@@ -69,7 +69,7 @@ export const SearchFilterText = (props: SearchFilterTextProp) => {
                         <Space.Compact style={{width: '100%'}}>
                             <Form.Item name='filter' className='flex-auto'>
                                 <Input prefix={<IconlyLightSearch/>}
-                                       placeholder={placeHolder ? placeHolder : t("filterSearch")}
+                                       placeholder={placeHolder ? placeHolder : t("filterSearchPlaceholder")}
                                        allowClear
                                     // autoFocus
                                        ref={inputSearch}/>

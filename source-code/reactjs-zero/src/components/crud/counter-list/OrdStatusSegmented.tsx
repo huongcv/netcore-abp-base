@@ -1,7 +1,8 @@
-import {Badge, Form, Segmented, Space} from "antd";
-import {useEffect, useState} from "react";
+import {Badge, Form, FormInstance, Segmented, Space} from "antd";
+import {useEffect, useMemo, useState} from "react";
 import {useDebounce} from "use-debounce";
 import {CounterByStatusItemDto, StaticCounterByStatusApiFetcher} from "@ord-components/paged-table/types";
+import {debounce} from "lodash";
 
 export const OrdStatusSegmented = (props: {
     name: string,
@@ -10,17 +11,18 @@ export const OrdStatusSegmented = (props: {
     tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
 }) => {
     const {fetcher, tableStore, name} = props;
-    const {searchForm, searchParams} = tableStore();
-    const form = searchForm;
-    const onSearchBeginning_w = Form.useWatch('onSearchBeginning', form);
+    const {searchParams} = tableStore();
     const [moveStatusChange, setMoveStatusChange] = useState(0);
-    const [debouncedMoveStatus] = useDebounce(moveStatusChange, 500);
+    const [debouncedMoveStatus] = useDebounce(moveStatusChange, 200);
     const [statusOptions, setStatusOptions] = useState<any>();
+    const form = Form.useFormInstance();
     const getCount = async () => {
         try {
             const result = await fetcher({
                 body: {
-                    ...searchForm?.getFieldsValue()
+                    ...form.getFieldsValue(),
+                    skipCount: 0,
+                    maxResultCount: 100
                 }
             });
             const items: CounterByStatusItemDto[] = result.data || [];
@@ -40,11 +42,19 @@ export const OrdStatusSegmented = (props: {
 
         }
     }
+    const debouncedLoadData = useMemo(
+        () =>
+            debounce(async () => {
+                await getCount();
+            }, 20),
+        [] // chỉ tạo một lần
+    );
     useEffect(() => {
-        if (onSearchBeginning_w > 0) {
-            getCount();
-        }
-    }, [onSearchBeginning_w]);
+        debouncedLoadData();
+        return () => {
+            debouncedLoadData.cancel(); // cleanup nếu component unmount
+        };
+    }, [searchParams]);
     const handlerChange = () => {
         setMoveStatusChange(Number(new Date()));
     }

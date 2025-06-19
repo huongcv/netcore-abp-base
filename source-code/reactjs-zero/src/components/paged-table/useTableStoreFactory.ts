@@ -12,12 +12,10 @@ interface TableStoredState {
     loading: boolean;
     page: number;
     pageSize: number;
-    searchForm?: FormInstance;
     searchParams: Record<string, any>;
     setLoading: (loading: boolean) => void;
     setData: (data: any[], total: number) => void;
     setPagination: (page: number, pageSize: number) => void;
-    setSearchForm: (form: FormInstance) => void;
     setSearchParams: (params: Record<string, any>) => void;
     reset: () => void;
     onLoadData: () => Promise<void>;
@@ -29,12 +27,10 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
     loading: false,
     page: 1,
     pageSize: 10,
-    searchForm: undefined,
     searchParams: {},
     setLoading: (loading) => set({loading}),
     setData: (data, total) => set({data, total}),
     setPagination: (page, pageSize) => set({page, pageSize}),
-    setSearchForm: (form) => set({searchForm: form}),
     setSearchParams: (params) => set({searchParams: params, page: 1}),
     reset: () =>
         set({
@@ -54,21 +50,26 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
             maxResultCount,
             ...searchParams
         }, 'isShowAdvanceSearch');
-        const resultApi = await service.getPaged({
-            body: body
-        });
-        const result = resultApi.data;
-        const items: any[] = result?.items || [];
-        if (items.length > 0) {
-            items.forEach((it, idx) => {
-                it['view_id'] = uuidv4();
-                it['ordRowIndex'] = skipCount + idx + 1;
+        try {
+            const resultApi = await service.getPaged({
+                body: body
             });
+            const result = resultApi.data;
+            const items: any[] = result?.items || [];
+            if (items.length > 0) {
+                items.forEach((it, idx) => {
+                    it['view_id'] = uuidv4();
+                    it['ordRowIndex'] = skipCount + idx + 1;
+                });
+            }
+            set({
+                data: items,
+                total: +(result?.totalCount || '0')
+            });
+        } catch {
+
         }
-        set({
-            data: items,
-            total: +(result?.totalCount || '0')
-        });
+
     }
 }));
 

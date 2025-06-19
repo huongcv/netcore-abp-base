@@ -21,21 +21,17 @@ export const PagedTableSearchForm = ({
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
 
-    const {setSearchParams, setSearchForm} = tableStore();
+    const {setSearchParams} = tableStore();
 
     useEffect(() => {
         if (initialValues) {
             usedForm.setFieldsValue(initialValues);
             setSearchParams(initialValues); // tự động gọi search ban đầu nếu có
         }
-        if (usedForm) {
-            setSearchForm(usedForm);
-        }
     }, []);
 
     const onSearch = async () => {
         const values = await usedForm.validateFields();
-        usedForm.setFieldValue('onSearchBeginning', Number(new Date()));
         setSearchParams(values);
     };
     const extendResetTick_w = useWatch('extendResetTick', usedForm);
@@ -59,7 +55,6 @@ export const PagedTableSearchForm = ({
             <Row gutter={[16, 8]}>
                 {searchFields}
             </Row>
-            <Form.Item name={'onSearchBeginning'} hidden></Form.Item>
         </Form>
     );
 };

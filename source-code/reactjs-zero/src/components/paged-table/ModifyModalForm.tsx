@@ -59,7 +59,12 @@ export const ModifyModalForm = <T extends object>({
     const handlerAfterSaved = async (result: ICommonResultDtoApi<any>) => {
         if (result.isSuccessful) {
             if (tableStore) {
-                await tableStore.getState().onLoadData();
+                try {
+                    await tableStore.getState().onLoadData();
+                } catch {
+
+                }
+
             }
             const titlePrefix = translationNs + '.success.';
             const key = {

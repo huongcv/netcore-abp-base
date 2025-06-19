@@ -21,7 +21,6 @@ export const PagedTable = <T extends object>({
         page,
         pageSize,
         searchParams,
-        searchForm,
         setLoading,
         setPagination,
         onLoadData
@@ -44,7 +43,7 @@ export const PagedTable = <T extends object>({
                 } finally {
                     setLoading(false);
                 }
-            }, 100),
+            }, 30),
         [] // chỉ tạo một lần
     );
 
