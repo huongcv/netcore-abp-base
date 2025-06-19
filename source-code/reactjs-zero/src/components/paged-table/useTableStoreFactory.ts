@@ -3,7 +3,6 @@ import {create} from 'zustand';
 import {IGetPagedApiService} from "@ord-components/paged-table/types";
 import _ from "lodash";
 import {v4 as uuidv4} from "uuid";
-import {FormInstance} from "antd";
 
 
 interface TableStoredState {

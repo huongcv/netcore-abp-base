@@ -2,9 +2,7 @@ import React, {useEffect} from 'react';
 import type {FormInstance} from 'antd';
 import {Form, Row} from 'antd';
 import uiUtils from "@ord-core/utils/ui.utils";
-import {debounce} from "lodash";
 import {useWatch} from "antd/es/form/Form";
-import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableSearchFormProps {
     searchFields: React.ReactNode;

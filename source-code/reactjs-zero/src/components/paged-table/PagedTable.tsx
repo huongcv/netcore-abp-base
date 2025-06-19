@@ -3,6 +3,7 @@ import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {StaticApiFetcher} from "@ord-components/paged-table/types";
 import {debounce} from "lodash";
+import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableProps<T> extends TableProps<T> {
     fetcher: StaticApiFetcher;
@@ -34,25 +35,9 @@ export const PagedTable = <T extends object>({
             setLoading(false);
         }
     };
-    const debouncedLoadData = useMemo(
-        () =>
-            debounce(async () => {
-                setLoading(true);
-                try {
-                    await onLoadData();
-                } finally {
-                    setLoading(false);
-                }
-            }, 30),
-        [] // chỉ tạo một lần
-    );
-
-    useEffect(() => {
-        debouncedLoadData();
-        return () => {
-            debouncedLoadData.cancel(); // cleanup nếu component unmount
-        };
-    }, [page, pageSize, searchParams]);
+    useDebounce(() => {
+        loadData().then();
+    }, 50, [page, pageSize, searchParams])
 
     return (
         <>

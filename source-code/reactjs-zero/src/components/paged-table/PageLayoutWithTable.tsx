@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {v4 as uuidv4} from "uuid";
 import {HotkeysProvider} from "react-hotkeys-hook";
 import {PageTopTitleAndAction} from "@ord-components/common/page/PageTopTitleAndAction";
 import {TopAction} from "@ord-components/crud/TopAction";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {Form, Row} from "antd";
-import uiUtils from "@ord-core/utils/ui.utils";
 import {useWatch} from "antd/es/form/Form";
 import {debounce} from "lodash";
 
@@ -28,17 +27,17 @@ export const PageLayoutWithTable = ({
                                         tableStore,
                                         searchInitData
                                     }: PageLayoutWithTableProps) => {
-    const hotKeyScopeId = React.useMemo(() => `crudPageScope-${uuidv4()}`, []);
+    const hotKeyScopeId = useMemo(() => `crudPageScope-${uuidv4()}`, []);
     const [searchFormRef] = Form.useForm();
+    const {setSearchParams} = tableStore?.() || {};
+    const extendResetTick_w = useWatch('extendResetTick', searchFormRef);
+
     const onFinishFormSearch = () => {
-        if (tableStore) {
+        if (setSearchParams) {
             const values = searchFormRef.getFieldsValue();
-            tableStore.getState().setSearchParams({
-                ...values
-            });
+            setSearchParams(values);
         }
     }
-    const extendResetTick_w = useWatch('extendResetTick', searchFormRef);
     useEffect(() => {
         if (extendResetTick_w) {
             searchFormRef.resetFields();
@@ -64,7 +63,6 @@ export const PageLayoutWithTable = ({
                       onFinish={debounce((d) => {
                           onFinishFormSearch()
                       }, 250)}
-                      onFinishFailed={() => uiUtils.showCommonValidateForm()}
                 >
                     {
                         (searchFields) &&
