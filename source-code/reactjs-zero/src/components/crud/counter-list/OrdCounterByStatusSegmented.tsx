@@ -1,5 +1,5 @@
 import {Badge, Segmented, Space} from "antd";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {CounterByStatusItemDto, StaticCounterByStatusApiFetcher} from "@ord-components/paged-table/types";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
@@ -9,7 +9,7 @@ export const OrdCounterByStatusSegmented = (props: {
     tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
 }) => {
     const {fetcher, tableStore, statusFieldName} = props;
-    const {searchParams, setSearchParams} = tableStore();
+    const {searchParams, setSearchParams, reloadStatusCounter, onLoadData} = tableStore();
     const [statusOptions, setStatusOptions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<string | number | null>(null);
@@ -54,7 +54,7 @@ export const OrdCounterByStatusSegmented = (props: {
     }, []);
 
     // Debounce fetch counter data when searchParams change
-    useDebounce(fetchCounterData, 300, [searchParams]);
+    useDebounce(fetchCounterData, 300, [searchParams, reloadStatusCounter]);
 
     // Debounce update searchParams when status changes
     useDebounce(() => {

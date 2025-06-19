@@ -12,12 +12,14 @@ interface TableStoredState {
     page: number;
     pageSize: number;
     searchParams: Record<string, any>;
+    reloadStatusCounter: number;
     setLoading: (loading: boolean) => void;
     setData: (data: any[], total: number) => void;
     setPagination: (page: number, pageSize: number) => void;
     setSearchParams: (params: Record<string, any>) => void;
     reset: () => void;
     onLoadData: () => Promise<void>;
+    setReloadStatusCounter: () => void;
 }
 
 export const createTableStore = (service: IGetPagedApiService) => create<TableStoredState>((set, get) => ({
@@ -27,6 +29,7 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
     page: 1,
     pageSize: 10,
     searchParams: {},
+    reloadStatusCounter: 0,
     setLoading: (loading) => set({loading}),
     setData: (data, total) => set({data, total}),
     setPagination: (page, pageSize) => set({page, pageSize}),
@@ -43,6 +46,10 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
             pageSize: 10,
             searchParams: {},
         }),
+    setReloadStatusCounter: () => {
+        const {reloadStatusCounter} = get();
+        set({reloadStatusCounter: reloadStatusCounter + 1})
+    },
     onLoadData: async () => {
         const {page, pageSize, searchParams} = get();
         const skipCount = (page - 1) * pageSize;

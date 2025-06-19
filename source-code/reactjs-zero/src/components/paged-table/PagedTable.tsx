@@ -1,8 +1,7 @@
-import React, {useEffect, useMemo} from 'react';
+import React from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {StaticApiFetcher} from "@ord-components/paged-table/types";
-import {debounce} from "lodash";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableProps<T> extends TableProps<T> {

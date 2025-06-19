@@ -31,7 +31,7 @@ export const ModifyModalForm = <T extends object>({
     const usedForm = form || internalForm;
     const [isAddNewContinue, setIsAddNewContinue] = useState(false);
     const [saving, setSaving] = useState(false);
-
+    const {onLoadData: tableOnLoadData, setReloadStatusCounter} = tableStore?.() || {};
     const isView = mode === 'viewDetail';
 
     useEffect(() => {
@@ -58,18 +58,7 @@ export const ModifyModalForm = <T extends object>({
     };
     const handlerAfterSaved = async (result: ICommonResultDtoApi<any>) => {
         if (result.isSuccessful) {
-            if (tableStore) {
-                const tableSate = tableStore.getState();
-                try {
-                    await tableSate.onLoadData();
-                    if (tableSate.searchForm) {
-                        tableSate.searchForm.setFieldValue('triggerReloadCounter', Number(new Date()));
-                    }
-                } catch {
-
-                }
-
-            }
+            await reloadStateTable();
             const titlePrefix = translationNs + '.success.';
             const key = {
                 create: titlePrefix + 'create',
@@ -87,6 +76,17 @@ export const ModifyModalForm = <T extends object>({
             if (result.message) {
                 uiUtils.showError(result.message);
             }
+        }
+    }
+    const reloadStateTable = async () => {
+        if (tableOnLoadData) {
+            try {
+                await tableOnLoadData();
+            } catch {
+            }
+        }
+        if (setReloadStatusCounter) {
+            setReloadStatusCounter();
         }
     }
 
