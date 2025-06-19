@@ -50,6 +50,13 @@ export interface IModifyApiService {
             encodedId?: string
         }
     }, options?: IRequestOptions) => Promise<ICommonResultDtoApi<any>>;
+    remove?: (params: {
+                  body?: {
+                      /**  */
+                      encodedId?: string;
+                  }
+              }, options?: IRequestOptions
+    ) => Promise<ICommonResultDtoApi<boolean>>
 }
 
 export interface IGetPagedApiService {

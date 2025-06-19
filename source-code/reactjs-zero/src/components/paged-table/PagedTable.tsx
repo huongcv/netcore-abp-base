@@ -36,7 +36,7 @@ export const PagedTable = <T extends object>({
     };
     useDebounce(() => {
         loadData().then();
-    }, 50, [page, pageSize, searchParams])
+    }, 200, [page, pageSize, searchParams])
 
     return (
         <>

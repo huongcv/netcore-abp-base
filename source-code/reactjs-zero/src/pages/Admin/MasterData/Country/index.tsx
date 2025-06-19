@@ -19,7 +19,7 @@ const modalStore = createModalFormStore(CountryService, {});
 
 const Country: React.FC = () => {
     const {countryStore: mainStore} = useStore();
-    const {openView, openCreate, openEdit} = modalStore();
+    const {openView, openCreate, openEdit, openDelete} = modalStore();
     const columns: TableColumnsType<any> = TableUtil.getColumns([
         {
             title: 'ma_quoc_gia',
@@ -56,7 +56,7 @@ const Country: React.FC = () => {
             {
                 title: 'remove',
                 onClick: (d) => {
-                    mainStore.openRemoveById(d);
+                    openDelete(d);
                 }
             }
         ]

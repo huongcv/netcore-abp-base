@@ -1,0 +1,5 @@
+{
+  "remove": {
+    "country": "Bạn có muốn xóa quốc gia: <bold>{{name}}</bold> này không"
+  }
+}

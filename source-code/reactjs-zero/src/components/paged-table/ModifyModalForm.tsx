@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import type {FormInstance, ModalProps} from 'antd';
 import {Form, Modal} from 'antd';
 import {FooterCrudModal} from '@ord-components/crud/FooterCrudModal';
-import {useTranslation} from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 import uiUtils from "@ord-core/utils/ui.utils";
 import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
+import UiUtils from "@ord-core/utils/ui.utils";
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
@@ -26,7 +27,9 @@ export const ModifyModalForm = <T extends object>({
                                                       ...modalProps
                                                   }: ModifyModalFormProps<T>) => {
     const {t} = useTranslation(['modify-modal']);
-    const {open, editingItem, mode, close, onSubmit} = modalStore();
+    const {t: tCommon} = useTranslation(['common']);
+    const {t: tConfirm} = useTranslation(['confirm']);
+    const {open, editingItem, deletingItem, mode, close, onSubmit, onDelete} = modalStore();
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
     const [isAddNewContinue, setIsAddNewContinue] = useState(false);
@@ -108,6 +111,39 @@ export const ModifyModalForm = <T extends object>({
 
         return t(key, editingItem || {}) || '---';
     };
+    useEffect(() => {
+        if (!!deletingItem) {
+            const i18nKey = "remove." + translationNs;
+            UiUtils.showConfirm({
+                title: tCommon('confirmDelete'),
+                icon: "remove",
+                content: (<Trans ns={'confirm'}
+                                 i18nKey={i18nKey}
+                                 values={deletingItem}
+                                 components={{italic: <i/>, bold: <strong/>}}></Trans>),
+                onOk: (d) => {
+                    onDelete().then((result) => {
+                        if (!result) {
+                            return;
+                        }
+                        if (!result.isSuccessful && result.message) {
+                            uiUtils.showError(result.message);
+                            close();
+                            return;
+                        }
+                        reloadStateTable().then();
+                        const key = translationNs + '.success.remove';
+                        const message = t(key, {...deletingItem});
+                        uiUtils.showSuccess(message);
+                        close();
+                    });
+                },
+                onCancel: () => {
+                    close();
+                }
+            });
+        }
+    }, [deletingItem]);
 
     return (
         <Modal

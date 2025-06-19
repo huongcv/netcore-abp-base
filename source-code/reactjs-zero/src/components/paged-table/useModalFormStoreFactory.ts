@@ -7,13 +7,16 @@ export type ModalMode = 'create' | 'edit' | 'viewDetail';
 export interface ModalFormState<T = any> {
     open: boolean;
     editingItem?: T | null;
+    deletingItem: { encodedId?: string } | null;
     mode: ModalMode;
     setMode: (mode: ModalMode) => void;
     openCreate: () => void;
     openEdit: (item: T) => void;
     openView: (item: T) => void;
+    openDelete: (item: T) => void;
     close: () => void;
     onSubmit: (values: T) => Promise<ICommonResultDtoApi<any> | null>;
+    onDelete: () => Promise<ICommonResultDtoApi<any> | null>;
 }
 
 export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModifyApiService,
@@ -25,12 +28,14 @@ export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModify
     create<ModalFormState<TDetail>>((set, get) => ({
         open: false,
         editingItem: null,
+        deletingItem: null,
         mode: 'create',
         setMode: (mode) => set({mode}),
         openCreate: () => set({open: true, editingItem: null, mode: 'create'}),
         openEdit: (item) => set({open: true, editingItem: item, mode: 'edit'}),
         openView: (item) => set({open: true, editingItem: item, mode: 'viewDetail'}),
-        close: () => set({open: false, editingItem: null, mode: 'create'}),
+        openDelete: (deletingItem: any) => set({deletingItem}),
+        close: () => set({open: false, editingItem: null, deletingItem: null, mode: 'create'}),
         onSubmit: async (values: TDetail) => {
             const {mode, editingItem} = get();
             if (!mode) return null;
@@ -66,5 +71,25 @@ export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModify
             } finally {
                 UiUtils.clearBusy();
             }
+        },
+        onDelete: async () => {
+            const {deletingItem} = get();
+            if (!deletingItem || !service.remove) {
+                return null;
+            }
+            UiUtils.setBusy();
+            try {
+                const body = {
+                    encodedId: deletingItem['encodedId']
+                };
+                const result = await service.remove({body: body});
+                return result;
+            } catch (err) {
+                console.error('Modal submit error', err);
+                throw err;
+            } finally {
+                UiUtils.clearBusy();
+            }
+
         }
     }));
