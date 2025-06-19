@@ -29,6 +29,7 @@ export const ModifyModalForm = <T extends object>({
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
     const [isAddNewContinue, setIsAddNewContinue] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     const isView = mode === 'viewDetail';
 
@@ -47,6 +48,7 @@ export const ModifyModalForm = <T extends object>({
         if (!result) {
             return;
         }
+        setSaving(false);
         if (result.isSuccessful) {
             if (tableStore) {
                 await tableStore.getState().onLoadData();
@@ -73,7 +75,11 @@ export const ModifyModalForm = <T extends object>({
     };
 
     const onOkModal = () => {
+        if (saving) {
+            return;
+        }
         usedForm?.submit();
+        setSaving(true);
     };
 
     const closeModalCrud = () => {
@@ -118,7 +124,10 @@ export const ModifyModalForm = <T extends object>({
             <Form autoComplete="off" layout='vertical' clearOnDestroy form={usedForm}
                   disabled={isView}
                   onFinish={handleFinish}
-                  onFinishFailed={() => uiUtils.showCommonValidateForm()}
+                  onFinishFailed={() => {
+                      setSaving(false);
+                      uiUtils.showCommonValidateForm();
+                  }}
                   initialValues={initialValues}>
                 {formFields}
             </Form>
