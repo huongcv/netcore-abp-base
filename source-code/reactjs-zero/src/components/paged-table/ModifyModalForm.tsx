@@ -4,6 +4,7 @@ import {Form, Modal} from 'antd';
 import {FooterCrudModal} from '@ord-components/crud/FooterCrudModal';
 import {useTranslation} from "react-i18next";
 import uiUtils from "@ord-core/utils/ui.utils";
+import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
@@ -43,12 +44,19 @@ export const ModifyModalForm = <T extends object>({
     }, [open]);
 
     const handleFinish = async () => {
+        if (saving) {
+            return;
+        }
+        setSaving(true);
         const values = await usedForm.validateFields();
         const result = await onSubmit(values);
         if (!result) {
             return;
         }
+        await handlerAfterSaved(result);
         setSaving(false);
+    };
+    const handlerAfterSaved = async (result: ICommonResultDtoApi<any>) => {
         if (result.isSuccessful) {
             if (tableStore) {
                 await tableStore.getState().onLoadData();
@@ -71,15 +79,10 @@ export const ModifyModalForm = <T extends object>({
                 uiUtils.showError(result.message);
             }
         }
-
-    };
+    }
 
     const onOkModal = () => {
-        if (saving) {
-            return;
-        }
         usedForm?.submit();
-        setSaving(true);
     };
 
     const closeModalCrud = () => {

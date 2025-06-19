@@ -18,8 +18,9 @@ export interface ModalFormState<T = any> {
 
 export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModifyApiService,
                                                                 options?: {
+                                                                    transformBeforeCreate?: (values: any) => void;
+                                                                    transformBeforeUpdate?: (values: any, editingItem: any) => void;
                                                                     onSuccess?: (result: ICommonResultDtoApi<any>, mode: ModalMode) => void;
-                                                                    transformBeforeUpdate?: (editingItem: TDetail | null, values: TDetail) => TUpdate;
                                                                 }) =>
     create<ModalFormState<TDetail>>((set, get) => ({
         open: false,
@@ -44,6 +45,12 @@ export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModify
                     // @ts-ignore
                     encodedId: editingItem['encodedId']
                 };
+                if (mode === 'create' && options?.transformBeforeCreate) {
+                    options.transformBeforeCreate(body);
+                }
+                if (mode === 'edit' && options?.transformBeforeUpdate) {
+                    options.transformBeforeUpdate(body, editingItem);
+                }
 
                 const result = isCreate
                     ? await service.create({body: body})
