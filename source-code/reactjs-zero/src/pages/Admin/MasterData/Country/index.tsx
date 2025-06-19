@@ -118,6 +118,7 @@ const Country: React.FC = () => {
                                           tableStore={tableStore}/>}
             />
             <ModifyModalForm
+                width={680}
                 modalStore={modalStore}
                 tableStore={tableStore}
                 translationNs="country"

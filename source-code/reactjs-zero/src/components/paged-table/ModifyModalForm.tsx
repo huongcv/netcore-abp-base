@@ -109,6 +109,10 @@ export const ModifyModalForm = <T extends object>({
                     onCancel={closeModalCrud}
                 />
             }
+            width={680}
+            style={{
+                top: '30px'
+            }}
             {...modalProps}
         >
             <Form autoComplete="off" layout='vertical' clearOnDestroy form={usedForm}
