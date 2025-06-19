@@ -1,26 +1,24 @@
-import { RoleDto } from "@api/index.defs";
-import { RoleHostService } from "@api/RoleHostService";
-import { RoleService } from "@api/RoleService";
-import { UserHostService } from "@api/UserHostService";
+import {RoleDto} from "@api/index.defs";
+import {RoleHostService} from "@api/RoleHostService";
+import {RoleService} from "@api/RoleService";
+import {UserHostService} from "@api/UserHostService";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import DateUtil from "@ord-core/utils/date.util";
 import ValidateUtils from "@ord-core/utils/validate.utils";
-import { useStore } from "@ord-store/index";
-import { Checkbox, Col, Form, FormInstance, Input, Row, TabsProps } from "antd";
-import { Tabs } from "antd/lib";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import {useStore} from "@ord-store/index";
+import {Checkbox, Col, Form, FormInstance, Input, Row, TabsProps} from "antd";
+import {Tabs} from "antd/lib";
+import {observer} from "mobx-react-lite";
+import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
-const UserCreateOrUpdateForm = (props: {
-    form: FormInstance
-}) => {
-    const { useHostListStore: mainStore, sessionStore } = useStore();
-    const { t } = useTranslation(mainStore.getNamespaceLocale());
-    const { t: tCommon } = useTranslation('common');
-    const { mode } = mainStore.createOrUpdateModal;
-    const { form } = props;
+const UserCreateOrUpdateForm = () => {
+    const {useHostListStore: mainStore, sessionStore} = useStore();
+    const {t} = useTranslation(mainStore.getNamespaceLocale());
+    const {t: tCommon} = useTranslation('common');
+    const {mode} = mainStore.createOrUpdateModal;
+    const form = Form.useFormInstance();
 
     const [roleOptions, setRoleOptions] = useState<any[]>([]);
 
@@ -30,7 +28,7 @@ const UserCreateOrUpdateForm = (props: {
         children: (<>
             {roleOptions && <Col span={24}>
                 <Form.Item name='listRoleId'>
-                    <Checkbox.Group style={{ width: '100%' }}>
+                    <Checkbox.Group style={{width: '100%'}}>
                         <Row gutter={16}>
                             {roleOptions.map((opt) => {
                                 return (<Col className='mb-1' key={opt.value} span={24}>
@@ -56,7 +54,7 @@ const UserCreateOrUpdateForm = (props: {
                 setRoleOptions(lstRole.map(it => {
                     return {
                         value: it.id,
-                        label: (<><b className='inline-block' style={{ minWidth: '80px' }}>{it.code}</b> <span
+                        label: (<><b className='inline-block' style={{minWidth: '80px'}}>{it.code}</b> <span
                             className='italic'>{it.name}</span> </>)
                     }
                 }))
@@ -79,8 +77,9 @@ const UserCreateOrUpdateForm = (props: {
                             <li>{tCommon('userNameTooltip.3')}</li>
                         </ul>)}
                         name='userName' rules={[ValidateUtils.required, ValidateUtils.userName]}>
-                        <Input addonBefore={(mode === 'addNew' && sessionStore.tenantCode ? sessionStore.tenantCode + '_' : '')}
-                            autoComplete="none" maxLength={30} disabled={mode !== 'addNew'} />
+                        <Input
+                            addonBefore={(mode === 'addNew' && sessionStore.tenantCode ? sessionStore.tenantCode + '_' : '')}
+                            autoComplete="none" maxLength={30} disabled={mode !== 'addNew'}/>
 
                     </Form.Item>
                 </FloatLabel>
@@ -92,8 +91,8 @@ const UserCreateOrUpdateForm = (props: {
                         name='password'
                         rules={[mode === 'addNew' ? ValidateUtils.required : ValidateUtils.alwaysValid, ValidateUtils.password]}>
                         <Input autoComplete="none"
-                            placeholder={mode === 'update' ? t('emptyIfNotChangePassword') : ''}
-                            maxLength={100} />
+                               placeholder={mode === 'update' ? t('emptyIfNotChangePassword') : ''}
+                               maxLength={100}/>
                     </Form.Item>
                 </FloatLabel>
 
@@ -102,7 +101,7 @@ const UserCreateOrUpdateForm = (props: {
                 <FloatLabel label={t('Name')} required>
                     <Form.Item
                         name='name' rules={[ValidateUtils.required]}>
-                        <Input maxLength={200} />
+                        <Input maxLength={200}/>
                     </Form.Item>
                 </FloatLabel>
 
@@ -111,14 +110,14 @@ const UserCreateOrUpdateForm = (props: {
                 <FloatLabel label={tCommon('BirthDay')}>
                     <Form.Item
                         name='birthDay' rules={[]}>
-                        <OrdDateInput disabledDate={DateUtil.disableAfterNow} />
+                        <OrdDateInput disabledDate={DateUtil.disableAfterNow}/>
                     </Form.Item>
                 </FloatLabel>
             </Col>
             <Col span={12}>
                 <FloatLabel label='Email'>
                     <Form.Item name='email' rules={[ValidateUtils.email]}>
-                        <Input maxLength={300} />
+                        <Input maxLength={300}/>
                     </Form.Item>
                 </FloatLabel>
 
@@ -127,7 +126,7 @@ const UserCreateOrUpdateForm = (props: {
                 <FloatLabel label={tCommon('PhoneNumber')}>
                     <Form.Item
                         name='phoneNumber' rules={[ValidateUtils.phoneNumberVietNam]}>
-                        <Input maxLength={10} />
+                        <Input maxLength={10}/>
                     </Form.Item>
                 </FloatLabel>
             </Col>
@@ -148,10 +147,10 @@ const UserCreateOrUpdateForm = (props: {
             </Col>
         </Row>
 
-        <Tabs items={tabItems} />
+        <Tabs items={tabItems}/>
 
         <div hidden>
-            <Form.Item name={'id'} />
+            <Form.Item name={'id'}/>
         </div>
     </>)
 }

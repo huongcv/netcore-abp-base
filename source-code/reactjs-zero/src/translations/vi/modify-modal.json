@@ -1,0 +1,13 @@
+{
+  "country": {
+    "title": {
+      "create": "Thêm mới quốc gia",
+      "edit": "Sửa quốc gia",
+      "view": "Xem chi tiết thông tin quốc gia"
+    },
+    "success": {
+      "create": "Thêm mới thành công quốc gia",
+      "edit": "Sửa thành công quốc gia {{name}}"
+    }
+  }
+}

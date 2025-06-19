@@ -5,7 +5,7 @@ import uiUtils from "@ord-core/utils/ui.utils";
 import {debounce} from "lodash";
 import {useWatch} from "antd/es/form/Form";
 
-interface PagedTableSearchFormProps {
+export interface PagedTableSearchFormProps {
     searchFields: React.ReactNode;
     form?: FormInstance;
     tableStore: ReturnType<typeof import('./useTableStoreFactory').createTableStore>;

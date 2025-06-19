@@ -1,18 +1,22 @@
 import React from "react";
 import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
-import {Checkbox, Form, FormInstance, Input, TableColumnsType} from "antd";
+import {Checkbox, Form, Input, TableColumnsType} from "antd";
 import {useTranslation} from "react-i18next";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import TableUtil from "@ord-core/utils/table.util";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 import {SearchFilterAndIsActived} from "@ord-components/forms/search/SearchFilterAndIsActived";
+import {createTableStore, PagedTable} from "@ord-components/paged-table";
+import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
+import {CountryService} from "@api/base/CountryService";
+import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
+import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
+import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
 
-export const CreateOrUpdateForm = (props: {
-    form: FormInstance
-}) => {
+export const CreateOrUpdateForm = () => {
     const {t} = useTranslation('country');
-    const {t:tCommon} = useTranslation('common');
+    const {t: tCommon} = useTranslation('common');
 
     return (<>
         <Form.Item label={t('ma')} name='code' rules={[ValidateUtils.required]}>
@@ -35,8 +39,12 @@ export const CreateOrUpdateForm = (props: {
     </>)
 }
 
+const tableStore = createTableStore(CountryService);
+const modalStore = createModalFormStore(CountryService, {});
+
 const Country: React.FC = () => {
     const {countryStore: mainStore} = useStore();
+    const {openView, openCreate, openEdit} = modalStore();
     const columns: TableColumnsType<any> = TableUtil.getColumns([
         {
             title: 'ma',
@@ -62,13 +70,13 @@ const Country: React.FC = () => {
             {
                 title: 'view',
                 onClick: (d) => {
-                    mainStore.openViewDetailModal(d);
+                    openView(d);
                 }
             },
             {
                 title: 'edit',
                 onClick: (d) => {
-                    mainStore.openUpdateModal(d);
+                    openEdit(d);
                 }
             },
             {
@@ -92,7 +100,7 @@ const Country: React.FC = () => {
             title: 'addNew',
             permission: 'MasterData.Tinh.Create',
             onClick: () => {
-                mainStore.openCreateModal();
+                openCreate();
             }
         }
     ];
@@ -102,8 +110,23 @@ const Country: React.FC = () => {
                          topActions={topActions}
                          columns={columns}
                          searchForm={(f) => <SearchFilterAndIsActived/>}
-                         entityForm={form => <CreateOrUpdateForm form={form}/>}
+                         entityForm={form => <CreateOrUpdateForm/>}
             ></OrdCrudPage>
+            <PageLayoutWithTable
+                searchForm={<PagedTableSearchForm tableStore={tableStore} searchFields={<SearchFilterAndIsActived/>}/>}
+                tableContent={<PagedTable columns={columns} fetcher={CountryService.getPaged}
+                                          tableStore={tableStore}/>}
+            />
+            <ModifyModalForm
+                modalStore={modalStore}
+                tableStore={tableStore}
+                translationNs="country"
+                formFields={
+                    <>
+                        <CreateOrUpdateForm/>
+                    </>
+                }
+            />
         </>)
         ;
 }

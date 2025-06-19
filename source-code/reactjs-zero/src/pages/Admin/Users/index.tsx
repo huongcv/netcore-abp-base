@@ -12,10 +12,17 @@ import {UserUtil} from "@pages/Admin/Users/user.util";
 import {createTableStore, PagedTable} from "@ord-components/paged-table";
 import {CountryService} from "@api/base/CountryService";
 import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
+import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
+import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
+import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
 
 const userTableStore = createTableStore();
+const modalStore = createModalFormStore(CountryService, {
+
+});
 const User: React.FC = () => {
     const {useHostListStore: mainStore, sessionStore} = useStore();
+    const {openCreate, openEdit, openView} = modalStore();
     const policies = {
         base: 'AuthPlugin.User',
         addNew: 'AuthPlugin.User.Create',
@@ -42,6 +49,18 @@ const User: React.FC = () => {
 
     const columns = TableUtil.getColumns<UserDto>(UserDataColumns, {
         actions: [
+            {
+                title: 'view',
+                onClick: (d) => {
+                    openView(d);
+                }
+            },
+            {
+                title: 'edit',
+                onClick: (d) => {
+                    openEdit(d);
+                }
+            },
             {
                 title: 'changePassword',
                 permission: policies.resetPassword,
@@ -89,10 +108,23 @@ const User: React.FC = () => {
                          topActions={topActions}
                          columns={columns}
                          searchForm={(searchFormRef) => <UserSearchForm/>}
-                         entityForm={form => <UserCreateOrUpdateForm form={form}/>}
+                         entityForm={form => <UserCreateOrUpdateForm/>}
             ></OrdCrudPage>
-            <PagedTableSearchForm tableStore={userTableStore} searchFields={<UserSearchForm/>}/>
-            <PagedTable columns={columns} fetcher={CountryService.getPaged} tableStore={userTableStore}/>
+            <PageLayoutWithTable
+                searchForm={<PagedTableSearchForm tableStore={userTableStore} searchFields={<UserSearchForm/>}/>}
+                tableContent={<PagedTable columns={columns} fetcher={CountryService.getPaged}
+                                          tableStore={userTableStore}/>}
+            />
+            <ModifyModalForm
+                modalStore={modalStore}
+                translationNs="user"
+                formFields={
+                    <>
+                        <UserCreateOrUpdateForm/>
+                    </>
+                }
+            />
+
         </>)
         ;
 }

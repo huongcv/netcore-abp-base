@@ -2,9 +2,11 @@ import React, {useEffect} from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {StaticApiFetcher} from "@ord-components/paged-table/types";
+import {v4 as uuidv4} from "uuid";
+import _ from "lodash";
 
-interface PagedTableProps<T> extends TableProps<T> {
-    fetcher: StaticApiFetcher<T>;
+export interface PagedTableProps<T> extends TableProps<T> {
+    fetcher: StaticApiFetcher;
     tableStore: ReturnType<typeof import('./useTableStoreFactory').createTableStore>;
 }
 
@@ -21,20 +23,14 @@ export const PagedTable = <T extends object>({
         pageSize,
         searchParams,
         setLoading,
-        setData,
-        setPagination
+        setPagination,
+        onLoadData
     } = tableStore();
     const {t} = useTranslation();
     const loadData = async () => {
         setLoading(true);
         try {
-            const skipCount = (page - 1) * pageSize;
-            const maxResultCount = pageSize;
-            const resultApi = await fetcher({
-                body: {skipCount, maxResultCount, ...searchParams}
-            });
-            const result = resultApi.data;
-            setData(result?.items || [], +(result?.totalCount || '0'));
+            await onLoadData();
         } finally {
             setLoading(false);
         }
@@ -51,7 +47,7 @@ export const PagedTable = <T extends object>({
                         dataSource={data}
                         loading={loading}
                         pagination={false}
-                        rowKey={tableProps.rowKey || 'id'}/>
+                        rowKey={tableProps.rowKey || 'view_id'}/>
                 <div className={'custom-pagination mt-3 flex flex-wrap items-center justify-between'}>
                     <div>
                         {/*<span className={'me-1'}>*/}

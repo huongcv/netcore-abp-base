@@ -1,7 +1,14 @@
 import {IRequestOptions} from "@api/index.defs";
-import {CountryPagedDto} from "@api/base/index.defs";
 
-export interface StaticApiFetcher<OutputResult = any> {
+export interface ICommonResultDtoApi<T> {
+    code?: string;
+    isSuccessful?: boolean;
+    message?: string;
+    extend?: any | null;
+    data?: T
+}
+
+export interface StaticApiFetcher {
     (
         params?: {
             body?: {
@@ -10,12 +17,22 @@ export interface StaticApiFetcher<OutputResult = any> {
             }
         },
         options?: IRequestOptions
-    ): Promise<{
-        code?: string;
-        isSuccessful?: boolean;
-        data?: {
-            items?: CountryPagedDto[];
-            totalCount?: string;
-        };
-    }>;
+    ): Promise<ICommonResultDtoApi<{
+        items?: any[];
+        totalCount?: string;
+    }>>;
+}
+
+
+export interface IModifyApiService {
+    create: (params: { body?: any; }, options?: IRequestOptions) => Promise<ICommonResultDtoApi<any>>;
+    update: (params: {
+        body?: {
+            encodedId?: string
+        }
+    }, options?: IRequestOptions) => Promise<ICommonResultDtoApi<any>>;
+}
+
+export interface IGetPagedApiService {
+    getPaged: StaticApiFetcher;
 }
