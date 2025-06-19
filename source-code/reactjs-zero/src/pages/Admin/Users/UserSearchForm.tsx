@@ -7,9 +7,7 @@ import {SearchIsActived} from "@ord-components/forms/search/SearchIsActived";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 
-export const UserSearchForm = (props: {
-    searchFormRef: FormInstance
-}) => {
+export const UserSearchForm = () => {
     const {t} = useTranslation('common');
     return (<>
         <Col {...useResponsiveSpan(10)}>

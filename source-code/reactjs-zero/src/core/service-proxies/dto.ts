@@ -1,3 +1,5 @@
+import {JwtDto} from "@api/base/index.defs";
+
 export interface CommonResultExtendDto {
     code?: string | undefined;
     message?: string | undefined;
@@ -16,6 +18,9 @@ export interface CommonResultDto<T> {
     notification?: CommonResultExtendDto;
     errors?: ValidateInputDto[] | undefined;
     data?: T;
+    code?: string;
+    message?: string;
+    extend?: any | null;
 }
 
 export interface PagedResultDto<T> {

@@ -9,10 +9,13 @@ import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
 import TableUtil from "@ord-core/utils/table.util";
 import UnlockAction from "@pages/Admin/Users/actions/unlockAction";
 import {UserUtil} from "@pages/Admin/Users/user.util";
+import {createTableStore, PagedTable} from "@ord-components/paged-table";
+import {CountryService} from "@api/base/CountryService";
+import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
 
-
+const userTableStore = createTableStore();
 const User: React.FC = () => {
-    const {useHostListStore : mainStore, sessionStore} = useStore();
+    const {useHostListStore: mainStore, sessionStore} = useStore();
     const policies = {
         base: 'AuthPlugin.User',
         addNew: 'AuthPlugin.User.Create',
@@ -85,9 +88,11 @@ const User: React.FC = () => {
             <OrdCrudPage stored={mainStore}
                          topActions={topActions}
                          columns={columns}
-                         searchForm={(searchFormRef) => <UserSearchForm searchFormRef={searchFormRef}/>}
+                         searchForm={(searchFormRef) => <UserSearchForm/>}
                          entityForm={form => <UserCreateOrUpdateForm form={form}/>}
             ></OrdCrudPage>
+            <PagedTableSearchForm tableStore={userTableStore} searchFields={<UserSearchForm/>}/>
+            <PagedTable columns={columns} fetcher={CountryService.getPaged} tableStore={userTableStore}/>
         </>)
         ;
 }

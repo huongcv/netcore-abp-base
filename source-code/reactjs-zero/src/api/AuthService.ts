@@ -63,7 +63,7 @@ export class AuthService {
    */
   static logout(options: IRequestOptions = {}): Promise<any> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth-plugin/auth/logout';
+      let url = basePath + '/api/auth/auth/logout';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
