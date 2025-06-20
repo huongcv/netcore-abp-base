@@ -4,39 +4,39 @@
 import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
-  /**
-   * show loading status
-   */
-  loading?: boolean;
-  /**
-   * display error message
-   */
-  showError?: boolean;
-  /**
-   * data security, extended fields are encrypted using the specified algorithm
-   */
-  security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
-  /**
-   * indicates whether Authorization credentials are required for the request
-   * @default true
-   */
-  withAuthorization?: boolean;
+    /**
+     * show loading status
+     */
+    loading?: boolean;
+    /**
+     * display error message
+     */
+    showError?: boolean;
+    /**
+     * data security, extended fields are encrypted using the specified algorithm
+     */
+    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
+    /**
+     * indicates whether Authorization credentials are required for the request
+     * @default true
+     */
+    withAuthorization?: boolean;
 }
 
 export interface IRequestConfig {
-  method?: any;
-  headers?: any;
-  url?: any;
-  data?: any;
-  params?: any;
+    method?: any;
+    headers?: any;
+    url?: any;
+    data?: any;
+    params?: any;
 }
 
 // Add options interface
 export interface ServiceOptions {
-  axios?: AxiosInstance;
-  /** only in axios interceptor config*/
-  loading: boolean;
-  showError: boolean;
+    axios?: AxiosInstance;
+    /** only in axios interceptor config*/
+    loading: boolean;
+    showError: boolean;
 }
 
 // Add default options
@@ -44,2546 +44,2553 @@ export const serviceOptions: ServiceOptions = {};
 
 // Instance selector
 export function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: any) => void): Promise<any> {
-  if (serviceOptions.axios) {
-    return serviceOptions.axios
-      .request(configs)
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  } else {
-    throw new Error('please inject yourself instance like axios  ');
-  }
+    if (serviceOptions.axios) {
+        return serviceOptions.axios
+            .request(configs)
+            .then((res) => {
+                resolve(res.data);
+                localStorage.setItem('header', JSON.stringify(res.headers))
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    } else {
+        throw new Error('please inject yourself instance like axios  ');
+    }
 }
 
 export function getConfigs(method: string, contentType: string, url: string, options: any): IRequestConfig {
-  const configs: IRequestConfig = {
-    loading: serviceOptions.loading,
-    showError: serviceOptions.showError,
-    ...options,
-    method,
-    url
-  };
-  configs.headers = {
-    ...options.headers,
-    'Content-Type': contentType
-  };
-  return configs;
+    const configs: IRequestConfig = {
+        loading: serviceOptions.loading,
+        showError: serviceOptions.showError,
+        ...options,
+        method,
+        url
+    };
+    configs.headers = {
+        ...options.headers,
+        'Content-Type': contentType
+    };
+    return configs;
 }
 
 export const basePath = '';
 
-export interface IList<T> extends Array<T> {}
-export interface List<T> extends Array<T> {}
-export interface IDictionary<TValue> {
-  [key: string]: TValue;
+export interface IList<T> extends Array<T> {
 }
-export interface Dictionary<TValue> extends IDictionary<TValue> {}
+
+export interface List<T> extends Array<T> {
+}
+
+export interface IDictionary<TValue> {
+    [key: string]: TValue;
+}
+
+export interface Dictionary<TValue> extends IDictionary<TValue> {
+}
 
 export interface IListResult<T> {
-  items?: T[];
+    items?: T[];
 }
 
 export class ListResultDto<T> implements IListResult<T> {
-  items?: T[];
+    items?: T[];
 }
 
 export interface IPagedResult<T> extends IListResult<T> {
-  totalCount?: number;
-  items?: T[];
+    totalCount?: number;
+    items?: T[];
 }
 
 export class PagedResultDto<T = any> implements IPagedResult<T> {
-  totalCount?: number;
-  items?: T[];
+    totalCount?: number;
+    items?: T[];
 }
 
 // customer definition
 // empty
 
 export interface ActionApiDescriptionModel {
-  /**  */
-  uniqueName?: string;
+    /**  */
+    uniqueName?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  httpMethod?: string;
+    /**  */
+    httpMethod?: string;
 
-  /**  */
-  url?: string;
+    /**  */
+    url?: string;
 
-  /**  */
-  supportedVersions?: string[];
+    /**  */
+    supportedVersions?: string[];
 
-  /**  */
-  parametersOnMethod?: MethodParameterApiDescriptionModel[];
+    /**  */
+    parametersOnMethod?: MethodParameterApiDescriptionModel[];
 
-  /**  */
-  parameters?: ParameterApiDescriptionModel[];
+    /**  */
+    parameters?: ParameterApiDescriptionModel[];
 
-  /**  */
-  returnValue?: ReturnValueApiDescriptionModel;
+    /**  */
+    returnValue?: ReturnValueApiDescriptionModel;
 
-  /**  */
-  allowAnonymous?: boolean;
+    /**  */
+    allowAnonymous?: boolean;
 
-  /**  */
-  implementFrom?: string;
+    /**  */
+    implementFrom?: string;
 }
 
 export interface AppBootstrapDto {
-  /**  */
-  setting?: object;
+    /**  */
+    setting?: object;
 
-  /**  */
-  user?: UserInformationDto;
+    /**  */
+    user?: UserInformationDto;
 
-  /**  */
-  isLogined?: boolean;
+    /**  */
+    isLogined?: boolean;
 
-  /**  */
-  listAssignedShop?: UserCurrentShopAssign[];
+    /**  */
+    listAssignedShop?: UserCurrentShopAssign[];
 
-  /**  */
-  currentShop?: number;
+    /**  */
+    currentShop?: number;
 
-  /**  */
-  currentShopHashId?: string;
+    /**  */
+    currentShopHashId?: string;
 
-  /**  */
-  currentShopType?: ShopType;
+    /**  */
+    currentShopType?: ShopType;
 
-  /**  */
-  businessType?: number;
+    /**  */
+    businessType?: number;
 
-  /**  */
-  isShopMain?: boolean;
+    /**  */
+    isShopMain?: boolean;
 
-  /**  */
-  productPriceListMainId?: string;
+    /**  */
+    productPriceListMainId?: string;
 
-  /**  */
-  eInvoiceMethod?: string;
+    /**  */
+    eInvoiceMethod?: string;
 
-  /**  */
-  theme?: OrdThemeDto;
+    /**  */
+    theme?: OrdThemeDto;
 }
 
 export interface ApplicationApiDescriptionModel {
-  /**  */
-  modules?: object;
+    /**  */
+    modules?: object;
 
-  /**  */
-  types?: object;
+    /**  */
+    types?: object;
 }
 
 export interface ApplicationAuthConfigurationDto {
-  /**  */
-  grantedPolicies?: object;
+    /**  */
+    grantedPolicies?: object;
 }
 
 export interface ApplicationConfigurationDto {
-  /**  */
-  localization?: ApplicationLocalizationConfigurationDto;
+    /**  */
+    localization?: ApplicationLocalizationConfigurationDto;
 
-  /**  */
-  auth?: ApplicationAuthConfigurationDto;
+    /**  */
+    auth?: ApplicationAuthConfigurationDto;
 
-  /**  */
-  setting?: ApplicationSettingConfigurationDto;
+    /**  */
+    setting?: ApplicationSettingConfigurationDto;
 
-  /**  */
-  currentUser?: CurrentUserDto;
+    /**  */
+    currentUser?: CurrentUserDto;
 
-  /**  */
-  features?: ApplicationFeatureConfigurationDto;
+    /**  */
+    features?: ApplicationFeatureConfigurationDto;
 
-  /**  */
-  globalFeatures?: ApplicationGlobalFeatureConfigurationDto;
+    /**  */
+    globalFeatures?: ApplicationGlobalFeatureConfigurationDto;
 
-  /**  */
-  multiTenancy?: MultiTenancyInfoDto;
+    /**  */
+    multiTenancy?: MultiTenancyInfoDto;
 
-  /**  */
-  currentTenant?: CurrentTenantDto;
+    /**  */
+    currentTenant?: CurrentTenantDto;
 
-  /**  */
-  timing?: TimingDto;
+    /**  */
+    timing?: TimingDto;
 
-  /**  */
-  clock?: ClockDto;
+    /**  */
+    clock?: ClockDto;
 
-  /**  */
-  objectExtensions?: ObjectExtensionsDto;
+    /**  */
+    objectExtensions?: ObjectExtensionsDto;
 
-  /**  */
-  extraProperties?: object;
+    /**  */
+    extraProperties?: object;
 }
 
 export interface ApplicationFeatureConfigurationDto {
-  /**  */
-  values?: object;
+    /**  */
+    values?: object;
 }
 
 export interface ApplicationGlobalFeatureConfigurationDto {
-  /**  */
-  enabledFeatures?: string[];
+    /**  */
+    enabledFeatures?: string[];
 }
 
 export interface ApplicationLocalizationConfigurationDto {
-  /**  */
-  values?: object;
+    /**  */
+    values?: object;
 
-  /**  */
-  resources?: object;
+    /**  */
+    resources?: object;
 
-  /**  */
-  languages?: LanguageInfo[];
+    /**  */
+    languages?: LanguageInfo[];
 
-  /**  */
-  currentCulture?: CurrentCultureDto;
+    /**  */
+    currentCulture?: CurrentCultureDto;
 
-  /**  */
-  defaultResourceName?: string;
+    /**  */
+    defaultResourceName?: string;
 
-  /**  */
-  languagesMap?: object;
+    /**  */
+    languagesMap?: object;
 
-  /**  */
-  languageFilesMap?: object;
+    /**  */
+    languageFilesMap?: object;
 }
 
 export interface ApplicationLocalizationDto {
-  /**  */
-  resources?: object;
+    /**  */
+    resources?: object;
 
-  /**  */
-  currentCulture?: CurrentCultureDto;
+    /**  */
+    currentCulture?: CurrentCultureDto;
 }
 
 export interface ApplicationLocalizationResourceDto {
-  /**  */
-  texts?: object;
+    /**  */
+    texts?: object;
 
-  /**  */
-  baseResources?: string[];
+    /**  */
+    baseResources?: string[];
 }
 
 export interface ApplicationSettingConfigurationDto {
-  /**  */
-  values?: object;
+    /**  */
+    values?: object;
 }
 
 export interface AssignPermissionsToRoleDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  permissionNames?: string[];
+    /**  */
+    permissionNames?: string[];
 }
 
 export interface AssignRolesToUserDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  roleIds?: string[];
+    /**  */
+    roleIds?: string[];
 }
 
 export interface ChangePasswordUserDto {
-  /**  */
-  currentPassword?: string;
+    /**  */
+    currentPassword?: string;
 
-  /**  */
-  newPassword?: string;
+    /**  */
+    newPassword?: string;
 }
 
 export interface ClockDto {
-  /**  */
-  kind?: string;
+    /**  */
+    kind?: string;
 }
 
 export interface ComboOptionDto {
-  /**  */
-  value?: any | null;
+    /**  */
+    value?: any | null;
 
-  /**  */
-  displayName?: string;
+    /**  */
+    displayName?: string;
 
-  /**  */
-  data?: any | null;
+    /**  */
+    data?: any | null;
 }
 
 export interface CommonResultDtoOfAppBootstrapDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: AppBootstrapDto;
+    /**  */
+    data?: AppBootstrapDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfBoolean {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: boolean;
+    /**  */
+    data?: boolean;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfCountryDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: CountryDetailDto;
+    /**  */
+    data?: CountryDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfDistrictDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: DistrictDetailDto;
+    /**  */
+    data?: DistrictDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfIEnumerableOfGuid {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: string[];
+    /**  */
+    data?: string[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfIEnumerableOfString {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: string[];
+    /**  */
+    data?: string[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfImportOutputDtoOfCountryImportDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: ImportOutputDtoOfCountryImportDto;
+    /**  */
+    data?: ImportOutputDtoOfCountryImportDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfInt32 {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: number;
+    /**  */
+    data?: number;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfJwtDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: JwtDto;
+    /**  */
+    data?: JwtDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfListOfComboOptionDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: ComboOptionDto[];
+    /**  */
+    data?: ComboOptionDto[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfListOfCounterByStatusItemDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: CounterByStatusItemDto[];
+    /**  */
+    data?: CounterByStatusItemDto[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfListOfFileUploadDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: FileUploadDto[];
+    /**  */
+    data?: FileUploadDto[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfListOfString {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: string[];
+    /**  */
+    data?: string[];
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfNotificationSummaryDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: NotificationSummaryDto;
+    /**  */
+    data?: NotificationSummaryDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfCountryPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfCountryPagedDto;
+    /**  */
+    data?: PagedResultDtoOfCountryPagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfDistrictPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfDistrictPagedDto;
+    /**  */
+    data?: PagedResultDtoOfDistrictPagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfProvincePagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfProvincePagedDto;
+    /**  */
+    data?: PagedResultDtoOfProvincePagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfRolePagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfRolePagedDto;
+    /**  */
+    data?: PagedResultDtoOfRolePagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfTenantPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfTenantPagedDto;
+    /**  */
+    data?: PagedResultDtoOfTenantPagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfUserInRoleDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfUserInRoleDto;
+    /**  */
+    data?: PagedResultDtoOfUserInRoleDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfUserNotificationDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfUserNotificationDto;
+    /**  */
+    data?: PagedResultDtoOfUserNotificationDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfPagedResultDtoOfUserPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: PagedResultDtoOfUserPagedDto;
+    /**  */
+    data?: PagedResultDtoOfUserPagedDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfProvinceDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: ProvinceDetailDto;
+    /**  */
+    data?: ProvinceDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfRoleDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: RoleDetailDto;
+    /**  */
+    data?: RoleDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfTenantDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: TenantDetailDto;
+    /**  */
+    data?: TenantDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface CommonResultDtoOfUserDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  data?: UserDetailDto;
+    /**  */
+    data?: UserDetailDto;
 
-  /**  */
-  extend?: any | null;
+    /**  */
+    extend?: any | null;
 
-  /**  */
-  isSuccessful?: boolean;
+    /**  */
+    isSuccessful?: boolean;
 }
 
 export interface ControllerApiDescriptionModel {
-  /**  */
-  controllerName?: string;
+    /**  */
+    controllerName?: string;
 
-  /**  */
-  controllerGroupName?: string;
+    /**  */
+    controllerGroupName?: string;
 
-  /**  */
-  isRemoteService?: boolean;
+    /**  */
+    isRemoteService?: boolean;
 
-  /**  */
-  isIntegrationService?: boolean;
+    /**  */
+    isIntegrationService?: boolean;
 
-  /**  */
-  apiVersion?: string;
+    /**  */
+    apiVersion?: string;
 
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  interfaces?: ControllerInterfaceApiDescriptionModel[];
+    /**  */
+    interfaces?: ControllerInterfaceApiDescriptionModel[];
 
-  /**  */
-  actions?: object;
+    /**  */
+    actions?: object;
 }
 
 export interface ControllerInterfaceApiDescriptionModel {
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  methods?: InterfaceMethodApiDescriptionModel[];
+    /**  */
+    methods?: InterfaceMethodApiDescriptionModel[];
 }
 
 export interface CounterByStatusItemDto {
-  /**  */
-  statusValue?: any | null;
+    /**  */
+    statusValue?: any | null;
 
-  /**  */
-  statusDescription?: string;
+    /**  */
+    statusDescription?: string;
 
-  /**  */
-  totalCount?: number;
+    /**  */
+    totalCount?: number;
 
-  /**  */
-  isTotalItem?: boolean;
+    /**  */
+    isTotalItem?: boolean;
 }
 
 export interface CountryDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  phoneCode?: string;
+    /**  */
+    phoneCode?: string;
 
-  /**  */
-  currencyCode?: string;
+    /**  */
+    currencyCode?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface CountryImportDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  phoneCode?: string;
+    /**  */
+    phoneCode?: string;
 
-  /**  */
-  currencyCode?: string;
+    /**  */
+    currencyCode?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  rowNumber?: number;
+    /**  */
+    rowNumber?: number;
 
-  /**  */
-  errorMessages?: string[];
+    /**  */
+    errorMessages?: string[];
 }
 
 export interface CountryPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  phoneCode?: string;
+    /**  */
+    phoneCode?: string;
 
-  /**  */
-  currencyCode?: string;
+    /**  */
+    currencyCode?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface CountryPagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface CreateCountryDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  phoneCode?: string;
+    /**  */
+    phoneCode?: string;
 
-  /**  */
-  currencyCode?: string;
+    /**  */
+    currencyCode?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface CreateDistrictDto {
-  /**  */
-  provinceCode?: string;
+    /**  */
+    provinceCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface CreateProvinceDto {
-  /**  */
-  countryCode?: string;
+    /**  */
+    countryCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface CreateRoleDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  description?: string;
+    /**  */
+    description?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface CreateTenantDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  address?: string;
+    /**  */
+    address?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  adminPassword?: string;
+    /**  */
+    adminPassword?: string;
 
-  /**  */
-  adminUsername?: string;
+    /**  */
+    adminUsername?: string;
 
-  /**  */
-  createDefaultAdmin?: boolean;
+    /**  */
+    createDefaultAdmin?: boolean;
 }
 
 export interface CreateUserDto {
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 
-  /**  */
-  isLockoutEnabled?: boolean;
+    /**  */
+    isLockoutEnabled?: boolean;
 
-  /**  */
-  birthDay?: Date;
+    /**  */
+    birthDay?: Date;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  password?: string;
+    /**  */
+    password?: string;
 }
 
 export interface CurrentCultureDto {
-  /**  */
-  displayName?: string;
+    /**  */
+    displayName?: string;
 
-  /**  */
-  englishName?: string;
+    /**  */
+    englishName?: string;
 
-  /**  */
-  threeLetterIsoLanguageName?: string;
+    /**  */
+    threeLetterIsoLanguageName?: string;
 
-  /**  */
-  twoLetterIsoLanguageName?: string;
+    /**  */
+    twoLetterIsoLanguageName?: string;
 
-  /**  */
-  isRightToLeft?: boolean;
+    /**  */
+    isRightToLeft?: boolean;
 
-  /**  */
-  cultureName?: string;
+    /**  */
+    cultureName?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  nativeName?: string;
+    /**  */
+    nativeName?: string;
 
-  /**  */
-  dateTimeFormat?: DateTimeFormatDto;
+    /**  */
+    dateTimeFormat?: DateTimeFormatDto;
 }
 
 export interface CurrentTenantDto {
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isAvailable?: boolean;
+    /**  */
+    isAvailable?: boolean;
 }
 
 export interface CurrentUserDto {
-  /**  */
-  isAuthenticated?: boolean;
+    /**  */
+    isAuthenticated?: boolean;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  tenantId?: string;
+    /**  */
+    tenantId?: string;
 
-  /**  */
-  impersonatorUserId?: string;
+    /**  */
+    impersonatorUserId?: string;
 
-  /**  */
-  impersonatorTenantId?: string;
+    /**  */
+    impersonatorTenantId?: string;
 
-  /**  */
-  impersonatorUserName?: string;
+    /**  */
+    impersonatorUserName?: string;
 
-  /**  */
-  impersonatorTenantName?: string;
+    /**  */
+    impersonatorTenantName?: string;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  surName?: string;
+    /**  */
+    surName?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  emailVerified?: boolean;
+    /**  */
+    emailVerified?: boolean;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  phoneNumberVerified?: boolean;
+    /**  */
+    phoneNumberVerified?: boolean;
 
-  /**  */
-  roles?: string[];
+    /**  */
+    roles?: string[];
 
-  /**  */
-  sessionId?: string;
+    /**  */
+    sessionId?: string;
 }
 
 export interface DateRangeDto {
-  /**  */
-  autoSetTimeStartEnd?: boolean;
+    /**  */
+    autoSetTimeStartEnd?: boolean;
 
-  /**  */
-  startDate?: Date;
+    /**  */
+    startDate?: Date;
 
-  /**  */
-  endDate?: Date;
+    /**  */
+    endDate?: Date;
 }
 
 export interface DateTimeFormatDto {
-  /**  */
-  calendarAlgorithmType?: string;
+    /**  */
+    calendarAlgorithmType?: string;
 
-  /**  */
-  dateTimeFormatLong?: string;
+    /**  */
+    dateTimeFormatLong?: string;
 
-  /**  */
-  shortDatePattern?: string;
+    /**  */
+    shortDatePattern?: string;
 
-  /**  */
-  fullDateTimePattern?: string;
+    /**  */
+    fullDateTimePattern?: string;
 
-  /**  */
-  dateSeparator?: string;
+    /**  */
+    dateSeparator?: string;
 
-  /**  */
-  shortTimePattern?: string;
+    /**  */
+    shortTimePattern?: string;
 
-  /**  */
-  longTimePattern?: string;
+    /**  */
+    longTimePattern?: string;
 }
 
 export interface DistrictDetailDto {
-  /**  */
-  provinceCode?: string;
+    /**  */
+    provinceCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  provinceName?: string;
+    /**  */
+    provinceName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface DistrictPagedDto {
-  /**  */
-  provinceCode?: string;
+    /**  */
+    provinceCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  provinceName?: string;
+    /**  */
+    provinceName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface DistrictPagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  provinceCode?: string;
+    /**  */
+    provinceCode?: string;
 }
 
 export interface DownloadResultFileImportOfCountryImportDto {
-  /**  */
-  items?: CountryImportDto[];
+    /**  */
+    items?: CountryImportDto[];
 
-  /**  */
-  isSuccessList?: boolean;
+    /**  */
+    isSuccessList?: boolean;
 }
 
 export interface EncodedIdDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface EntityExtensionDto {
-  /**  */
-  properties?: object;
+    /**  */
+    properties?: object;
 
-  /**  */
-  configuration?: object;
+    /**  */
+    configuration?: object;
 }
 
 export interface ExtensionEnumDto {
-  /**  */
-  fields?: ExtensionEnumFieldDto[];
+    /**  */
+    fields?: ExtensionEnumFieldDto[];
 
-  /**  */
-  localizationResource?: string;
+    /**  */
+    localizationResource?: string;
 }
 
 export interface ExtensionEnumFieldDto {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  value?: any | null;
+    /**  */
+    value?: any | null;
 }
 
 export interface ExtensionPropertyApiCreateDto {
-  /**  */
-  isAvailable?: boolean;
+    /**  */
+    isAvailable?: boolean;
 }
 
 export interface ExtensionPropertyApiDto {
-  /**  */
-  onGet?: ExtensionPropertyApiGetDto;
+    /**  */
+    onGet?: ExtensionPropertyApiGetDto;
 
-  /**  */
-  onCreate?: ExtensionPropertyApiCreateDto;
+    /**  */
+    onCreate?: ExtensionPropertyApiCreateDto;
 
-  /**  */
-  onUpdate?: ExtensionPropertyApiUpdateDto;
+    /**  */
+    onUpdate?: ExtensionPropertyApiUpdateDto;
 }
 
 export interface ExtensionPropertyApiGetDto {
-  /**  */
-  isAvailable?: boolean;
+    /**  */
+    isAvailable?: boolean;
 }
 
 export interface ExtensionPropertyApiUpdateDto {
-  /**  */
-  isAvailable?: boolean;
+    /**  */
+    isAvailable?: boolean;
 }
 
 export interface ExtensionPropertyAttributeDto {
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 
-  /**  */
-  config?: object;
+    /**  */
+    config?: object;
 }
 
 export interface ExtensionPropertyDto {
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 
-  /**  */
-  displayName?: LocalizableStringDto;
+    /**  */
+    displayName?: LocalizableStringDto;
 
-  /**  */
-  api?: ExtensionPropertyApiDto;
+    /**  */
+    api?: ExtensionPropertyApiDto;
 
-  /**  */
-  ui?: ExtensionPropertyUiDto;
+    /**  */
+    ui?: ExtensionPropertyUiDto;
 
-  /**  */
-  attributes?: ExtensionPropertyAttributeDto[];
+    /**  */
+    attributes?: ExtensionPropertyAttributeDto[];
 
-  /**  */
-  configuration?: object;
+    /**  */
+    configuration?: object;
 
-  /**  */
-  defaultValue?: any | null;
+    /**  */
+    defaultValue?: any | null;
 }
 
 export interface ExtensionPropertyUiDto {
-  /**  */
-  onTable?: ExtensionPropertyUiTableDto;
+    /**  */
+    onTable?: ExtensionPropertyUiTableDto;
 
-  /**  */
-  onCreateForm?: ExtensionPropertyUiFormDto;
+    /**  */
+    onCreateForm?: ExtensionPropertyUiFormDto;
 
-  /**  */
-  onEditForm?: ExtensionPropertyUiFormDto;
+    /**  */
+    onEditForm?: ExtensionPropertyUiFormDto;
 
-  /**  */
-  lookup?: ExtensionPropertyUiLookupDto;
+    /**  */
+    lookup?: ExtensionPropertyUiLookupDto;
 }
 
 export interface ExtensionPropertyUiFormDto {
-  /**  */
-  isVisible?: boolean;
+    /**  */
+    isVisible?: boolean;
 }
 
 export interface ExtensionPropertyUiLookupDto {
-  /**  */
-  url?: string;
+    /**  */
+    url?: string;
 
-  /**  */
-  resultListPropertyName?: string;
+    /**  */
+    resultListPropertyName?: string;
 
-  /**  */
-  displayPropertyName?: string;
+    /**  */
+    displayPropertyName?: string;
 
-  /**  */
-  valuePropertyName?: string;
+    /**  */
+    valuePropertyName?: string;
 
-  /**  */
-  filterParamName?: string;
+    /**  */
+    filterParamName?: string;
 }
 
 export interface ExtensionPropertyUiTableDto {
-  /**  */
-  isVisible?: boolean;
+    /**  */
+    isVisible?: boolean;
 }
 
 export interface FileUploadDto {
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  fileName?: string;
+    /**  */
+    fileName?: string;
 
-  /**  */
-  mimeType?: string;
+    /**  */
+    mimeType?: string;
 }
 
 export interface FireBaseDto {
-  /**  */
-  fireBaseToken?: string;
+    /**  */
+    fireBaseToken?: string;
 
-  /**  */
-  deviceId?: string;
+    /**  */
+    deviceId?: string;
 
-  /**  */
-  deviceName?: string;
+    /**  */
+    deviceName?: string;
 
-  /**  */
-  platform?: string;
+    /**  */
+    platform?: string;
 }
 
 export interface GetComboOptionInputDto {
-  /**  */
-  includeUnActive?: boolean;
+    /**  */
+    includeUnActive?: boolean;
 }
 
 export interface GetUserNotificationInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  isRead?: boolean;
+    /**  */
+    isRead?: boolean;
 
-  /**  */
-  severity?: NotificationSeverity;
+    /**  */
+    severity?: NotificationSeverity;
 
-  /**  */
-  creationTimeRange?: DateRangeDto;
+    /**  */
+    creationTimeRange?: DateRangeDto;
 
-  /**  */
-  fromDate?: Date;
+    /**  */
+    fromDate?: Date;
 
-  /**  */
-  toDate?: Date;
+    /**  */
+    toDate?: Date;
 }
 
 export interface GetUsersInRoleInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface GrantPermissionToUserDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  permissionName?: string;
+    /**  */
+    permissionName?: string;
 }
 
 export interface IanaTimeZone {
-  /**  */
-  timeZoneName?: string;
+    /**  */
+    timeZoneName?: string;
 }
 
 export interface ImportOutputDtoOfCountryImportDto {
-  /**  */
-  errorImportList?: CountryImportDto[];
+    /**  */
+    errorImportList?: CountryImportDto[];
 
-  /**  */
-  successImportList?: CountryImportDto[];
+    /**  */
+    successImportList?: CountryImportDto[];
 }
 
 export interface InterfaceMethodApiDescriptionModel {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  parametersOnMethod?: MethodParameterApiDescriptionModel[];
+    /**  */
+    parametersOnMethod?: MethodParameterApiDescriptionModel[];
 
-  /**  */
-  returnValue?: ReturnValueApiDescriptionModel;
+    /**  */
+    returnValue?: ReturnValueApiDescriptionModel;
 }
 
 export interface JwtDto {
-  /**  */
-  accessToken?: string;
+    /**  */
+    accessToken?: string;
 
-  /**  */
-  expireInSeconds?: number;
+    /**  */
+    expireInSeconds?: number;
 
-  /**  */
-  refreshToken?: string;
+    /**  */
+    refreshToken?: string;
 }
 
 export interface LanguageInfo {
-  /**  */
-  cultureName?: string;
+    /**  */
+    cultureName?: string;
 
-  /**  */
-  uiCultureName?: string;
+    /**  */
+    uiCultureName?: string;
 
-  /**  */
-  displayName?: string;
+    /**  */
+    displayName?: string;
 
-  /**  */
-  twoLetterISOLanguageName?: string;
+    /**  */
+    twoLetterISOLanguageName?: string;
 }
 
 export interface LocalizableStringDto {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  resource?: string;
+    /**  */
+    resource?: string;
 }
 
 export interface LoginInputDto {
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  password?: string;
+    /**  */
+    password?: string;
 
-  /**  */
-  tenantCode?: string;
+    /**  */
+    tenantCode?: string;
 
-  /**  */
-  fireBase?: FireBaseDto;
+    /**  */
+    fireBase?: FireBaseDto;
 }
 
 export interface MethodParameterApiDescriptionModel {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  typeAsString?: string;
+    /**  */
+    typeAsString?: string;
 
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 
-  /**  */
-  isOptional?: boolean;
+    /**  */
+    isOptional?: boolean;
 
-  /**  */
-  defaultValue?: any | null;
+    /**  */
+    defaultValue?: any | null;
 }
 
 export interface ModuleApiDescriptionModel {
-  /**  */
-  rootPath?: string;
+    /**  */
+    rootPath?: string;
 
-  /**  */
-  remoteServiceName?: string;
+    /**  */
+    remoteServiceName?: string;
 
-  /**  */
-  controllers?: object;
+    /**  */
+    controllers?: object;
 }
 
 export interface ModuleExtensionDto {
-  /**  */
-  entities?: object;
+    /**  */
+    entities?: object;
 
-  /**  */
-  configuration?: object;
+    /**  */
+    configuration?: object;
 }
 
 export interface MultiTenancyInfoDto {
-  /**  */
-  isEnabled?: boolean;
+    /**  */
+    isEnabled?: boolean;
 }
 
 export interface NameValue {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  value?: string;
+    /**  */
+    value?: string;
 }
 
 export interface NotificationSummaryDto {
-  /**  */
-  totalCount?: number;
+    /**  */
+    totalCount?: number;
 
-  /**  */
-  unreadCount?: number;
+    /**  */
+    unreadCount?: number;
 
-  /**  */
-  readCount?: number;
+    /**  */
+    readCount?: number;
 }
 
 export interface ObjectExtensionsDto {
-  /**  */
-  modules?: object;
+    /**  */
+    modules?: object;
 
-  /**  */
-  enums?: object;
+    /**  */
+    enums?: object;
 }
 
 export interface OrdThemeDto {
-  /**  */
-  themeInfo?: string;
+    /**  */
+    themeInfo?: string;
 
-  /**  */
-  logoFull?: string;
+    /**  */
+    logoFull?: string;
 
-  /**  */
-  logoSimple?: string;
+    /**  */
+    logoSimple?: string;
 
-  /**  */
-  copyright?: string;
+    /**  */
+    copyright?: string;
 
-  /**  */
-  systemName?: string;
+    /**  */
+    systemName?: string;
 
-  /**  */
-  descriptionPage?: string;
+    /**  */
+    descriptionPage?: string;
 
-  /**  */
-  faviconIco?: string;
+    /**  */
+    faviconIco?: string;
 
-  /**  */
-  bgLoginLeft?: string;
+    /**  */
+    bgLoginLeft?: string;
 
-  /**  */
-  bgLoginUnder?: string;
+    /**  */
+    bgLoginUnder?: string;
 
-  /**  */
-  landingPageUrl?: string;
+    /**  */
+    landingPageUrl?: string;
 
-  /**  */
-  dashboardSlider?: string[];
+    /**  */
+    dashboardSlider?: string[];
 
-  /**  */
-  dashboardSlider1?: string;
+    /**  */
+    dashboardSlider1?: string;
 
-  /**  */
-  dashboardSlider2?: string;
+    /**  */
+    dashboardSlider2?: string;
 
-  /**  */
-  dashboardSlider3?: string;
+    /**  */
+    dashboardSlider3?: string;
 
-  /**  */
-  dashboardSlider4?: string;
+    /**  */
+    dashboardSlider4?: string;
 
-  /**  */
-  dashboardSlider5?: string;
+    /**  */
+    dashboardSlider5?: string;
 }
 
 export interface PagedResultDtoOfCountryPagedDto {
-  /**  */
-  items?: CountryPagedDto[];
+    /**  */
+    items?: CountryPagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfDistrictPagedDto {
-  /**  */
-  items?: DistrictPagedDto[];
+    /**  */
+    items?: DistrictPagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfProvincePagedDto {
-  /**  */
-  items?: ProvincePagedDto[];
+    /**  */
+    items?: ProvincePagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfRolePagedDto {
-  /**  */
-  items?: RolePagedDto[];
+    /**  */
+    items?: RolePagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfTenantPagedDto {
-  /**  */
-  items?: TenantPagedDto[];
+    /**  */
+    items?: TenantPagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfUserInRoleDto {
-  /**  */
-  items?: UserInRoleDto[];
+    /**  */
+    items?: UserInRoleDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfUserNotificationDto {
-  /**  */
-  items?: UserNotificationDto[];
+    /**  */
+    items?: UserNotificationDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface PagedResultDtoOfUserPagedDto {
-  /**  */
-  items?: UserPagedDto[];
+    /**  */
+    items?: UserPagedDto[];
 
-  /**  */
-  totalCount?: string;
+    /**  */
+    totalCount?: string;
 }
 
 export interface ParameterApiDescriptionModel {
-  /**  */
-  nameOnMethod?: string;
+    /**  */
+    nameOnMethod?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  jsonName?: string;
+    /**  */
+    jsonName?: string;
 
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 
-  /**  */
-  isOptional?: boolean;
+    /**  */
+    isOptional?: boolean;
 
-  /**  */
-  defaultValue?: any | null;
+    /**  */
+    defaultValue?: any | null;
 
-  /**  */
-  constraintTypes?: string[];
+    /**  */
+    constraintTypes?: string[];
 
-  /**  */
-  bindingSourceId?: string;
+    /**  */
+    bindingSourceId?: string;
 
-  /**  */
-  descriptorName?: string;
+    /**  */
+    descriptorName?: string;
 }
 
 export interface PropertyApiDescriptionModel {
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  jsonName?: string;
+    /**  */
+    jsonName?: string;
 
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 
-  /**  */
-  isRequired?: boolean;
+    /**  */
+    isRequired?: boolean;
 
-  /**  */
-  minLength?: number;
+    /**  */
+    minLength?: number;
 
-  /**  */
-  maxLength?: number;
+    /**  */
+    maxLength?: number;
 
-  /**  */
-  minimum?: string;
+    /**  */
+    minimum?: string;
 
-  /**  */
-  maximum?: string;
+    /**  */
+    maximum?: string;
 
-  /**  */
-  regex?: string;
+    /**  */
+    regex?: string;
 }
 
 export interface ProvinceDetailDto {
-  /**  */
-  countryCode?: string;
+    /**  */
+    countryCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  countryName?: string;
+    /**  */
+    countryName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface ProvincePagedDto {
-  /**  */
-  countryCode?: string;
+    /**  */
+    countryCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  id?: number;
+    /**  */
+    id?: number;
 
-  /**  */
-  countryName?: string;
+    /**  */
+    countryName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface ProvincePagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  countryCode?: string;
+    /**  */
+    countryCode?: string;
 }
 
 export interface RemoteServiceErrorInfo {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  details?: string;
+    /**  */
+    details?: string;
 
-  /**  */
-  data?: object;
+    /**  */
+    data?: object;
 
-  /**  */
-  validationErrors?: RemoteServiceValidationErrorInfo[];
+    /**  */
+    validationErrors?: RemoteServiceValidationErrorInfo[];
 }
 
 export interface RemoteServiceErrorResponse {
-  /**  */
-  error?: RemoteServiceErrorInfo;
+    /**  */
+    error?: RemoteServiceErrorInfo;
 }
 
 export interface RemoteServiceValidationErrorInfo {
-  /**  */
-  message?: string;
+    /**  */
+    message?: string;
 
-  /**  */
-  members?: string[];
+    /**  */
+    members?: string[];
 }
 
 export interface ResetPasswordUserDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  newPassword?: string;
+    /**  */
+    newPassword?: string;
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 }
 
 export interface ReturnValueApiDescriptionModel {
-  /**  */
-  type?: string;
+    /**  */
+    type?: string;
 
-  /**  */
-  typeSimple?: string;
+    /**  */
+    typeSimple?: string;
 }
 
 export interface RevokePermissionFromUserDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  permissionName?: string;
+    /**  */
+    permissionName?: string;
 }
 
 export interface RoleDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  description?: string;
+    /**  */
+    description?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 
-  /**  */
-  assignedPermissions?: string[];
+    /**  */
+    assignedPermissions?: string[];
 }
 
 export interface RolePagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  description?: string;
+    /**  */
+    description?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface RolePagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface SetActiveStatusDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface TenantDetailDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  address?: string;
+    /**  */
+    address?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 
-  /**  */
-  userCount?: number;
+    /**  */
+    userCount?: number;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  users?: TenantUserDto[];
+    /**  */
+    users?: TenantUserDto[];
 }
 
 export interface TenantPagedDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  address?: string;
+    /**  */
+    address?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 
-  /**  */
-  userCount?: number;
+    /**  */
+    userCount?: number;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface TenantPagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface TenantSharedDto {
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  address?: string;
+    /**  */
+    address?: string;
 }
 
 export interface TenantUserDto {
-  /**  */
-  userEncodedId?: string;
+    /**  */
+    userEncodedId?: string;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  tenantId?: string;
+    /**  */
+    tenantId?: string;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  isAdminAccount?: boolean;
+    /**  */
+    isAdminAccount?: boolean;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface TimeZone {
-  /**  */
-  iana?: IanaTimeZone;
+    /**  */
+    iana?: IanaTimeZone;
 
-  /**  */
-  windows?: WindowsTimeZone;
+    /**  */
+    windows?: WindowsTimeZone;
 }
 
 export interface TimingDto {
-  /**  */
-  timeZone?: TimeZone;
+    /**  */
+    timeZone?: TimeZone;
 }
 
 export interface TypeApiDescriptionModel {
-  /**  */
-  baseType?: string;
+    /**  */
+    baseType?: string;
 
-  /**  */
-  isEnum?: boolean;
+    /**  */
+    isEnum?: boolean;
 
-  /**  */
-  enumNames?: string[];
+    /**  */
+    enumNames?: string[];
 
-  /**  */
-  enumValues?: any | null[];
+    /**  */
+    enumValues?: any | null[];
 
-  /**  */
-  genericArguments?: string[];
+    /**  */
+    genericArguments?: string[];
 
-  /**  */
-  properties?: PropertyApiDescriptionModel[];
+    /**  */
+    properties?: PropertyApiDescriptionModel[];
 }
 
 export interface UpdateCountryDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  phoneCode?: string;
+    /**  */
+    phoneCode?: string;
 
-  /**  */
-  currencyCode?: string;
+    /**  */
+    currencyCode?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UpdateDistrictDto {
-  /**  */
-  provinceCode?: string;
+    /**  */
+    provinceCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UpdateProvinceDto {
-  /**  */
-  countryCode?: string;
+    /**  */
+    countryCode?: string;
 
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UpdateRoleDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  description?: string;
+    /**  */
+    description?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UpdateTenantDto {
-  /**  */
-  code?: string;
+    /**  */
+    code?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  address?: string;
+    /**  */
+    address?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UpdateUserDto {
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 
-  /**  */
-  isLockoutEnabled?: boolean;
+    /**  */
+    isLockoutEnabled?: boolean;
 
-  /**  */
-  birthDay?: Date;
+    /**  */
+    birthDay?: Date;
 
-  /**  */
-  password?: string;
+    /**  */
+    password?: string;
 }
 
 export interface UserCurrentShopAssign {
-  /**  */
-  shopId?: number;
+    /**  */
+    shopId?: number;
 
-  /**  */
-  shopIdHash?: string;
+    /**  */
+    shopIdHash?: string;
 
-  /**  */
-  shopName?: string;
+    /**  */
+    shopName?: string;
 
-  /**  */
-  shopCode?: string;
+    /**  */
+    shopCode?: string;
 
-  /**  */
-  shopType?: ShopType;
+    /**  */
+    shopType?: ShopType;
 
-  /**  */
-  businessType?: number;
+    /**  */
+    businessType?: number;
 
-  /**  */
-  productPriceListMainId?: string;
+    /**  */
+    productPriceListMainId?: string;
 
-  /**  */
-  isMain?: boolean;
+    /**  */
+    isMain?: boolean;
 }
 
 export interface UserDetailDto {
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 
-  /**  */
-  isLockoutEnabled?: boolean;
+    /**  */
+    isLockoutEnabled?: boolean;
 
-  /**  */
-  birthDay?: Date;
+    /**  */
+    birthDay?: Date;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface UserInRoleDto {
-  /**  */
-  userId?: string;
+    /**  */
+    userId?: string;
 
-  /**  */
-  tenantId?: string;
+    /**  */
+    tenantId?: string;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  assignedDate?: Date;
+    /**  */
+    assignedDate?: Date;
 
-  /**  */
-  userEncodedId?: string;
+    /**  */
+    userEncodedId?: string;
 }
 
 export interface UserInformationDto {
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  level?: string;
+    /**  */
+    level?: string;
 
-  /**  */
-  isLockoutEnabled?: boolean;
+    /**  */
+    isLockoutEnabled?: boolean;
 
-  /**  */
-  lockoutEnd?: Date;
+    /**  */
+    lockoutEnd?: Date;
 
-  /**  */
-  listRoleId?: string[];
+    /**  */
+    listRoleId?: string[];
 
-  /**  */
-  listPermission?: string[];
+    /**  */
+    listPermission?: string[];
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 
-  /**  */
-  lastModificationTime?: Date;
+    /**  */
+    lastModificationTime?: Date;
 
-  /**  */
-  birthDay?: Date;
+    /**  */
+    birthDay?: Date;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  tenantId?: string;
+    /**  */
+    tenantId?: string;
 
-  /**  */
-  tenantType?: TenantType;
+    /**  */
+    tenantType?: TenantType;
 
-  /**  */
-  tenantCode?: string;
+    /**  */
+    tenantCode?: string;
 
-  /**  */
-  tenantName?: string;
+    /**  */
+    tenantName?: string;
 
-  /**  */
-  tenantDto?: TenantSharedDto;
+    /**  */
+    tenantDto?: TenantSharedDto;
 
-  /**  */
-  isSuperAdmin?: boolean;
+    /**  */
+    isSuperAdmin?: boolean;
 }
 
 export interface UserNotificationDto {
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  notificationId?: string;
+    /**  */
+    notificationId?: string;
 
-  /**  */
-  notificationName?: string;
+    /**  */
+    notificationName?: string;
 
-  /**  */
-  title?: string;
+    /**  */
+    title?: string;
 
-  /**  */
-  body?: string;
+    /**  */
+    body?: string;
 
-  /**  */
-  dataJson?: string;
+    /**  */
+    dataJson?: string;
 
-  /**  */
-  severity?: NotificationSeverity;
+    /**  */
+    severity?: NotificationSeverity;
 
-  /**  */
-  state?: boolean;
+    /**  */
+    state?: boolean;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 
-  /**  */
-  severityText?: string;
+    /**  */
+    severityText?: string;
 
-  /**  */
-  isRead?: boolean;
+    /**  */
+    isRead?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 }
 
 export interface UserPagedDto {
-  /**  */
-  email?: string;
+    /**  */
+    email?: string;
 
-  /**  */
-  phoneNumber?: string;
+    /**  */
+    phoneNumber?: string;
 
-  /**  */
-  name?: string;
+    /**  */
+    name?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  mustChangePassword?: boolean;
+    /**  */
+    mustChangePassword?: boolean;
 
-  /**  */
-  isLockoutEnabled?: boolean;
+    /**  */
+    isLockoutEnabled?: boolean;
 
-  /**  */
-  birthDay?: Date;
+    /**  */
+    birthDay?: Date;
 
-  /**  */
-  id?: string;
+    /**  */
+    id?: string;
 
-  /**  */
-  userName?: string;
+    /**  */
+    userName?: string;
 
-  /**  */
-  creationTime?: Date;
+    /**  */
+    creationTime?: Date;
 }
 
 export interface UserPagedInput {
-  /**  */
-  maxResultCount?: number;
+    /**  */
+    maxResultCount?: number;
 
-  /**  */
-  skipCount?: number;
+    /**  */
+    skipCount?: number;
 
-  /**  */
-  sorting?: string;
+    /**  */
+    sorting?: string;
 
-  /**  */
-  filter?: string;
+    /**  */
+    filter?: string;
 
-  /**  */
-  isActived?: boolean;
+    /**  */
+    isActived?: boolean;
 }
 
 export interface UsersToRoleDto {
-  /**  */
-  encodedId?: string;
+    /**  */
+    encodedId?: string;
 
-  /**  */
-  userIds?: string[];
+    /**  */
+    userIds?: string[];
 }
 
 export interface WindowsTimeZone {
-  /**  */
-  timeZoneId?: string;
+    /**  */
+    timeZoneId?: string;
 }
 
 export type NotificationSeverity = 1 | 2 | 3 | 4 | 5;
 
 export type ShopType =
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7
-  | 8
-  | 9
-  | 10
-  | 11
-  | 12
-  | 13
-  | 100
-  | 101
-  | 102
-  | 103
-  | 104
-  | 105
-  | 106
-  | 201
-  | 202
-  | 203
-  | 204
-  | 205
-  | 206
-  | 207
-  | 300
-  | 301;
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 100
+    | 101
+    | 102
+    | 103
+    | 104
+    | 105
+    | 106
+    | 201
+    | 202
+    | 203
+    | 204
+    | 205
+    | 206
+    | 207
+    | 300
+    | 301;
 
 export type TenantType = 0 | 100;

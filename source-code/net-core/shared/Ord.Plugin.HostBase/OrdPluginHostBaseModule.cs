@@ -89,6 +89,7 @@ namespace Ord.Plugin.HostBase
                                 .ToArray()
                         )
                         .WithAbpExposedHeaders()
+                        .WithExposedHeaders("Content-Disposition", "Content-Length", "Content-Type")
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyHeader()
                         .AllowAnyMethod()

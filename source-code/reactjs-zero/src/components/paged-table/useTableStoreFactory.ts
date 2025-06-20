@@ -5,6 +5,8 @@ import _ from "lodash";
 import {v4 as uuidv4} from "uuid";
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
+import {IRequestOptions} from "@api/index.defs";
+import axios from "axios";
 
 
 interface TableStoredState {
@@ -93,18 +95,18 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
         }
         UiUtils.setBusy();
         try {
+            let options: IRequestOptions = {
+                responseType: "blob",
+            }
             const resultBlob = await service.exportToExcel({
                 body: searchParams
-            }, {
-                responseType: "blob",
-            });
-            //const contentDisposition = resultBlob.headers['content-disposition'];
-            console.log('contentDisposition', resultBlob);
+            }, options);
+            const contentDisposition = sessionStorage.getItem('content-disposition');
             let fileName = 'download.xlsx';
-            //const fileNameMatch = contentDisposition?.match(/filename\*=UTF-8''(.+\.xlsx)/);
-            // if (fileNameMatch && fileNameMatch[1]) {
-            //     fileName = decodeURIComponent(fileNameMatch[1]);
-            // }
+            const fileNameMatch = contentDisposition?.match(/filename\*=UTF-8''(.+\.xlsx)/);
+            if (fileNameMatch && fileNameMatch[1]) {
+                fileName = decodeURIComponent(fileNameMatch[1]);
+            }
             FileSaver.saveAs(resultBlob, fileName);
         } catch {
 

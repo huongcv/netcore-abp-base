@@ -7,8 +7,7 @@ const isPlainObject = (v: unknown) =>
 const dateTransformer: AxiosRequestTransformer = (data: any) => {
     if (data instanceof Date) {
         // do your specific formatting here
-        const formattedDate = format(data, "yyyy-MM-dd'T'HH:mm:ss");
-        return formattedDate;
+        return format(data, "yyyy-MM-dd'T'HH:mm:ss");
     }
     if (Array.isArray(data)) {
         // @ts-ignore

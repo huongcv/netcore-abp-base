@@ -1,5 +1,8 @@
 ﻿{
   "ImportSampleTemplate": {
     "Country": "mau_import_quoc_gia"
+  },
+  "download-name": {
+    "CountryEntity": "danh_sach_quoc_gia"
   }
 }

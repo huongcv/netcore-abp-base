@@ -36,6 +36,10 @@ baseHttpApi.interceptors.request.use(
 
 baseHttpApi.interceptors.response.use(
     response => {
+        const contentDisposition = response.headers['content-disposition'];
+        if (contentDisposition) {
+            sessionStorage.setItem('content-disposition', contentDisposition);
+        }
         return response;
     },
     error => {
