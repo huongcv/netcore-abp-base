@@ -1,4 +1,22 @@
 import {ColumnType} from "antd/es/table/interface";
+import {
+    IRequestOptions
+} from "@api/base/index.defs";
+import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
+
+export interface IImportApiService {
+    validateDataImport(
+        params: {
+            /** requestBody */
+            body?: any[];
+        },
+        options?: IRequestOptions
+    ): Promise<ICommonResultDtoApi<IImportValidateDto>>
+}
+export interface IImportValidateDto{
+    errorImportList?: any[];
+    successImportList?: any[];
+}
 
 export interface IExcelReader<T> {
     mapDataFromBinaryStrExcel(binaryStrExcel: string): T[];
@@ -28,7 +46,6 @@ export interface IExcelImportConfig<T> {
 
     // Configuration
     maxRows?: number;
-    fieldCount: number;
     templateFileName: string;
 
     // Table columns

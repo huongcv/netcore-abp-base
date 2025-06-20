@@ -2,9 +2,9 @@ import {create} from 'zustand';
 import {devtools} from 'zustand/middleware';
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
-import {ExcelImportState, IExcelImportConfig} from "@ord-components/import-excel/types";
+import {ExcelImportState, IExcelImportConfig, IImportApiService} from "@ord-components/import-excel/types";
 
-export const createExcelImportStore = <T>() => create<ExcelImportState<T>>()(
+export const createExcelImportStore = <T>(apiService: IImportApiService) => create<ExcelImportState<T>>()(
     devtools(
         (set, get) => ({
             // Initial state
@@ -75,12 +75,19 @@ export const createExcelImportStore = <T>() => create<ExcelImportState<T>>()(
 
                 try {
                     set({isLoading: true, message: ''});
-                    const {successImportList, errorImportList, errorFile} = await config.validateImport(excelData);
-
+                    const {
+                        data
+                    } = await apiService.validateDataImport({
+                        body: excelData || []
+                    });
+                    if (!data) {
+                        throw new Error("Lỗi xác thực dữ liệu");
+                    }
+                    const {errorImportList, successImportList} = data;
                     set({
                         validList: successImportList ?? [],
                         invalidList: errorImportList ?? [],
-                        fileInfo: errorFile,
+                        fileInfo: {},
                         message: ""
                     });
                 } catch (error) {

@@ -1,13 +1,13 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import { Button, Table } from "antd";
-import { ColumnType } from "antd/es/table/interface";
-import { useTranslation } from "react-i18next";
-import { DownloadOutlined, SaveOutlined } from "@ant-design/icons";
-import { UploadFileService } from "@api/UploadFileService";
+import React, {ReactNode, useEffect, useState} from "react";
+import {Button, Table} from "antd";
+import {ColumnType} from "antd/es/table/interface";
+import {useTranslation} from "react-i18next";
+import {DownloadOutlined, SaveOutlined} from "@ant-design/icons";
+import {UploadFileService} from "@api/UploadFileService";
 import FileSaver from "file-saver";
 import GroupButtonFileExcel from "@ord-components/excel/GroupButtonFileExcel";
-import { StatusCell } from "@ord-components/table/cells/StatusCell";
-import { l } from "@ord-core/language/lang.utils";
+import {StatusCell} from "@ord-components/table/cells/StatusCell";
+import {l} from "@ord-core/language/lang.utils";
 
 interface IGenericExcelDataTableProps<T> {
     datasource: T[];
@@ -34,7 +34,7 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
         isImporting = false
     } = props;
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [hiddenButton, setHiddenButton] = useState(false);
     const [dataExcel, setDataExcel] = useState<T[]>(datasource);
     const [saving, setSaving] = useState(false);
@@ -94,7 +94,7 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
         try {
             const blob = await UploadFileService.getFileFromCache({
                 fileCacheId: fileInfo.fileId,
-            }, { responseType: 'blob' });
+            }, {responseType: 'blob'});
             FileSaver.saveAs(blob, fileInfo.fileName);
         } catch {
             setMessage?.(t('actionError'));
@@ -123,22 +123,22 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
         <>
             <Table<T>
                 bordered={false}
-                scroll={{ x: 'max-content' }}
-                sticky={{ offsetHeader: 1 }}
+                scroll={{x: 'max-content'}}
+                sticky={{offsetHeader: 1}}
                 columns={tableColumns}
-                dataSource={dataExcel.map((x, idx) => ({ key: idx, ...x } as T))}
+                dataSource={dataExcel.map((x, idx) => ({key: idx, ...x} as T))}
                 loading={isImporting}
             />
 
             {/* Download Error File Button for Invalid Tab */}
-            {!isValid && datasource.length > 0 && fileInfo?.fileId && (
+            {!isValid && datasource.length > 0 && (
                 <div className={'mt-2 float-right'}>
                     <Button
                         onClick={handleDownloadError}
                         loading={saving}
-                        icon={<DownloadOutlined />}
+                        icon={<DownloadOutlined/>}
                     >
-                        {t('downloadListInValid', { ns: 'excel' })}
+                        {t('downloadListInValid', {ns: 'excel'})}
                     </Button>
                 </div>
             )}
@@ -151,9 +151,9 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
                         loading={saving || isImporting}
                         hidden={hiddenButton}
                         type={'primary'}
-                        icon={<SaveOutlined />}
+                        icon={<SaveOutlined/>}
                     >
-                        {t('saveListValid', { ns: 'excel' })}
+                        {t('saveListValid', {ns: 'excel'})}
                     </Button>
                 </div>
             )}
