@@ -19,9 +19,7 @@ export const OrdCounterByStatusSegmented = (props: {
             setLoading(true);
             const result = await fetcher({
                 body: {
-                    ...searchParams,
-                    skipCount: 0,
-                    maxResultCount: 100
+                    ...searchParams
                 }
             });
 

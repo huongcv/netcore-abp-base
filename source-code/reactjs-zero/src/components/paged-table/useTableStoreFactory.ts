@@ -3,6 +3,8 @@ import {create} from 'zustand';
 import {IGetPagedApiService} from "@ord-components/paged-table/types";
 import _ from "lodash";
 import {v4 as uuidv4} from "uuid";
+import UiUtils from "@ord-core/utils/ui.utils";
+import FileSaver from "file-saver";
 
 
 interface TableStoredState {
@@ -19,6 +21,7 @@ interface TableStoredState {
     setSearchParams: (params: Record<string, any>) => void;
     reset: () => void;
     onLoadData: () => Promise<void>;
+    onExportExcel: () => Promise<void>;
     setReloadStatusCounter: () => void;
 }
 
@@ -35,7 +38,15 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
     setPagination: (page, pageSize) => set({page, pageSize}),
     setSearchParams: (params) => {
         const {searchParams} = get();
-        set({searchParams: {...searchParams, ...params}, page: 1})
+        let newSearchParams = _.omit({...searchParams, ...params}, [
+            'isShowAdvanceSearch',
+            'extendResetTick',
+            'hotKeyScopeId',
+            'onSearchBeginning'
+
+        ]);
+
+        set({searchParams: {...newSearchParams}, page: 1})
     },
     reset: () =>
         set({
@@ -54,31 +65,52 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
         const {page, pageSize, searchParams} = get();
         const skipCount = (page - 1) * pageSize;
         const maxResultCount = pageSize;
-        const body = _.omit({
+        const body = {
             skipCount,
             maxResultCount,
             ...searchParams
-        }, 'isShowAdvanceSearch', 'extendResetTick');
+        }
+        const resultApi = await service.getPaged({
+            body: body
+        });
+        const result = resultApi.data;
+        const items: any[] = result?.items || [];
+        if (items.length > 0) {
+            items.forEach((it, idx) => {
+                it['view_id'] = uuidv4();
+                it['ordRowIndex'] = skipCount + idx + 1;
+            });
+        }
+        set({
+            data: items,
+            total: +(result?.totalCount || '0')
+        });
+    },
+    onExportExcel: async () => {
+        const {searchParams} = get();
+        if (!service?.exportToExcel) {
+            return;
+        }
+        UiUtils.setBusy();
         try {
-            const resultApi = await service.getPaged({
-                body: body
+            const resultBlob = await service.exportToExcel({
+                body: searchParams
+            }, {
+                responseType: "blob",
             });
-            const result = resultApi.data;
-            const items: any[] = result?.items || [];
-            if (items.length > 0) {
-                items.forEach((it, idx) => {
-                    it['view_id'] = uuidv4();
-                    it['ordRowIndex'] = skipCount + idx + 1;
-                });
-            }
-            set({
-                data: items,
-                total: +(result?.totalCount || '0')
-            });
+            //const contentDisposition = resultBlob.headers['content-disposition'];
+            console.log('contentDisposition', resultBlob);
+            let fileName = 'download.xlsx';
+            //const fileNameMatch = contentDisposition?.match(/filename\*=UTF-8''(.+\.xlsx)/);
+            // if (fileNameMatch && fileNameMatch[1]) {
+            //     fileName = decodeURIComponent(fileNameMatch[1]);
+            // }
+            FileSaver.saveAs(resultBlob, fileName);
         } catch {
 
+        } finally {
+            UiUtils.clearBusy();
         }
-
     }
 }));
 

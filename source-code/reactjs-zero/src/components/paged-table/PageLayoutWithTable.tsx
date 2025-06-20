@@ -71,7 +71,6 @@ export const PageLayoutWithTable = ({
                                 {searchFields}
                             </Row>
                             <div hidden>
-                                <Form.Item name={'onSearchBeginning'} initialValue={0} noStyle/>
                                 <Form.Item hidden name={'hotKeyScopeId'} initialValue={hotKeyScopeId} noStyle/>
                                 <Form.Item hidden name={'extendResetTick'} initialValue={hotKeyScopeId} noStyle/>
                             </div>

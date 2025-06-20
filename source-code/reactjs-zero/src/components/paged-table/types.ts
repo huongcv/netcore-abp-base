@@ -1,4 +1,5 @@
 import {IRequestOptions} from "@api/index.defs";
+import {CountryPagedInput} from "@api/base/index.defs";
 
 export interface ICommonResultDtoApi<T> {
     code?: string;
@@ -61,4 +62,10 @@ export interface IModifyApiService {
 
 export interface IGetPagedApiService {
     getPaged: StaticApiFetcher;
+    exportToExcel?: (
+        params: {
+            body?: any;
+        },
+        options?: IRequestOptions
+    ) => Promise<any>;
 }

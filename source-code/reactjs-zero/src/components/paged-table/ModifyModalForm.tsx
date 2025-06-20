@@ -15,6 +15,7 @@ export interface ModifyModalFormProps<T = any>
     form?: FormInstance;
     translationNs?: string; // namespace cho đa ngữ
     initialValues?: Record<string, any>;
+    onSaved?: () => void;
 }
 
 export const ModifyModalForm = <T extends object>({
@@ -24,11 +25,11 @@ export const ModifyModalForm = <T extends object>({
                                                       translationNs = 'common', // mặc định namespace là 'common'
                                                       initialValues = {},
                                                       tableStore,
+                                                      onSaved,
                                                       ...modalProps
                                                   }: ModifyModalFormProps<T>) => {
     const {t} = useTranslation(['modify-modal']);
     const {t: tCommon} = useTranslation(['common']);
-    const {t: tConfirm} = useTranslation(['confirm']);
     const {open, editingItem, deletingItem, mode, close, onSubmit, onDelete} = modalStore();
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
@@ -74,7 +75,7 @@ export const ModifyModalForm = <T extends object>({
                 usedForm.resetFields();
                 return;
             }
-            close();
+            closeModal();
         } else {
             if (result.message) {
                 uiUtils.showError(result.message);
@@ -91,13 +92,16 @@ export const ModifyModalForm = <T extends object>({
         if (setReloadStatusCounter) {
             setReloadStatusCounter();
         }
+        if (onSaved) {
+            onSaved();
+        }
     }
 
     const onOkModal = () => {
         usedForm?.submit();
     };
 
-    const closeModalCrud = () => {
+    const closeModal = () => {
         close();
         usedForm.resetFields();
     };
@@ -148,7 +152,7 @@ export const ModifyModalForm = <T extends object>({
     return (
         <Modal
             open={open}
-            onCancel={closeModalCrud}
+            onCancel={closeModal}
             onOk={handleFinish}
             maskClosable={false}
             destroyOnClose
@@ -160,7 +164,7 @@ export const ModifyModalForm = <T extends object>({
                     isAddNewContinueChange={setIsAddNewContinue}
                     hiddenOk={isView}
                     onOk={onOkModal}
-                    onCancel={closeModalCrud}
+                    onCancel={closeModal}
                 />
             }
             width={680}
