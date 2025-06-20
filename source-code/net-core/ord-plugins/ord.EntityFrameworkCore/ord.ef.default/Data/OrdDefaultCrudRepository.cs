@@ -25,7 +25,7 @@ namespace Ord.EfCore.Default.Data
         {
             // Gộp tên entity với các tham số khác
             var args = new object[] { GetEntityNameLocalized() }.Concat(formatArgs).ToArray();
-            ThrowValidationEx("message.crud.entity_used", args);
+            ThrowValidationEx("message.crud.not_delete_entity_used", args);
         }
 
         /// <summary>
