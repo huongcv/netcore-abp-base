@@ -6,7 +6,6 @@ import {v4 as uuidv4} from "uuid";
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
 import {IRequestOptions} from "@api/index.defs";
-import axios from "axios";
 
 
 interface TableStoredState {

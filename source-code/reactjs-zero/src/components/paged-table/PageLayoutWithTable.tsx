@@ -39,7 +39,7 @@ export const PageLayoutWithTable = ({
         }
     }
     useEffect(() => {
-        if (extendResetTick_w) {
+        if (extendResetTick_w > 0) {
             searchFormRef.resetFields();
             searchFormRef.submit();
         }
@@ -72,7 +72,6 @@ export const PageLayoutWithTable = ({
                             </Row>
                             <div hidden>
                                 <Form.Item hidden name={'hotKeyScopeId'} initialValue={hotKeyScopeId} noStyle/>
-                                <Form.Item hidden name={'extendResetTick'} initialValue={hotKeyScopeId} noStyle/>
                             </div>
 
                         </div>
