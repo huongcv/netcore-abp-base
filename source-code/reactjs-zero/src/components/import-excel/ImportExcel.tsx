@@ -1,26 +1,22 @@
 import React, {ReactNode, useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Row, Space, Tabs} from "antd";
-import {ArrowLeftOutlined} from "@ant-design/icons";
-import {Link} from "react-router-dom";
+import {Badge, Card, Col, Row, Tabs} from "antd";
 import {useTranslation} from "react-i18next";
-import {IItemRoute, OrdBreadcrumb} from "@ord-components/common/page/PageBreadcrumb";
+import {IItemRoute} from "@ord-components/common/page/PageBreadcrumb";
 import {ImportExcelButton} from "@ord-components/excel/ImportExcelButton";
 import {ExcelImportState, IExcelImportConfig} from "@ord-components/import-excel/types";
 import {GenericExcelDataTable} from "@ord-components/import-excel/GenericExcelDataTable";
 
 interface IGenericExcelImportProps<T> {
     config: IExcelImportConfig<T>;
-    title: string;
-    breadcrumbItems?: IItemRoute[];
-    returnPath?: string;
     useStore: () => ExcelImportState<T>;
+    title: string
 }
 
 export const GenericExcelImport = <T extends Record<string, any>>(
     props: IGenericExcelImportProps<T>
 ) => {
-    const {config, title, breadcrumbItems = [], returnPath, useStore} = props;
-    const {t} = useTranslation();
+    const {config, useStore, title} = props;
+    const {t} = useTranslation(['import']);
     const [tabBarExtra, setTabBarExtra] = useState<ReactNode | null>();
     const [isShowTabBarExtra, setIsShowTabBarExtra] = useState<boolean>(false);
 
@@ -42,29 +38,14 @@ export const GenericExcelImport = <T extends Record<string, any>>(
 
     return (
         <>
-            <div className="flex flex-wrap items-center justify-between mb-3">
-                <OrdBreadcrumb mainTitle={title} itemsRoute={breadcrumbItems}/>
-                {returnPath && (
-                    <div className="flex items-center">
-                        <Space wrap>
-                            <Link to={returnPath}>
-                                <Button>
-                                    <ArrowLeftOutlined/>
-                                    {t('returnList', {ns: 'common'})}
-                                </Button>
-                            </Link>
-                        </Space>
-                    </div>
-                )}
-            </div>
 
-            <Card title={t("importExcelTitle")}>
+            <Card title={t(title)}>
                 <Row>
                     <Col span={24}>
                         <ImportExcelButton
                             onChangeBinaryStr={store.setBinaryStrExcel}
                             messageError={store.message}
-                            onClickDownloadTemplate={() => store.downloadTemplate(config)}
+                            onClickDownloadTemplate={() => store.downloadTemplate()}
                         />
                     </Col>
 

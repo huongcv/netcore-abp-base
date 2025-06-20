@@ -2,9 +2,15 @@ import {create} from 'zustand';
 import {devtools} from 'zustand/middleware';
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
-import {ExcelImportState, IExcelImportConfig, IImportApiService} from "@ord-components/import-excel/types";
+import {
+    ExcelImportState,
+    IExcelImportConfig,
+    IExcelReader,
+    IImportApiService
+} from "@ord-components/import-excel/types";
+import {IRequestOptions} from "@api/index.defs";
 
-export const createExcelImportStore = <T>(apiService: IImportApiService) => create<ExcelImportState<T>>()(
+export const createExcelImportStore = <T>(apiService: IImportApiService<T>) => create<ExcelImportState<T>>()(
     devtools(
         (set, get) => ({
             // Initial state
@@ -105,7 +111,9 @@ export const createExcelImportStore = <T>(apiService: IImportApiService) => crea
                     set({isImporting: true});
                     UiUtils.setBusy();
 
-                    const result = await config.import(validList);
+                    const result = await apiService.import({
+                        body: validList
+                    });
 
                     if (result.isSuccessful) {
                         UiUtils.showSuccess('Import thành công');
@@ -125,15 +133,26 @@ export const createExcelImportStore = <T>(apiService: IImportApiService) => crea
                 }
             },
 
-            downloadTemplate: async (config: IExcelImportConfig<T>) => {
+            downloadTemplate: async () => {
                 try {
+                    UiUtils.setBusy();
                     set({isLoading: true});
-                    const response = await config.exportTemplate();
-                    FileSaver.saveAs(response, config.templateFileName);
+                    let options: IRequestOptions = {
+                        responseType: "blob",
+                    }
+                    const resultBlob = await apiService.downloadSampleTemplate(options);
+                    const contentDisposition = sessionStorage.getItem('content-disposition');
+                    let fileName = 'download.xlsx';
+                    const fileNameMatch = contentDisposition?.match(/filename\*=UTF-8''(.+\.xlsx)/);
+                    if (fileNameMatch && fileNameMatch[1]) {
+                        fileName = decodeURIComponent(fileNameMatch[1]);
+                    }
+                    FileSaver.saveAs(resultBlob, fileName);
                 } catch (error) {
                     set({message: "Lỗi tải template"});
                 } finally {
                     set({isLoading: false});
+                    UiUtils.clearBusy();
                 }
             },
 

@@ -30,9 +30,9 @@ class MenuUtils {
     getFlatMenu(systemCode: SystemCodeType) {
         return [
             ...(this.flattenMenu(complexMenuSuperAdmin)),
-            ...(systemCode === "golf" ? this.flattenMenu(complexMenuGolf) : []),
-            ...(systemCode === "restaurant" ? this.flattenMenu(complexMenuRestaurant) : []),
-            ...(systemCode === "shop" || systemCode === "hotel" ? this.flattenMenu(complexMenu) : []),
+            // ...(systemCode === "golf" ? this.flattenMenu(complexMenuGolf) : []),
+            // ...(systemCode === "restaurant" ? this.flattenMenu(complexMenuRestaurant) : []),
+            // ...(systemCode === "shop" || systemCode === "hotel" ? this.flattenMenu(complexMenu) : []),
         ]
     }
 

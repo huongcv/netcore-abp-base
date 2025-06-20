@@ -1,21 +1,28 @@
 import {ColumnType} from "antd/es/table/interface";
-import {
-    IRequestOptions
-} from "@api/base/index.defs";
+import {IRequestOptions} from "@api/base/index.defs";
 import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 
-export interface IImportApiService {
+export interface IImportApiService<T> {
     validateDataImport(
         params: {
-            /** requestBody */
-            body?: any[];
+            body?: T[];
         },
         options?: IRequestOptions
-    ): Promise<ICommonResultDtoApi<IImportValidateDto>>
+    ): Promise<ICommonResultDtoApi<IImportOutputDtoDto<T>>>;
+
+    downloadSampleTemplate(options: IRequestOptions): Promise<any>;
+
+    import(
+        params: {
+            body?: T[];
+        },
+        options?: IRequestOptions
+    ): Promise<ICommonResultDtoApi<IImportOutputDtoDto<T>>>;
 }
-export interface IImportValidateDto{
-    errorImportList?: any[];
-    successImportList?: any[];
+
+export interface IImportOutputDtoDto<T> {
+    errorImportList?: T[];
+    successImportList?: T[];
 }
 
 export interface IExcelReader<T> {
@@ -25,28 +32,11 @@ export interface IExcelReader<T> {
 }
 
 export interface IExcelImportConfig<T> {
-    // Service methods
-    exportTemplate: () => Promise<Blob>;
-    validateImport: (items: T[]) => Promise<{
-        successImportList: T[];
-        errorImportList: T[];
-        errorFile?: any;
-    }>;
-    import: (items: T[]) => Promise<{
-        isSuccessful: boolean;
-        data?: {
-            successImportList: T[];
-            errorImportList: T[];
-            successFile: any;
-            errorFile: any;
-        };
-    }>;
 
     excelReader: IExcelReader<T>,
 
     // Configuration
     maxRows?: number;
-    templateFileName: string;
 
     // Table columns
     getColumns: (isValid: boolean) => ColumnType<T>[];
@@ -81,6 +71,6 @@ export interface ExcelImportState<T> {
     processExcelData: (config: IExcelImportConfig<T>) => void;
     validateData: (config: IExcelImportConfig<T>) => Promise<void>;
     importData: (config: IExcelImportConfig<T>) => Promise<any>;
-    downloadTemplate: (config: IExcelImportConfig<T>) => Promise<void>;
+    downloadTemplate: () => void;
     reset: () => void;
 }

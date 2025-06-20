@@ -8,6 +8,7 @@ import {Space} from "antd";
 import {useStore} from "@ord-store/index";
 import {HomeIcon} from "@ord-components/icon/HomeIcon";
 import {DefaultAppPrefixUrl} from "@ord-core/AppConst";
+import Utils from "@ord-core/utils/utils";
 
 export interface IItemRoute {
     title: string;
@@ -81,31 +82,52 @@ export const OrdBreadcrumb = (props: {
 }
 
 export const PageBreadcrumb = () => {
-    let location = useLocation();
-    const [t] = useTranslation('menu');
+    return (
+        <>
+            <PageBreadcrumbFormPathName pathname={location.pathname}></PageBreadcrumbFormPathName>
+        </>
+    );
+}
+
+export const PageBreadcrumbFormPathName = ({pathname, mainTitle: customMainTitle}: {
+    pathname: string,
+    mainTitle?: string
+}) => {
     const [items, setItems] = useState<string[]>([]);
     const [mainTitle, setMainTitle] = useState<string>('');
     const {sessionStore} = useStore();
+
     useEffect(() => {
         const fullMenus = MenuUtils.getFlatMenu(sessionStore.systemCode);
-        const locNew = MenuUtils.removePrefixDefault(location.pathname);
-        const find = fullMenus.find(x => x.path == locNew);
-        if (find) {
-            setMainTitle(find.title);
-            getParent(fullMenus, find);
+        const currentPath = MenuUtils.removePrefixDefault(pathname);
+        const matchedNode = fullMenus.find(x => x.path === currentPath);
+
+        if (!matchedNode) return;
+
+        const resolvedTitle = customMainTitle ?? matchedNode.title;
+        setMainTitle(resolvedTitle);
+
+        const breadcrumbItems: string[] = [];
+        collectParentTitles(fullMenus, matchedNode, breadcrumbItems);
+
+        // Tránh duplicate nếu đã set customMainTitle
+        if (Utils.isNotNull(customMainTitle)) {
+            breadcrumbItems.push(matchedNode.title);
         }
-    }, [location.pathname, sessionStore.systemCode]);
-    const getParent = (fullMenus: SideNavInterface[], node: SideNavInterface) => {
-        if (!node || !node.parentName) {
-            return;
+        console.log('breadcrumbItems', breadcrumbItems);
+        setItems(breadcrumbItems);
+    }, [pathname, customMainTitle, sessionStore.systemCode]);
+
+
+    const collectParentTitles = (menuList: SideNavInterface[], node: SideNavInterface, result: string[]) => {
+        if (!node.parentName) return;
+
+        const parentNode = menuList.find(x => x.title === node.parentName);
+        if (parentNode) {
+            collectParentTitles(menuList, parentNode, result);
+            result.push(parentNode.title);
         }
-        const p = fullMenus.find(x => x.title == node.parentName);
-        if (!p) {
-            return;
-        }
-        setItems([p.title, ...items]);
-        getParent(fullMenus, p);
-    }
+    };
     return (
         <>
             <OrdBreadcrumb mainTitle={mainTitle} items={items}></OrdBreadcrumb>
