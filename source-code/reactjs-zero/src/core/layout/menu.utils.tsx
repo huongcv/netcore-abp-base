@@ -28,22 +28,12 @@ class MenuUtils {
 
 
     getFlatMenu(systemCode: SystemCodeType) {
-        if (this._isSuperAdmin || this._isSuperAdminUser) {
-            return this.flattenMenu(complexMenuSuperAdmin);
-        }
-
-        switch (systemCode) {
-            case "shop":
-                return this.flattenMenu(complexMenu);
-            case "golf":
-                return this.flattenMenu(complexMenuGolf);
-            case "hotel":
-                return this.flattenMenu(complexMenu);
-            case "restaurant":
-                return this.flattenMenu(complexMenuRestaurant);
-            default:
-                return this.flattenMenu(complexMenu);
-        }
+        return [
+            ...(this.flattenMenu(complexMenuSuperAdmin)),
+            ...(systemCode === "golf" ? this.flattenMenu(complexMenuGolf) : []),
+            ...(systemCode === "restaurant" ? this.flattenMenu(complexMenuRestaurant) : []),
+            ...(systemCode === "shop" || systemCode === "hotel" ? this.flattenMenu(complexMenu) : []),
+        ]
     }
 
     getMenuItems(session: AppBootstrapDto, systemCode: SystemCodeType) {
@@ -53,17 +43,17 @@ class MenuUtils {
         this._isSuperAdmin = session?.user?.isSuperAdmin ?? false;
         this._isSuperAdminUser = session.user?.level == UserConst.SaUserLevel;
         const isPharmacyShop = session?.currentShopType === ShopTypeEnum.NhaThuoc;
-        const isPackageTest =  PACKAGE_TEST_CODE.some(x => x === session?.user?.packageRegistrationCode);
+        const isPackageTest = PACKAGE_TEST_CODE.some(x => x === session?.user?.packageRegistrationCode);
 
         // @ts-ignore
         const flatMenu = this.getFlatMenu(systemCode)
             .filter((s: SideNavInterface) => {
-                if(!isPharmacyShop && s.keyCheck === 999) {
+                if (!isPharmacyShop && s.keyCheck === 999) {
                     return false;
                 }
 
                 // //Nếu là gói test thì ẩn chức năng kho và nhân sự
-                if(isPackageTest === true && (s?.key === 'menu.stockManagement' || s?.key === 'menu.human')) {
+                if (isPackageTest === true && (s?.key === 'menu.stockManagement' || s?.key === 'menu.human')) {
                     return false;
                 }
 
@@ -127,7 +117,7 @@ class MenuUtils {
 
         flatMenu.forEach(item => {
             if (item.parentName) {
-                if(!!itemMap[item.parentName]) {
+                if (!!itemMap[item.parentName]) {
                     if (!itemMap[item.parentName]?.children) {
                         itemMap[item.parentName]['children'] = [];
                     }

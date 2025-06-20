@@ -88,13 +88,13 @@ export const PageBreadcrumb = () => {
     const {sessionStore} = useStore();
     useEffect(() => {
         const fullMenus = MenuUtils.getFlatMenu(sessionStore.systemCode);
-        const locNew = MenuUtils.removePrefixDefault(location.pathname)
+        const locNew = MenuUtils.removePrefixDefault(location.pathname);
         const find = fullMenus.find(x => x.path == locNew);
         if (find) {
             setMainTitle(find.title);
             getParent(fullMenus, find);
         }
-    }, [location.pathname]);
+    }, [location.pathname, sessionStore.systemCode]);
     const getParent = (fullMenus: SideNavInterface[], node: SideNavInterface) => {
         if (!node || !node.parentName) {
             return;
