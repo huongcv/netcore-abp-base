@@ -1,7 +1,7 @@
-import { PERMISSION_APP } from "@ord-core/config/permissions";
+import {PERMISSION_APP} from "@ord-core/config/permissions";
 import {OrdRouterItem} from "@ord-core/model/ordRouter.model";
 import {lazy} from "react";
-import { MasterDataRouter } from "./MasterData/MasterDataRouter";
+import {MasterDataRouter} from "./MasterData/MasterDataRouter";
 
 export const AdminRouter: OrdRouterItem[] = [
     {

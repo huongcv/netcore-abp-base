@@ -1,12 +1,12 @@
 import {
-    axios,
-    basePath,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    PagedResultDtoOfShopSettingDto,
-    ShopSettingDto,
-    ShopSettingPagingInputDto
+  axios,
+  basePath,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions,
+  PagedResultDtoOfShopSettingDto,
+  ShopSettingDto,
+  ShopSettingPagingInputDto
 } from './index.defs';
 
 export class ShopSettingService {

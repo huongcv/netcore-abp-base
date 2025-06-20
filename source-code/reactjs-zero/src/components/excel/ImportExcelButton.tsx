@@ -1,7 +1,7 @@
-import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
-import { Alert, Button, Upload } from "antd";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import {DownloadOutlined, UploadOutlined} from "@ant-design/icons";
+import {Alert, Button, Upload} from "antd";
+import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 import './import-excel.scss';
 
 const DEFAULT_MAX_FILE_SIZE_MB = 2;

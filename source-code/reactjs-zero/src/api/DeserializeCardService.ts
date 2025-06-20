@@ -1,21 +1,4 @@
-import {
-  string,
-  CitizenIdentityCardDto,
-  GENDER,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, CitizenIdentityCardDto, getConfigs, IRequestConfig, IRequestOptions} from './index.defs';
 
 export class DeserializeCardService {
   /** Generate by swagger-axios-codegen */

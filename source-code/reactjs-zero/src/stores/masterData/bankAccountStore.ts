@@ -1,7 +1,7 @@
-import { ShopBankAccountDto } from "@api/index.defs";
-import { ShopBankAccountService } from "@api/ShopBankAccountService";
-import { CommonCrudApi } from "@ord-core/base/CommonCrudApi";
-import { CommonListStore, ICreateOrUpdateModal } from "@ord-core/base/CommonListStore";
+import {ShopBankAccountDto} from "@api/index.defs";
+import {ShopBankAccountService} from "@api/ShopBankAccountService";
+import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
+import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 
 class BankAccountStore extends CommonListStore<ShopBankAccountDto>{
     getNamespaceLocale(): string {

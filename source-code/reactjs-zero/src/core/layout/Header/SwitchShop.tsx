@@ -1,17 +1,14 @@
-import {
-    CheckCircleTwoTone,
-    StarFilled,
-} from "@ant-design/icons";
-import { AuthService } from "@api/AuthService";
+import {CheckCircleTwoTone, StarFilled,} from "@ant-design/icons";
+import {AuthService} from "@api/AuthService";
 import CurrentShopUtil from "@ord-core/utils/currentShop.util";
 import jwtUtils from "@ord-core/utils/jwt.utils";
 import uiUtils from "@ord-core/utils/ui.utils";
-import { useStore } from "@ord-store/index";
-import { Button, Form, Modal, Space, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import {useStore} from "@ord-store/index";
+import {Button, Form, Modal, Space} from "antd";
+import React, {useEffect, useState} from "react";
 import "./HeaderRight.scss";
-import { IconlyLight } from "@ord-components/icon/IconlyLight";
-import { ShopType } from "@ord-core/model/side-nav.type";
+import {IconlyLight} from "@ord-components/icon/IconlyLight";
+import {ShopType} from "@ord-core/model/side-nav.type";
 
 
 const shopTypeDisplay: Record<number, { title: string; icon: string }> = {

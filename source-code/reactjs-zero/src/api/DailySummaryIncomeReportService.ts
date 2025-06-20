@@ -1,28 +1,13 @@
 import {
-  DailySummaryIncomeReportPagingInput,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfDailySummaryIncomeReportOutputDto,
-  DailySummaryIncomeReportOutputDto,
-  ACCOUNT_MOVE_TYPE,
-  PAYMENT_METHOD,
-  number,
-  ShopWorkShiftDto,
-  SHOP_WORKSHIFT_STATUS,
-  SaleWorkShiftDetailDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    DailySummaryIncomeReportOutputDto,
+    DailySummaryIncomeReportPagingInput,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfDailySummaryIncomeReportOutputDto,
+    ShopWorkShiftDto
 } from './index.defs';
 
 export class DailySummaryIncomeReportService {

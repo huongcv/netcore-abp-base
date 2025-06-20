@@ -1,22 +1,12 @@
 import {
-  DailySummaryProductReportPagingInput,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfDailySummaryProductReportOutputDto,
-  DailySummaryProductReportOutputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    DailySummaryProductReportOutputDto,
+    DailySummaryProductReportPagingInput,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfDailySummaryProductReportOutputDto
 } from './index.defs';
 
 export class DailySummaryProductReportService {

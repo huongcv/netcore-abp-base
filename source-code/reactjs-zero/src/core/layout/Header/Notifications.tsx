@@ -1,15 +1,14 @@
-import { Avatar, Badge, Button, ConfigProvider, Empty, List, Modal, Popover, Space } from "antd";
-import { IconlyLight } from "@ord-components/icon/IconlyLight";
-import React, { useEffect, useState } from "react";
-import { onMessageListener } from "../../../firebase";
+import {Badge, Button, ConfigProvider, Empty, List, Modal, Popover, Space} from "antd";
+import {IconlyLight} from "@ord-components/icon/IconlyLight";
+import React, {useEffect, useState} from "react";
+import {onMessageListener} from "../../../firebase";
 import UiUtils from "@ord-core/utils/ui.utils";
-import { useStore } from "@ord-store/index";
-import { NotificationUserDto, NotificationUserPageListOutputDto } from "@api/index.defs";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
-import { WordIcon } from "@ord-components/icon/WordIcon";
+import {useStore} from "@ord-store/index";
+import {NotificationUserDto, NotificationUserPageListOutputDto} from "@api/index.defs";
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router";
 import "./HeaderRight.scss"
-import { CloseOutlined, DollarCircleFilled, DollarCircleOutlined, DollarOutlined, MailOutlined } from "@ant-design/icons";
+import {CloseOutlined, DollarCircleOutlined, MailOutlined} from "@ant-design/icons";
 import dateUtil from "@ord-core/utils/date.util";
 
 export interface IDataMessage_Data {

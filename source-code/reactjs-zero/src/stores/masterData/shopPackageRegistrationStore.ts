@@ -1,8 +1,8 @@
 import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 import {
     IRequestOptions,
-    ShopDto,
-    ShopPackageRegistrationDto, ShopPackageRegistrationStatus,
+    ShopPackageRegistrationDto,
+    ShopPackageRegistrationStatus,
     ShopPackageRegistrationType,
     TimeUnit
 } from "@api/index.defs";

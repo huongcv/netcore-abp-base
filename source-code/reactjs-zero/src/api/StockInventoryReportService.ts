@@ -1,23 +1,11 @@
 import {
-  StockReportImportExportInventoryInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  StockReportPageListImportExportInventoryOutputDto,
-  StockReportImportExportInventoryOutputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    StockReportImportExportInventoryInputDto,
+    StockReportPageListImportExportInventoryOutputDto
 } from './index.defs';
 
 export class StockInventoryReportService {

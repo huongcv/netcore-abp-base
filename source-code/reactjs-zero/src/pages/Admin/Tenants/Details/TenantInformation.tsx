@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
-import { useSelectTenantTypeEnum } from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
+import {useSelectTenantTypeEnum} from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
 
 const TenantInformation = () => {
     const {tenantListStore} = useStore();

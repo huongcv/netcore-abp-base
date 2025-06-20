@@ -1,7 +1,7 @@
-import { IRequestOptions, RoleDto, UserDto } from "@api/index.defs";
-import { RoleHostService } from "@api/RoleHostService";
-import { CommonCrudApi } from "@ord-core/base/CommonCrudApi";
-import { CommonListStore, ICreateOrUpdateModal } from "@ord-core/base/CommonListStore";
+import {IRequestOptions, RoleDto, UserDto} from "@api/index.defs";
+import {RoleHostService} from "@api/RoleHostService";
+import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
+import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 import OrdPermissionArrayUtil from "@ord-core/utils/array/ord.permission.array.util";
 
 class HostRoleListStore extends CommonListStore<UserDto> {

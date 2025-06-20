@@ -1,24 +1,10 @@
 import {
-  number,
-  boolean,
-  CommonResultDtoOfPartnerGroupDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  PartnerGroupDto,
-  PARTNER_TYPE,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfPartnerGroupDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions
 } from './index.defs';
 
 export class GolfCustomerGroupService {

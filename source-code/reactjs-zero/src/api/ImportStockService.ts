@@ -1,16 +1,16 @@
 import {
-    axios,
-    basePath,
-    CancelMoveStockDto,
-    CommonResultDtoOfImportStockTicketDto,
-    CommonResultDtoOfNullableOfInt64,
-    getConfigs,
-    ImportStockTicketDto,
-    IRequestConfig,
-    IRequestOptions,
-    PagedResultDtoOfStockMovePagedOutputDto,
-    StockMovePagedCountDto,
-    StockMovePagedRequestDto
+  axios,
+  basePath,
+  CancelMoveStockDto,
+  CommonResultDtoOfImportStockTicketDto,
+  CommonResultDtoOfNullableOfInt64,
+  getConfigs,
+  ImportStockTicketDto,
+  IRequestConfig,
+  IRequestOptions,
+  PagedResultDtoOfStockMovePagedOutputDto,
+  StockMovePagedCountDto,
+  StockMovePagedRequestDto
 } from './index.defs';
 
 export class ImportStockService {

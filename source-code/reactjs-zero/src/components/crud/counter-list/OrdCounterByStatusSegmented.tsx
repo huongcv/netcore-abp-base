@@ -1,5 +1,5 @@
 import {Badge, Segmented, Space} from "antd";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {CounterByStatusItemDto, StaticCounterByStatusApiFetcher} from "@ord-components/paged-table/types";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 

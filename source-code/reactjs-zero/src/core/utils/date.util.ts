@@ -18,7 +18,6 @@ import {
     subYears
 } from "date-fns";
 import relativeTime from 'dayjs/plugin/relativeTime'
-import {TimeSpan} from "@api/index.defs";
 
 class DateUtil {
     disableAfter(current: Dayjs | null, endDate: Dayjs | null) {

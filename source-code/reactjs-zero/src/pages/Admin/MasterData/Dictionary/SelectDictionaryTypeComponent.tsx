@@ -1,10 +1,9 @@
-import { ICommonSelectInputProp } from "@ord-components/forms/model/SelectProp";
-import { useStore } from "@ord-store/index";
-import { BaseOptionType } from "rc-select/lib/Select";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Select } from "antd";
+import {ICommonSelectInputProp} from "@ord-components/forms/model/SelectProp";
+import {BaseOptionType} from "rc-select/lib/Select";
+import {observer} from "mobx-react-lite";
+import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {Select} from "antd";
 
 export enum DictionaryTypeEnum {
   Gender = 1,

@@ -2,7 +2,7 @@ import {IRequestOptions, UserDto} from "@api/index.defs";
 import {UserService} from "@api/UserService";
 import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
-import { UserHostService } from "@api/UserHostService";
+import {UserHostService} from "@api/UserHostService";
 
 class UserHostListStore extends CommonListStore<UserDto> {
     getNamespaceLocale(): string {

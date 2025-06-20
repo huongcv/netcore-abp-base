@@ -1,25 +1,11 @@
 import {
-  number,
-  StockInventoryMoveEntity,
-  MOVE_TYPE,
-  MOVE_STATUS,
-  PARTNER_TYPE,
-  DiscountTypeEnum,
-  PAYMENT_METHOD,
-  PartnerTransactionEntity,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PartnerTransactionEntity,
+    StockInventoryMoveEntity
 } from './index.defs';
 
 export class AccountMoveSupplierManagerService {

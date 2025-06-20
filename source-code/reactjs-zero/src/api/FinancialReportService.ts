@@ -1,26 +1,12 @@
 import {
-  FinancialReportInputDto,
-  DateRangeDto,
-  CommonResultDtoOfFinancialReportOutputDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  FinancialReportOutputDto,
-  ExportFinancialReportInputDto,
-  OrdExportPaged,
-  ExportFinancialReportDataInputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfFinancialReportOutputDto,
+    ExportFinancialReportInputDto,
+    FinancialReportInputDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions
 } from './index.defs';
 
 export class FinancialReportService {

@@ -1,10 +1,7 @@
-import { DictionaryService } from "@api/DictionaryService";
-import { DictionaryDto, IRequestOptions } from "@api/index.defs";
-import { CommonCrudApi } from "@ord-core/base/CommonCrudApi";
-import {
-  CommonListStore,
-  ICreateOrUpdateModal,
-} from "@ord-core/base/CommonListStore";
+import {DictionaryService} from "@api/DictionaryService";
+import {DictionaryDto, IRequestOptions} from "@api/index.defs";
+import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
+import {CommonListStore, ICreateOrUpdateModal,} from "@ord-core/base/CommonListStore";
 
 class DictionaryStore extends CommonListStore<DictionaryDto> {
   getNamespaceLocale(): string {

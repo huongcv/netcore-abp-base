@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
 import {ShopInfoDto} from "@api/index.defs";
-import {useTranslation} from "react-i18next";
 import {l} from "@ord-core/language/lang.utils";
 import {PERMISSION_APP} from "@ord-core/config/permissions";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";

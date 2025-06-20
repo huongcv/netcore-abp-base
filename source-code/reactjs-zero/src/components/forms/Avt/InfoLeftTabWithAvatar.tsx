@@ -1,6 +1,6 @@
-import { CameraOutlined } from "@ant-design/icons"
-import { UserIcon } from "@ord-components/icon/UserIcon"
-import { Avatar } from "antd"
+import {CameraOutlined} from "@ant-design/icons"
+import {UserIcon} from "@ord-components/icon/UserIcon"
+import {Avatar} from "antd"
 
 const InfoLeftTabWithAvatar = () => {
     return (

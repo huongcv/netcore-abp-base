@@ -1,4 +1,4 @@
-import {Card, Collapse, CollapseProps, Divider} from "antd";
+import {Card, Collapse, CollapseProps} from "antd";
 import React from "react";
 import {QuestionIcon} from "@ord-components/icon/QuestionIcon";
 import './home-style.scss'

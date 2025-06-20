@@ -1,26 +1,13 @@
 import {
-  string,
-  StockMoveItemShortDto,
-  GetReturnMoveQuery,
-  ReturnMoveStockDto,
-  MOVE_TYPE,
-  CommonResultDtoOfString,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfString,
+    getConfigs,
+    GetReturnMoveQuery,
+    IRequestConfig,
+    IRequestOptions,
+    ReturnMoveStockDto,
+    StockMoveItemShortDto
 } from './index.defs';
 
 export class StockMoveHelperService {

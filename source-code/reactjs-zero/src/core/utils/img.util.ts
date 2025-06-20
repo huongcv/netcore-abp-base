@@ -1,5 +1,5 @@
-import { GetProp, message, UploadProps } from "antd";
-import { l } from "@ord-core/language/lang.utils";
+import {GetProp, message, UploadProps} from "antd";
+import {l} from "@ord-core/language/lang.utils";
 
 export type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 export namespace UploadImgUtil {

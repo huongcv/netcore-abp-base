@@ -1,14 +1,14 @@
 import {
-    axios,
-    basePath,
-    ComboOptionDto,
-    CommonResultDtoOfPackageDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    OrdPagedRequestDto,
-    PackageDto,
-    PagedResultDtoOfPackageDto
+  axios,
+  basePath,
+  ComboOptionDto,
+  CommonResultDtoOfPackageDto,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions,
+  OrdPagedRequestDto,
+  PackageDto,
+  PagedResultDtoOfPackageDto
 } from './index.defs';
 
 export class PackageService {

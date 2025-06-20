@@ -1,27 +1,13 @@
 import {
-  number,
-  GolfLatestInformationOfCustomer,
-  GameTypeEnum,
-  OrdPageRequestGolfHistoryBookingCourse,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfHistoryBookingCourseOfCustomer,
-  GolfHistoryBookingCourseOfCustomer,
-  PagedResultDtoOfGolfHistoryUsingServicesOfCustomer,
-  GolfHistoryUsingServicesOfCustomer,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    GolfLatestInformationOfCustomer,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPageRequestGolfHistoryBookingCourse,
+    PagedResultDtoOfGolfHistoryBookingCourseOfCustomer,
+    PagedResultDtoOfGolfHistoryUsingServicesOfCustomer
 } from './index.defs';
 
 export class GolfCustomerHelperService {

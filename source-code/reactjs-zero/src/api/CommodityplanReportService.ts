@@ -1,23 +1,11 @@
 import {
-  StockReportCommodityPlanPagingInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  ProductTypeEnum,
-  PagedResultDtoOfStockReportCommodityPlanOutputDto,
-  StockReportCommodityPlanOutputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfStockReportCommodityPlanOutputDto,
+    StockReportCommodityPlanPagingInputDto
 } from './index.defs';
 
 export class CommodityplanReportService {

@@ -1,26 +1,13 @@
 import {
-  OrdGolfLockerHistoryPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfLockerMaintenanceLogDto,
-  GolfLockerMaintenanceLogDto,
-  CommonResultDtoOfGolfLockerMaintenanceLogDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfGolfLockerMaintenanceLogDto,
+    getConfigs,
+    GolfLockerMaintenanceLogDto,
+    IRequestConfig,
+    IRequestOptions,
+    OrdGolfLockerHistoryPagedRequestDto,
+    PagedResultDtoOfGolfLockerMaintenanceLogDto
 } from './index.defs';
 
 export class GolfLockerMaintenanceLogService {

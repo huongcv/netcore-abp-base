@@ -1,25 +1,15 @@
-import OrdCrudPage, { IActionBtn } from "@ord-components/crud/OrdCrudPage";
-import { SearchFilterAndIsActived } from "@ord-components/forms/search/SearchFilterAndIsActived";
-import { IsActivedColumn } from "@ord-components/table/columns/IsActivedColumn";
+import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 import tableUtil from "@ord-core/utils/table.util";
 import ValidateUtils from "@ord-core/utils/validate.utils";
-import { useStore } from "@ord-store/index";
-import {
-  Checkbox,
-  Col,
-  Form,
-  FormInstance,
-  Input,
-  TableColumnsType,
-} from "antd";
-import { useTranslation } from "react-i18next";
-import SelectDictionaryTypeComponent, {
-  DictionaryTypeEnum,
-} from "./SelectDictionaryTypeComponent";
-import { useResponsiveSpan } from "@ord-core/hooks/useResponsiveSpan";
+import {useStore} from "@ord-store/index";
+import {Checkbox, Col, Form, FormInstance, Input, TableColumnsType,} from "antd";
+import {useTranslation} from "react-i18next";
+import SelectDictionaryTypeComponent, {DictionaryTypeEnum,} from "./SelectDictionaryTypeComponent";
+import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import FloatLabel from "@ord-components/forms/FloatLabel";
-import { SearchIsActived } from "@ord-components/forms/search/SearchIsActived";
-import { SearchFilterText } from "@ord-components/forms/search/SearchFilterText";
+import {SearchIsActived} from "@ord-components/forms/search/SearchIsActived";
+import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 
 const Dictionary: React.FC = () => {
   const { dictionaryStore: mainStore } = useStore();

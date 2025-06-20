@@ -8,9 +8,7 @@ import {SelectDataSource} from "@ord-components/forms/select/selectDataSource/se
 import {useTranslation} from "react-i18next";
 import {RenderNode} from "@ord-components/forms/model/ICommonInputProp";
 import type {FlattenOptionData} from "rc-select/lib/interface";
-import type {Variant} from "antd/es/config-provider";
 import {SelectProps} from "antd/es/select";
-import {IOrdSelectAndAddNewActions} from "@ord-components/forms/select/OrdSelectAndAddNew";
 
 export interface IOrdSelectProp extends IBaseOrdSelectProp {
     datasource: SelectDataSource;

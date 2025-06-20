@@ -1,27 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfShopBankAccountDto,
-  ShopBankAccountDto,
-  number,
-  CommonResultDtoOfShopBankAccountDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfShopBankAccountDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfShopBankAccountDto,
+    ShopBankAccountDto
 } from './index.defs';
 
 export class ShopBankAccountService {

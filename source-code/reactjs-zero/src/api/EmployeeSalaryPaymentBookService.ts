@@ -1,25 +1,12 @@
 import {
-  PagingEmployeeSalaryPaymentBookInput,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedEmployeeSalaryResultDto,
-  EmployeeSalaryPaymentBookDetailDto,
-  EmployeeSalaryPaymentBookSummaryDto,
-  EmployeeAmountGroupDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    EmployeeSalaryPaymentBookSummaryDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedEmployeeSalaryResultDto,
+    PagingEmployeeSalaryPaymentBookInput
 } from './index.defs';
 
 export class EmployeeSalaryPaymentBookService {

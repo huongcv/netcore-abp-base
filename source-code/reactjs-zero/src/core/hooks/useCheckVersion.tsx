@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import UiUtils from '@ord-core/utils/ui.utils';
 
 const VERSION_STORAGE_KEY = 'appVersion';

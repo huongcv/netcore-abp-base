@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import ProtectedRoute from "@ord-core/layout/ProtectedRoute";
-import React, {lazy, Suspense} from "react";
+import React, {Suspense} from "react";
 import AuthLayout from "@ord-core/layout/AuthLayout";
 import {authRoutes} from "./authRouter";
 import {appRouters} from "./appRouters";
@@ -11,7 +11,6 @@ import {OrdRouterItem} from "@ord-core/model/ordRouter.model";
 import DynamicRedirectWrapper from "./DynamicRedirectWrapper";
 import {AdminRouter} from "@pages/Admin/AdminRouter";
 import {DefaultAppPrefixUrl, DefaultHostPrefixUrl} from "@ord-core/AppConst";
-import PrivacyPolicy from "@pages/Support/PrivacyPolicy";
 
 const EMPTY_LAYOUT_PAGES = [...appRouters].filter(x => x.isEmptyLayout === true)
     .map(it => {
@@ -97,10 +96,5 @@ export const ROOT_ROUTER = createBrowserRouter([
             }
         }),
         errorElement: <NotFoundPage/>,
-    },
-    {
-        path: "/suport/privacy-policy",
-        element: <PrivacyPolicy/>,
-        errorElement: <NotFoundPage/>,
-    },
+    }
 ]);

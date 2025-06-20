@@ -1,17 +1,17 @@
 import {
-    axios,
-    basePath,
-    ComboOptionDto,
-    CommonResultDtoOfEmployeeDto,
-    CounterByIsActivedStatusDto,
-    EmployeeDto,
-    EmployeeInputDto,
-    EmployeePagedRequestDto,
-    FileUploadDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    PagedResultDtoOfEmployeeDto
+  axios,
+  basePath,
+  ComboOptionDto,
+  CommonResultDtoOfEmployeeDto,
+  CounterByIsActivedStatusDto,
+  EmployeeDto,
+  EmployeeInputDto,
+  EmployeePagedRequestDto,
+  FileUploadDto,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions,
+  PagedResultDtoOfEmployeeDto
 } from './index.defs';
 
 export class EmployeeService {

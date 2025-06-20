@@ -1,25 +1,10 @@
 import {
-  string,
-  CommonResultDtoOfNationalPrescriptionOutputDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  NationalPrescriptionOutputDto,
-  PrescriptionDetail,
-  MedicationPeriod,
-  Diagnosis,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfNationalPrescriptionOutputDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions
 } from './index.defs';
 
 export class NationalPrescriptionService {

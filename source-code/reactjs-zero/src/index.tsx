@@ -10,7 +10,7 @@ import {I18nextProvider} from 'react-i18next';
 import './i18n';
 import i18n from "i18next";
 import {serviceOptions} from "@api/index.defs";
-import {serviceOptions as baseServiceOptions} from"@api/base/index.defs"
+import {serviceOptions as baseServiceOptions} from "@api/base/index.defs"
 import httpService from "@ord-core/service-proxies/httpService";
 import {OrdDbClient} from "@ord-core/db";
 import {Helmet, HelmetProvider} from 'react-helmet-async';

@@ -1,19 +1,11 @@
 import {
-  SupplierInvoice,
-  IEinvoiceService,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IEinvoiceService,
+    IRequestConfig,
+    IRequestOptions,
+    SupplierInvoice
 } from './index.defs';
 
 export class EinvoiceFactoryService {

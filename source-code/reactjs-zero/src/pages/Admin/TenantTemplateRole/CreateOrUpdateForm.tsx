@@ -1,5 +1,5 @@
 import {Checkbox, Col, Form, FormInstance, Input, Row, Tabs, TabsProps} from "antd";
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
 import {useStore} from "@ord-store/index";
@@ -7,7 +7,7 @@ import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
 import regexUtil from "@ord-core/utils/regex.util";
-import { UserConst } from "@ord-core/AppConst";
+import {UserConst} from "@ord-core/AppConst";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 
 const RoleCreateOrUpdateForm = (props: {

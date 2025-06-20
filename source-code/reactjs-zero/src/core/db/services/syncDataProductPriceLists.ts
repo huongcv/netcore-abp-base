@@ -1,6 +1,3 @@
-import {SyncClientDatabaseService} from "@api/SyncClientDatabaseService";
-import {db} from "@ord-core/db";
-
 export const fetchSyncDataProductPriceLists = async (isForce: boolean = false) => {
     try {
         // const apiName = 'SyncClientDatabaseService.getSyncProductPriceList';

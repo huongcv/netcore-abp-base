@@ -1,14 +1,14 @@
 import {
-    axios,
-    basePath,
-    ComboOptionDto,
-    CommonResultDtoOfCountryDto,
-    CountryDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    OrdPagedRequestDto,
-    PagedResultDtoOfCountryDto
+  axios,
+  basePath,
+  ComboOptionDto,
+  CommonResultDtoOfCountryDto,
+  CountryDto,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions,
+  OrdPagedRequestDto,
+  PagedResultDtoOfCountryDto
 } from './index.defs';
 
 export class CountryService {

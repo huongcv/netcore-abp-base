@@ -5,15 +5,12 @@ import {RoleDto} from "@api/index.defs";
 import {useTranslation} from "react-i18next";
 import {PERMISSION_APP} from "@ord-core/config/permissions";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
-import {RoleService} from "@api/RoleService";
-import {UserOutlined} from "@ant-design/icons";
 import {RoleNS} from "@pages/Admin/Roles/role.util";
-import ListUserAssign from "@pages/Admin/Roles/ListUserAssign";
 import TableUtil from "@ord-core/utils/table.util";
 import {SearchFilterAndIsActived} from "@ord-components/forms/search/SearchFilterAndIsActived";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 import RoleCreateOrUpdateForm from "./CreateOrUpdateForm";
-import { RoleHostService } from "@api/RoleHostService";
+import {RoleHostService} from "@api/RoleHostService";
 
 const Roles: React.FC = () => {
     const {tenantRoleTemplateListStore: mainStore, entityModalStore} = useStore();

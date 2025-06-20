@@ -1,18 +1,18 @@
 import {
-    axios,
-    basePath,
-    ComboOptionDto,
-    CommonResultDtoOfImportExcelPartnerGroupOutputDto,
-    CommonResultDtoOfPartnerGroupDto,
-    CounterByIsActivedStatusDto,
-    getConfigs,
-    ImportExcelPartnerGroupInputDto,
-    ImportExcelPartnerGroupOutputDto,
-    IRequestConfig,
-    IRequestOptions,
-    PagedResultDtoOfPartnerGroupDto,
-    PartnerGroupDto,
-    PartnerGroupPagedRequestDto
+  axios,
+  basePath,
+  ComboOptionDto,
+  CommonResultDtoOfImportExcelPartnerGroupOutputDto,
+  CommonResultDtoOfPartnerGroupDto,
+  CounterByIsActivedStatusDto,
+  getConfigs,
+  ImportExcelPartnerGroupInputDto,
+  ImportExcelPartnerGroupOutputDto,
+  IRequestConfig,
+  IRequestOptions,
+  PagedResultDtoOfPartnerGroupDto,
+  PartnerGroupDto,
+  PartnerGroupPagedRequestDto
 } from './index.defs';
 
 export class DoctorGroupService {

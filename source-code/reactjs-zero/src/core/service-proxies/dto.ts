@@ -1,5 +1,3 @@
-import {JwtDto} from "@api/base/index.defs";
-
 export interface CommonResultExtendDto {
     code?: string | undefined;
     message?: string | undefined;

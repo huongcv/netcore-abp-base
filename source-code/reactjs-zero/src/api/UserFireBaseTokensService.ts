@@ -1,21 +1,11 @@
 import {
-  string,
-  UserFireBaseTokenDto,
-  number,
-  GetUserFireBaseTokenForViewDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    GetUserFireBaseTokenForViewDto,
+    IRequestConfig,
+    IRequestOptions,
+    UserFireBaseTokenDto
 } from './index.defs';
 
 export class UserFireBaseTokensService {

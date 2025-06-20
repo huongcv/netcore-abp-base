@@ -1,9 +1,9 @@
 import Utils from "@ord-core/utils/utils";
-import { l } from "@ord-core/language/lang.utils";
+import {l} from "@ord-core/language/lang.utils";
 import RegexUtil from "@ord-core/utils/regex.util";
 import React from "react";
 import dayjs from "dayjs";
-import { NamePath } from "antd/es/form/interface";
+import {NamePath} from "antd/es/form/interface";
 
 class ValidateUtils {
   passwordSetting: any;

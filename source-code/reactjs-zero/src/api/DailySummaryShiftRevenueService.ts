@@ -1,24 +1,12 @@
 import {
-  DailySummaryShiftRevenuePagingInput,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfDailySummaryShiftRevenueOutputDto,
-  DailySummaryShiftRevenueOutputDto,
-  SHOP_WORKSHIFT_STATUS,
-  SaleWorkShiftDetailDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    DailySummaryShiftRevenueOutputDto,
+    DailySummaryShiftRevenuePagingInput,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfDailySummaryShiftRevenueOutputDto
 } from './index.defs';
 
 export class DailySummaryShiftRevenueService {

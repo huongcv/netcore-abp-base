@@ -1,27 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfAccessCardColorDto,
-  GolfAccessCardColorDto,
-  CommonResultDtoOfGolfAccessCardColorDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfGolfAccessCardColorDto,
+    getConfigs,
+    GolfAccessCardColorDto,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfGolfAccessCardColorDto
 } from './index.defs';
 
 export class GolfAcessCardColorService {

@@ -1,26 +1,15 @@
 import {
-  PagingReportDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedResultDtoOfSupplierProductReportDto,
-  SupplierProductReportDto,
-  PagedResultDtoOfSupplierDebtReportDto,
-  SupplierDebtReportDto,
-  PagingCustomerRevenueReportDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfSupplierDebtReportDto,
+    PagedResultDtoOfSupplierProductReportDto,
+    PagingCustomerRevenueReportDto,
+    PagingReportDto,
+    SupplierDebtReportDto,
+    SupplierProductReportDto
 } from './index.defs';
 
 export class SupplierReportService {

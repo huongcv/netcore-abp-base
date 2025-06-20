@@ -1,5 +1,5 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@ord-core/db";
+import {useLiveQuery} from "dexie-react-hooks";
+import {db} from "@ord-core/db";
 
 const useFilterProductInventoryAvailable = (inventoryId?: number) => {
   return useLiveQuery(

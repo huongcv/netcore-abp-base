@@ -1,6 +1,5 @@
 import React from 'react';
-import {Col, Row} from "antd";
-import {CloseOutlined, InfoCircleOutlined} from "@ant-design/icons";
+import {Row} from "antd";
 import './home-style.scss';
 import SliderCard from "@pages/Home/SliderCard";
 import UpdateVersionCard from "@pages/Home/UpdateVersionCard";

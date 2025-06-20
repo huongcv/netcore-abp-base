@@ -3,7 +3,7 @@ import {Radio} from "antd";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {SelectDataSource} from "@ord-components/forms/select/selectDataSource/selectDataSource";
-import {AbstractCheckboxGroupProps, CheckboxOptionType} from "antd/es/checkbox/Group";
+import {CheckboxOptionType} from "antd/es/checkbox/Group";
 import {RadioGroupProps} from "antd/es/radio/interface";
 
 export interface IOrdRadioProp extends RadioGroupProps {

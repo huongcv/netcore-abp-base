@@ -1,13 +1,11 @@
-
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { useStore } from "@ord-store/index";
-import { useTranslation } from "react-i18next";
-import { EmployeeTimekeepingDto } from "@api/index.defs";
+import React, {useEffect, useState} from "react";
+import {useStore} from "@ord-store/index";
+import {useTranslation} from "react-i18next";
+import {EmployeeTimekeepingDto} from "@api/index.defs";
 import DateUtil from "@ord-core/utils/date.util";
 import "./CheckInForm.scss"
-import { GetFileUrl } from "@ord-core/service-proxies/axios.base";
 import ImgCrop from "antd-img-crop";
-import { Button, Col, Row, Upload } from "antd";
+import {Button, Col, Row, Upload} from "antd";
 import UiUtils from "@ord-core/utils/ui.utils";
 
 const CheckInForm = (prop: { isRefresh?: number }) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import {Avatar, Button, Dropdown, MenuProps, Space} from "antd";
-import {DownOutlined, LogoutOutlined} from "@ant-design/icons";
+import {Button, Dropdown, MenuProps} from "antd";
+import {LogoutOutlined} from "@ant-design/icons";
 import {useStore} from "@ord-store/index";
 import {useTranslation} from "react-i18next";
 import jwtUtils from "@ord-core/utils/jwt.utils";

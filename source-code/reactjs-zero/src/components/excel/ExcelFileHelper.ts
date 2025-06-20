@@ -1,6 +1,6 @@
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
-import {FileUploadDto, TplFileInfo} from "@api/index.defs";
+import {FileUploadDto} from "@api/index.defs";
 import {UploadFileService} from "@api/UploadFileService";
 
 export const handleDownloadFileByFileInfo = async (fileInfo: FileUploadDto) => {

@@ -1,28 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfProductGroupDto,
-  GolfProductGroupDto,
-  ProductGroupEnum,
-  number,
-  CommonResultDtoOfGolfProductGroupDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfGolfProductGroupDto,
+    getConfigs,
+    GolfProductGroupDto,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfGolfProductGroupDto
 } from './index.defs';
 
 export class GolfProductGroupService {

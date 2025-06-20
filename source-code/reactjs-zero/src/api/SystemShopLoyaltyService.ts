@@ -1,22 +1,11 @@
 import {
-  CommonResultDtoOfSystemShopLoyaltyDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  SystemShopLoyaltyDto,
-  SystemShopLoyaltyTierDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfSystemShopLoyaltyDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    SystemShopLoyaltyDto
 } from './index.defs';
 
 export class SystemShopLoyaltyService {

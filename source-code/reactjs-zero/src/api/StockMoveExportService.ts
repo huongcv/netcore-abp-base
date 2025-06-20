@@ -1,24 +1,4 @@
-import {
-  StockMovePagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  MOVE_TYPE,
-  PAYMENT_METHOD,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
-} from './index.defs';
+import {axios, basePath, getConfigs, IRequestConfig, IRequestOptions, StockMovePagedRequestDto} from './index.defs';
 
 export class StockMoveExportService {
   /** Generate by swagger-axios-codegen */

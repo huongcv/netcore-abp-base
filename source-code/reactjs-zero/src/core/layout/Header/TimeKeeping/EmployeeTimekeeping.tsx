@@ -1,10 +1,8 @@
-import { Button,  Modal,  Space, Tooltip} from "antd";
-import React, {useEffect, useRef, useState} from "react";
+import {Button, Modal, Space, Tooltip} from "antd";
+import React, {useRef, useState} from "react";
 import {useStore} from "@ord-store/index";
-import {l} from "@ord-core/language/lang.utils";
 import {useTranslation} from "react-i18next";
 import {IconlyLight} from "@ord-components/icon/IconlyLight";
-import {FooterCrudModal} from "@ord-components/crud/FooterCrudModal";
 import CheckInForm from "@ord-core/layout/Header/TimeKeeping/CheckInForm";
 
 const EmployeeTimekeeping = (props:{

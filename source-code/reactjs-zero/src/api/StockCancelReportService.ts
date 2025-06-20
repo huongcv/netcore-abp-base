@@ -1,23 +1,11 @@
 import {
-  StockDisposalReportPagingInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  StockDisposalReportPagingOutputDto,
-  StockDisposalReportOutputDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    StockDisposalReportPagingInputDto,
+    StockDisposalReportPagingOutputDto
 } from './index.defs';
 
 export class StockCancelReportService {

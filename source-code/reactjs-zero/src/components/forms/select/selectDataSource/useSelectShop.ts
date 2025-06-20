@@ -1,7 +1,7 @@
-import { SelectDataSource } from "@ord-components/forms/select/selectDataSource/selectDataSource";
+import {SelectDataSource} from "@ord-components/forms/select/selectDataSource/selectDataSource";
 import Utils from "@ord-core/utils/utils";
-import { useSelectDataSource } from "@ord-core/hooks/useSelectDataSource";
-import { ShopService } from "@api/ShopService";
+import {useSelectDataSource} from "@ord-core/hooks/useSelectDataSource";
+import {ShopService} from "@api/ShopService";
 
 export const useSelectShop = (disableTenant?: boolean,
                               excludeShopIds?: string[],

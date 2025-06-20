@@ -1,12 +1,12 @@
-import { action, computed, makeObservable, observable } from "mobx";
-import { FormInstance } from "antd";
+import {action, computed, makeObservable, observable} from "mobx";
+import {FormInstance} from "antd";
 import UiUtils from "@ord-core/utils/ui.utils";
-import { CommonCrudApi } from "@ord-core/base/CommonCrudApi";
+import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
 import ServiceProxyUtils from "@ord-core/utils/service-proxy.utils";
-import { l, LWithNs } from "@ord-core/language/lang.utils";
+import {l, LWithNs} from "@ord-core/language/lang.utils";
 import FileSaver from "file-saver";
 import type React from "react";
-import { PagedResultDto } from "@ord-core/service-proxies/dto";
+import {PagedResultDto} from "@ord-core/service-proxies/dto";
 
 export interface ICreateOrUpdateModal<T = any> {
   visible?: boolean;

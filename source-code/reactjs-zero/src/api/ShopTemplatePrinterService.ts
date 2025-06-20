@@ -1,27 +1,15 @@
 import {
-  ShopTemplatePrinterPagingInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfShopTemplatePrinterDto,
-  ShopTemplatePrinterDto,
-  TEMPLATE_PRINTER,
-  TplFileInfo,
-  CounterByIsActivedDto,
-  CounterByIsActivedItemDto,
-  number,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CounterByIsActivedDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfShopTemplatePrinterDto,
+    ShopTemplatePrinterDto,
+    ShopTemplatePrinterPagingInputDto,
+    TEMPLATE_PRINTER,
+    TplFileInfo
 } from './index.defs';
 
 export class ShopTemplatePrinterService {

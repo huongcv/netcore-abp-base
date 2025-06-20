@@ -1,14 +1,14 @@
-import { Checkbox, Col, Form, Input, Row } from "antd";
+import {Checkbox, Col, Form, Input, Row} from "antd";
 import React from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
-import { useTranslation } from "react-i18next";
-import { observer } from "mobx-react-lite";
-import { useStore } from "@ord-store/index";
+import {useTranslation} from "react-i18next";
+import {observer} from "mobx-react-lite";
+import {useStore} from "@ord-store/index";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
-import { useSelectPackageTrial } from "@ord-components/forms/select/selectDataSource/useSelectPackage";
-import { useSelectShopTypeEnum } from "@ord-components/forms/select/selectDataSource/useSelectShopTypeEnum";
-import { useSelectTenantTypeEnum } from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
+import {useSelectPackageTrial} from "@ord-components/forms/select/selectDataSource/useSelectPackage";
+import {useSelectShopTypeEnum} from "@ord-components/forms/select/selectDataSource/useSelectShopTypeEnum";
+import {useSelectTenantTypeEnum} from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
 import {useSelectBusinessType} from "@ord-components/forms/select/selectDataSource/useSelectBusinessTypeEnum";
 
 const TenantCreateOrUpdateForm = (prop: {

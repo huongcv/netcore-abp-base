@@ -2,7 +2,6 @@ import {IRequestOptions, SettingDto} from "@api/index.defs";
 import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
 import {SettingService} from "@api/SettingService";
-import {UploadFileService} from "@api/UploadFileService";
 
 class SettingListStore extends CommonListStore<SettingDto> {
     getNamespaceLocale(): string {

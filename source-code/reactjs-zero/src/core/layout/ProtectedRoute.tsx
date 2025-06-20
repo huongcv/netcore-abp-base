@@ -4,8 +4,7 @@ import {Navigate, useLocation} from 'react-router-dom';
 import {useStore} from "@ord-store/index";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";
 import {observer} from "mobx-react-lite";
-import {AppExtendCode, DefaultAppPrefixUrl, DefaultHostPrefixUrl} from "@ord-core/AppConst";
-import {useCheckVersion} from '@ord-core/hooks/useCheckVersion';
+import {AppExtendCode} from "@ord-core/AppConst";
 
 interface IProtectedRouteProp {
     children: any,

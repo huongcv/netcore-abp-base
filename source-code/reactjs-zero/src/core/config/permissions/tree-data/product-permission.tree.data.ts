@@ -1,5 +1,5 @@
-import { OrdPermissionTreeDataNode } from "@ord-core/config/permissions/tree-data/permission.tree.data";
-import { PERMISSION_APP } from "@ord-core/config/permissions";
+import {OrdPermissionTreeDataNode} from "@ord-core/config/permissions/tree-data/permission.tree.data";
+import {PERMISSION_APP} from "@ord-core/config/permissions";
 
 export const PRODUCT_PERMISSION_TREE_DATA: OrdPermissionTreeDataNode[] = [
   {

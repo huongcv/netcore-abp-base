@@ -1,28 +1,14 @@
 import {
-  OrdPagedRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfStockInventoryDto,
-  StockInventoryDto,
-  CommonResultDtoOfStockInventoryDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  ComboOptionDto,
-  string,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfStockInventoryDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    OrdPagedRequestDto,
+    PagedResultDtoOfStockInventoryDto,
+    StockInventoryDto
 } from './index.defs';
 
 export class StockInventoryService {

@@ -3,7 +3,7 @@ import {Button} from "antd";
 import {DownloadOutlined} from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
 import {handleDownloadFileByFileInfo} from "@ord-components/excel/ExcelFileHelper";
-import {FileUploadDto, TplFileInfo} from "@api/index.defs";
+import {FileUploadDto} from "@api/index.defs";
 
 const GroupButtonFileExcel = ({fileValid, fileInValid, countValid, countInValid, setMessage}:
                                   {

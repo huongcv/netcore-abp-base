@@ -1,9 +1,8 @@
-import { ShopOutlined, WindowsOutlined } from "@ant-design/icons";
-import { SideNavInterface } from "@ord-core/model/side-nav.type";
+import {ShopOutlined, WindowsOutlined} from "@ant-design/icons";
+import {SideNavInterface} from "@ord-core/model/side-nav.type";
 import React from "react";
-import { PERMISSION_APP } from "@ord-core/config/permissions";
-import { DashboardIcon } from "@ord-components/icon/menu/DashboardIcon";
-import { SettingIcon } from "@ord-components/icon/menu/SettingIcon";
+import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {SettingIcon} from "@ord-components/icon/menu/SettingIcon";
 
 export default [
   // {

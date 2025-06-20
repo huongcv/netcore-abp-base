@@ -1,5 +1,5 @@
 import {PERMISSION_APP, PERMISSION_TREE_TYPE} from "@ord-core/config/permissions";
-import { CRUD_ACTIONS } from "../const";
+import {CRUD_ACTIONS} from "../const";
 
 export const HOST_PERMISSION_TREE : PERMISSION_TREE_TYPE[] = [
     {

@@ -1,16 +1,16 @@
 import {
-    axios,
-    basePath,
-    ComboOptionDto,
-    CommonResultDtoOfFileUploadDto,
-    CommonResultDtoOfShopDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    PagedResultDtoOfShopDto,
-    ShopComboInputDto,
-    ShopDto,
-    ShopPagedRequestDto
+  axios,
+  basePath,
+  ComboOptionDto,
+  CommonResultDtoOfFileUploadDto,
+  CommonResultDtoOfShopDto,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions,
+  PagedResultDtoOfShopDto,
+  ShopComboInputDto,
+  ShopDto,
+  ShopPagedRequestDto
 } from './index.defs';
 
 export class ShopService {

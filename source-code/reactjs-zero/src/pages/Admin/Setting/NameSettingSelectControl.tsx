@@ -12,7 +12,6 @@ import {
     SettingType
 } from "@pages/Admin/Setting/setting-name.const";
 import Utils from "@ord-core/utils/utils";
-import {IOrdSelectOption} from "@ord-components/forms/select/OrdSelect";
 
 interface Prop extends ICommonSelectInputProp {
     typeSetting: number;

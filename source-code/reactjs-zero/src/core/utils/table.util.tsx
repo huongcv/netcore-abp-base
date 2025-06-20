@@ -1,14 +1,8 @@
-import {Button, Dropdown, Space, TableColumnsType} from "antd";
-import TableActionCell, {
-    ITableAction,
-} from "@ord-components/table/cells/TableActionCell";
+import {Space, TableColumnsType} from "antd";
+import TableActionCell, {ITableAction,} from "@ord-components/table/cells/TableActionCell";
 import {l} from "@ord-core/language/lang.utils";
 import React from "react";
 import {ColumnType} from "antd/es/table/interface";
-import {ColumnGroupType} from "antd/lib/table";
-import {AnyObject} from "yup";
-import {DashOutlined, EyeOutlined} from "@ant-design/icons";
-import {checkPermissionUser} from "@ord-core/utils/auth.utils";
 import BtnTableActionCell from "@ord-components/table/cells/BtnTableActionCell";
 
 interface ColumnConfig<T> {

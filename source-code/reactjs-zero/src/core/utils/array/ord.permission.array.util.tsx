@@ -1,12 +1,12 @@
-import { OrdPermissionTreeDataNode } from "@ord-core/config/permissions/tree-data/permission.tree.data";
-import { l } from "@ord-core/language/lang.utils";
+import {OrdPermissionTreeDataNode} from "@ord-core/config/permissions/tree-data/permission.tree.data";
+import {l} from "@ord-core/language/lang.utils";
 import React from "react";
-import { TreeDataNode } from "antd";
-import { PERMISSION_TREE } from "@ord-core/config/permissions/tree-data";
+import {TreeDataNode} from "antd";
+import {PERMISSION_TREE} from "@ord-core/config/permissions/tree-data";
 import ArrayUtil from "@ord-core/utils/array/array.util";
-import { AppBootstrapDto } from "@ord-core/service-proxies/session/dto";
-import { checkPermissionUser } from "@ord-core/utils/auth.utils";
-import { HOST_PERMISSION_TREE } from "@ord-core/config/permissions/host-tree-data";
+import {AppBootstrapDto} from "@ord-core/service-proxies/session/dto";
+import {checkPermissionUser} from "@ord-core/utils/auth.utils";
+import {HOST_PERMISSION_TREE} from "@ord-core/config/permissions/host-tree-data";
 
 class OrdPermissionArrayUtil {
     private listPermissionBase: string[] = [];

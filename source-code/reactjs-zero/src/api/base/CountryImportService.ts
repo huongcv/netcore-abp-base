@@ -1,12 +1,12 @@
 import {
-    axios,
-    basePath,
-    CommonResultDtoOfImportOutputDtoOfCountryImportDto,
-    CountryImportDto,
-    DownloadResultFileImportOfCountryImportDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions
+  axios,
+  basePath,
+  CommonResultDtoOfImportOutputDtoOfCountryImportDto,
+  CountryImportDto,
+  DownloadResultFileImportOfCountryImportDto,
+  getConfigs,
+  IRequestConfig,
+  IRequestOptions
 } from './index.defs';
 
 export class CountryImportService {

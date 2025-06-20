@@ -1,31 +1,11 @@
 import {
-  SaleInvoiceDto,
-  SaleInvoiceStatus,
-  EinvoiceStatus,
-  MOVE_TYPE,
-  CHANNEL_TYPE,
-  PrescriptionTypeEnum,
-  InvoiceObjectTypeEnum,
-  SaleInvoiceDetailDto,
-  LotInventoryDto,
-  SalesPrescriptionDto,
-  PaymentMethodObjDto,
-  PAYMENT_METHOD,
-  PARTNER_TYPE,
-  PartnerTransactionEntity,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PartnerTransactionEntity,
+    SaleInvoiceDto
 } from './index.defs';
 
 export class AccountMoveInvoiceManagerService {

@@ -1,27 +1,14 @@
 import {
-  GolfBuggyGroupPageRequestDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  PagedResultDtoOfGolfBuggyGroupDto,
-  GolfBuggyGroupDto,
-  number,
-  CommonResultDtoOfGolfBuggyGroupDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  ComboOptionDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    ComboOptionDto,
+    CommonResultDtoOfGolfBuggyGroupDto,
+    getConfigs,
+    GolfBuggyGroupDto,
+    GolfBuggyGroupPageRequestDto,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfGolfBuggyGroupDto
 } from './index.defs';
 
 export class GolfBuggyGroupService {

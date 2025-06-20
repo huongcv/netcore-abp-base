@@ -8,12 +8,9 @@ import {Button, Flex, Form, Input, Result} from "antd";
 import {useTranslation} from "react-i18next";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import FloatLabel from "@ord-components/forms/FloatLabel";
-import {LoginIcon} from "@ord-components/icon/LoginIcon";
 import {ForgotPasswordService} from "@api/ForgotPasswordService";
 import {SendEmailForgotPasswordQuery} from "@api/index.defs";
 import {useNavigate} from "react-router-dom";
-import {ReturnIcon} from "@ord-components/icon/ReturnIcon";
-import {ArrowRightIcon} from "@ord-components/icon/ArrowRightIcon";
 import {ArrowLeftOutlined} from "@ant-design/icons";
 
 const ForgotPassword: React.FC = observer(() => {

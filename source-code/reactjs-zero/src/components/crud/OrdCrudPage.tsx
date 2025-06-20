@@ -12,9 +12,7 @@ import {useWatch} from "antd/es/form/Form";
 import {debounce} from "lodash";
 import {HotkeysProvider} from "react-hotkeys-hook";
 import OrdCreateOrUpdateModal from "@ord-components/crud/OrdCreateOrUpdateModal";
-import {HotKeyScope} from "@ord-core/AppConst";
 import {PageTopTitleAndAction} from "@ord-components/common/page/PageTopTitleAndAction";
-import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
 
 interface IProp {
     searchForm?: (form: FormInstance) => React.ReactNode,

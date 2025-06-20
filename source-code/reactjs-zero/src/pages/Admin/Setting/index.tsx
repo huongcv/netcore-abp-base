@@ -1,38 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import OrdCrudPage, { IActionBtn } from "@ord-components/crud/OrdCrudPage";
-import { useStore } from "@ord-store/index";
-import {
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Space,
-  TableColumnsType,
-  Tooltip,
-} from "antd";
-import { SettingDto } from "@api/index.defs";
-import { useTranslation } from "react-i18next";
+import React, {useEffect, useRef, useState} from "react";
+import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import {useStore} from "@ord-store/index";
+import {Checkbox, Col, Form, Input, Space, TableColumnsType, Tooltip,} from "antd";
+import {SettingDto} from "@api/index.defs";
+import {useTranslation} from "react-i18next";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import TableUtil from "@ord-core/utils/table.util";
-import { IsActivedColumn } from "@ord-components/table/columns/IsActivedColumn";
-import { LWithNs } from "@ord-core/language/lang.utils";
-import {
-  CheckCircleOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { SearchFilterText } from "@ord-components/forms/search/SearchFilterText";
-import { SearchIsActived } from "@ord-components/forms/search/SearchIsActived";
-import { useResponsiveSpan } from "@ord-core/hooks/useResponsiveSpan";
+import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
+import {LWithNs} from "@ord-core/language/lang.utils";
+import {CheckCircleOutlined, EyeInvisibleOutlined, EyeOutlined,} from "@ant-design/icons";
+import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
+import {SearchIsActived} from "@ord-components/forms/search/SearchIsActived";
+import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import TypeSettingSelectControl from "@pages/Admin/Setting/TypeSettingSelectControl";
 import NameSettingSelectControl from "@pages/Admin/Setting/NameSettingSelectControl";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { TempImgUpload } from "@ord-components/common/uploadImgTemp/TempImgUpload";
+import {CKEditor} from "@ckeditor/ckeditor5-react";
 import UploadImgMulti from "@ord-components/common/uploadImgTemp/UploadImgMulti";
-import { OrdImgCrop } from "@ord-components/forms/croping-img/OrdImgCrop";
-import { AspectSizes } from "@ord-components/forms/croping-img/CropSize";
+import {OrdImgCrop} from "@ord-components/forms/croping-img/OrdImgCrop";
+import {AspectSizes} from "@ord-components/forms/croping-img/CropSize";
 
 export const CreateOrUpdateForm = () => {
   const { t } = useTranslation("setting-list");

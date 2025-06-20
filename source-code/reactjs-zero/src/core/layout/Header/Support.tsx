@@ -1,11 +1,10 @@
-import { Button, Dropdown } from "antd";
-import { CaretRightOutlined } from "@ant-design/icons";
-import { IconlyLight } from "@ord-components/icon/IconlyLight";
-import { t } from "i18next/index";
-import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { useStore } from "@ord-store/index";
-import { ShopType } from "@ord-core/model/side-nav.type";
+import {Button, Dropdown} from "antd";
+import {CaretRightOutlined} from "@ant-design/icons";
+import {IconlyLight} from "@ord-components/icon/IconlyLight";
+import React, {useMemo} from "react";
+import {Link} from "react-router-dom";
+import {useStore} from "@ord-store/index";
+import {ShopType} from "@ord-core/model/side-nav.type";
 
 export const HeaderSupport = () => {
     const { sessionStore } = useStore();

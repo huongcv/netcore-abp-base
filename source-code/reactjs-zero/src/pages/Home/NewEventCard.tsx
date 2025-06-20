@@ -1,7 +1,5 @@
-import {SupportIcon} from "@ord-components/icon/SupportIcon";
 import {Card} from "antd";
 import React, {useEffect, useState} from "react";
-import {SETTING_NAME_FOR_APP} from "@pages/Admin/Setting/setting-name.const";
 import {SettingService} from "@api/SettingService";
 
 function NewEventCard() {

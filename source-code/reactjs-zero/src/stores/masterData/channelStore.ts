@@ -1,7 +1,6 @@
-import {ChannelDto, DistrictDto, IRequestOptions} from "@api/index.defs";
+import {ChannelDto, IRequestOptions} from "@api/index.defs";
 import {CommonListStore, ICreateOrUpdateModal} from "@ord-core/base/CommonListStore";
 import {CommonCrudApi} from "@ord-core/base/CommonCrudApi";
-import {DistrictService} from "@api/DistrictService";
 import {ChannelService} from "@api/ChannelService";
 
 class ChannelStore extends CommonListStore<ChannelDto> {

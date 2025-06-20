@@ -1,27 +1,13 @@
 import {
-  PharmacyComplaintLogGetPageInputDto,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedResultDtoOfPharmacyComplaintLogDto,
-  PharmacyComplaintLogDto,
-  CommonResultDtoOfPharmacyComplaintLogDto,
-  CommonResultExtendDto,
-  ValidateInputDto,
-  number,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfPharmacyComplaintLogDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedResultDtoOfPharmacyComplaintLogDto,
+    PharmacyComplaintLogDto,
+    PharmacyComplaintLogGetPageInputDto
 } from './index.defs';
 
 export class PharmacyComplaintLogService {

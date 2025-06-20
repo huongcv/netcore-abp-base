@@ -1,4 +1,4 @@
-import { CustomIconComponentProps } from "./CustomIconComponentProps";
+import {CustomIconComponentProps} from "./CustomIconComponentProps";
 import Icon from "@ant-design/icons";
 
 const WarningSvg = (data: any) => (

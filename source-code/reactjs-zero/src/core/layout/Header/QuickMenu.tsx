@@ -3,7 +3,6 @@ import {MenuProps} from "antd/lib";
 import React from "react";
 import {useNavigate} from "react-router";
 import {AppExtendCode} from "@ord-core/AppConst";
-import MenuUtils from "@ord-core/layout/menu.utils";
 import {Link} from "react-router-dom";
 
 

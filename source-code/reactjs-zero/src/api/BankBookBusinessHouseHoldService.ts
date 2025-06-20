@@ -1,24 +1,12 @@
 import {
-  PagingBusinessHouseHoldBankBookInput,
-  OrdExportPaged,
-  OrdColumnFilter,
-  DateRangeDto,
-  PagedBankBookResultDto,
-  BusinessHouseHoldBankBookDetailDto,
-  BusinessHouseHoldBankBookDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    BusinessHouseHoldBankBookDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    PagedBankBookResultDto,
+    PagingBusinessHouseHoldBankBookInput
 } from './index.defs';
 
 export class BankBookBusinessHouseHoldService {
