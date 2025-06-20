@@ -1,6 +1,5 @@
 import React from "react";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
-import {useStore} from "@ord-store/index";
 import {TableColumnsType} from "antd";
 import TableUtil from "@ord-core/utils/table.util";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
@@ -18,7 +17,6 @@ const tableStore = createTableStore(CountryService);
 const modalStore = createModalFormStore(CountryService, {});
 
 const Country: React.FC = () => {
-    const {countryStore: mainStore} = useStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     const {onExportExcel} = tableStore();
     const columns: TableColumnsType<any> = TableUtil.getColumns([
@@ -86,8 +84,7 @@ const Country: React.FC = () => {
                 tableStore={tableStore}>
                 <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
                                              fetcher={CountryService.getCountByActive}/>
-                <PagedTable columns={columns} fetcher={CountryService.getPaged}
-                            tableStore={tableStore}/>
+                <PagedTable columns={columns} tableStore={tableStore}/>
             </PageLayoutWithTable>
             <ModifyModalForm
                 width={680}

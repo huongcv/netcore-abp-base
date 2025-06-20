@@ -1,16 +1,13 @@
 import React from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
-import {StaticApiFetcher} from "@ord-components/paged-table/types";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableProps<T> extends TableProps<T> {
-    fetcher: StaticApiFetcher;
     tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
 }
 
 export const PagedTable = <T extends object>({
-                                                 fetcher,
                                                  tableStore,
                                                  ...tableProps
                                              }: PagedTableProps<T>) => {

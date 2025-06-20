@@ -1,28 +1,26 @@
 import React, {lazy} from "react";
-import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
 import {UserDto} from "@api/index.defs";
-import UserCreateOrUpdateForm from "@pages/Admin/Users/CreateOrUpdateForm";
 import {UnlockOutlined} from "@ant-design/icons";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
 import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
 import TableUtil from "@ord-core/utils/table.util";
 import UnlockAction from "@pages/Admin/Users/actions/unlockAction";
 import {UserUtil} from "@pages/Admin/Users/user.util";
-import {createTableStore, PagedTable} from "@ord-components/paged-table";
-import {CountryService} from "@api/base/CountryService";
-import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
+import {PagedTable} from "@ord-components/paged-table";
 import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
 import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
-import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
+import {UserService} from "@api/base/UserService";
+import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
+import UserEntityForm from "@pages/Admin/Users/EntityForm";
+import {userCreateOrUpdateModalStore, userTableStore} from "@pages/Admin/Users/store";
 
-const userTableStore = createTableStore();
-const modalStore = createModalFormStore(CountryService, {
 
-});
 const User: React.FC = () => {
     const {useHostListStore: mainStore, sessionStore} = useStore();
-    const {openCreate, openEdit, openView} = modalStore();
+    const {openView, openCreate, openEdit, openDelete} = userCreateOrUpdateModalStore();
+    const {onExportExcel} = userTableStore();
     const policies = {
         base: 'AuthPlugin.User',
         addNew: 'AuthPlugin.User.Create',
@@ -36,14 +34,14 @@ const User: React.FC = () => {
         title: 'exportExcel',
         permission: policies.base,
         onClick: () => {
-            mainStore.exportExcelPagedResult().then();
+            onExportExcel().then();
         }
     },
         {
             title: 'addNew',
             permission: policies.addNew,
             onClick: () => {
-                mainStore.openCreateModal();
+                openCreate();
             },
         }];
 
@@ -97,32 +95,24 @@ const User: React.FC = () => {
                 }
             }
         ],
-        viewAction: (d) => {
-            mainStore.openUpdateModal(d)
-        },
         ns: mainStore.getNamespaceLocale()
     });
     return (
         <>
-            <OrdCrudPage stored={mainStore}
-                         topActions={topActions}
-                         columns={columns}
-                         searchForm={(searchFormRef) => <UserSearchForm/>}
-                         entityForm={form => <UserCreateOrUpdateForm/>}
-            ></OrdCrudPage>
             <PageLayoutWithTable
-                searchForm={<PagedTableSearchForm tableStore={userTableStore} searchFields={<UserSearchForm/>}/>}
-                tableContent={<PagedTable columns={columns} fetcher={CountryService.getPaged}
-                                          tableStore={userTableStore}/>}
-            />
+                topActions={topActions}
+                searchFields={<UserSearchForm/>}
+                tableStore={userTableStore}>
+                <OrdCounterByStatusSegmented tableStore={userTableStore} statusFieldName={'isActived'}
+                                             fetcher={UserService.getCountByActive}/>
+                <PagedTable columns={columns} tableStore={userTableStore}/>
+            </PageLayoutWithTable>
             <ModifyModalForm
-                modalStore={modalStore}
+                width={680}
+                modalStore={userCreateOrUpdateModalStore}
+                tableStore={userTableStore}
                 translationNs="user"
-                formFields={
-                    <>
-                        <UserCreateOrUpdateForm/>
-                    </>
-                }
+                formFields={<UserEntityForm/>}
             />
 
         </>)

@@ -1,9 +1,14 @@
 import {useEffect, useState} from 'react';
 import {ColProps, ColSize} from "antd/es/grid/col";
-import {a} from "vite/dist/node/types.d-aGj9QkWt";
 
 export const useResponsiveSpan = (width: number) => {
-    const [spanResponsive, setSpanResponsive] = useState<ColProps>();
+    const [spanResponsive, setSpanResponsive] = useState<ColProps>({
+        span: 24,
+        sm: 24,
+        md: width < 8 ? 12 : 24,
+        lg: width < 8 ? 8 : width < 16 ? 16 : 24,
+        xl: width
+    });
 
     useEffect(() => {
         setSpanResponsive({
@@ -11,7 +16,8 @@ export const useResponsiveSpan = (width: number) => {
             span: 24,
             sm: 24,
             md: width < 8 ? 12 : 24,
-            lg: width
+            lg: width < 8 ? 8 : width < 16 ? 16 : 24,
+            xl: width
         });
     }, [width]);
 

@@ -1,71 +1,18 @@
-import {RoleDto} from "@api/index.defs";
-import {RoleHostService} from "@api/RoleHostService";
-import {RoleService} from "@api/RoleService";
-import {UserHostService} from "@api/UserHostService";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import DateUtil from "@ord-core/utils/date.util";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useStore} from "@ord-store/index";
-import {Checkbox, Col, Form, FormInstance, Input, Row, TabsProps} from "antd";
-import {Tabs} from "antd/lib";
-import {observer} from "mobx-react-lite";
-import {useEffect, useState} from "react";
+import {Checkbox, Col, Form, Input, Row} from "antd";
 import {useTranslation} from "react-i18next";
+import {userCreateOrUpdateModalStore} from "@pages/Admin/Users/store";
 
-const UserCreateOrUpdateForm = () => {
+const UserEntityForm = () => {
     const {useHostListStore: mainStore, sessionStore} = useStore();
+    const {mode} = userCreateOrUpdateModalStore();
     const {t} = useTranslation(mainStore.getNamespaceLocale());
     const {t: tCommon} = useTranslation('common');
-    const {mode} = mainStore.createOrUpdateModal;
     const form = Form.useFormInstance();
-
-    const [roleOptions, setRoleOptions] = useState<any[]>([]);
-
-    const tabItems: TabsProps['items'] = [{
-        key: '1',
-        label: t('ListRole'),
-        children: (<>
-            {roleOptions && <Col span={24}>
-                <Form.Item name='listRoleId'>
-                    <Checkbox.Group style={{width: '100%'}}>
-                        <Row gutter={16}>
-                            {roleOptions.map((opt) => {
-                                return (<Col className='mb-1' key={opt.value} span={24}>
-                                    <Checkbox value={opt.value}>{opt.label}</Checkbox>
-                                </Col>);
-                            })}
-                        </Row>
-                    </Checkbox.Group>
-                </Form.Item>
-            </Col>}
-        </>)
-    },
-    ];
-
-
-    useEffect(() => {
-        UserHostService.getTreeDataForUserHost({
-            strUserId: form.getFieldValue('id')
-        }).then(result => {
-            const lstRole = result.roleTreeData;
-            const lstRoleAssignIds = result.listRoleAssignId;
-            if (lstRole?.length) {
-                setRoleOptions(lstRole.map(it => {
-                    return {
-                        value: it.id,
-                        label: (<><b className='inline-block' style={{minWidth: '80px'}}>{it.code}</b> <span
-                            className='italic'>{it.name}</span> </>)
-                    }
-                }))
-            }
-            if (lstRoleAssignIds?.length) {
-                form.setFieldValue('listRoleId', lstRoleAssignIds);
-            }
-        })
-    }, []);
-
-
     return (<>
         <Row gutter={18}>
             <Col span={12}>
@@ -78,20 +25,20 @@ const UserCreateOrUpdateForm = () => {
                         </ul>)}
                         name='userName' rules={[ValidateUtils.required, ValidateUtils.userName]}>
                         <Input
-                            addonBefore={(mode === 'addNew' && sessionStore.tenantCode ? sessionStore.tenantCode + '_' : '')}
-                            autoComplete="none" maxLength={30} disabled={mode !== 'addNew'}/>
+                            addonBefore={(mode === 'create' && sessionStore.tenantCode ? sessionStore.tenantCode + '_' : '')}
+                            autoComplete="none" maxLength={30} disabled={mode !== 'create'}/>
 
                     </Form.Item>
                 </FloatLabel>
 
             </Col>
             {mode !== 'viewDetail' && <Col span={12}>
-                <FloatLabel label={tCommon('Password')} required={mode === 'addNew'}>
+                <FloatLabel label={tCommon('Password')} required={mode === 'create'}>
                     <Form.Item
                         name='password'
-                        rules={[mode === 'addNew' ? ValidateUtils.required : ValidateUtils.alwaysValid, ValidateUtils.password]}>
+                        rules={[mode === 'create' ? ValidateUtils.required : ValidateUtils.alwaysValid, ValidateUtils.password]}>
                         <Input autoComplete="none"
-                               placeholder={mode === 'update' ? t('emptyIfNotChangePassword') : ''}
+                               placeholder={mode === 'edit' ? t('emptyIfNotChangePassword') : ''}
                                maxLength={100}/>
                     </Form.Item>
                 </FloatLabel>
@@ -146,12 +93,6 @@ const UserCreateOrUpdateForm = () => {
                 </Form.Item>
             </Col>
         </Row>
-
-        <Tabs items={tabItems}/>
-
-        <div hidden>
-            <Form.Item name={'id'}/>
-        </div>
     </>)
 }
-export default observer(UserCreateOrUpdateForm)
+export default UserEntityForm;
