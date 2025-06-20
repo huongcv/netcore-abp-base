@@ -114,7 +114,6 @@ export const PageBreadcrumbFormPathName = ({pathname, mainTitle: customMainTitle
         if (Utils.isNotNull(customMainTitle)) {
             breadcrumbItems.push(matchedNode.title);
         }
-        console.log('breadcrumbItems', breadcrumbItems);
         setItems(breadcrumbItems);
     }, [pathname, customMainTitle, sessionStore.systemCode]);
 
