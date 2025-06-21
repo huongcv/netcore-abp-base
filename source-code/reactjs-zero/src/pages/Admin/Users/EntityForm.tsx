@@ -1,8 +1,6 @@
-import {FloatFieldLabel} from "@ord-components/forms/FloatLabel";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import DateUtil from "@ord-core/utils/date.util";
 import ValidateUtils from "@ord-core/utils/validate.utils";
-import {useStore} from "@ord-store/index";
 import {Col, Form, Input, Row} from "antd";
 import {useTranslation} from "react-i18next";
 import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
@@ -10,10 +8,10 @@ import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 
 const UserEntityForm = () => {
-    const {useHostListStore: mainStore, sessionStore} = useStore();
+    const {t} = useTranslation();
     const {modalStore} = useUserLogic();
     const {mode} = modalStore();
-    const {t} = useTranslation(mainStore.getNamespaceLocale());
+
     const form = Form.useFormInstance();
     const firstFocusRef = useAutoFocus();
     return (<>

@@ -1,4 +1,3 @@
-import {useStore} from "@ord-store/index";
 import {useTranslation} from "react-i18next";
 import {UserService} from "@api/UserService";
 import UiUtils from "@ord-core/utils/ui.utils";
@@ -11,8 +10,7 @@ import ValidateUtils from "@ord-core/utils/validate.utils";
 import {ActionLazy} from "@ord-components/table/cells/ActionLazy";
 
 const ChangePasswordForm = () => {
-    const {useHostListStore} = useStore();
-    const {t} = useTranslation(useHostListStore.getNamespaceLocale());
+    const {t} = useTranslation();
     return (<>
         <Form.Item label={l.trans(UserNS + '.Name')} name='name'>
             <Input disabled/>

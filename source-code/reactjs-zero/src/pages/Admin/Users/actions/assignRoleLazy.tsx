@@ -4,17 +4,18 @@ import {CheckOutlined} from "@ant-design/icons";
 import {RoleDto, UserDto} from "@api/index.defs";
 import {UserService} from "@api/UserService";
 import UiUtils from "@ord-core/utils/ui.utils";
-import {useTranslation} from "react-i18next";
-import {UserL, UserNS} from "@pages/Admin/Users/user.util";
-import {Checkbox, Col, Form, Input, Row, Tabs, TabsProps} from "antd";
+import {UserL} from "@pages/Admin/Users/user.util";
+import {Checkbox, Col, Form, Row, Tabs, TabsProps} from "antd";
 import {RoleService} from "@api/RoleService";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
 import {l} from "@ord-core/language/lang.utils";
+import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
+import {useTranslation} from "react-i18next";
 
 const AssignRoleForUserForm = () => {
-    const {t} = useTranslation(UserNS);
     const [roleOptions, setRoleOptions] = useState<any[]>([]);
     const form = Form.useFormInstance();
+    const {t} = useTranslation();
 
     const onChangeRoleIdSelected = (checkedValues: string[]) => {
         if (checkedValues.length > 0) {
@@ -79,14 +80,10 @@ const AssignRoleForUserForm = () => {
     return (<>
         <Row gutter={18}>
             <Col span={24}>
-                <Form.Item label={t('Name')} name='name'>
-                    <Input maxLength={200} disabled/>
-                </Form.Item>
+                <OrdFormField label='Name' name='name' disabled/>
             </Col>
             <Col span={24}>
-                <Form.Item label={t('UserName')} name='userName'>
-                    <Input maxLength={200} disabled/>
-                </Form.Item>
+                <OrdFormField label='UserName' name='userName' disabled/>
             </Col>
             <Tabs items={tabItems}/>
         </Row>

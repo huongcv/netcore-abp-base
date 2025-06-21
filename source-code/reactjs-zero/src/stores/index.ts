@@ -2,7 +2,6 @@ import DashboardStore from "@ord-store/Dashboard/dashboardStore";
 import RoleListStore from "@ord-store/admin/roleListStore";
 import SettingListStore from "@ord-store/admin/settingListStore";
 import TenantListStore from "@ord-store/admin/tenantListStore";
-import UserHostListStore from "@ord-store/admin/userHostListStore";
 import EntityModalStore from "@ord-store/entityModalStore";
 import CountryStateStore from "@ord-store/masterData/contryStateStore";
 import CountryStore from "@ord-store/masterData/contryStore";
@@ -26,7 +25,6 @@ import PackageForTenantStore from "@ord-store/masterData/packageForTenantStore";
 
 export const rootStore = {
     sessionStore: new SessionStore(),
-    useHostListStore: new UserHostListStore(),
     userSystemListStore: new UserSystemListStore(),
     roleListStore: new RoleListStore(),
     hostRoleListStore: new HostRoleListStore(),
