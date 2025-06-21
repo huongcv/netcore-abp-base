@@ -3,11 +3,14 @@ import {createTableStore} from "@ord-components/paged-table";
 import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {UserService} from "@api/base/UserService";
+// Stores
+const tableStore = createTableStore(UserService);
+const modalStore = createModalFormStore(UserService, {});
+
 
 export const useUserLogic = () => {
-    // Stores
-    const tableStore = createTableStore(UserService);
-    const modalStore = createModalFormStore(UserService, {});
+
+
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     // policies name
@@ -43,11 +46,13 @@ export const useUserLogic = () => {
         tableStore,
         modalStore,
         topActions,
+        policies,
         actions: {
             openView,
             openCreate,
             openEdit,
-            openDelete
+            openDelete,
+            onExportExcel
         }
     };
 };

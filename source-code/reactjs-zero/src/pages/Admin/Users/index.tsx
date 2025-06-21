@@ -1,5 +1,4 @@
 import React, {lazy} from "react";
-import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
 import {UserDto} from "@api/index.defs";
 import {UnlockOutlined} from "@ant-design/icons";
@@ -14,37 +13,20 @@ import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
 import {UserService} from "@api/base/UserService";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import UserEntityForm from "@pages/Admin/Users/EntityForm";
-import {userCreateOrUpdateModalStore, userTableStore} from "@pages/Admin/Users/store";
+import {userTableStore} from "@pages/Admin/Users/store";
+import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 
 
 const User: React.FC = () => {
+    const {
+        actions,
+        topActions,
+        modalStore,
+        tableStore,
+        policies
+    } = useUserLogic();
     const {useHostListStore: mainStore, sessionStore} = useStore();
-    const {openView, openCreate, openEdit, openDelete} = userCreateOrUpdateModalStore();
-    const {onExportExcel} = userTableStore();
-    const policies = {
-        base: 'AuthPlugin.User',
-        addNew: 'AuthPlugin.User.Create',
-        edit: 'AuthPlugin.User.Update',
-        remove: 'AuthPlugin.User.Remove',
-        resetPassword: 'AuthPlugin.User.ResetPassword',
-        assignRole: 'AuthPlugin.User.AssignRole',
-        loginWithAccount: 'AuthPlugin.User.LoginPasswordless'
-    };
-    const topActions: IActionBtn[] = [{
-        title: 'exportExcel',
-        permission: policies.base,
-        onClick: () => {
-            onExportExcel().then();
-        }
-    },
-        {
-            title: 'addNew',
-            permission: policies.addNew,
-            onClick: () => {
-                openCreate();
-            },
-        }];
-
+    const {openView, openCreate, openEdit, openDelete} = modalStore();
     const columns = TableUtil.getColumns<UserDto>(UserDataColumns, {
         actions: [
             {
@@ -102,15 +84,15 @@ const User: React.FC = () => {
             <PageLayoutWithTable
                 topActions={topActions}
                 searchFields={<UserSearchForm/>}
-                tableStore={userTableStore}>
-                <OrdCounterByStatusSegmented tableStore={userTableStore} statusFieldName={'isActived'}
+                tableStore={tableStore}>
+                <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
                                              fetcher={UserService.getCountByActive}/>
-                <PagedTable columns={columns} tableStore={userTableStore}/>
+                <PagedTable columns={columns} tableStore={tableStore}/>
             </PageLayoutWithTable>
             <ModifyModalForm
                 width={680}
-                modalStore={userCreateOrUpdateModalStore}
-                tableStore={userTableStore}
+                modalStore={modalStore}
+                tableStore={tableStore}
                 translationNs="user"
                 formFields={<UserEntityForm/>}
             />
