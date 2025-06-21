@@ -38,7 +38,7 @@ export default FloatLabel;
 
 // FloatFieldLabel: dùng cho i18n label tự động
 interface FloatFieldLabelProps extends Omit<PropType, 'label'> {
-    label: string; // dùng key i18n
+    label: React.ReactNode;
 }
 
 export const FloatFieldLabel = ({label, children, ...rest}: FloatFieldLabelProps) => {

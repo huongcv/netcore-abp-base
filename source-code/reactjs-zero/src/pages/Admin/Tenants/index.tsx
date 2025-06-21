@@ -1,20 +1,28 @@
 import React from "react";
-import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
-import {useStore} from "@ord-store/index";
 import {ShopInfoDto} from "@api/index.defs";
 import {l} from "@ord-core/language/lang.utils";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
-import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import TableUtil from "@ord-core/utils/table.util";
-import {SearchFilterAndIsActived} from "@ord-components/forms/search/SearchFilterAndIsActived";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
+import {useTenantLogic} from "@pages/Admin/Tenants/useTenantLogic";
+import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
+import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
+import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
+import {PagedTable} from "@ord-components/paged-table";
+import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
+import UserEntityForm from "@pages/Admin/Users/EntityForm";
+import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
+import {TenantService} from "@api/base/TenantService";
 import TenantCreateOrUpdateForm from "@pages/Admin/Tenants/CreateOrUpdateForm";
-import {useNavigate} from "react-router-dom";
 
 const Tenants: React.FC = () => {
-    const {tenantListStore: mainStore} = useStore();
-    const navigate = useNavigate();
-    const policies = PermissionUtil.crudPermission(PERMISSION_APP.admin.tenant);
+    const {
+        topActions,
+        modalStore,
+        tableStore,
+        crudActions,
+        tableActions
+    } = useTenantLogic();
+    const {mode} = modalStore();
     const columns = TableUtil.getColumns<ShopInfoDto>([
         {
             title: 'tenantCode',
@@ -53,66 +61,28 @@ const Tenants: React.FC = () => {
         },
         IsActivedColumn()
     ], {
-        actions: [
-            // {
-            //     title: 'view',
-            //     onClick: (d) => {
-            //         return navigate('/admin/tenant-detail/' + d.id);
-            //     },
-            //     permission: PERMISSION_APP.admin.role
-            // },
-            // {
-            //     title: 'edit',
-            //     onClick: (d) => {
-            //         mainStore.openUpdateModal(d);
-            //     },
-            //     permission: policies.edit
-            // },
-            {
-                title: 'remove',
-                onClick: async (d) => {
-                    await mainStore.openRemoveByHashId(d);
-                },
-                permission: policies.remove
-            }
-        ],
-        viewAction: (d) => {
-            return navigate('/admin/tenant-detail/' + d.idHash);
-        },
-        viewActionPermission: PERMISSION_APP.admin.role,
-        ns: mainStore.getNamespaceLocale()
-    })
-
-    const remove = async () => {
-
-    }
-
-    const topActions: IActionBtn[] = [{
-        title: 'exportExcel',
-        permission: policies.base,
-        onClick: () => {
-            mainStore.exportExcelPagedResult().then();
-        }
-    },
-        {
-            title: 'addNew',
-            permission: policies.create,
-            onClick: () => {
-                mainStore.openCreateModal();
-            },
-        }];
+        actions: tableActions
+    });
     return (
         <>
-            <OrdCrudPage stored={mainStore}
-                         topActions={topActions}
-                         columns={columns}
-                         searchForm={f => <SearchFilterAndIsActived/>}
-                         entityForm={f => <TenantCreateOrUpdateForm
-                             isCreateNew={mainStore.createOrUpdateModal.mode === 'addNew'}/>}
-            ></OrdCrudPage>
-            {/*{*/}
-            {/*    viewModel === 'listShop' && <ShopListModal tenant={tenant}></ShopListModal>*/}
-            {/*}*/}
+            <PageLayoutWithTable
+                topActions={topActions}
+                searchFields={<UserSearchForm/>}
+                tableStore={tableStore}>
+                <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
+                                             fetcher={TenantService.getCountByActive}/>
+                <PagedTable columns={columns} tableStore={tableStore}/>
+            </PageLayoutWithTable>
+            <ModifyModalForm
+                width={800}
+                modalStore={modalStore}
+                tableStore={tableStore}
+                entityTranslationNs="tenant"
+                formFields={<TenantCreateOrUpdateForm isCreateNew={mode === 'create'}/>}
+                transformNotificationParameter={createNotificationTransform.fromMapping({
+                    name: 'name'
+                })}
+            />
 
         </>)
         ;

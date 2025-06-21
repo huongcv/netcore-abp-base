@@ -4,6 +4,7 @@
   "phoneCode": "Mã vùng điện thoại",
   "currencyCode": "Mã tiền tệ",
   "FullName": "Họ tên",
+  "tenant_name": "Tên thuê bao",
   "check-box": {
     "dang_hoat_dong": "Hoạt động",
     "isLockoutEnabled": "Khóa tài khoản khi đăng nhập thất bại quá nhiều lần",

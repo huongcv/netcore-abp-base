@@ -16,6 +16,7 @@
   },
   "entity": {
     "country": "quốc gia",
-    "user": "người dùng"
+    "user": "người dùng",
+    "tenant": "thuê bao"
   }
 }

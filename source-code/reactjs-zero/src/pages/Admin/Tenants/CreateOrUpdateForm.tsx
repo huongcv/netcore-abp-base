@@ -7,6 +7,7 @@ import {useStore} from "@ord-store/index";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
 import {useSelectTenantTypeEnum} from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
+import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 
 const TenantCreateOrUpdateForm = (prop: {
     isCreateNew: boolean
@@ -19,20 +20,14 @@ const TenantCreateOrUpdateForm = (prop: {
     return (<>
         <Row gutter={16}>
             <Col span={6}>
-                <FloatLabel required label={t('code')}>
-                    {/*sử dung code tenant  = mainShopCode */}
-                    <Form.Item name='code' rules={[ValidateUtils.required, ValidateUtils.NoSpecialCharacter]}
-                               initialValue=''>
-                        <Input maxLength={50}/>
-                    </Form.Item>
-                </FloatLabel>
+                <OrdFormField label='code' name='code' required
+                              rules={[ValidateUtils.required, ValidateUtils.NoSpecialCharacter]}
+                              maxLength={50}/>
             </Col>
             <Col span={10}>
-                <FloatLabel required label={t('name')}>
-                    <Form.Item name='name' rules={[ValidateUtils.required]}>
-                        <Input maxLength={200}/>
-                    </Form.Item>
-                </FloatLabel>
+                <OrdFormField label='tenant_name' name='name' required
+                              rules={[ValidateUtils.required]}
+                              maxLength={200}/>
             </Col>
             <Col span={8}>
                 <FloatLabel label={t('tenantType')} required>
@@ -43,28 +38,21 @@ const TenantCreateOrUpdateForm = (prop: {
                 </FloatLabel>
             </Col>
             <Col span={12}>
-                <FloatLabel label={t('PhoneNumber')}>
-                    <Form.Item name='phoneNumber' rules={[ValidateUtils.phoneNumberVietNam]}>
-                        <Input maxLength={200}/>
-                    </Form.Item>
-                </FloatLabel>
+                <OrdFormField label='PhoneNumber' name='phoneNumber'
+                              rules={[ValidateUtils.phoneNumberVietNam]}
+                              maxLength={200}/>
             </Col>
             <Col span={12}>
-                <FloatLabel label={t('Email')}>
-                    <Form.Item name='email' rules={[ValidateUtils.email]}>
-                        <Input maxLength={200}/>
-                    </Form.Item>
-                </FloatLabel>
+                <OrdFormField label='Email' name='email'
+                              rules={[ValidateUtils.email]}
+                              maxLength={200}/>
             </Col>
             <Col span={24}>
-                <FloatLabel label={tCommon('Address')}>
-                    <Form.Item name='address'>
-                        <Input maxLength={200}/>
-                    </Form.Item>
-                </FloatLabel>
+                <OrdFormField label='Address' name='address'
+                              maxLength={200}/>
             </Col>
             {
-                prop.isCreateNew && code_w &&
+                prop.isCreateNew &&
                 <>
                     <Col span={12}>
                         <FloatLabel label={t('userNameAdminTenant')} required>
@@ -84,14 +72,10 @@ const TenantCreateOrUpdateForm = (prop: {
                             </Form.Item>
                         </FloatLabel>
                     </Col>
-
-
                 </>
             }
             <Col span={6}>
-                <Form.Item name='isActived' valuePropName="checked" initialValue={true}>
-                    <Checkbox>{tCommon('dang_hoat_dong')}</Checkbox>
-                </Form.Item>
+                <OrdFormField label='dang_hoat_dong' name='isActived' isCheckbox initialValue={true}/>
             </Col>
         </Row>
     </>);

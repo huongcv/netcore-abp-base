@@ -15,6 +15,8 @@ export interface FormFieldProps {
     placeholder?: string;
     valuePropName?: string;
     maxLength?: number | undefined;
+    initialValue?: any;
+
 }
 
 export const OrdFormField = ({
@@ -27,7 +29,8 @@ export const OrdFormField = ({
                                  isCheckbox,
                                  placeholder,
                                  valuePropName,
-                                 maxLength
+                                 maxLength,
+                                 initialValue
                              }: FormFieldProps) => {
     if (isCheckbox) {
         return (
@@ -39,7 +42,7 @@ export const OrdFormField = ({
 
     return (
         <FloatFieldLabel label={label} required={required}>
-            <Form.Item name={name} rules={rules}>
+            <Form.Item name={name} rules={rules} initialValue={initialValue}>
                 {children || <Input disabled={disabled} placeholder={placeholder} maxLength={maxLength}/>}
             </Form.Item>
         </FloatFieldLabel>
