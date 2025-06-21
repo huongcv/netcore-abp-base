@@ -81,7 +81,7 @@ export const ModifyModalForm = <T extends object>({
         if (result.isSuccessful) {
             await reloadStateTable();
 
-            const message = getSuccessMessage(mode, result.data, transformNotificationParameter);
+            const message = getSuccessMessage(mode, transformNotificationParameter(result.data));
             if (message) {
                 uiUtils.showSuccess(message);
             }
@@ -123,12 +123,14 @@ export const ModifyModalForm = <T extends object>({
     };
 
     const renderTitle = () => {
-        return getTitleText(mode, editingItem);
+        return getTitleText(mode, transformNotificationParameter(editingItem));
     };
 
     useEffect(() => {
         if (!!deletingItem) {
-            const confirmContent = getConfirmContent(deletingItem);
+            const confirmContent = getConfirmContent({
+                ...transformNotificationParameter(deletingItem)
+            });
             const confirmTitle = getConfirmTitle();
 
             UiUtils.showConfirm({
@@ -147,7 +149,7 @@ export const ModifyModalForm = <T extends object>({
                         }
                         reloadStateTable().then();
 
-                        const successMessage = getDeleteSuccessMessage(deletingItem, transformNotificationParameter);
+                        const successMessage = getDeleteSuccessMessage(transformNotificationParameter(deletingItem));
                         if (successMessage) {
                             uiUtils.showSuccess(successMessage);
                         }

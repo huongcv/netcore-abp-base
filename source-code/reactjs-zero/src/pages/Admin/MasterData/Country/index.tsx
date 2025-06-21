@@ -11,6 +11,8 @@ import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {EntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
+import {CountryDto} from "@api/index.defs";
+import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 
 
 const tableStore = createTableStore(CountryService);
@@ -92,6 +94,7 @@ const Country: React.FC = () => {
                 tableStore={tableStore}
                 entityTranslationNs="country"
                 formFields={<EntityForm/>}
+                transformNotificationParameter={createNotificationTransform.fromField('name')}
             />
         </>)
         ;

@@ -56,8 +56,7 @@ export const useModifyModalI18n = ({
 
     const getSuccessMessage = (
         mode: 'create' | 'edit' | 'viewDetail',
-        data: any,
-        transformNotificationParameter: (entity: any) => any
+        data: any
     ) => {
         if (i18nConfig?.successI18nKey) {
             const keyMap = {
@@ -66,7 +65,7 @@ export const useModifyModalI18n = ({
                 viewDetail: i18nConfig.successI18nKey.remove,
             };
             const key = keyMap[mode];
-            return key ? tCustom(key, transformNotificationParameter(data)) : '';
+            return key ? tCustom(key, (data)) : '';
         } else {
             // Cách cũ - sử dụng entity translation với namespace mặc định
             const entity = t('entity.' + entityTranslationNs);
@@ -76,21 +75,20 @@ export const useModifyModalI18n = ({
                 viewDetail: t('common.success.remove', {entity}),
             };
             const key = keyMap[mode];
-            return t(key, transformNotificationParameter(data));
+            return t(key, (data));
         }
     };
 
     const getDeleteSuccessMessage = (
-        deletingItem: any,
-        transformNotificationParameter: (entity: any) => any
+        deletingItem: any
     ) => {
         if (i18nConfig?.successI18nKey?.remove) {
-            return tCustom(i18nConfig.successI18nKey.remove, transformNotificationParameter({...deletingItem}));
+            return tCustom(i18nConfig.successI18nKey.remove, ({...deletingItem}));
         } else {
             // Cách cũ - sử dụng entity translation với namespace mặc định
             const entity = t('entity.' + entityTranslationNs);
             const key = t('common.success.remove', {entity});
-            return t(key, transformNotificationParameter({...deletingItem}));
+            return t(key, ({...deletingItem}));
         }
     };
 

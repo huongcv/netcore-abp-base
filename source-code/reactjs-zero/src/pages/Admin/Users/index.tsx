@@ -1,6 +1,6 @@
 import React, {lazy} from "react";
 import {useStore} from "@ord-store/index";
-import {UserDto} from "@api/index.defs";
+import {CountryDto, UserDto} from "@api/index.defs";
 import {UnlockOutlined} from "@ant-design/icons";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
 import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
@@ -15,6 +15,7 @@ import UserEntityForm from "@pages/Admin/Users/EntityForm";
 import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 import {USER_POLICIES} from "@pages/Admin/Users/user.constants";
 import {UserUtilities} from "@pages/Admin/Users/user.util";
+import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 
 
 const User: React.FC = () => {
@@ -92,9 +93,9 @@ const User: React.FC = () => {
                 tableStore={tableStore}
                 entityTranslationNs="user"
                 formFields={<UserEntityForm/>}
-                transformNotificationParameter={(d: UserDto) => {
-                    d.name
-                }}
+                transformNotificationParameter={createNotificationTransform.fromMapping({
+                    name: 'userName'
+                })}
             />
 
         </>)
