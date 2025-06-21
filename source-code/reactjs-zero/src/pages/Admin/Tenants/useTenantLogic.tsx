@@ -13,8 +13,9 @@ const modalStore = createModalFormStore(TenantService, {});
 
 export const useTenantLogic = () => {
     const {onExportExcel} = tableStore();
-    const {openView, openCreate, openEdit, openDelete} = modalStore();
+    const {openView, openCreate, openEdit, openDelete, mode} = modalStore();
     const policies = PermissionUtil.crudPermission(PERMISSION_APP.admin.tenant);
+    const isCreateNew = mode === 'create';
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -55,6 +56,7 @@ export const useTenantLogic = () => {
             openEdit,
             openDelete,
             onExportExcel
-        }
+        },
+        isCreateNew
     };
 };

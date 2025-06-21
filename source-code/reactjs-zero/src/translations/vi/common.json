@@ -289,5 +289,7 @@
   "isTaxable": "Chịu thuế",
   "isInsurance": "Đóng bảo hiểm",
   "Show": "Hiển thị",
-  "emptyIfNotChangePassword": "Để trống nếu không muốn thay đổi mật khẩu của người dùng"
+  "emptyIfNotChangePassword": "Để trống nếu không muốn thay đổi mật khẩu của người dùng",
+  "passwordAdminTenant": "Mật khẩu tài khoản quản trị",
+  "userNameAdminTenant": "Tài khoản quản trị"
 }

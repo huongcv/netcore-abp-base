@@ -1,20 +1,16 @@
-import {Checkbox, Col, Form, Input, Row} from "antd";
+import {Col, Form, Input, Row} from "antd";
 import React from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
-import {observer} from "mobx-react-lite";
-import {useStore} from "@ord-store/index";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
 import {useSelectTenantTypeEnum} from "@ord-components/forms/select/selectDataSource/useSelectTenantTypeEnum";
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
+import {useTenantLogic} from "@pages/Admin/Tenants/useTenantLogic";
 
-const TenantCreateOrUpdateForm = (prop: {
-    isCreateNew: boolean
-}) => {
-    const {tenantListStore: mainStore} = useStore();
-    const {t} = useTranslation(mainStore.getNamespaceLocale());
-    const {t: tCommon} = useTranslation('common');
+export const TenantEntityForm = () => {
+    const {isCreateNew} = useTenantLogic();
+    const {t} = useTranslation();
     const form = Form.useFormInstance();
     const code_w = Form.useWatch('code', form);
     return (<>
@@ -52,7 +48,7 @@ const TenantCreateOrUpdateForm = (prop: {
                               maxLength={200}/>
             </Col>
             {
-                prop.isCreateNew &&
+                isCreateNew &&
                 <>
                     <Col span={12}>
                         <FloatLabel label={t('userNameAdminTenant')} required>
@@ -80,4 +76,3 @@ const TenantCreateOrUpdateForm = (prop: {
         </Row>
     </>);
 }
-export default observer(TenantCreateOrUpdateForm)

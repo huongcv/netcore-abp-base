@@ -35,11 +35,6 @@ export const AdminRouter: OrdRouterItem[] = [
         permission: PERMISSION_APP.masterData.shop
     },
     {
-        path: 'tenant-detail/:id',
-        lazyComponent: lazy(() => import('@pages/Admin/Tenants/Details')),
-        permission: PERMISSION_APP.admin.tenant
-    },
-    {
         path: 'setting',
         lazyComponent: lazy(() => import('@pages/Admin/Setting')),
         permission: PERMISSION_APP.admin.setting

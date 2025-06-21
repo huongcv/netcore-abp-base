@@ -9,10 +9,9 @@ import {UserSearchForm} from "@pages/Admin/Users/UserSearchForm";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {PagedTable} from "@ord-components/paged-table";
 import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
-import UserEntityForm from "@pages/Admin/Users/EntityForm";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {TenantService} from "@api/base/TenantService";
-import TenantCreateOrUpdateForm from "@pages/Admin/Tenants/CreateOrUpdateForm";
+import {TenantEntityForm} from "@pages/Admin/Tenants/EntityForm";
 
 const Tenants: React.FC = () => {
     const {
@@ -78,7 +77,7 @@ const Tenants: React.FC = () => {
                 modalStore={modalStore}
                 tableStore={tableStore}
                 entityTranslationNs="tenant"
-                formFields={<TenantCreateOrUpdateForm isCreateNew={mode === 'create'}/>}
+                formFields={<TenantEntityForm isCreateNew={mode === 'create'}/>}
                 transformNotificationParameter={createNotificationTransform.fromMapping({
                     name: 'name'
                 })}
