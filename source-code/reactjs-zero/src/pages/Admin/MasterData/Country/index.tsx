@@ -90,7 +90,7 @@ const Country: React.FC = () => {
                 width={680}
                 modalStore={modalStore}
                 tableStore={tableStore}
-                translationNs="country"
+                entityTranslationNs="country"
                 formFields={<EntityForm/>}
             />
         </>)

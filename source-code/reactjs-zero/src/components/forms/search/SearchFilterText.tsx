@@ -25,7 +25,7 @@ interface SearchFilterTextProp extends ISearchProp {
 }
 
 export const SearchFilterText = (props: SearchFilterTextProp) => {
-    const {t} = useTranslation('common');
+    const {t} = useTranslation(['form']);
     const {hasAdvanceSearchBtn, isHiddenAdvanceSearchBtnText, placeHolder, iconSearchCustom, ...rest} = props;
     const form = Form.useFormInstance();
     const inputSearch = props.ignoreAutoFocus == true ? useRef(null) : useAutoFocus();
@@ -69,7 +69,7 @@ export const SearchFilterText = (props: SearchFilterTextProp) => {
                         <Space.Compact style={{width: '100%'}}>
                             <Form.Item name='filter' className='flex-auto'>
                                 <Input prefix={<IconlyLightSearch/>}
-                                       placeholder={placeHolder ? placeHolder : t("filterSearchPlaceholder")}
+                                       placeholder={t("searchTextPlaceholder." + (placeHolder || 'common'))}
                                        allowClear
                                     // autoFocus
                                        ref={inputSearch}/>

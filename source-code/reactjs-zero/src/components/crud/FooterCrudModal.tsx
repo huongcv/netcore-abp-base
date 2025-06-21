@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {Button, Checkbox, CheckboxProps, Space} from "antd";
 import {CloseOutlined, SaveOutlined} from "@ant-design/icons";
 import {debounce} from "lodash";
+import {l} from "@ord-core/language/lang.utils";
 
 interface IProp {
     hasAddNewContinue?: boolean,
@@ -17,7 +18,7 @@ interface IProp {
 }
 
 export const FooterCrudModal = (props: IProp) => {
-    const {t} = useTranslation('common');
+    const {t} = useTranslation('action');
     const onChange: CheckboxProps['onChange'] = (e) => {
         if (props.isAddNewContinueChange) {
             props.isAddNewContinueChange(e.target.checked);
@@ -35,7 +36,7 @@ export const FooterCrudModal = (props: IProp) => {
                     props?.hasAddNewContinue &&
                     <Checkbox checked={props.isAddNewContinue}
                               onChange={onChange}>
-                        {t('addNewContinue')}
+                        {l.transCommon('addNewContinue')}
                     </Checkbox>
                 }
             </div>
@@ -45,7 +46,7 @@ export const FooterCrudModal = (props: IProp) => {
                 <Button className='me-2' onClick={props.onCancel}>
                     {
                         props?.cancelBtn || (
-                            <Space.Compact><Space><CloseOutlined className="me-1"/></Space>{t('cancelModal')} (F10)
+                            <Space.Compact><Space><CloseOutlined className="me-1"/></Space>{t('modal.cancel')} (F10)
                             </Space.Compact>)
                     }
 
@@ -55,7 +56,7 @@ export const FooterCrudModal = (props: IProp) => {
                         {
                             props?.okBtn || (
                                 <Space.Compact> <Space><SaveOutlined
-                                    className="me-1"/></Space>{t('saveModal')} (F8)</Space.Compact>)
+                                    className="me-1"/></Space>{t('modal.save')} (F8)</Space.Compact>)
                         }
 
                     </Button>

@@ -3,6 +3,7 @@ import {createTableStore} from "@ord-components/paged-table";
 import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {UserService} from "@api/base/UserService";
+import {USER_POLICIES} from "@pages/Admin/Users/user.constants";
 // Stores
 const tableStore = createTableStore(UserService);
 const modalStore = createModalFormStore(UserService, {});
@@ -13,16 +14,6 @@ export const useUserLogic = () => {
 
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
-    // policies name
-    const policies = {
-        base: 'AuthPlugin.User',
-        addNew: 'AuthPlugin.User.Create',
-        edit: 'AuthPlugin.User.Update',
-        remove: 'AuthPlugin.User.Remove',
-        resetPassword: 'AuthPlugin.User.ResetPassword',
-        assignRole: 'AuthPlugin.User.AssignRole',
-        loginWithAccount: 'AuthPlugin.User.LoginPasswordless'
-    };
     // Columns configuration
 
 
@@ -30,14 +21,14 @@ export const useUserLogic = () => {
     const topActions: IActionBtn[] = [
         {
             title: 'exportExcel',
-            permission: policies.base,
+            permission: USER_POLICIES.BASE,
             onClick: () => {
                 onExportExcel().then();
             }
         },
         {
             title: 'addNew',
-            permission: policies.addNew,
+            permission: USER_POLICIES.CREATE,
             onClick: openCreate
         }
     ];
@@ -46,8 +37,7 @@ export const useUserLogic = () => {
         tableStore,
         modalStore,
         topActions,
-        policies,
-        actions: {
+        crudActions: {
             openView,
             openCreate,
             openEdit,

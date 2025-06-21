@@ -8,7 +8,7 @@ const AddNewEntity = (props: {
     disabled?: boolean;
     onClick?: MouseEventHandler<any> | undefined;
 }) => {
-    const {t} = useTranslation('common');
+    const {t} = useTranslation('action');
     return (<>
         <Button type='primary'
                 onClick={props?.onClick}
@@ -16,7 +16,7 @@ const AddNewEntity = (props: {
             <Space>
                 <PlusOutlined/>
             </Space>
-            {t('actionBtn.addNew')}
+            {t('addNew')}
         </Button>
     </>);
 }

@@ -5,11 +5,12 @@ import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useStore} from "@ord-store/index";
 import {Checkbox, Col, Form, Input, Row} from "antd";
 import {useTranslation} from "react-i18next";
-import {userCreateOrUpdateModalStore} from "@pages/Admin/Users/store";
+import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 
 const UserEntityForm = () => {
     const {useHostListStore: mainStore, sessionStore} = useStore();
-    const {mode} = userCreateOrUpdateModalStore();
+    const {modalStore} = useUserLogic();
+    const {mode} = modalStore();
     const {t} = useTranslation(mainStore.getNamespaceLocale());
     const {t: tCommon} = useTranslation('common');
     const form = Form.useFormInstance();
@@ -18,11 +19,6 @@ const UserEntityForm = () => {
             <Col span={12}>
                 <FloatLabel label={tCommon('UserName')} required>
                     <Form.Item
-                        tooltip={(<ul>
-                            <li>{tCommon('userNameTooltip.1')}</li>
-                            <li>{tCommon('userNameTooltip.2')}</li>
-                            <li>{tCommon('userNameTooltip.3')}</li>
-                        </ul>)}
                         name='userName' rules={[ValidateUtils.required, ValidateUtils.userName]}>
                         <Input
                             addonBefore={(mode === 'create' && sessionStore.tenantCode ? sessionStore.tenantCode + '_' : '')}

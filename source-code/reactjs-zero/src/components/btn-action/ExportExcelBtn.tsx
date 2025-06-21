@@ -8,7 +8,7 @@ const ExportExcelBtn = (props: {
     disabled?: boolean;
     onClick: () => void;
 }) => {
-    const {t} = useTranslation('common');
+    const {t} = useTranslation('action');
     const onOkClick = () => {
         props.onClick();
     }
@@ -19,7 +19,7 @@ const ExportExcelBtn = (props: {
             <Space>
                 <FileExcelOutlined/>
             </Space>
-            {t('actionBtn.exportExcel')}
+            {t('exportExcel')}
         </Button>
     </>);
 }

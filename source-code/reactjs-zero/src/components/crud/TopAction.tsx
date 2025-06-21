@@ -12,7 +12,6 @@ export const TopAction = (prop: {
     topActions?: IActionBtn[],
     hotkeyScope?: string
 }) => {
-    const {t} = useTranslation('common');
     const {sessionStore} = useStore();
     const clickDefault = (it: IActionBtn) => {
         if (it.onClick) {

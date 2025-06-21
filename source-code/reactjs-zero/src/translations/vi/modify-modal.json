@@ -1,14 +1,21 @@
 {
-  "country": {
+  "common": {
     "title": {
-      "create": "Thêm mới quốc gia",
-      "edit": "Sửa quốc gia",
-      "view": "Xem chi tiết thông tin quốc gia"
+      "create": "Thêm mới {{entity}}",
+      "edit": "Sửa {{entity}}",
+      "view": "Xem chi tiết thông tin {{entity}}"
     },
     "success": {
-      "create": "Thêm mới thành công quốc gia",
-      "edit": "Sửa thành công quốc gia {{name}}",
-      "remove": "Xóa thành công quốc gia {{name}}"
+      "create": "Thêm mới thành công {{entity}}",
+      "edit": "Sửa thành công {{entity}} {{name}}",
+      "remove": "Xóa thành công {{entity}} {{name}}"
+    },
+    "confirm": {
+      "remove": "Bạn có muốn xóa {{entity}}: <bold>{{name}}</bold> này không"
     }
+  },
+  "entity": {
+    "country": "quốc gia",
+    "user": "người dùng"
   }
 }

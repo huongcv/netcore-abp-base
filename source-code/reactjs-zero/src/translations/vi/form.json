@@ -1,0 +1,12 @@
+{
+  "filterSearch": "Từ khóa tìm kiếm",
+  "refreshDataTable": "Đặt lại",
+  "search": "Tìm kiếm",
+  "hiddenSearchAdvance": "Ẩn nâng cao",
+  "showSearchAdvance": "Hiện nâng cao",
+  "searchTextPlaceholder": {
+    "common": "Nhập từ khóa để tìm kiếm (F3)",
+    "user": "Nhập tên đăng nhập/ họ tên để tìm kiếm (F3)"
+  }
+}
+

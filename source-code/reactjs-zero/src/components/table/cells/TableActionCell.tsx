@@ -24,7 +24,7 @@ const TableActionCell = (prop: {
     ns?: string,
     record?: any
 }) => {
-    const {t} = useTranslation(prop.ns ?? 'common');
+    const {t} = useTranslation('action');
     const {sessionStore, entityModalStore} = useStore();
     const mapIcon: any = {
         'view': <EyeOutlined style={{fontSize: 20}}/>,
@@ -40,7 +40,7 @@ const TableActionCell = (prop: {
         if (it.contentLazy) {
             return {
                 key: '' + idx,
-                label: <it.contentLazy title={t('actionBtn.' + it.title)}
+                label: <it.contentLazy title={t(it.title)}
                                        record={prop.record}
                                        callBackSuccess={it.callBackSuccess}
                                        entityModalStore={entityModalStore}/>
@@ -60,7 +60,7 @@ const TableActionCell = (prop: {
 
                 <Space wrap>
                     {icon}
-                    {t('actionBtn.' + it.title)}
+                    {t(it.title)}
                 </Space>
             ),
             onClick: () => {

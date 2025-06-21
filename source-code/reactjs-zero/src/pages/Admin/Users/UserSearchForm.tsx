@@ -5,6 +5,6 @@ import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 export const UserSearchForm = () => {
     const {t} = useTranslation('common');
     return (<>
-        <SearchFilterText span={12}/>
+        <SearchFilterText placeHolder={'user'} span={12}/>
     </>);
 }
