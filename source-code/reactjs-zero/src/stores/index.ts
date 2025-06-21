@@ -1,7 +1,6 @@
 import DashboardStore from "@ord-store/Dashboard/dashboardStore";
 import RoleListStore from "@ord-store/admin/roleListStore";
 import SettingListStore from "@ord-store/admin/settingListStore";
-import TenantListStore from "@ord-store/admin/tenantListStore";
 import EntityModalStore from "@ord-store/entityModalStore";
 import CountryStateStore from "@ord-store/masterData/contryStateStore";
 import CountryStore from "@ord-store/masterData/contryStore";
@@ -30,7 +29,6 @@ export const rootStore = {
     hostRoleListStore: new HostRoleListStore(),
     tenantRoleTemplateListStore: new TenantRoleTemplateListStore(),
     settingStore: new SettingListStore(),
-    tenantListStore: new TenantListStore(),
     countryStore: new CountryStore(),
     dictionaryStore: new DictionaryStore(),
     ChannelStore: new ChannelStore(),
