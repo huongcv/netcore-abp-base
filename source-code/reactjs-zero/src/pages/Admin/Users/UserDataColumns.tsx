@@ -13,7 +13,7 @@ export const UserDataColumns: TableColumnsType<UserDto> = [
         width: 200,
     },
     {
-        title: 'Name',
+        title: 'FullName',
         dataIndex: 'name',
         width: 200,
     },

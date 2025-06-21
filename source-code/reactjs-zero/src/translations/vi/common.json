@@ -288,5 +288,6 @@
   "Sunday": "Chủ nhật",
   "isTaxable": "Chịu thuế",
   "isInsurance": "Đóng bảo hiểm",
-  "Show": "Hiển thị"
+  "Show": "Hiển thị",
+  "emptyIfNotChangePassword": "Để trống nếu không muốn thay đổi mật khẩu của người dùng"
 }

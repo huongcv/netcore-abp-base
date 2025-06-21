@@ -2,5 +2,11 @@
   "ma_quoc_gia": "Mã quốc gia",
   "ten_quoc_gia": "Tên quốc gia",
   "phoneCode": "Mã vùng điện thoại",
-  "currencyCode": "Mã tiền tệ"
+  "currencyCode": "Mã tiền tệ",
+  "FullName": "Họ tên",
+  "check-box": {
+    "dang_hoat_dong": "Hoạt động",
+    "isLockoutEnabled": "Khóa tài khoản khi đăng nhập thất bại quá nhiều lần",
+    "mustChangePassword": "Yêu cầu đổi lại mật khẩu khi đăng nhập lần tiếp theo"
+  }
 }
