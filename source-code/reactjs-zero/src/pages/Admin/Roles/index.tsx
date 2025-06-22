@@ -1,23 +1,25 @@
 import React from "react";
-import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
-import {useStore} from "@ord-store/index";
 import {RoleDto} from "@api/index.defs";
-import {useTranslation} from "react-i18next";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
-import PermissionUtil from "@ord-core/config/permissions/permission.util";
-import RoleCreateOrUpdateForm from "@pages/Admin/Roles/CreateOrUpdateForm";
-import {RoleService} from "@api/RoleService";
-import {UserOutlined} from "@ant-design/icons";
-import {RoleNS} from "@pages/Admin/Roles/role.util";
-import ListUserAssign from "@pages/Admin/Roles/ListUserAssign";
 import TableUtil from "@ord-core/utils/table.util";
-import {SearchFilterAndIsActived} from "@ord-components/forms/search/SearchFilterAndIsActived";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
+import {useRoleLogic} from "@pages/Admin/Roles/useRoleLogic";
+import {PageLayoutWithTable} from "@ord-components/paged-table/PageLayoutWithTable";
+import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
+import {PagedTable} from "@ord-components/paged-table";
+import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
+import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
+import {RoleService} from "@api/base/RoleService";
+import RoleEntityForm from "@pages/Admin/Roles/EntityForm";
+import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
 
 const Roles: React.FC = () => {
-    const {hostRoleListStore: mainStore, entityModalStore} = useStore();
-    const {t} = useTranslation(RoleNS);
-    const policies = PermissionUtil.crudPermission(PERMISSION_APP.admin.role);
+    const {
+        topActions,
+        modalStore,
+        tableStore,
+        crudActions,
+        tableActions
+    } = useRoleLogic();
     const columns = TableUtil.getColumns<RoleDto>([
         {
             title: 'code',
@@ -34,91 +36,35 @@ const Roles: React.FC = () => {
         },
         IsActivedColumn()
     ], {
-        actions: [
-            // {
-            //     title: 'view',
-            //     onClick: (d) => {
-            //         RoleService.getById({
-            //             findId: d.id || ''
-            //         }).then(roleDto => {
-            //             mainStore.openViewDetailModal(roleDto);
-            //         });
-            //     },
-            //     permission: PERMISSION_APP.admin.role
-            // },
-            // {
-            //     title: 'edit',
-            //     onClick: (d) => {
-            //         RoleService.getById({
-            //             findId: d.id || ''
-            //         }).then(roleDto => {
-            //             mainStore.openUpdateModal(roleDto);
-            //         });
-            //     },
-            //     permission: policies.edit
-            // },
-            {
-                title: 'ListUserAssign',
-                icon: <UserOutlined/>,
-                permission: policies.edit,
-                onClick: (d) => {
-                    entityModalStore.openModalView({
-                        modal: {
-                            title: t('ListUserAssignTitleModal', {...d}),
-                            width: '90vw',
-                            style: {
-                                maxWidth: 1100
-                            },
-                            hiddenOk: true
-                        },
-                        modalContent: <ListUserAssign roleId={d.id} roleName={d.name}/>
-                    });
-                },
-            },
-            {
-                title: 'remove',
-                onClick: (d) => {
-                    mainStore.openRemoveById(d);
-                },
-                hiddenIf: (d: RoleDto) => {
-                    return !!d.code && d.code?.indexOf('ADMIN_TENANT') > -1;
-                },
-                permission: policies.remove,
-            }
-        ],
-        viewAction: (d)=>{
-            RoleService.getById({
-                findId: d.id || ''
-            }).then(roleDto => {
-                mainStore.openUpdateModal(roleDto);
-            });
-        },
-        viewActionPermission: policies.edit,
-        ns: mainStore.getNamespaceLocale()
-    })
-
-    const topActions: IActionBtn[] = [{
-        title: 'exportExcel',
-        permission: policies.base,
-        onClick: () => {
-            mainStore.exportExcelPagedResult().then();
+        actions: tableActions,
+        viewAction: (d) => {
+            // RoleService.getById({
+            //     findId: d.id || ''
+            // }).then(roleDto => {
+            //     mainStore.openUpdateModal(roleDto);
+            // });
         }
-    },
-        {
-            title: 'addNew',
-            permission: policies.create,
-            onClick: () => {
-                mainStore.openCreateModal();
-            },
-        }];
+    })
     return (
         <>
-            <OrdCrudPage stored={mainStore}
-                         topActions={topActions}
-                         columns={columns}
-                         searchForm={f => <SearchFilterAndIsActived/>}
-                         entityForm={f => <RoleCreateOrUpdateForm form={f}/>}
-            ></OrdCrudPage>
+            <PageLayoutWithTable
+                topActions={topActions}
+                searchFields={<RoleSearchForm/>}
+                tableStore={tableStore}>
+                <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
+                                             fetcher={RoleService.getCountByActive}/>
+                <PagedTable columns={columns} tableStore={tableStore}/>
+            </PageLayoutWithTable>
+            <ModifyModalForm
+                width={800}
+                modalStore={modalStore}
+                tableStore={tableStore}
+                entityTranslationNs="role"
+                formFields={<RoleEntityForm/>}
+                transformNotificationParameter={createNotificationTransform.fromMapping({
+                    name: 'name'
+                })}
+            />
         </>)
         ;
 }

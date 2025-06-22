@@ -12,6 +12,7 @@ import {ModifyModalForm} from "@ord-components/paged-table/ModifyModalForm";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {TenantService} from "@api/base/TenantService";
 import {TenantEntityForm} from "@pages/Admin/Tenants/EntityForm";
+import {TenantSearchForm} from "@pages/Admin/Tenants/SearchForm";
 
 const Tenants: React.FC = () => {
     const {
@@ -29,12 +30,7 @@ const Tenants: React.FC = () => {
             width: 100,
         },
         {
-            title: 'shopCode',
-            dataIndex: 'code',
-            width: 140,
-        },
-        {
-            title: 'name',
+            title: 'tenantName',
             dataIndex: 'name',
             width: 200,
         },
@@ -53,11 +49,6 @@ const Tenants: React.FC = () => {
             dataIndex: 'address',
             width: 200
         },
-        {
-            title: l.transCommon('Gói cước'),
-            dataIndex: 'packageRegistrationCode',
-            width: 150
-        },
         IsActivedColumn()
     ], {
         actions: tableActions
@@ -66,7 +57,7 @@ const Tenants: React.FC = () => {
         <>
             <PageLayoutWithTable
                 topActions={topActions}
-                searchFields={<UserSearchForm/>}
+                searchFields={<TenantSearchForm/>}
                 tableStore={tableStore}>
                 <OrdCounterByStatusSegmented tableStore={tableStore} statusFieldName={'isActived'}
                                              fetcher={TenantService.getCountByActive}/>
@@ -77,7 +68,7 @@ const Tenants: React.FC = () => {
                 modalStore={modalStore}
                 tableStore={tableStore}
                 entityTranslationNs="tenant"
-                formFields={<TenantEntityForm isCreateNew={mode === 'create'}/>}
+                formFields={<TenantEntityForm/>}
                 transformNotificationParameter={createNotificationTransform.fromMapping({
                     name: 'name'
                 })}

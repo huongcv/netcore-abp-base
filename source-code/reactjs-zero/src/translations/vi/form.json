@@ -6,6 +6,7 @@
   "showSearchAdvance": "Hiện nâng cao",
   "searchTextPlaceholder": {
     "common": "Nhập từ khóa để tìm kiếm (F3)",
+    "searchByCodeAndName": "Nhập mã/tên để tìm kiêm (F3)",
     "user": "Nhập tên đăng nhập/ họ tên để tìm kiếm (F3)"
   }
 }
