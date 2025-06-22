@@ -22,12 +22,11 @@ const ListPermissionInput = (props: {
     const form = Form.useFormInstance();
     const formCode_w = Form.useWatch('code', form);
     useEffect(() => {
-        console.log(formCode_w);
         setTreeData(OrdArrayUtil.getTreeDataRoot(sessionStore.appSession, formCode_w, forUpsertRoleTenant));
         setDefaultExpandedKeys(['root']);
         setGranted(OrdPermissionArrayUtil.ignorePermissionBaseWhenSetGranted(value || []));
     }, [formCode_w]);
-    
+
     useEffect(() => {
         // @ts-ignore
         setGranted(OrdPermissionArrayUtil.ignorePermissionBaseWhenSetGranted(value || []));

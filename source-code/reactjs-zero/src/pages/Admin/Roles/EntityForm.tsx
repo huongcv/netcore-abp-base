@@ -1,20 +1,19 @@
 import {Col, Form, Input, Row, Tabs, TabsProps} from "antd";
 import React from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
-import {useStore} from "@ord-store/index";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
 import regexUtil from "@ord-core/utils/regex.util";
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import {useTranslation} from "react-i18next";
+import {useRoleLogic} from "@pages/Admin/Roles/useRoleLogic";
 
 const RoleEntityForm = () => {
-    const {hostRoleListStore: mainStore} = useStore();
     const {t} = useTranslation('common');
-    const {mode} = mainStore.createOrUpdateModal;
-
     const focusRef = useAutoFocus();
+    const {modalStore} = useRoleLogic();
+    const {mode} = modalStore();
 
     const items: TabsProps['items'] = [{
         key: '1',

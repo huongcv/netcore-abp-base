@@ -42,7 +42,7 @@ export const useRoleLogic = () => {
                     encodedId: d.encodedId
                 }
             });
-            openEdit(res.data);
+            openView(res.data);
         }
     },
         {
