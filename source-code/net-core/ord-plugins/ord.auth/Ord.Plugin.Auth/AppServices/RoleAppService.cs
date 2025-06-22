@@ -25,7 +25,28 @@ namespace Ord.Plugin.Auth.AppServices
 
         protected override async Task OnAfterGetDetailAsync(RoleDetailDto dto)
         {
-            dto.AssignedPermissions = await RoleCrudRepository.GetRolePermissionGrants(dto.Id);
+            dto.PermissionNames = await RoleCrudRepository.GetRolePermissionGrants(dto.Id);
+        }
+
+        protected override async Task OnAfterCreateAsync(RoleEntity entity, CreateRoleDto createInput)
+        {
+            if (createInput.PermissionNames?.Any() == true)
+            {
+                await AssignPermissions(new AssignPermissionsToRoleDto()
+                {
+                    PermissionNames = createInput.PermissionNames,
+                    EncodedId = IdEncoderService.EncodeId(entity.Id)
+                });
+            }
+        }
+
+        protected override async Task OnAfterUpdateAsync(RoleEntity entity, UpdateRoleDto updateInput)
+        {
+            await AssignPermissions(new AssignPermissionsToRoleDto()
+            {
+                PermissionNames = updateInput.PermissionNames,
+                EncodedId = IdEncoderService.EncodeId(entity.Id)
+            });
         }
 
         [HttpPost]

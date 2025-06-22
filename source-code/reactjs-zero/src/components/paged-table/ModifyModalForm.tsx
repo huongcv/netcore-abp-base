@@ -68,13 +68,18 @@ export const ModifyModalForm = <T extends object>({
             return;
         }
         setSaving(true);
-        const values = await usedForm.validateFields();
-        const result = await onSubmit(values);
-        if (!result) {
-            return;
+        try {
+            const values = await usedForm.validateFields();
+            const result = await onSubmit(values);
+            if (!result) {
+                return;
+            }
+            await handlerAfterSaved(result);
+        } catch {
+
+        } finally {
+            setSaving(false);
         }
-        await handlerAfterSaved(result);
-        setSaving(false);
     };
 
     const handlerAfterSaved = async (result: ICommonResultDtoApi<any>) => {

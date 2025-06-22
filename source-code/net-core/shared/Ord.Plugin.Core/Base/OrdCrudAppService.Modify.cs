@@ -28,7 +28,7 @@ namespace Ord.Plugin.Core.Services
                 encodedDto.EncodedId = IdEncoderService.EncodeId(entityDto.Id);
             }
 
-            await OnAfterCreateAsync(createdEntity, dto);
+            await OnAfterCreateAsync(createdEntity, input);
             return AppFactory.CreateSuccessResult(dto, GetCreateSuccessMessage());
         }
 
@@ -55,7 +55,7 @@ namespace Ord.Plugin.Core.Services
                 encodedDto.EncodedId = input.EncodedId;
             }
 
-            await OnAfterUpdateAsync(updatedEntity, dto);
+            await OnAfterUpdateAsync(updatedEntity, input);
             return AppFactory.CreateSuccessResult(dto, GetUpdateSuccessMessage());
         }
 
@@ -114,7 +114,7 @@ namespace Ord.Plugin.Core.Services
         /// <summary>
         /// Hook method sau khi tạo mới thành công
         /// </summary>
-        protected virtual Task OnAfterCreateAsync(TEntity entity, TGetByIdDto dto)
+        protected virtual Task OnAfterCreateAsync(TEntity entity, TCreateInputDto createInput)
         {
             return Task.CompletedTask;
         }
@@ -122,7 +122,7 @@ namespace Ord.Plugin.Core.Services
         /// <summary>
         /// Hook method sau khi cập nhật thành công
         /// </summary>
-        protected virtual Task OnAfterUpdateAsync(TEntity entity, TGetByIdDto dto)
+        protected virtual Task OnAfterUpdateAsync(TEntity entity, TUpdateInputDto updateInput)
         {
             return Task.CompletedTask;
         }

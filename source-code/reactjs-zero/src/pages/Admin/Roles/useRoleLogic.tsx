@@ -36,8 +36,13 @@ export const useRoleLogic = () => {
     ];
     const tableActions: ITableAction<UserDetailDto>[] = [{
         title: 'view',
-        onClick: (d) => {
-            openView(d);
+        onClick: async (d) => {
+            const res = await RoleService.getById({
+                body: {
+                    encodedId: d.encodedId
+                }
+            });
+            openEdit(res.data);
         }
     },
         {
@@ -61,8 +66,13 @@ export const useRoleLogic = () => {
         {
             title: 'edit',
             permission: policies.edit,
-            onClick: (d) => {
-                openEdit(d);
+            onClick: async (d) => {
+                const res = await RoleService.getById({
+                    body: {
+                        encodedId: d.encodedId
+                    }
+                });
+                openEdit(res.data);
             }
         }];
 

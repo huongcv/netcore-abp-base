@@ -108,18 +108,21 @@ namespace Ord.Plugin.Core.Utils
         }
         public static bool IsSuperAdminLevel(this IAppFactory factory)
         {
-            try
+            var httpContext = factory.HttpContextAccessor()?.HttpContext;
+            if (httpContext?.User?.Identity?.IsAuthenticated != true)
             {
-                var claims = factory.HttpContextAccessor().HttpContext.User.Claims;
-                return claims?.Any(x => x.Value == "1" && x.Type == OrdClaimsTypes.IsSuperAdmin) == true;
+                return false;
             }
-            catch
+            var claim = httpContext.User.Claims
+                .FirstOrDefault(x => x.Type == OrdClaimsTypes.IsSuperAdmin);
+            if (string.IsNullOrEmpty(claim?.Value))
             {
                 return false;
             }
 
+            var claimValue = claim?.Value.Trim();
+            return string.Equals(claimValue, "1") || (bool.TryParse(claim?.Value, out var isSuperAdmin) && isSuperAdmin);
         }
-
         public static async Task<bool> CheckPermissionAsync(this IAppFactory factory, string? permissionName, bool throwEx = false)
         {
             if (string.IsNullOrEmpty(permissionName) || factory.IsSuperAdminLevel())

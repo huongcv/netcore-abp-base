@@ -46,7 +46,7 @@ const RoleEntityForm = () => {
     }, {
         key: '2',
         label: t('tabPermissions'),
-        children: (<Form.Item noStyle name='listPermissionName'>
+        children: (<Form.Item noStyle name='permissionNames'>
             <ListPermissionInput disabled={mode === 'viewDetail'}/>
         </Form.Item>),
         forceRender: true

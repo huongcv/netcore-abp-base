@@ -36,14 +36,7 @@ const Roles: React.FC = () => {
         },
         IsActivedColumn()
     ], {
-        actions: tableActions,
-        viewAction: (d) => {
-            // RoleService.getById({
-            //     findId: d.id || ''
-            // }).then(roleDto => {
-            //     mainStore.openUpdateModal(roleDto);
-            // });
-        }
+        actions: tableActions
     })
     return (
         <>

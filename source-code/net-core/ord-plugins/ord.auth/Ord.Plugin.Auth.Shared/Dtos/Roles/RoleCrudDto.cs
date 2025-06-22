@@ -30,16 +30,19 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     }
     public class RoleDetailDto : RolePagedDto
     {
-        public IEnumerable<string>? AssignedPermissions { get; set; }
+        public List<string>? PermissionNames { get; set; }
     }
     public class CreateRoleDto : RoleCrudBase
     {
+        public List<string>? PermissionNames { get; set; }
     }
+
 
     public class UpdateRoleDto : RoleCrudBase, IHasEncodedId
     {
         [OrdValidateRequired]
         public string? EncodedId { get; set; }
+        public List<string>? PermissionNames { get; set; }
     }
     #region User Management DTOs
     public class GetUsersInRoleInput : OrdPagedRequestDto

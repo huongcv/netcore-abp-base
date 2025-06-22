@@ -28,7 +28,7 @@ namespace Ord.Plugin.Auth.AppServices
         private IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         protected override IOrdCrudRepository<UserEntity, Guid, UserPagedInput, UserPagedDto, UserDetailDto, CreateUserDto, UpdateUserDto> CrudRepository => UserCrudRepository;
 
-        protected override async Task OnAfterUpdateAsync(UserEntity entity, UserDetailDto dto)
+        protected override async Task OnAfterUpdateAsync(UserEntity entity, UpdateUserDto updateInput)
         {
             await AppFactory.ClearCacheUser(entity.Id);
         }

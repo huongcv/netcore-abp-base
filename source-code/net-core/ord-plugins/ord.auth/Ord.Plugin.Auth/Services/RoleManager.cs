@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Ord.Plugin.Auth.Base;
+﻿using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Services;
@@ -31,19 +30,21 @@ namespace Ord.Plugin.Auth.Services
             {
                 throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_session_not_found"));
             }
-            var listPermission = userSession.ListPermission;
-            if (listPermission?.Any() != true)
+            if (!AppFactory.IsSuperAdminLevel())
             {
-                throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_has_no_permissions"));
-            }
-            foreach (var permissionName in listOfPermissions)
-            {
-                if (listPermission?.Any(s => string.Equals(s, permissionName, StringComparison.OrdinalIgnoreCase)) != true)
+                var listPermission = userSession.ListPermission;
+                if (listPermission?.Any() != true)
                 {
-                    throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_missing_permissions", permissionName));
+                    throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_has_no_permissions"));
+                }
+                foreach (var permissionName in listOfPermissions)
+                {
+                    if (listPermission?.Any(s => string.Equals(s, permissionName, StringComparison.OrdinalIgnoreCase)) != true)
+                    {
+                        throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_missing_permissions", permissionName));
+                    }
                 }
             }
-
         }
     }
 }
