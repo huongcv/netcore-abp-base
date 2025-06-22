@@ -9,5 +9,7 @@
     "dang_hoat_dong": "Hoạt động",
     "isLockoutEnabled": "Khóa tài khoản khi đăng nhập thất bại quá nhiều lần",
     "mustChangePassword": "Yêu cầu đổi lại mật khẩu khi đăng nhập lần tiếp theo"
-  }
+  },
+  "name": "Tên",
+  "description": "Mô tả"
 }

@@ -16,7 +16,7 @@ namespace Ord.Plugin.Auth.Shared.Entities
         [MaxLength(200)]
         public string? Name { get; set; }
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public Guid? TenantId { get; set; }
         public bool IsActived { get; set; }
         public bool IsStatic { get; set; }
