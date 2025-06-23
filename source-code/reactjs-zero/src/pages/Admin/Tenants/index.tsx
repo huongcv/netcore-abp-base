@@ -25,12 +25,12 @@ const Tenants: React.FC = () => {
     const {mode} = modalStore();
     const columns = TableUtil.getColumns<ShopInfoDto>([
         {
-            title: 'tenantCode',
+            title: 'tenant_code',
             dataIndex: 'tenantCode',
             width: 100,
         },
         {
-            title: 'tenantName',
+            title: 'tenant_name',
             dataIndex: 'name',
             width: 200,
         },

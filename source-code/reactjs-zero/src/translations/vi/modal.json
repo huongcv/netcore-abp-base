@@ -1,0 +1,6 @@
+{
+  "changePasswordUserModal": {
+    "title": "Thay đổi mật khẩu người dùng",
+    "success": "Đổi mật khẩu thành công cho người dùng: {{userName}}"
+  }
+}

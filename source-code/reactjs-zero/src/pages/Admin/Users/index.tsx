@@ -11,6 +11,7 @@ import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/Ord
 import UserEntityForm from "@pages/Admin/Users/EntityForm";
 import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
+import {ChangePasswordUserModal} from "@pages/Admin/Users/change-password/Modal";
 
 
 const User: React.FC = () => {
@@ -44,6 +45,7 @@ const User: React.FC = () => {
                     name: 'userName'
                 })}
             />
+            <ChangePasswordUserModal/>
 
         </>)
         ;

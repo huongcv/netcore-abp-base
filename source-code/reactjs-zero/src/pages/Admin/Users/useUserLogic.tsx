@@ -9,9 +9,10 @@ import {UserDetailDto} from "@api/base/index.defs";
 import React, {lazy} from "react";
 import {UserDto} from "@api/index.defs";
 import {UserUtilities} from "@pages/Admin/Users/user.util";
-import {UnlockOutlined} from "@ant-design/icons";
+import {UndoOutlined, UnlockOutlined} from "@ant-design/icons";
 import UnlockAction from "@pages/Admin/Users/actions/unlockAction";
 import {useStore} from "@ord-store/index";
+import {changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
 // Stores
 const tableStore = createTableStore(UserService);
 const modalStore = createModalFormStore(UserService, {});
@@ -21,6 +22,7 @@ export const useUserLogic = () => {
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     const {sessionStore} = useStore();
+    const {openModal: openChangePasswordModal} = changePasswordUserModalStore();
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -51,7 +53,10 @@ export const useUserLogic = () => {
         {
             title: 'changePassword',
             permission: USER_POLICIES.RESET_PASSWORD,
-            contentLazy: lazy(() => import("./actions/changePwdAction")),
+            icon: <UndoOutlined/>,
+            onClick: (user) => {
+                openChangePasswordModal(user);
+            },
             hiddenIf: (u: UserDto) => {
                 return UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
             }

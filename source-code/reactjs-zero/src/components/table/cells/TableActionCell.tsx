@@ -37,23 +37,40 @@ const TableActionCell = (prop: {
         }
         return checkPermissionUser(sessionStore.appSession, it?.permission);
     }).map((it, idx) => {
+        let icon = mapIcon[it.title] ? mapIcon[it.title] : it.icon;
+        let isDanger = it.isDanger || it.title === 'remove';
+        const defaultIconAndLabelContent = <Space wrap>
+            {icon}
+            {t(it.title)}
+        </Space>;
         if (it.contentLazy) {
             return {
                 key: '' + idx,
                 label: <it.contentLazy title={t(it.title)}
                                        record={prop.record}
                                        callBackSuccess={it.callBackSuccess}
-                                       entityModalStore={entityModalStore}/>
+                                       entityModalStore={entityModalStore}/>,
+                onClick: () => {
+                    if (it.onClick) {
+                        it.onClick(prop?.record);
+                    }
+                },
             };
         }
         if (it.content) {
+            const contentWithRecord = it.content(prop.record);
             return {
                 key: '' + idx,
-                label: it.content(prop.record)
+                label: <>{defaultIconAndLabelContent} {contentWithRecord}</>,
+                onClick: () => {
+                    if (it.onClick) {
+                        it.onClick(prop?.record);
+                    }
+                },
+                danger: isDanger
             };
         }
-        let icon = mapIcon[it.title] ? mapIcon[it.title] : it.icon;
-        let isDanger = it.isDanger || it.title === 'remove';
+
         return {
             key: '' + idx,
             label: (
