@@ -76,7 +76,7 @@ export const AssignRoleForm = () => {
     return (<>
         <Form.Item name={'encodedId'} hidden noStyle></Form.Item>
         <Col span={24}>
-            <OrdFormField label='Name' name='name' disabled/>
+            <OrdFormField label='full_name' name='name' disabled/>
         </Col>
         <Col span={24}>
             <OrdFormField label='UserName' name='userName' disabled/>

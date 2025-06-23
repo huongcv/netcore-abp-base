@@ -44,7 +44,7 @@ const UserEntityForm = () => {
             <Col span={12}>
                 <OrdFormField
                     name="name"
-                    label="FullName"
+                    label="full_name"
                     required
                     maxLength={200}
                     rules={[ValidateUtils.required]}/>

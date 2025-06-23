@@ -1,30 +1,42 @@
-import {useTranslation} from "react-i18next";
-import {Checkbox, Form, Input} from "antd";
+import {Col, Input, Row} from "antd";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import React from "react";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
+import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 
 export const EntityForm = () => {
-    const {t} = useTranslation('country');
-    const {t: tCommon} = useTranslation('common');
     const focusRef = useAutoFocus();
     return (<>
-        <Form.Item label={t('ma')} name='code' rules={[ValidateUtils.required]}>
-            <Input maxLength={10} ref={focusRef}/>
-        </Form.Item>
-        <Form.Item label={t('ten')} name='name' rules={[ValidateUtils.required]}>
-            <Input maxLength={100}/>
-        </Form.Item>
-        <div className="flex gap-4">
-            <Form.Item className="w-6/12" label={t('phoneCode')} name='phoneCode'>
-                <Input maxLength={50}/>
-            </Form.Item>
-            <Form.Item className="w-6/12" label={t('currencyCode')} name='currencyCode'>
-                <Input maxLength={50} type="tel"/>
-            </Form.Item>
-        </div>
-        <Form.Item name='isActived' valuePropName="checked" initialValue={true}>
-            <Checkbox>{tCommon('dang_hoat_dong')}</Checkbox>
-        </Form.Item>
+        <Row gutter={18}>
+            <Col span={24}>
+                <OrdFormField label={'code'} name='code' rules={[ValidateUtils.required]}
+                              required>
+                    <Input maxLength={10} ref={focusRef}/>
+                </OrdFormField>
+            </Col>
+            <Col span={24}>
+                <OrdFormField label={'name'} name='name' rules={[ValidateUtils.required]}
+                              required>
+                    <Input maxLength={100}/>
+                </OrdFormField>
+            </Col>
+            <Col span={12}>
+                <OrdFormField label={'phone_code'} name='phoneCode'>
+                    <Input maxLength={50}/>
+                </OrdFormField>
+            </Col>
+            <Col span={12}>
+                <OrdFormField label={'currency_code'} name='currencyCode'>
+                    <Input maxLength={50}/>
+                </OrdFormField>
+            </Col>
+            <Col span={24}>
+                <OrdFormField
+                    name="isActived"
+                    label="dang_hoat_dong"
+                    isCheckbox initialValue={true}
+                />
+            </Col>
+        </Row>
     </>)
 }

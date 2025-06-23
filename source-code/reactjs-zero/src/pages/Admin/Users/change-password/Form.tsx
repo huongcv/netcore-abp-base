@@ -11,7 +11,7 @@ export const ChangePasswordForm = () => {
         <Col span={24}>
             <OrdFormField
                 name="name"
-                label="FullName"
+                label="full_name"
                 disabled
             />
         </Col>
