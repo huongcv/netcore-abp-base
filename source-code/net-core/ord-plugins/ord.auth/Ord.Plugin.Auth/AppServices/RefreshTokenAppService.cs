@@ -23,6 +23,16 @@ namespace Ord.Plugin.Auth.AppServices
         {
             try
             {
+                var httpContext = AppFactory.HttpContextAccessor().HttpContext;
+                // Ưu tiên body, fallback lấy từ Cookie (middleware đã gắn vào context)
+                if (string.IsNullOrEmpty(request.RefreshToken))
+                {
+                    if (httpContext.Items.TryGetValue("RefreshTokenFromCookie", out var refreshTokenObj))
+                    {
+                        request.RefreshToken = refreshTokenObj as string;
+                    }
+                }
+
                 if (string.IsNullOrEmpty(request.RefreshToken))
                 {
                     return CommonResultDto<JwtDto>.Failed("Refresh token is required");
