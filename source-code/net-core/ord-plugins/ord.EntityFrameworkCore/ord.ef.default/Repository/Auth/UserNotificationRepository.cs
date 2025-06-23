@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Ord.Plugin.Auth.Shared.Repositories;
-using Ord.Plugin.Contract.Factories;
-using Ord.Plugin.Contract.Features.Notifications.Entities;
+﻿using Ord.Plugin.Contract.Features.Notifications.Entities;
 
 namespace Ord.Plugin.Auth.Repositories
 {

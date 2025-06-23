@@ -292,6 +292,9 @@ export interface AssignRolesToUserDto {
 
   /**  */
   roleIds?: string[];
+
+  /**  */
+  permissionNames?: string[];
 }
 
 export interface ChangePasswordUserDto {

@@ -73,18 +73,14 @@ const RoleCheckBox: React.FC<RoleCheckBoxProps> = ({
             const permissionOfRole = role?.roleDetail?.permissionNames || [];
             allPermissions.push(...permissionOfRole);
         });
-
         // Remove duplicates using Set
         const uniquePermissions = [...new Set(allPermissions)];
-
-        console.log('uniquePermissions', uniquePermissions);
-
         // Notify parent component about permissions change
         onPermissionOfRoleSelectionChange?.(uniquePermissions);
-        if(onChange){
+        if (onChange) {
             onChange(checkedValues);
         }
-    }, [onChange]);
+    }, [onChange, roleOptions]);
 
     // Memoized checkbox options
     const checkboxOptions = useMemo(() =>

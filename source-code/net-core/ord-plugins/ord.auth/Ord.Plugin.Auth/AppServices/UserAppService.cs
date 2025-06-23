@@ -172,7 +172,7 @@ namespace Ord.Plugin.Auth.AppServices
         {
             await CheckPermissionForActionName("AssignRoles");
             var userId = await GetUserIdAndClearCache(input.EncodedId);
-            await UserManager.AssignRoles(userId, input.RoleIds);
+            await UserManager.AssignRoles(userId, input.RoleIds, input.PermissionNames);
             return AppFactory.CreateSuccessResult(true, GetMessagePrefix() + ".assign_roles_success");
         }
         #endregion

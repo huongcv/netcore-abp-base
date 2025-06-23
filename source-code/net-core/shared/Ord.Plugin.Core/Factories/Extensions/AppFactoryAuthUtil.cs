@@ -3,6 +3,7 @@ using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Authorization;
+using Volo.Abp.Validation;
 
 namespace Ord
 {
@@ -38,6 +39,29 @@ namespace Ord
             if (currentTenantId.HasValue)
             {
                 throw new NotAccessPermissionException(factory.GetLocalizedMessage("auth.not_access_to_host_feature"));
+            }
+        }
+        public static async Task ValidateUserCanGrantPermissionsAsync(this IAppFactory factory,IEnumerable<string> listOfPermissions)
+        {
+            var userSession = await factory.GetUserSessionAsync();
+            if (userSession == null)
+            {
+                throw new AbpValidationException(factory.GetLocalizedMessage("common.user_session_not_found"));
+            }
+            if (!factory.IsSuperAdminLevel())
+            {
+                var listPermission = userSession.ListPermission;
+                if (listPermission?.Any() != true)
+                {
+                    throw new AbpValidationException(factory.GetLocalizedMessage("common.user_has_no_permissions"));
+                }
+                foreach (var permissionName in listOfPermissions)
+                {
+                    if (listPermission?.Any(s => string.Equals(s, permissionName, StringComparison.OrdinalIgnoreCase)) != true)
+                    {
+                        throw new AbpValidationException(factory.GetLocalizedMessage("common.user_missing_permissions", permissionName));
+                    }
+                }
             }
         }
     }

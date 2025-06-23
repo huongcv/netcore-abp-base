@@ -15,7 +15,7 @@ namespace Ord.Plugin.Auth.Services
     {
         public async Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermissions)
         {
-            await ValidateUserCanGrantPermissionsAsync(listOfPermissions);
+            await AppFactory.ValidateUserCanGrantPermissionsAsync(listOfPermissions);
             if (listOfPermissions?.Any() != true)
             {
                 await roleCrudRepository.ClearAllPermission(roleId);
@@ -25,30 +25,6 @@ namespace Ord.Plugin.Auth.Services
             await roleCrudRepository.AssignPermissionsToRoleAsync(roleId, listOfPermissions);
             var permissionSharedSer = AppFactory.GetServiceDependency<IPermissionSharedManger>();
             await permissionSharedSer.ClearCacheWhenRoleChangePermissions(roleId);
-        }
-
-        protected async Task ValidateUserCanGrantPermissionsAsync(IEnumerable<string> listOfPermissions)
-        {
-            var userSession = await AppFactory.GetUserSessionAsync();
-            if (userSession == null)
-            {
-                throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_session_not_found"));
-            }
-            if (!AppFactory.IsSuperAdminLevel())
-            {
-                var listPermission = userSession.ListPermission;
-                if (listPermission?.Any() != true)
-                {
-                    throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_has_no_permissions"));
-                }
-                foreach (var permissionName in listOfPermissions)
-                {
-                    if (listPermission?.Any(s => string.Equals(s, permissionName, StringComparison.OrdinalIgnoreCase)) != true)
-                    {
-                        throw new AbpValidationException(AppFactory.GetLocalizedMessage("common.user_missing_permissions", permissionName));
-                    }
-                }
-            }
         }
 
         public async Task<IEnumerable<RoleDetailDto>> GetAssignableRolesAsync(Guid userId)

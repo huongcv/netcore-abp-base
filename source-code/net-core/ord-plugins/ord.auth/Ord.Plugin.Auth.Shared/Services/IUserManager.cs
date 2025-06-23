@@ -8,6 +8,6 @@ namespace Ord.Plugin.Auth.Shared.Services
         Task ChangePasswordAsync(Guid userId, string oldPassword, string newPassword);
         Task<string> GenerateRandomPassword(Guid userId);
         Task Unlock(Guid userId);
-        Task AssignRoles(Guid userId, List<Guid> listOfRoleId);
+        Task AssignRoles(Guid userId, List<Guid> assignedRoleIds, List<string>? submittedPermissions);
     }
 }

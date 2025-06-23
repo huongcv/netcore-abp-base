@@ -10,9 +10,9 @@ export const AssignRoleForm = () => {
     const [roleOptions, setRoleOptions] = useState<any[]>([]);
     const form = Form.useFormInstance();
     const handlePermissionNameRoleSelectionChange = useCallback(async (permissionName: string[]) => {
-        form.setFieldValue('listPermission', [...permissionName]);
+        form.setFieldValue('permissionNames', [...permissionName]);
     }, [form]);
-    const listPermission_w = Form.useWatch('listPermission', form);
+    const listPermission_w = Form.useWatch('permissionNames', form);
     const listRoleId_w = Form.useWatch('roleIds', form);
 
     // Calculate counts
@@ -53,7 +53,7 @@ export const AssignRoleForm = () => {
     }, {
         key: '2',
         label: createTabLabel(t('tabPermissions'), permissionCount),
-        children: (<Form.Item noStyle name='listPermission'>
+        children: (<Form.Item noStyle name='permissionNames'>
             <ListPermissionInput/>
         </Form.Item>),
         forceRender: true

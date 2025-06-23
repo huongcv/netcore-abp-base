@@ -1,6 +1,7 @@
 ﻿using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
 using System.ComponentModel;
+using Ord.Plugin.Contract.Dtos.Auth;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
@@ -64,7 +65,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class AssignRolesToUserDto : EncodedIdDto
     {
-        public List<Guid> RoleIds { get; set; }
+        public List<Guid>? RoleIds { get; set; }
+        public List<string>? PermissionNames { get; set; }
     }
 
     public class GetAssignableRolesInput : EncodedIdDto
