@@ -1,6 +1,5 @@
 import {UserDto} from "@api/index.defs";
 import {Trans, useTranslation} from "react-i18next";
-import {UserService} from "@api/UserService";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {Space} from "antd";
 import {UnlockOutlined} from "@ant-design/icons";
@@ -26,13 +25,13 @@ const UnlockAction = (props: { user: UserDto }) => {
                                  components={{italic: <i/>, bold: <strong/>}}></Trans>),
                 onOk: (d: UserDto) => {
                     if (d.id) {
-                        UserService.unLock({
-                            userId: d.id
-                        }).then(() => {
-                            const content = t("unlockSuccess", {...user}) as string;
-                            UiUtils.showSuccess(content);
-                            onLoadData().then();
-                        });
+                        // UserService.unLock({
+                        //     userId: d.id
+                        // }).then(() => {
+                        //     const content = t("unlockSuccess", {...user}) as string;
+                        //     UiUtils.showSuccess(content);
+                        //     onLoadData().then();
+                        // });
                     }
 
                 }

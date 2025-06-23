@@ -8,21 +8,24 @@ import {UserUtilities} from "@pages/Admin/Users/user.util";
 
 export const UserDataColumns: TableColumnsType<UserDto> = [
     {
-        title: l.transCommon('UserName'),
+        title: 'user_name',
         dataIndex: 'userName',
         width: 200,
     },
     {
-        title: 'FullName',
-        dataIndex: 'name',
-        width: 200,
+        title: 'full_name',
+        dataIndex: 'name'
     },
     {
-        title: l.transCommon('PhoneNumber'),
+        title: 'phone_number',
         dataIndex: 'phoneNumber',
         width: 140,
     },
-
+    {
+        title: 'email',
+        dataIndex: 'email',
+        width: 250,
+    },
     {
         title: l.transCommon('status'),
         dataIndex: 'isActived',

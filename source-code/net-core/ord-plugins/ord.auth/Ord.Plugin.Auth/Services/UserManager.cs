@@ -88,9 +88,7 @@ namespace Ord.Plugin.Auth.Services
                 });
 
             permissionEntities.AddRange(revokedRolePermissions);
-
             await userPermissionRepository.InsertMany(permissionEntities);
-            await AppFactory.ClearCacheUser(userId);
         }
         protected async Task<UserEntity> GetById(Guid userId)
         {

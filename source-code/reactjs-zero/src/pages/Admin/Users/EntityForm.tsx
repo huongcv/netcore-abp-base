@@ -37,7 +37,8 @@ const UserEntityForm = () => {
                         ValidateUtils.password,
                     ]}
                 >
-                    <Input type="password" autoComplete="off" maxLength={100} placeholder={mode === 'edit' ? t('emptyIfNotChangePassword') : ''}/>
+                    <Input type="password" autoComplete="off" maxLength={100}
+                           placeholder={mode === 'edit' ? t('emptyIfNotChangePassword') : ''}/>
                 </OrdFormField>
 
             </Col>}
@@ -55,7 +56,7 @@ const UserEntityForm = () => {
                 </OrdFormField>
             </Col>
             <Col span={12}>
-                <OrdFormField name='email' label='Email' maxLength={300}/>
+                <OrdFormField name='email' label='Email' maxLength={300} rules={[ValidateUtils.email]}/>
             </Col>
             <Col span={12}>
                 <OrdFormField name='phoneNumber'

@@ -1,26 +1,31 @@
-﻿using System.Text;
-using Ord.Plugin.Contract.Factories;
+﻿using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Core.Factories;
 using StackExchange.Redis;
+using System.Text;
 
 namespace Ord.Plugin.Core.Utils
 {
     public static class AppFactoryCachingUtil
     {
-        public static async Task ClearCacheUser(this IAppFactory factory, Guid? userId = null)
+        public static Task ClearCacheUser(this IAppFactory factory, Guid? userId = null)
         {
-            if (userId == null)
+            // Chạy xóa cache trong nền, không await
+            _ = Task.Run(async () =>
             {
-                userId = factory.CurrentUserId;
-            }
+                if (userId == null)
+                {
+                    userId = factory.CurrentUserId;
+                }
+                try
+                {
+                    await RemoveRedisCacheContainKey(factory, userId.ToString());
+                }
+                catch (Exception ex)
+                {
 
-            try
-            {
-                await RemoveRedisCacheContainKey(factory, userId.ToString());
-            }
-            catch
-            {
-
-            }
+                }
+            });
+            return Task.CompletedTask;
 
         }
         public static async Task ClearAllCacheInRedis(this IAppFactory factory)

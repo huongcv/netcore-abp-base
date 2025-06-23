@@ -12,5 +12,8 @@
     "mustChangePassword": "Yêu cầu đổi lại mật khẩu khi đăng nhập lần tiếp theo"
   },
   "name": "Tên",
-  "description": "Mô tả"
+  "description": "Mô tả",
+  "user_name": "Tên đăng nhập",
+  "phone_number": "Điện thoại",
+  "email": "Email"
 }
