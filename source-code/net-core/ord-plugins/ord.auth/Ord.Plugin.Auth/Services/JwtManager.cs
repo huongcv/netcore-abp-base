@@ -13,15 +13,16 @@ using Volo.Abp.Security.Claims;
 
 namespace Ord.Plugin.Auth.Services
 {
-    public class JwtManager(IGuidGenerator guidGenerator): OrdAuthManagerBase,IJwtManager
+    public class JwtManager(IGuidGenerator guidGenerator) : OrdAuthManagerBase, IJwtManager
     {
-        public JwtDto CreateJwt(UserLoginDto loginUser)
+        public JwtDto CreateJwt(UserLoginDto loginUser,IEnumerable<Claim> extendClaims = null)
         {
             if (loginUser == null)
                 throw new ArgumentNullException(nameof(loginUser));
 
             var tokenId = guidGenerator.Create().ToString();
             var claims = BuildUserClaims(loginUser, tokenId);
+            claims.AddRange(extendClaims);
             return CreateJwt(claims);
         }
 
@@ -44,9 +45,11 @@ namespace Ord.Plugin.Auth.Services
                 expires: now.Add(accessTokenExpiration)
             );
             var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            var refreshToken = AppFactory.GuidGenerator.Create().ToString();
             return new JwtDto()
             {
                 AccessToken = accessToken,
+                RefreshToken = refreshToken,
                 ExpireInSeconds = (int)accessTokenExpiration.TotalSeconds,
             };
         }

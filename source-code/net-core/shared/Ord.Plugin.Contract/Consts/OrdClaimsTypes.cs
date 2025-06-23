@@ -7,6 +7,8 @@
         public const string LastModificationTime = "LastModificationTime";
         public const string ChangePasswordDateTime = "ChangePasswordDateTime";
         public const string CurrentShopId = "CurrentShopId"; 
+        public const string ReturnToAdminId = "ReturnToAdminId"; 
+        public const string IsLoginImpersonation = "IsLoginImpersonation"; 
         public const string ListShop = "ListShop"; 
     }
 }

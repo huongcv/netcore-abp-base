@@ -7,7 +7,7 @@ namespace Ord.Plugin.Auth.Shared.Services
 {
     public interface IJwtManager : IDomainService
     {
-        JwtDto CreateJwt(UserLoginDto loginUser);
+        JwtDto CreateJwt(UserLoginDto loginUser, IEnumerable<Claim> extendClaims = null);
         JwtDto CreateJwt(List<Claim> claims);
     }
 }

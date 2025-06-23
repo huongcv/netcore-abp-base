@@ -76,7 +76,8 @@ export const useUserLogic = () => {
             permission: USER_POLICIES.LOGIN_WITH_ACCOUNT,
             contentLazy: lazy(() => import("./actions/loginWithAccount")),
             hiddenIf: (u: UserDto) => {
-                return UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
+                const show = sessionStore?.user?.isSuperAdmin && !UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
+                return !show;
             }
         },
         {

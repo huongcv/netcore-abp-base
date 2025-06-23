@@ -11,6 +11,14 @@
                 .FirstOrDefaultAsync();
             return AppFactory.ObjectMap<UserEntity, UserLoginDto>(userEntity);
         }
+        public async Task<UserLoginDto?> GetLoginById(Guid userId)
+        {
+            var queryable = await GetUserQueryable();
+            var userEntity = await queryable
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync();
+            return AppFactory.ObjectMap<UserEntity, UserLoginDto>(userEntity);
+        }
 
         #region Update or create
 

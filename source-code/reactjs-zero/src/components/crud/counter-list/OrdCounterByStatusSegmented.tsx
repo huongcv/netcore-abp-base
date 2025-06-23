@@ -40,7 +40,6 @@ export const OrdCounterByStatusSegmented = (props: {
 
             setStatusOptions(options);
         } catch (error) {
-            console.error('Error fetching counter data:', error);
             setStatusOptions([]);
         } finally {
             setLoading(false);

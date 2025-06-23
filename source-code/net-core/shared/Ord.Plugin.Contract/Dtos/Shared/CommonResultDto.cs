@@ -121,5 +121,26 @@ namespace Ord.Plugin.Contract.Dtos
                 Message = message
             };
         }
+
+        #region Convert error
+
+        /// <summary>
+        /// Chuyển đổi error result thành kiểu mới
+        /// </summary>
+        /// <typeparam name="T">Kiểu dữ liệu đích</typeparam>
+        /// <param name="errorResult">Error result</param>
+        /// <returns>Error result với kiểu mới</returns>
+        public CommonResultDto<TTarget> ToErrorResult<TTarget>()
+        {
+            return new CommonResultDto<TTarget>
+            {
+                Code = Code,
+                Message = Message,
+                Data = default(TTarget),
+                Extend = Extend
+            };
+        }
+
+        #endregion
     }
 }
