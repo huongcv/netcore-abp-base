@@ -31,7 +31,7 @@ namespace Ord.Plugin.Auth.Services
                 new(OrdClaimsTypes.ReturnToAdminId, AppFactory?.CurrentUserId?.ToString()),
                 new(OrdClaimsTypes.IsLoginImpersonation, "true"),
             };
-            var jwtDto = JwtManager.CreateJwt(targetUser, claims);
+            var jwtDto = await JwtManager.CreateJwtAsync(targetUser, claims);
             return CommonResultDto<JwtDto>.Ok(jwtDto);
         }
 
