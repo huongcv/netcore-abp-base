@@ -1,4 +1,6 @@
-﻿namespace Ord.Plugin.Auth.Repositories
+﻿using StackExchange.Redis;
+
+namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository(IAppFactory factory)
         : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
@@ -68,6 +70,13 @@
         {
             var queryable = await GetRolePermissionGrantsQueryableAsync(roleId);
             return await queryable.Select(x => x.PermissionName).ToListAsync();
+        }
+        public async Task<List<string>> GetRolePermissionGrants(List<Guid> roleIds)
+        {
+            var queryable = await PermissionGrantRepository.GetQueryableAsync();
+            var query =  queryable.AsNoTracking()
+                .Where(x => x.ProviderName == PermissionGrantProviderName.Role && roleIds.Contains(x.ProviderId));
+            return await query.Select(x => x.PermissionName).ToListAsync();
         }
 
         /// <summary>
@@ -200,7 +209,7 @@
                         };
             query = query.OrderByDescending(u => u.AssignedDate);
             var encodeSer = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();
-            return await QueryPagedResultAsync(query,input, async (user) =>
+            return await QueryPagedResultAsync(query, input, async (user) =>
             {
                 user.UserEncodedId = encodeSer.EncodeId(user.UserId);
             });
@@ -210,6 +219,6 @@
 
         #endregion
 
-       
+
     }
 }

@@ -52,14 +52,9 @@ namespace Ord.Plugin.Auth.Services
             var rolePermissionNames = new List<string>();
             if (assignedRoleIds?.Any() == true)
             {
-                foreach (var roleId in assignedRoleIds)
-                {
-                    var permissionsInRole = await roleCrudRepos.GetRolePermissionGrants(roleId) ?? new();
-                    rolePermissionNames.AddRange(permissionsInRole);
-                }
+                rolePermissionNames = await roleCrudRepos.GetRolePermissionGrants(assignedRoleIds) ?? new();
+                rolePermissionNames = rolePermissionNames.Distinct().ToList();
             }
-            rolePermissionNames = rolePermissionNames.Distinct().ToList();
-
             var userPermissionRepository = AppFactory.GetServiceDependency<IUserPermissionGrantedRepository>();
             await userPermissionRepository.DeleteByUserId(userId);
 
