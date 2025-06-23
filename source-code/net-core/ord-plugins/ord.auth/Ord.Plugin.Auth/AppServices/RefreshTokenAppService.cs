@@ -23,13 +23,24 @@ namespace Ord.Plugin.Auth.AppServices
         {
             try
             {
-                var httpContext = AppFactory.HttpContextAccessor().HttpContext;
-                // Ưu tiên body, fallback lấy từ Cookie (middleware đã gắn vào context)
+                var httpRequest = AppFactory.HttpContextAccessor().HttpContext?.Request;
+                // Nếu không có RefreshToken trong body, lấy từ cookie
                 if (string.IsNullOrEmpty(request.RefreshToken))
                 {
-                    if (httpContext.Items.TryGetValue("RefreshTokenFromCookie", out var refreshTokenObj))
+                    request.RefreshToken = httpRequest.Cookies["refresh_token"];
+                }
+
+                // Nếu không có AccessToken trong body, lấy từ header hoặc cookie "jwt"
+                if (string.IsNullOrEmpty(request.AccessToken))
+                {
+                    var authHeader = httpRequest.Headers["Authorization"].FirstOrDefault();
+                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
                     {
-                        request.RefreshToken = refreshTokenObj as string;
+                        request.AccessToken = authHeader.Substring("Bearer ".Length).Trim();
+                    }
+                    else
+                    {
+                        request.AccessToken = httpRequest.Cookies["jwt"];
                     }
                 }
 
@@ -37,22 +48,15 @@ namespace Ord.Plugin.Auth.AppServices
                 {
                     return CommonResultDto<JwtDto>.Failed("Refresh token is required");
                 }
-                // Nếu AccessToken chưa có thì lấy từ header Authorization: Bearer xxx
+
                 if (string.IsNullOrEmpty(request.AccessToken))
                 {
-                    var authHeader = AppFactory.HttpContextAccessor().HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
-                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-                    {
-                        request.AccessToken = authHeader.Substring("Bearer ".Length).Trim();
-                    }
+                    return CommonResultDto<JwtDto>.Failed("Access token is required");
                 }
-                if (string.IsNullOrEmpty(request.AccessToken))
-                {
-                    return CommonResultDto<JwtDto>.Failed("Current access token is required for validation");
-                }
-                // Sử dụng JwtManager để refresh token với validation JWT ID
+
                 var jwtManager = AppFactory.GetServiceDependency<IJwtManager>();
                 var newJwt = await jwtManager.RefreshJwtAsync(request.RefreshToken, request.AccessToken);
+
                 return CommonResultDto<JwtDto>.Ok(newJwt, "Token refreshed successfully");
             }
             catch (InvalidOperationException ex)
@@ -64,6 +68,7 @@ namespace Ord.Plugin.Auth.AppServices
                 return CommonResultDto<JwtDto>.ServerFailure(ex, "Error refreshing token");
             }
         }
+
         protected override string GetBasePermissionName()
         {
             return "";

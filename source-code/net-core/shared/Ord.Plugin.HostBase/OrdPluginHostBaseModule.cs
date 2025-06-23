@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Ord.Plugin.Auth.Middlewares;
 using Ord.Plugin.Core;
 using Ord.Plugin.Core.Configurations;
 using Ord.Plugin.Core.Features.RateLimits;
@@ -148,7 +147,6 @@ namespace Ord.Plugin.HostBase
             app.UseAuthentication();
             app.UseAbpClaimsMap();
             app.UseUnitOfWork();
-            app.UseMiddleware<RefreshTokenCookieMiddleware>();
             app.UseMiddleware<RateLimitMiddleware>();
             app.UseMiddleware<CheckTokenJWTLocalMiddleware>();
             app.UseMiddleware<LanguageMiddleware>();
