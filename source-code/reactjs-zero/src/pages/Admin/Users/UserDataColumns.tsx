@@ -28,7 +28,7 @@ export const UserDataColumns: TableColumnsType<UserDto> = [
         dataIndex: 'isActived',
         render: (_, record) => (<>
             {UserUtilities.isLocked(record) && <div className="text-red-500 mb-2">
-                <LockOutlined className="me-1"/>Đang bị khóa
+                <LockOutlined className="me-1"/>{l.trans('status', 'locked')}
             </div>}
             < StatusCell isActived={record.isActived}/>
         </>),

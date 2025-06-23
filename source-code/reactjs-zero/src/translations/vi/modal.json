@@ -2,5 +2,9 @@
   "changePasswordUserModal": {
     "title": "Thay đổi mật khẩu người dùng",
     "success": "Đổi mật khẩu thành công cho người dùng: {{userName}}"
+  },
+  "userAssignRole": {
+    "title": "Gán vai trò người dùng",
+    "success": "Gán vai trò thành công cho người dùng: {{userName}}"
   }
 }

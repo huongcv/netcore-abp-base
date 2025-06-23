@@ -9,10 +9,10 @@ import {useTranslation} from "react-i18next";
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
     modalStore: ReturnType<typeof import('@ord-components/paged-table/useModalStoreFactory').createModalStore>;
-    formFields: React.ReactNode;
+    formFields?: React.ReactNode;
     form?: FormInstance;
     initialValues?: Record<string, any>;
-    onSave: (formValue: any) => Promise<boolean>;
+    onSave?: (formValue: any) => Promise<boolean>;
     children?: any;
 }
 
@@ -43,12 +43,16 @@ export const GenericModalForm = <T extends object>({
     }, [open]);
 
     const handleFinish = async () => {
+        if (!onSave) {
+            return;
+        }
         if (saving) {
             return;
         }
         setSaving(true);
         try {
             const values = await usedForm.validateFields();
+
             const result = await onSave(values);
             if (!result) {
                 return;

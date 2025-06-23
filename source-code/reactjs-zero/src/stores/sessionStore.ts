@@ -1,8 +1,7 @@
 import {action, computed, makeObservable, observable} from 'mobx';
-import {AppBootstrapDto, BusinessTypeEnum, TenantTypeEnum} from "@ord-core/service-proxies/session/dto";
+import {AppBootstrapDto, BusinessTypeEnum} from "@ord-core/service-proxies/session/dto";
 import {ShopType, UserCurrentShopAssign} from "@api/index.defs";
-import {ROLE_PHARMACY, SystemCodeType} from "@ord-core/AppConst";
-import {UserFireBaseTokensService} from "@api/UserFireBaseTokensService";
+import {SystemCodeType} from "@ord-core/AppConst";
 
 export enum ShopTypeEnum {
     ThoiTrang = 1,
@@ -61,18 +60,6 @@ class SessionStore {
         })
     }
 
-    get isPharmacy() {
-        return this.appSession.permissionGranted[ROLE_PHARMACY] == true;
-    }
-    get isGolfShop() {
-        return this.currentShopType == ShopTypeEnum.Golf;
-    }
-    get isGolfTenant() {
-        return this.user?.tenantType == TenantTypeEnum.Golf;
-    }
-    get isNhaHang() {
-        return this.currentShopType == ShopTypeEnum.NhaHang;
-    }
     get currentShopInfo(): UserCurrentShopAssign | undefined {
         if (!this.appSession?.currentShop) {
             return;
@@ -169,16 +156,16 @@ class SessionStore {
     }
 
     setFirebaseToken(token: string | undefined) {
-        const currentToken = sessionStorage.getItem("firebaseToken") ;
-        if(token && currentToken!== token) {
-            UserFireBaseTokensService.cruFirebaseTokenFromCurrentUser({
-                body:{
-                    fireBaseToken: token,
-                    platform:"Web",
-                }
-            }).then(()=>{
-                sessionStorage.setItem("firebaseToken", token || "");
-            })
+        const currentToken = sessionStorage.getItem("firebaseToken");
+        if (token && currentToken !== token) {
+            // UserFireBaseTokensService.cruFirebaseTokenFromCurrentUser({
+            //     body:{
+            //         fireBaseToken: token,
+            //         platform:"Web",
+            //     }
+            // }).then(()=>{
+            //     sessionStorage.setItem("firebaseToken", token || "");
+            // })
         }
 
         this._firebaseToken = token;

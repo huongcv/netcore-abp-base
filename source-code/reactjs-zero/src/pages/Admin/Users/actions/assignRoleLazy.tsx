@@ -4,7 +4,6 @@ import {CheckOutlined} from "@ant-design/icons";
 import {RoleDto, UserDto} from "@api/index.defs";
 import {UserService} from "@api/UserService";
 import UiUtils from "@ord-core/utils/ui.utils";
-import {UserL} from "@pages/Admin/Users/user.util";
 import {Checkbox, Col, Form, Row, Tabs, TabsProps} from "antd";
 import {RoleService} from "@api/RoleService";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
@@ -91,7 +90,6 @@ const AssignRoleForUserForm = () => {
 }
 
 class AssignRoleLazy extends ActionLazy {
-    l = UserL.l;
 
     icon(): ReactNode {
         return <CheckOutlined/>

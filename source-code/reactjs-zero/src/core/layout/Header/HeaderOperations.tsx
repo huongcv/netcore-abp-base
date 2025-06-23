@@ -7,26 +7,18 @@ import {useNavigate} from "react-router-dom";
 import {SaleIcon} from "@ord-components/icon/menu/SaleIcon";
 import {SaleReturnIcon} from "@ord-components/icon/SaleReturnIcon";
 import {useStore} from "@ord-store/index";
-import {AppExtendCode, DefaultAppPrefixUrl} from "@ord-core/AppConst";
 import Utils from "@ord-core/utils/utils";
-import {checkPermissionUser} from "@ord-core/utils/auth.utils";
-import {GOLF_PER} from "@ord-core/config/permissions/golf.permission";
-import ReservationIcon from "@ord-components/icon/ReservationIcon";
 
 const HeaderOperations = () => {
     const navigate = useNavigate();
     const {sessionStore} = useStore();
     const isSuperAdmin = sessionStore.user?.isSuperAdmin;
     const pathNameRef = useRef<string>(Utils.getPathUpTo('stock'));
-    const isGolfShop = sessionStore.isGolfShop;
-    const isShowBtnBookingGolf = ()=>{
-        return checkPermissionUser(sessionStore.appSession, GOLF_PER.booking) && isGolfShop
-    }
     return (
         <div className="header-operations hidden ord-md:block">
             {!isSuperAdmin && (
                 <>
-                    <Flex gap="small" hidden={isSuperAdmin || isGolfShop}>
+                    <Flex gap="small" hidden={isSuperAdmin}>
                         <Button
                             className="btn-gray hover:shadow-xl"
                             onClick={() => navigate("/sales-invoice/sell")}
@@ -49,15 +41,6 @@ const HeaderOperations = () => {
                             <span style={{lineHeight: "normal"}}>{t("Nhập hàng")}</span>
                         </Button>*/}
                     </Flex>
-                    {isShowBtnBookingGolf() && <Flex gap="small">
-                        <Button
-                            className="btn-gray hover:shadow-xl"
-                            onClick={() => navigate(DefaultAppPrefixUrl + AppExtendCode.golf + "/booking/full")}
-                            icon={<ReservationIcon/>}
-                        >
-                            <span style={{lineHeight: "normal"}}>Đặt lịch</span>
-                        </Button>
-                    </Flex>}
 
                 </>
             )}

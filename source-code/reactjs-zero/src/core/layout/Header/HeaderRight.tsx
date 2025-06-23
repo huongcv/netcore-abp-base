@@ -3,12 +3,12 @@ import UserTopBar from "@ord-core/layout/Header/UserTopBar";
 import React from "react";
 import {Space} from "antd";
 import "./HeaderRight.scss";
-import Notifications from "./Notifications";
 import SwitchShop from "./SwitchShop";
 import {HeaderSupport} from "@ord-core/layout/Header/Support";
 import {useStore} from "@ord-store/index";
 import {TenantType} from "@api/index.defs";
 import EmployeeTimekeeping from "./TimeKeeping/EmployeeTimekeeping";
+import HeaderNotifications from "@ord-core/layout/Header/Notification/HeaderNotifications";
 
 const HeaderRight = () => {
     const {sessionStore} = useStore();
@@ -21,7 +21,7 @@ const HeaderRight = () => {
                 <HeaderSupport/>
                 {!isSuperAdmin && <SwitchShop/>}
                 {/* <SwitchLangue/> */}
-                <Notifications/>
+                <HeaderNotifications/>
                 <UserTopBar/>
             </Space>
         </div>

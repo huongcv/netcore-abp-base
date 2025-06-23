@@ -66,6 +66,11 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     {
         public List<Guid> RoleIds { get; set; }
     }
+
+    public class GetAssignableRolesInput : EncodedIdDto
+    {
+
+    }
     public class GrantPermissionToUserDto : EncodedIdDto
     {
         public string PermissionName { get; set; }

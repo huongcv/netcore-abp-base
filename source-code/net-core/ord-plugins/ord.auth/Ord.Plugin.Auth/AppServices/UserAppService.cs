@@ -155,6 +155,15 @@ namespace Ord.Plugin.Auth.AppServices
             var lstRoleId = await UserCrudRepository.GetListRoleAssigned(userId);
             return AppFactory.CreateSuccessResult(lstRoleId);
         }
+
+        [HttpPost]
+        public async Task<CommonResultDto<IEnumerable<RoleDetailDto>>> GetAssignableRolesAsync(GetAssignableRolesInput input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
+            var userId = ConvertEncodeId(input.EncodedId);
+            var roles = await AppFactory.GetServiceDependency<IRoleManager>().GetAssignableRolesAsync(userId);
+            return AppFactory.CreateSuccessResult(roles);
+        }
         /// <summary>
         /// Gán roles cho người dùng
         /// </summary>

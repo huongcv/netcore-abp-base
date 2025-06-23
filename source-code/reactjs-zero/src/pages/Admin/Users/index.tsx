@@ -12,6 +12,7 @@ import UserEntityForm from "@pages/Admin/Users/EntityForm";
 import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {ChangePasswordUserModal} from "@pages/Admin/Users/change-password/Modal";
+import {AssignRoleUserModal} from "@pages/Admin/Users/assign-role/Modal";
 
 
 const User: React.FC = () => {
@@ -46,6 +47,7 @@ const User: React.FC = () => {
                 })}
             />
             <ChangePasswordUserModal/>
+            <AssignRoleUserModal/>
 
         </>)
         ;
