@@ -157,7 +157,7 @@ namespace Ord.Plugin.Auth.AppServices
         }
 
         [HttpPost]
-        public async Task<CommonResultDto<IEnumerable<RoleDetailDto>>> GetAssignableRolesAsync(GetAssignableRolesInput input)
+        public async Task<CommonResultDto<IEnumerable<RoleDetailDto>>> GetAssignableRoles(GetAssignableRolesInput input)
         {
             await CheckPermissionForOperation(CrudOperationType.GetDetail);
             var userId = ConvertEncodeId(input.EncodedId);

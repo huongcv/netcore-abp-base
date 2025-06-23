@@ -293,5 +293,6 @@
   "passwordAdminTenant": "Mật khẩu tài khoản quản trị",
   "userNameAdminTenant": "Tài khoản quản trị",
   "detailInformation": "Chi tiết",
-  "tabPermissions": "Danh sách quyền"
+  "tabPermissions": "Danh sách quyền",
+  "ListRole": "Danh sách vai trò"
 }

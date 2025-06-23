@@ -1,26 +1,42 @@
 import {
-    AssignRolesToUserDto,
-    axios,
-    basePath,
-    CommonResultDtoOfBoolean,
-    CommonResultDtoOfIEnumerableOfGuid,
-    CommonResultDtoOfIEnumerableOfString,
-    CommonResultDtoOfListOfComboOptionDto,
-    CommonResultDtoOfListOfCounterByStatusItemDto,
-    CommonResultDtoOfPagedResultDtoOfUserPagedDto,
-    CommonResultDtoOfUserDetailDto,
-    CreateUserDto,
-    EncodedIdDto,
-    GetComboOptionInputDto,
-    getConfigs,
-    GrantPermissionToUserDto,
-    IRequestConfig,
-    IRequestOptions,
-    ResetPasswordUserDto,
-    RevokePermissionFromUserDto,
-    SetActiveStatusDto,
-    UpdateUserDto,
-    UserPagedInput
+  GetComboOptionInputDto,
+  CommonResultDtoOfListOfComboOptionDto,
+  ComboOptionDto,
+  EncodedIdDto,
+  CommonResultDtoOfBoolean,
+  ResetPasswordUserDto,
+  CommonResultDtoOfIEnumerableOfGuid,
+  GetAssignableRolesInput,
+  CommonResultDtoOfIEnumerableOfRoleDetailDto,
+  RoleDetailDto,
+  AssignRolesToUserDto,
+  CommonResultDtoOfIEnumerableOfString,
+  GrantPermissionToUserDto,
+  RevokePermissionFromUserDto,
+  UserPagedInput,
+  CreateUserDto,
+  CommonResultDtoOfUserDetailDto,
+  UserDetailDto,
+  UpdateUserDto,
+  SetActiveStatusDto,
+  CommonResultDtoOfPagedResultDtoOfUserPagedDto,
+  PagedResultDtoOfUserPagedDto,
+  UserPagedDto,
+  CommonResultDtoOfListOfCounterByStatusItemDto,
+  CounterByStatusItemDto,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class UserService {
@@ -106,6 +122,28 @@ export class UserService {
   ): Promise<CommonResultDtoOfIEnumerableOfGuid> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/user/get-user-roles';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getAssignableRoles(
+    params: {
+      /** requestBody */
+      body?: GetAssignableRolesInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfIEnumerableOfRoleDetailDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/user/get-assignable-roles';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

@@ -1,33 +1,36 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Alert, Checkbox, Col, Row, Spin} from "antd";
-import {RoleService} from "@api/base/RoleService";
-import {RolePagedDto} from "@api/base/index.defs";
+import {RoleDetailDto} from "@api/base/index.defs";
 import {useTranslation} from "react-i18next";
+import {UserService} from "@api/base/UserService";
 
 interface RoleOption {
     value: string;
     label: React.ReactNode;
+    roleDetail: RoleDetailDto
 }
 
 interface RoleCheckBoxProps {
     value?: string[];
     onChange?: (values: string[]) => void;
     disabled?: boolean;
-    maxResultCount?: number;
+    userEncodedId?: string;
+    onPermissionOfRoleSelectionChange?: (permissions: string[]) => void;
 }
 
 const RoleCheckBox: React.FC<RoleCheckBoxProps> = ({
                                                        value = [],
                                                        onChange,
                                                        disabled = false,
-                                                       maxResultCount = 1000
+                                                       userEncodedId,
+                                                       onPermissionOfRoleSelectionChange
                                                    }) => {
     const {t} = useTranslation();
     const [roleOptions, setRoleOptions] = useState<RoleOption[]>([]);
     const [loading, setLoading] = useState(false);
 
     // Memoized role option renderer
-    const createRoleOption = useCallback((role: RolePagedDto): RoleOption => ({
+    const createRoleOption = useCallback((role: RoleDetailDto): RoleOption => ({
         value: role.id!,
         label: (
             <>
@@ -36,32 +39,51 @@ const RoleCheckBox: React.FC<RoleCheckBoxProps> = ({
                 </b>
                 <span className="italic ml-2">{role.name}</span>
             </>
-        )
+        ),
+        roleDetail: role
     }), []);
 
     // Fetch roles with error handling
     const fetchRoles = useCallback(async () => {
         try {
             setLoading(true);
-            const result = await RoleService.getPaged({
+            const result = await UserService.getAssignableRoles({
                 body: {
-                    isActived: true,
-                    maxResultCount,
-                    skipCount: 0
+                    encodedId: userEncodedId
                 }
             });
-            const roles: RolePagedDto[] = result.data?.items || [];
+            const roles: RoleDetailDto[] = result.data || [];
             const options = roles.map(createRoleOption);
             setRoleOptions(options);
         } catch (err) {
         } finally {
             setLoading(false);
         }
-    }, [createRoleOption, maxResultCount]);
+    }, [createRoleOption, userEncodedId]);
 
     // Handle checkbox change
     const handleChange = useCallback((checkedValues: string[]) => {
-        onChange?.(checkedValues);
+        // Get selected roles with their permissions
+        const roleSelection = roleOptions.filter(option =>
+            checkedValues.includes(option.value)
+        );
+        // Collect all permissions and remove duplicates
+        const allPermissions: string[] = [];
+        roleSelection.forEach(role => {
+            const permissionOfRole = role?.roleDetail?.permissionNames || [];
+            allPermissions.push(...permissionOfRole);
+        });
+
+        // Remove duplicates using Set
+        const uniquePermissions = [...new Set(allPermissions)];
+
+        console.log('uniquePermissions', uniquePermissions);
+
+        // Notify parent component about permissions change
+        onPermissionOfRoleSelectionChange?.(uniquePermissions);
+        if(onChange){
+            onChange(checkedValues);
+        }
     }, [onChange]);
 
     // Memoized checkbox options

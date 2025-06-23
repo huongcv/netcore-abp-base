@@ -1,12 +1,27 @@
 import {
-    axios,
-    basePath,
-    ChangePasswordUserDto,
-    CommonResultDtoOfAppBootstrapDto,
-    CommonResultDtoOfBoolean,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions
+  CommonResultDtoOfAppBootstrapDto,
+  AppBootstrapDto,
+  UserInformationDto,
+  TenantType,
+  TenantSharedDto,
+  UserCurrentShopAssign,
+  ShopType,
+  OrdThemeDto,
+  ChangePasswordUserDto,
+  CommonResultDtoOfBoolean,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class InformationService {

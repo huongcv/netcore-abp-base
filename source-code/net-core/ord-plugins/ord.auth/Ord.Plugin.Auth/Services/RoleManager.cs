@@ -72,6 +72,11 @@ namespace Ord.Plugin.Auth.Services
                 }
             }
 
+            foreach (var role in listRoleAvailable)
+            {
+                role.PermissionNames = await roleCrudRepository.GetRolePermissionGrants(role.Id);
+            }
+
             return listRoleAvailable;
         }
     }

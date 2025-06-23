@@ -51,7 +51,7 @@
     "tooShort": "Độ dài chưa đạt yêu cầu",
     "noWhiteSpace": "Không được chứa khoảng trắng",
     "noCharacterAscii": "Không được chứa kí tự đặc biệt",
-    "OnlyNumber": "Chỉ cho phép nhập số", 
+    "OnlyNumber": "Chỉ cho phép nhập số",
     "notTaxCode": "Mã số thuế không hợp lệ"
   },
   "cancelModal": "Đóng",
@@ -92,5 +92,6 @@
   "exportExcelMove": "Xuất excel phiếu",
   "exportExcelMoveDetail": "Xuất excel phiếu chi tiết",
   "failed": "Lỗi",
-  "success": "Thành công"
+  "success": "Thành công",
+  "ListRole": "Danh sách vai trò"
 }
