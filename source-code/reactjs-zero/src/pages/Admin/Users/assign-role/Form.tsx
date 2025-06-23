@@ -1,9 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {Badge, Col, Form, Tabs, TabsProps} from "antd";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
 import RoleCheckBox from "@pages/Admin/Users/assign-role/RoleCheckBox";
+import {UserService} from "@api/base/UserService";
 
 export const AssignRoleForm = () => {
     const {t} = useTranslation();
@@ -14,6 +15,20 @@ export const AssignRoleForm = () => {
     }, [form]);
     const listPermission_w = Form.useWatch('permissionNames', form);
     const listRoleId_w = Form.useWatch('roleIds', form);
+    const encodedId_w = Form.useWatch('encodedId', form);
+    useEffect(() => {
+        if (encodedId_w) {
+            UserService.getAssignedRolesAndPermissionsAsync({
+                body: {
+                    encodedId: encodedId_w
+                }
+            }).then(res => {
+                const value = res?.data;
+                form.setFieldValue('permissionNames', value?.permissionNames || []);
+                form.setFieldValue('roleIds', value?.roleIds || []);
+            });
+        }
+    }, [encodedId_w]);
 
     // Calculate counts
     const roleCount = useMemo(() => {

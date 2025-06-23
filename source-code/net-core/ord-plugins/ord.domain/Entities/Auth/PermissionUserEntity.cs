@@ -11,5 +11,10 @@ namespace Ord.Plugin.Auth.Shared.Entities
         [MaxLength(200)]
         public string? PermissionName { get; set; }
         public bool IsGrant { get; set; }
+
+        public void SetId(Guid id)
+        {
+            Id = id;
+        }
     }
 }

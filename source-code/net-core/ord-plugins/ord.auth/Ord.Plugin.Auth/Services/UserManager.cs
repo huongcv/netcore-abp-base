@@ -71,7 +71,7 @@ namespace Ord.Plugin.Auth.Services
                 var manuallyGrantedPermissions = submittedPermissions
                     .Where(permission => !rolePermissionNames.Contains(permission, StringComparer.OrdinalIgnoreCase))
                     .Distinct()
-                    .Select(permission => new PermissionUserEntity
+                    .Select(permission => new PermissionUserEntity()
                     {
                         UserId = userId,
                         PermissionName = permission,
@@ -85,7 +85,7 @@ namespace Ord.Plugin.Auth.Services
             var revokedRolePermissions = rolePermissionNames
                 .Where(permission => submittedPermissions?.Any(p => string.Equals(p, permission, StringComparison.OrdinalIgnoreCase)) != true)
                 .Distinct()
-                .Select(permission => new PermissionUserEntity
+                .Select(permission => new PermissionUserEntity()
                 {
                     UserId = userId,
                     PermissionName = permission,
@@ -94,7 +94,7 @@ namespace Ord.Plugin.Auth.Services
 
             permissionEntities.AddRange(revokedRolePermissions);
 
-            await userPermissionRepository.InsertManyAsync(permissionEntities);
+            await userPermissionRepository.InsertMany(permissionEntities);
             await AppFactory.ClearCacheUser(userId);
         }
         protected async Task<UserEntity> GetById(Guid userId)

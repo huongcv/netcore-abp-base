@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Core.Services;
@@ -147,5 +148,16 @@ namespace Ord.Plugin.Core.Base
         }
 
         #endregion
+
+        protected async Task<List<T>> ExtractDataListAsync<T>(Task<CommonResultDto<IEnumerable<T>>> task)
+        {
+            var result = await task;
+            return result.Data?.ToList() ?? new List<T>();
+        }
+        protected async Task<T> ExtractDataAsync<T>(Task<CommonResultDto<T>> task)
+        {
+            var result = await task;
+            return result.Data!;
+        }
     }
 }

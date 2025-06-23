@@ -165,6 +165,30 @@ namespace Ord.Plugin.Auth.AppServices
             return AppFactory.CreateSuccessResult(roles);
         }
         /// <summary>
+        /// Lấy danh sách vai trò và quyền đã được gán cho người dùng.
+        /// </summary>
+        /// <param name="input">Dữ liệu đầu vào chứa mã định danh được mã hóa của người dùng.</param>
+        /// <returns>
+        /// Đối tượng <see cref="CommonResultDto{AssignRolesToUserDto}"/> chứa:
+        /// <list type="bullet">
+        /// <item><description>Danh sách <c>RoleIds</c> - các vai trò đã gán cho người dùng.</description></item>
+        /// <item><description>Danh sách <c>PermissionNames</c> - các quyền hiện tại của người dùng.</description></item>
+        /// </list>
+        /// </returns>
+        /// <remarks>
+        /// Hàm thường được sử dụng để hiển thị dữ liệu lên form phân quyền người dùng.
+        /// </remarks>
+        [HttpPost]
+        public async Task<CommonResultDto<AssignRolesToUserDto>> GetAssignedRolesAndPermissionsAsync(EncodedIdDto input)
+        {
+            var result = new AssignRolesToUserDto
+            {
+                RoleIds = await ExtractDataListAsync(GetUserRoles(input)),
+                PermissionNames = await ExtractDataListAsync(GetUserPermissions(input))
+            };
+            return AppFactory.CreateSuccessResult(result);
+        }
+        /// <summary>
         /// Gán roles cho người dùng
         /// </summary>
         [HttpPost]

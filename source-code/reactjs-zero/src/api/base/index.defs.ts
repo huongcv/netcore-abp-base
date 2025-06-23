@@ -338,6 +338,23 @@ export interface CommonResultDtoOfAppBootstrapDto {
   isSuccessful?: boolean;
 }
 
+export interface CommonResultDtoOfAssignRolesToUserDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: AssignRolesToUserDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
 export interface CommonResultDtoOfBoolean {
   /**  */
   code?: string;

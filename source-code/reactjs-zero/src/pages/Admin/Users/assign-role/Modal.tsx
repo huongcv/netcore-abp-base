@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {AssignRolesToUserDto, ResetPasswordUserDto} from "@api/base/index.defs";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {GenericModalForm} from "@ord-components/paged-table/GenericModalForm";
-import React from "react";
+import React, {useEffect} from "react";
 import {UserService} from "@api/base/UserService";
 import {AssignRoleForm} from "@pages/Admin/Users/assign-role/Form";
 

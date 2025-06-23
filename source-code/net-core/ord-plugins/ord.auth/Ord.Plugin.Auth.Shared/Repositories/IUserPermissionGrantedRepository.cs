@@ -5,6 +5,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 {
     public interface IUserPermissionGrantedRepository : IBasicRepository<PermissionUserEntity, Guid>
     {
+        Task<int> InsertMany(IEnumerable<PermissionUserEntity> entities);
         Task DeleteByUserId(Guid userId);
     }
 }

@@ -9,6 +9,7 @@ import {
   GetAssignableRolesInput,
   CommonResultDtoOfIEnumerableOfRoleDetailDto,
   RoleDetailDto,
+  CommonResultDtoOfAssignRolesToUserDto,
   AssignRolesToUserDto,
   CommonResultDtoOfIEnumerableOfString,
   GrantPermissionToUserDto,
@@ -144,6 +145,28 @@ export class UserHostService {
   ): Promise<CommonResultDtoOfIEnumerableOfRoleDetailDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/user-host/get-assignable-roles';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getAssignedRolesAndPermissionsAsync(
+    params: {
+      /** requestBody */
+      body?: EncodedIdDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfAssignRolesToUserDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/user-host/get-assigned-roles-and-permissions-async';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
