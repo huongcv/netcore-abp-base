@@ -140,10 +140,10 @@ public static class AuthenticationConfiguration
             context.Response.StatusCode = 401;
             context.Response.ContentType = "application/json";
             context.Response.Headers["WWW-Authenticate"] = "Bearer";
-            var message = context.AuthenticateFailure?.Message ?? "exception.user_unauthorized";
+            var message = context.AuthenticateFailure?.Message ?? "exception.access_token_invalid";
             if (!message.StartsWith("exception"))
             {
-                message = "exception.user_unauthorized";
+                message = "exception.access_token_invalid";
             }
 
             var response = new
