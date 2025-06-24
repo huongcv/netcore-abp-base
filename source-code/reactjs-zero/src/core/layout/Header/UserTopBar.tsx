@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import jwtUtils from "@ord-core/utils/jwt.utils";
 import {AuthService} from "@api/AuthService";
 import {IconlyLight} from "@ord-components/icon/IconlyLight";
+import authApiService from "@ord-core/service-proxies/auth/authApiService";
 
 const UserTopBar: React.FC = () => {
     const {sessionStore} = useStore();
@@ -31,7 +32,7 @@ const UserTopBar: React.FC = () => {
             key: '3',
             onClick: async () => {
                 try {
-                    await AuthService.logout();
+                    await authApiService.logout();
                 } catch {
 
                 }

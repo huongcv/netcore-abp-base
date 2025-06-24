@@ -16,7 +16,7 @@ class AuthApiService {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'api/auth/auth/login',
+            url: 'api/auth/login',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -34,6 +34,15 @@ class AuthApiService {
         let config = {
             method: 'get',
             url: 'api/auth/refresh-token-cookie'
+        };
+        const result = await httpApi.request(config);
+        return result.data as CommonResultDto<JwtDto>;
+    }
+    public async logout() {
+        const httpApi = AxiosBaseHttpApi;
+        let config = {
+            method: 'post',
+            url: 'api/auth/logout'
         };
         const result = await httpApi.request(config);
         return result.data as CommonResultDto<JwtDto>;

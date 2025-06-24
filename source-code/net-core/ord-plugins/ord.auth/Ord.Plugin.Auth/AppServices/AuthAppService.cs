@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Base;
-using System.Net.Http;
+
 namespace Ord.Plugin.Auth.AppServices
 {
+    [Route("api/auth")]
     public class AuthAppService : OrdAppServiceBase
     {
         private IAuthManager AuthManager => AppFactory.GetServiceDependency<IAuthManager>();
         private IJwtManager JwtManager => AppFactory.GetServiceDependency<IJwtManager>();
         private IHttpContextAccessor HttpContextAccessor => AppFactory.GetServiceDependency<IHttpContextAccessor>();
         private ILoginFirebaseManager LoginFirebaseManager => AppFactory.GetServiceDependency<ILoginFirebaseManager>();
+
+        [HttpPost("login")]
         public async Task<CommonResultDto<JwtDto>> Login(LoginInputDto input)
         {
             var result = await AuthManager.LoginAsync(input);
@@ -24,12 +28,15 @@ namespace Ord.Plugin.Auth.AppServices
             }
             return result;
         }
-        [OrdAuth]
+        [HttpPost("logout")]
         public async Task Logout()
         {
+            if (AppFactory?.CurrentUserId.HasValue == true)
+            {
+                await AuthManager.LogoutAsync();
+            }
             // Xóa cookie
             await JwtManager.ClearJwtCookie();
-            await AuthManager.LogoutAsync();
         }
 
         private async Task SetFirebaseLogin(Guid? tenantId, Guid userId, FireBaseDto fireBaseDto)

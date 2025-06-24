@@ -75,6 +75,7 @@ namespace Ord.Plugin.Auth.AppServices
                 // Nếu không có RefreshToken trong body, lấy từ cookie
                 var refreshToken = httpRequest.Cookies["refresh_token"];
                 var accessToken = httpRequest.Cookies["jwt"];
+                await JwtManager.ClearJwtCookie();
                 return await RefreshTokenAsync(new RefreshTokenRequest()
                 {
                     AccessToken = accessToken,
