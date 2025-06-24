@@ -93,7 +93,7 @@ namespace Ord.Plugin.Auth.Services
             var signingCredentials = new SigningCredentials(securityKey, tokenAuthConfiguration?.SecurityAlgorithm ?? SecurityAlgorithms.HmacSha512);
 
             var now = DateTime.UtcNow;
-            var accessTokenExpiration = TimeSpan.FromSeconds(10);
+            var accessTokenExpiration = TimeSpan.FromSeconds(tokenAuthConfiguration?.TimeLifeTokenSeconds ?? 3600);
             var expirationTime = now.Add(accessTokenExpiration);
 
             var jwtSecurityToken = new JwtSecurityToken(
