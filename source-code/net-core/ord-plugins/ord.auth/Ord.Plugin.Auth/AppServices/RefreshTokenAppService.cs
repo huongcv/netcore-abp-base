@@ -63,7 +63,7 @@ namespace Ord.Plugin.Auth.AppServices
             }
         }
 
-        [HttpGet("refresh-token-cookie")]
+        [HttpPost("refresh-token-cookie")]
         [AllowAnonymous]
         public async Task<CommonResultDto<JwtDto>> RefreshTokenCookieAsync()
         {

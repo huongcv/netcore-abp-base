@@ -32,12 +32,13 @@ class AuthApiService {
     public async refreshToken() {
         const httpApi = AxiosBaseHttpApi;
         let config = {
-            method: 'get',
+            method: 'post',
             url: 'api/auth/refresh-token-cookie'
         };
         const result = await httpApi.request(config);
         return result.data as CommonResultDto<JwtDto>;
     }
+
     public async logout() {
         const httpApi = AxiosBaseHttpApi;
         let config = {
