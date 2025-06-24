@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Ord.Plugin.Auth.Base;
+using Ord.Plugin.Auth.Filters;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
@@ -13,6 +13,7 @@ namespace Ord.Plugin.Auth.AppServices
     {
         private IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         [HttpGet]
+        [AutoRefreshJwt]
         public async Task<CommonResultDto<AppBootstrapDto>> GetBootstrap()
         {
             var appBootstrapDto = new AppBootstrapDto();
