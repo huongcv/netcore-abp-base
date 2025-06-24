@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using System.Text.Json.Serialization;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Contract.Dtos
@@ -22,11 +23,13 @@ namespace Ord.Plugin.Contract.Dtos
         /// Kết quả chính của api
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(3)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public T Data { get; set; }
         /// <summary>
         /// Thông tin bổ sung, nếu cần thiết
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(100)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public object? Extend { get; set; }
 
         //[Newtonsoft.Json.JsonIgnore]

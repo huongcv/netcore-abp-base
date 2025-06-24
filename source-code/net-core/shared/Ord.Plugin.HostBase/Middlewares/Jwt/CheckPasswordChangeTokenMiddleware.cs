@@ -21,16 +21,16 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
         {
             _appFactory = appFactory;
         }
-        public async Task<HttpStatusCode> CheckClaims(IEnumerable<Claim>? claims)
+        public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
         {
             if (claims?.Any() != true)
             {
-                return HttpStatusCode.OK;
+                return string.Empty;
             }
             var allSetting = FullAppSettingConfig.GetInstance();
             if (allSetting?.Authentication?.IsPasswordChangeMiddleware != true)
             {
-                return HttpStatusCode.OK;
+                return string.Empty;
             }
 
             var context = _appFactory.HttpContextAccessor().HttpContext;
@@ -42,7 +42,7 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
                 var cacheDataChangePwdByToken = await cache.GetAsync("ChangePwdByToken:" + tokenId);
                 if (!string.IsNullOrEmpty(cacheDataChangePwdByToken))
                 {
-                    return HttpStatusCode.OK;
+                    return string.Empty;
                 }
             }
             var changePasswordDateTime = claims.FirstOrDefault(x => x.Type == OrdClaimsTypes.ChangePasswordDateTime)?.Value ?? "";
@@ -51,9 +51,9 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
             var cacheData = await _cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, () => DoGetChangePasswordDateTime(userId));
             if (!string.Equals(cacheData, changePasswordDateTime))
             {
-                return HttpStatusCode.Unauthorized;
+                return "Authentication failed";
             }
-            return HttpStatusCode.OK;
+            return string.Empty;
         }
 
         private async Task<string> DoGetChangePasswordDateTime(string? userId)

@@ -7,10 +7,10 @@ namespace Ord.Plugin.Contract.Services.Auth
     public interface ICheckClaimTokenJwtMiddlewareService:ITransientDependency
     {
         /// <summary>
-        /// Trả về HttpStatusCode.Ok nếu check điều kiện thỏa mãn
+        /// Trả về string.Empty nếu check điều kiện thỏa mãn
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        Task<HttpStatusCode> CheckClaims(IEnumerable<Claim>? claims);
+        Task<string> CheckClaims(IEnumerable<Claim>? claims);
     }
 }

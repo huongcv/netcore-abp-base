@@ -19,40 +19,41 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
             _appFactory = appFactory;
         }
 
-        public async Task<HttpStatusCode> CheckClaims(IEnumerable<Claim>? claims)
+        public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
         {
             if (claims?.Any() != true)
             {
-                return HttpStatusCode.OK;
+                return string.Empty;
             }
             var allSetting = FullAppSettingConfig.GetInstance();
             if (allSetting?.Authentication?.IsCheckRevokeToken != true)
             {
-                var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-                if (!string.IsNullOrEmpty(tokenId))
+                return string.Empty;
+            }
+            var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            if (!string.IsNullOrEmpty(tokenId))
+            {
+                var _cache = _appFactory.LazyService<IDistributedCache<string>>();
+                var cacheData = await _cache.GetAsync("RevokeToken:" + tokenId);
+                if (!string.IsNullOrEmpty(cacheData))
                 {
-                    var _cache = _appFactory.LazyService<IDistributedCache<string>>();
-                    var cacheData = await _cache.GetAsync("RevokeToken:" + tokenId);
-                    if (!string.IsNullOrEmpty(cacheData))
+                    return "Access token is revoked or expired";
+                }
+                var userAccessRepos = _appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
+                var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(tokenId);
+                if (isTokenInActive)
+                {
+                    _ = Task.Run(async () =>
                     {
-                        return HttpStatusCode.Unauthorized;
-                    }
-                    var userAccessRepos = _appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
-                    var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(tokenId);
-                    if (isTokenInActive)
-                    {
-                        _ = Task.Run(async () =>
+                        await _cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
                         {
-                            await _cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
-                            {
-                                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-                            });
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
                         });
-                        return HttpStatusCode.Unauthorized;
-                    }
+                    });
+                    return string.Empty;
                 }
             }
-            return HttpStatusCode.OK;
+            return string.Empty;
         }
     }
 }

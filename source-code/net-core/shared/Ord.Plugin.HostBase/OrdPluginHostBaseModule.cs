@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Ord.Plugin.Contract.Services.Auth;
 using Ord.Plugin.Core;
 using Ord.Plugin.Core.Configurations;
 using Ord.Plugin.Core.Features.RateLimits;
@@ -73,6 +74,8 @@ namespace Ord.Plugin.HostBase
 #else
             services.AddHangfireMysql();
 #endif
+            services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckPasswordChangeTokenMiddlewareService>();
+            services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckTokenRevokeMiddlewareService>();
 
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
