@@ -46,7 +46,7 @@ baseHttpApi.interceptors.response.use(
         const {config, response: {status}} = error;
         const originalRequest = config;
         // Kiểm tra mã lỗi có phải là 401 hoặc 403 hay không
-        if (status === 401 && !!JwtUtils.getRefreshToken()) {
+        if (status === 401) {
             if (!isRefreshing) {
                 isRefreshing = true;
                 AuthApiService.refreshToken().then((result) => {

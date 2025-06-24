@@ -17,7 +17,7 @@
   },
   "user": {
     "assign_roles_success": "Gán vai trò thành công"
-  }
+  },
   "validation": {
     "required": "{0} bắt buộc nhập",
     "file_required": "Vui lòng chọn file",

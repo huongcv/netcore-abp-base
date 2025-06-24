@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
@@ -38,6 +39,50 @@ namespace Ord.Plugin.Auth.Services
             return await CreateJwtAsync(claims, loginUser, tokenId);
         }
 
+        public async Task SetJwtCookie(JwtDto jwtDto)
+        {
+            var httpContext = AppFactory.HttpContextAccessor().HttpContext;
+            if (httpContext == null) return;
+            var isHttps = httpContext.Request.IsHttps;
+            var expireInSeconds = jwtDto.ExpireInSeconds;
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true, // Cookie chỉ có thể truy cập từ server, không thể truy cập từ JavaScript
+                Secure = isHttps,
+                SameSite = SameSiteMode.Strict, // Bảo vệ khỏi CSRF attacks
+                Expires = DateTimeOffset.UtcNow.AddSeconds(expireInSeconds).AddDays(1),
+                Path = "/" // Cookie có hiệu lực cho toàn bộ ứng dụng
+            };
+            var refreshTokenOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = isHttps,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7), //  refresh token sống 7 ngày
+                Path = "/"
+            };
+            httpContext.Response.Cookies.Append("jwt", jwtDto.AccessToken, cookieOptions);
+            httpContext.Response.Cookies.Append("refresh_token", jwtDto.RefreshToken, refreshTokenOptions);
+        }
+
+        public async Task ClearJwtCookie()
+        {
+            var httpContext = AppFactory.HttpContextAccessor().HttpContext;
+            if (httpContext == null) return;
+            var isHttps = httpContext.Request.IsHttps;
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = isHttps,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set thời gian quá khứ để xóa cookie
+                Path = "/"
+            };
+
+            httpContext.Response.Cookies.Append("jwt", "", cookieOptions);
+            httpContext.Response.Cookies.Append("refresh_token", "", cookieOptions);
+        }
+
         protected async Task<JwtDto> CreateJwtAsync(List<Claim> claims, UserLoginDto loginUser, string jwtId)
         {
             if (claims == null || !claims.Any())
@@ -48,7 +93,7 @@ namespace Ord.Plugin.Auth.Services
             var signingCredentials = new SigningCredentials(securityKey, tokenAuthConfiguration?.SecurityAlgorithm ?? SecurityAlgorithms.HmacSha512);
 
             var now = DateTime.UtcNow;
-            var accessTokenExpiration = TimeSpan.FromSeconds(tokenAuthConfiguration.TimeLifeTokenSeconds);
+            var accessTokenExpiration = TimeSpan.FromSeconds(10);
             var expirationTime = now.Add(accessTokenExpiration);
 
             var jwtSecurityToken = new JwtSecurityToken(

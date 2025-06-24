@@ -15,6 +15,9 @@ namespace Ord.Plugin.Auth.Shared.Services
         /// <returns>JWT DTO</returns>
         Task<JwtDto> CreateJwtAsync(UserLoginDto loginUser, IEnumerable<Claim> extendClaims = null);
 
+        Task SetJwtCookie(JwtDto jwtDto);
+        Task ClearJwtCookie();
+
         /// <summary>
         /// Refresh JWT token
         /// </summary>

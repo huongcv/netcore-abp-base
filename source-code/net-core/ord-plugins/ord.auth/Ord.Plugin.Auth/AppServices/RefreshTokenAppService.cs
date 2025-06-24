@@ -5,6 +5,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
+using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -12,6 +13,7 @@ namespace Ord.Plugin.Auth.AppServices
     [Route("api/auth")]
     public class RefreshTokenAppService : OrdAppServiceBase
     {
+        private IJwtManager JwtManager => AppFactory.GetServiceDependency<IJwtManager>();
         /// <summary>
         /// Refresh access token bằng refresh token
         /// </summary>
@@ -24,12 +26,6 @@ namespace Ord.Plugin.Auth.AppServices
             try
             {
                 var httpRequest = AppFactory.HttpContextAccessor().HttpContext?.Request;
-                // Nếu không có RefreshToken trong body, lấy từ cookie
-                if (string.IsNullOrEmpty(request.RefreshToken))
-                {
-                    request.RefreshToken = httpRequest.Cookies["refresh_token"];
-                }
-
                 // Nếu không có AccessToken trong body, lấy từ header hoặc cookie "jwt"
                 if (string.IsNullOrEmpty(request.AccessToken))
                 {
@@ -37,10 +33,6 @@ namespace Ord.Plugin.Auth.AppServices
                     if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
                     {
                         request.AccessToken = authHeader.Substring("Bearer ".Length).Trim();
-                    }
-                    else
-                    {
-                        request.AccessToken = httpRequest.Cookies["jwt"];
                     }
                 }
 
@@ -56,7 +48,10 @@ namespace Ord.Plugin.Auth.AppServices
 
                 var jwtManager = AppFactory.GetServiceDependency<IJwtManager>();
                 var newJwt = await jwtManager.RefreshJwtAsync(request.RefreshToken, request.AccessToken);
-
+                if (newJwt != null)
+                {
+                    await JwtManager.SetJwtCookie(newJwt);
+                }
                 return CommonResultDto<JwtDto>.Ok(newJwt, "Token refreshed successfully");
             }
             catch (InvalidOperationException ex)
@@ -69,6 +64,32 @@ namespace Ord.Plugin.Auth.AppServices
             }
         }
 
+        [HttpGet("refresh-token-cookie")]
+        [AllowAnonymous]
+        public async Task<CommonResultDto<JwtDto>> RefreshTokenCookieAsync()
+        {
+            try
+            {
+                var httpRequest = AppFactory.HttpContextAccessor().HttpContext?.Request;
+
+                // Nếu không có RefreshToken trong body, lấy từ cookie
+                var refreshToken = httpRequest.Cookies["refresh_token"];
+                var accessToken = httpRequest.Cookies["jwt"];
+                return await RefreshTokenAsync(new RefreshTokenRequest()
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return CommonResultDto<JwtDto>.Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return CommonResultDto<JwtDto>.ServerFailure(ex, "Error refreshing token");
+            }
+        }
         protected override string GetBasePermissionName()
         {
             return "";
