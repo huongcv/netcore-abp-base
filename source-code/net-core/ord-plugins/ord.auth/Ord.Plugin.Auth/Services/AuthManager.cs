@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
+using Ord.Plugin.Auth.Shared.Dtos.Users;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
@@ -18,6 +19,7 @@ namespace Ord.Plugin.Auth.Services
 {
     public class AuthManager : OrdAuthManagerBase, IAuthManager
     {
+        private IUserAccessTokenManager UserAccessTokenManager => AppFactory.GetServiceDependency<IUserAccessTokenManager>();
         private const string LoginInvalidError = "login_invalid";
         public async Task<CommonResultDto<JwtDto>> LoginAsync(LoginInputDto loginInput)
         {
@@ -135,6 +137,11 @@ namespace Ord.Plugin.Auth.Services
                 return;
             }
             var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            await UserAccessTokenManager.RevokeTokenAsync(new RevokeTokenDto()
+            {
+                TokenId = tokenId,
+                Reason = "User sign out"
+            });
             if (!string.IsNullOrEmpty(tokenId))
             {
                 var cache = AppFactory.GetServiceDependency<IDistributedCache<string>>();

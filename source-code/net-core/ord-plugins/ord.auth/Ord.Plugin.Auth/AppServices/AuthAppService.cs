@@ -13,7 +13,6 @@ namespace Ord.Plugin.Auth.AppServices
     {
         private IAuthManager AuthManager => AppFactory.GetServiceDependency<IAuthManager>();
         private IJwtManager JwtManager => AppFactory.GetServiceDependency<IJwtManager>();
-        private IHttpContextAccessor HttpContextAccessor => AppFactory.GetServiceDependency<IHttpContextAccessor>();
         private ILoginFirebaseManager LoginFirebaseManager => AppFactory.GetServiceDependency<ILoginFirebaseManager>();
 
         [HttpPost("login")]
