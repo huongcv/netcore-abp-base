@@ -1,6 +1,5 @@
 import {OrdPermissionTreeDataNode} from "@ord-core/config/permissions/tree-data/permission.tree.data";
 import {PERMISSION_APP} from "@ord-core/config/permissions";
-import {GOLF_CATEGORY_PERMISSION_DATA,} from "@ord-core/config/permissions/tree-data/golf-permission.tree.data";
 
 export const ADMIN_PERMISSION_TREE_DATA: OrdPermissionTreeDataNode[] = [
     {
@@ -30,11 +29,6 @@ export const ADMIN_PERMISSION_TREE_DATA: OrdPermissionTreeDataNode[] = [
     {
         name: PERMISSION_APP.system.shopSetting,
         actions: ['GetPaged', 'Create', 'Update']
-    },
-    GOLF_CATEGORY_PERMISSION_DATA
-    // {
-    //     name: PERMISSION_APP.system.shopTemplate,
-    //     actions: ['GetPaged', 'CreateOrUpdate']
-    // },
+    }
 
 ];

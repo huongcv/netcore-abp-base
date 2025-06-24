@@ -586,6 +586,23 @@ export interface CommonResultDtoOfListOfString {
   isSuccessful?: boolean;
 }
 
+export interface CommonResultDtoOfListOfUserAccessTokenDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: UserAccessTokenDto[];
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
 export interface CommonResultDtoOfNotificationSummaryDto {
   /**  */
   code?: string;
@@ -680,6 +697,23 @@ export interface CommonResultDtoOfPagedResultDtoOfTenantPagedDto {
 
   /**  */
   data?: PagedResultDtoOfTenantPagedDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfPagedResultDtoOfUserAccessTokenDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: PagedResultDtoOfUserAccessTokenDto;
 
   /**  */
   extend?: any | null;
@@ -1483,6 +1517,29 @@ export interface GetComboOptionInputDto {
   includeUnActive?: boolean;
 }
 
+export interface GetUserAccessTokenPagedInput {
+  /**  */
+  maxResultCount?: number;
+
+  /**  */
+  skipCount?: number;
+
+  /**  */
+  sorting?: string;
+
+  /**  */
+  filter?: string;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  userEncodedId?: string;
+
+  /**  */
+  status?: string;
+}
+
 export interface GetUserNotificationInput {
   /**  */
   maxResultCount?: number;
@@ -1783,6 +1840,14 @@ export interface PagedResultDtoOfTenantPagedDto {
   totalCount?: string;
 }
 
+export interface PagedResultDtoOfUserAccessTokenDto {
+  /**  */
+  items?: UserAccessTokenDto[];
+
+  /**  */
+  totalCount?: string;
+}
+
 export interface PagedResultDtoOfUserInRoleDto {
   /**  */
   items?: UserInRoleDto[];
@@ -2004,6 +2069,17 @@ export interface ReturnValueApiDescriptionModel {
 
   /**  */
   typeSimple?: string;
+}
+
+export interface RevokeMultipleTokensDto {
+  /**  */
+  userEncodedId?: string;
+
+  /**  */
+  tokenIds?: string[];
+
+  /**  */
+  reason?: string;
 }
 
 export interface RevokePermissionFromUserDto {
@@ -2387,6 +2463,53 @@ export interface UpdateUserDto {
 
   /**  */
   password?: string;
+}
+
+export interface UserAccessTokenDto {
+  /**  */
+  id?: string;
+
+  /**  */
+  tokenId?: string;
+
+  /**  */
+  expiresAt?: Date;
+
+  /**  */
+  ipAddress?: string;
+
+  /**  */
+  userAgent?: string;
+
+  /**  */
+  deviceName?: string;
+
+  /**  */
+  platform?: string;
+
+  /**  */
+  lastUsedAt?: Date;
+
+  /**  */
+  status?: string;
+
+  /**  */
+  revokeReason?: string;
+
+  /**  */
+  revokedAt?: Date;
+
+  /**  */
+  creationTime?: Date;
+
+  /**  */
+  isExpired?: boolean;
+
+  /**  */
+  isValid?: boolean;
+
+  /**  */
+  isCurrentToken?: boolean;
 }
 
 export interface UserCurrentShopAssign {
