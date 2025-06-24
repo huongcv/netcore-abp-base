@@ -1,3 +1,5 @@
 ﻿{
- 
+  "UserImpersonation": {
+    "AdminEncodedIdNotFound": "Không tìm thấy tài khoản quay lại"
+  }
 }

@@ -1,4 +1,18 @@
-import {axios, basePath, getConfigs, IRequestConfig, IRequestOptions} from './index.defs';
+import {
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
+} from './index.defs';
 
 export class SysToolService {
   /** Generate by swagger-axios-codegen */

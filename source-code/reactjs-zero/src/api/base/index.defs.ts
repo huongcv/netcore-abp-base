@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
+import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**

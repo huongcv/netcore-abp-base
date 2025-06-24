@@ -9,5 +9,6 @@ namespace Ord.Plugin.Auth.Shared.Services
     {
         Task<CommonResultDto<JwtDto>> LoginAsUserAsync(LoginAsUserInputDto input);
         Task<CommonResultDto<UserLoginDto>> ValidateImpersonationPermissionAsync(Guid targetUserId);
+        Task ReturnToAdminAsync(string userAdminEncodedId);
     }
 }

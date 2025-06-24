@@ -9,6 +9,7 @@ using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Utils;
 using System.Security.Claims;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
 {
@@ -63,6 +64,21 @@ namespace Ord.Plugin.Auth.Services
 
 
             return CommonResultDto<UserLoginDto>.Ok(targetUser);
+        }
+
+        public async Task ReturnToAdminAsync(string userAdminEncodedId)
+        {
+            if (!IdEncoder.TryDecodeId(userAdminEncodedId, out var userId))
+            {
+                throw new AbpValidationException("common.UserImpersonation.AdminEncodedIdNotFound");
+            }
+
+            var targetUser = await UserRepository.GetLoginById(userId);
+            if (targetUser == null)
+            {
+                throw new AbpValidationException("common.UserImpersonation.AdminEncodedIdNotFound");
+            }
+            await JwtManager.CreateJwtAsync(targetUser);
         }
     }
 }

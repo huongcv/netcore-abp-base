@@ -7,6 +7,7 @@ export class AppBootstrapDto {
     user?: UserInformationDto;
     extend?: AppBootstrapExtendDto;
     userCurrent?: AppUserCurrentDto;
+    _permissionDic: { [key: string]: boolean; };
 
     isGrantedPermission(permissionName: string) {
         if (!this.user) {
@@ -19,7 +20,12 @@ export class AppBootstrapDto {
         if (granted.length === 0) {
             return false;
         }
-        return granted.includes(permissionName);
+        if (!this._permissionDic) {
+            granted.forEach(name => {
+                this._permissionDic[name.toUpperCase()] = true;
+            });
+        }
+        return this._permissionDic[permissionName.toUpperCase()];
     }
 
     get permissionGranted() {

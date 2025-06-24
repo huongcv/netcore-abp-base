@@ -1,11 +1,19 @@
 import {
-    axios,
-    basePath,
-    CommonResultDtoOfBoolean,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    LoginAsUserInputDto
+  LoginAsUserInputDto,
+  CommonResultDtoOfBoolean,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class UserImpersonationService {
@@ -31,6 +39,18 @@ export class UserImpersonationService {
       let data = params.body;
 
       configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static returnToAdmin(options: IRequestOptions = {}): Promise<CommonResultDtoOfBoolean> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/user-impersonation/return-to-admin';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
       axios(configs, resolve, reject);
     });

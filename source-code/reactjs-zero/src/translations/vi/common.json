@@ -294,5 +294,6 @@
   "userNameAdminTenant": "Tài khoản quản trị",
   "detailInformation": "Chi tiết",
   "tabPermissions": "Danh sách quyền",
-  "ListRole": "Danh sách vai trò"
+  "ListRole": "Danh sách vai trò",
+  "returnAdminAccountLoginImpersonation": "Quay lại tài khoản chính"
 }
