@@ -9,7 +9,7 @@ import {UserDetailDto} from "@api/base/index.defs";
 import React from "react";
 import {UserDto} from "@api/index.defs";
 import {UserUtilities} from "@pages/Admin/Users/user.util";
-import {CheckOutlined, LoginOutlined, UndoOutlined} from "@ant-design/icons";
+import {CheckOutlined, KeyOutlined, LoginOutlined, UndoOutlined} from "@ant-design/icons";
 import {useStore} from "@ord-store/index";
 import {changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
 import {assignRoleUserModalStore} from "@pages/Admin/Users/assign-role/Modal";
@@ -98,7 +98,7 @@ export const useUserLogic = () => {
         },
         {
             title: 'accessTokenList',
-            icon: <CheckOutlined/>,
+            icon: <KeyOutlined/>,
             permission: USER_POLICIES.MANAGE_ACCESS_TOKEN,
             onClick: (user) => {
                 opeAccessTokenListModal(user);

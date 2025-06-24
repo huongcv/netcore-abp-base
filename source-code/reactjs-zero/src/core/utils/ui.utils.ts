@@ -27,7 +27,9 @@ class UiUtils {
         toast.success(l.transCommon(content || ''), this.BASE_TOAST);
     };
     showError = (content?: string) => {
-        toast.error(content?l.transCommon(content):"Error", this.BASE_TOAST);
+        if (content) {
+            toast.error(content ? l.transCommon(content) : "Error", this.BASE_TOAST);
+        }
     };
     showInfo = (content?: ToastContent) => {
         toast.info(content, this.BASE_TOAST);
@@ -42,7 +44,7 @@ class UiUtils {
             if (mess) {
                 toast.error(mess);
             } else {
-                console.error("Lỗi khác:",  error.response);
+                console.error("Lỗi khác:", error.response);
             }
         } else {
             console.error("Lỗi không xác định:", error);

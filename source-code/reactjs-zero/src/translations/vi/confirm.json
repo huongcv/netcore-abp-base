@@ -1,5 +1,13 @@
 {
+  "okText": "Có",
+  "cancelText": "Không",
   "remove": {
     "country": "Bạn có muốn xóa quốc gia: <bold>{{name}}</bold> này không"
+  },
+  "revokeToken": {
+    "title": "Xác nhận trước khi thu hồi",
+    "success": "thu hồi thành công {{count}} token",
+    "description": "Bạn có muốn thu hồi {{count}} token đã được chọn của tài khoản {{userName}} không?",
+    "revokeReason": "Lý do thu hồi"
   }
 }

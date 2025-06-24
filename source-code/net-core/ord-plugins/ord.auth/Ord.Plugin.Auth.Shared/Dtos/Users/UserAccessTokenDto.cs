@@ -1,5 +1,6 @@
 ﻿using Ord.Plugin.Contract.Dtos;
 using System.ComponentModel.DataAnnotations;
+using Ord.Domain.Enums;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Users
 {
@@ -23,6 +24,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
         public bool IsExpired { get; set; }
         public bool IsValid { get; set; }
         public bool IsCurrentToken { get; set; }
+
+        public bool IsActived => Status == TokenStatus.Active && ExpiresAt > DateTime.Now;
     }
     /// <summary>
     /// DTO để thu hồi nhiều token

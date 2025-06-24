@@ -1629,10 +1629,10 @@ export interface JwtDto {
   accessToken?: string;
 
   /**  */
-  expireInSeconds?: number;
+  refreshToken?: string;
 
   /**  */
-  refreshToken?: string;
+  expiresAt?: Date;
 }
 
 export interface LanguageInfo {
@@ -2510,6 +2510,9 @@ export interface UserAccessTokenDto {
 
   /**  */
   isCurrentToken?: boolean;
+
+  /**  */
+  isActived?: boolean;
 }
 
 export interface UserCurrentShopAssign {

@@ -68,13 +68,26 @@ const statusConfig = {
 
 export const UserAccessTokenColumns: TableColumnsType<UserAccessTokenDto> = [
     {
+        title: 'Device',
+        dataIndex: 'deviceName',
+        width: 180,
+        render: (value, dto) => (
+            <div>
+                <div style={{fontWeight: 500}}>{dto.deviceName || 'Unknown Device'}</div>
+                <div style={{fontSize: '12px', color: '#8c8c8c'}}>
+                    <Tag color="blue">{dto.platform}</Tag>
+                    {dto.isCurrentToken && <Tag color="green">Current</Tag>}
+                </div>
+            </div>
+        ),
+    },
+    {
         title: 'access_token_id',
         dataIndex: 'tokenId',
         render: (v, dto) => {
             return <>{v}
                 {
-                    dto.isCurrentToken &&
-                    <Tag color="green">Current Session</Tag>
+                    dto.isCurrentToken
                 }
             </>;
         }

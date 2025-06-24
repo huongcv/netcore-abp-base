@@ -295,5 +295,7 @@
   "detailInformation": "Chi tiết",
   "tabPermissions": "Danh sách quyền",
   "ListRole": "Danh sách vai trò",
-  "returnAdminAccountLoginImpersonation": "Quay lại tài khoản chính"
+  "returnAdminAccountLoginImpersonation": "Quay lại tài khoản chính",
+  "selectedItems": "Đã chọn: {{count}} bản ghi",
+  "revokeSelected": "Thu hồi {{count}} token đã chọn"
 }

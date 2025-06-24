@@ -34,5 +34,6 @@
     "save": "Lưu",
     "close": "Đóng",
     "cancel": "Đóng"
-  }
+  },
+  "accessTokenList": "Danh sách token"
 }
