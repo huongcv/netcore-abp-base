@@ -22,7 +22,6 @@ namespace Ord.Plugin.Auth.AppServices
             var result = await AuthManager.LoginAsync(input);
             if (result.IsSuccessful && result.Data != null)
             {
-                await JwtManager.SetJwtCookie(result.Data);
                 await SetFirebaseLogin(result.Data?.TenantId, result.Data.UserId, input.FireBase);
                 return result;
             }

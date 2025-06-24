@@ -36,10 +36,12 @@ namespace Ord.Plugin.Auth.Services
                 claims.AddRange(extendClaims);
             }
 
-            return await CreateJwtAsync(claims, loginUser, tokenId);
+            var jwt = await CreateJwtAsync(claims, loginUser, tokenId);
+            await SetJwtCookie(jwt);
+            return jwt;
         }
 
-        public async Task SetJwtCookie(JwtDto jwtDto)
+        protected async Task SetJwtCookie(JwtDto jwtDto)
         {
             var httpContext = AppFactory.HttpContextAccessor().HttpContext;
             if (httpContext == null) return;

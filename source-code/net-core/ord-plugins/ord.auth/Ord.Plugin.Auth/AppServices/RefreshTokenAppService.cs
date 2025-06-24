@@ -47,10 +47,6 @@ namespace Ord.Plugin.Auth.AppServices
 
                 var jwtManager = AppFactory.GetServiceDependency<IJwtManager>();
                 var newJwt = await jwtManager.RefreshJwtAsync(request.RefreshToken, request.AccessToken);
-                if (newJwt != null)
-                {
-                    await JwtManager.SetJwtCookie(newJwt);
-                }
                 return CommonResultDto<JwtDto>.Ok(newJwt, "Token refreshed successfully");
             }
             catch (InvalidOperationException ex)

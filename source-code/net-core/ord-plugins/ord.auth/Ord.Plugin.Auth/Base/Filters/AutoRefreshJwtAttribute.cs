@@ -43,7 +43,6 @@ namespace Ord.Plugin.Auth.Filters
             try
             {
                 var newJwt = await jwtManager.RefreshJwtAsync(refreshToken, jwt);
-                await jwtManager.SetJwtCookie(newJwt);
                 // Gán lại ClaimsPrincipal (User)
                 var refreshedToken = handler.ReadJwtToken(newJwt.AccessToken);
                 var claims = refreshedToken.Claims;
