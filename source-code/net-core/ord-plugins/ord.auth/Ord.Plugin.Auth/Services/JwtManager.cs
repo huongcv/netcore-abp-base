@@ -119,6 +119,7 @@ namespace Ord.Plugin.Auth.Services
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 ExpireInSeconds = (int)accessTokenExpiration.TotalSeconds,
+                ExpiresAt = DateTime.Now.AddSeconds((int)accessTokenExpiration.TotalSeconds),
                 UserId = loginUser.Id,
                 TenantId = loginUser.TenantId
             };

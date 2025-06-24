@@ -10,7 +10,6 @@ using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
 using System.Linq.Dynamic.Core;
-using System.Security.Claims;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices

@@ -5,8 +5,10 @@ namespace Ord.Plugin.Contract.Dtos
     public class JwtDto
     {
         public string AccessToken { get; set; }
+        [JsonIgnore]
         public int ExpireInSeconds { get; set; }
         public string RefreshToken { get; set; }
+        public DateTime ExpiresAt { get; set; }
         [JsonIgnore]
         public Guid UserId { get; set; }
         [JsonIgnore]
