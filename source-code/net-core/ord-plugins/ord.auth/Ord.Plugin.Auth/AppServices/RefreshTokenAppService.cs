@@ -5,7 +5,6 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Ord.Plugin.Auth.AppServices
 {

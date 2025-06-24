@@ -1,7 +1,6 @@
 import axios from 'axios';
 import JwtUtils from "@ord-core/utils/jwt.utils";
 import AuthApiService from "@ord-core/service-proxies/auth/authApiService";
-import paths from "@ord-core/config/paths";
 import {LangUtil} from "@ord-core/language/lang.utils";
 import {AxiosBaseHttpApi} from "@ord-core/service-proxies/axios.base";
 import UiUtils from "@ord-core/utils/ui.utils";
@@ -13,20 +12,8 @@ const baseHttpApi = AxiosBaseHttpApi;
 
 baseHttpApi.interceptors.request.use(
     function (config) {
-        // const token = window.localStorage.getItem('auth-token');
-        // if (!!token) {
-        //     // @ts-ignore
-        //     config.headers.common['Authorization'] = 'Bearer ' + token;
-        // }
         // @ts-ignore
         config.headers.common['Accept-Language'] = LangUtil.getLang();
-
-        // const shopIdHeader = CurrentShopUtil.getShop();
-        // if (shopIdHeader) {
-        //     // @ts-ignore
-        //     config.headers.common['x-shop-current'] = shopIdHeader;
-        // }
-
         return config;
     },
     function (error) {
@@ -45,7 +32,7 @@ baseHttpApi.interceptors.response.use(
     error => {
         const {config, response: {status}} = error;
         const originalRequest = config;
-        // Kiểm tra mã lỗi có phải là 401 hoặc 403 hay không
+        // Kiểm tra mã lỗi có phải là 401 hay không
         if (status === 401) {
             if (!isRefreshing) {
                 isRefreshing = true;
@@ -57,16 +44,12 @@ baseHttpApi.interceptors.response.use(
                         isRefreshing = false;
                         onRrefreshed(newToken);
                     } else {
-                        JwtUtils.saveToken("");
-                        JwtUtils.saveRefreshToken('');
-                        window.location.href = paths.login;
+                        JwtUtils.signOut();
                     }
                 });
             }
             return new Promise((resolve, reject) => {
                 subscribeTokenRefresh((token: string) => {
-                    // replace the expired token and retry
-                    originalRequest.headers['Authorization'] = 'Bearer ' + token;
                     resolve(axios(originalRequest));
                 });
             });
