@@ -31,7 +31,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
         /// <summary>
         /// Thu hồi nhiều token
         /// </summary>
-        Task RevokeMultipleTokensAsync(List<string> tokenIds, string? reason = null);
+        Task RevokeMultipleTokensAsync(Guid userId, List<string> tokenIds, string? reason = null);
 
         /// <summary>
         /// Thu hồi tất cả token của user

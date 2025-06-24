@@ -24,26 +24,23 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
         public bool IsValid { get; set; }
         public bool IsCurrentToken { get; set; }
     }
-
-    /// <summary>
-    /// DTO để thu hồi access token
-    /// </summary>
-    public class RevokeTokenDto
-    {
-        [Required]
-        public string TokenId { get; set; }
-
-        [MaxLength(200)]
-        public string? Reason { get; set; }
-    }
-
     /// <summary>
     /// DTO để thu hồi nhiều token
     /// </summary>
     public class RevokeMultipleTokensDto
     {
         [Required]
+        public string UserEncodedId { get; set; }
+        [Required]
         public List<string> TokenIds { get; set; } = new();
+
+        [MaxLength(200)]
+        public string? Reason { get; set; }
+    }
+    public class RevokeTokenDto
+    {
+        [Required]
+        public string TokenId { get; set; }
 
         [MaxLength(200)]
         public string? Reason { get; set; }

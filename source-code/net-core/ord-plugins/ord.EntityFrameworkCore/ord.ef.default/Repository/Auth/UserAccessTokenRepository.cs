@@ -58,11 +58,13 @@ namespace Ord.EfCore.Default.Repository.Auth
             }
         }
 
-        public async Task RevokeMultipleTokensAsync(List<string> tokenIds, string? reason = null)
+        public async Task RevokeMultipleTokensAsync(Guid userId, List<string> tokenIds, string? reason = null)
         {
             var queryable = await GetQueryableAsync();
             var tokens = await AsyncExecuter.ToListAsync(
-                queryable.Where(x => tokenIds.Contains(x.TokenId) && x.Status == TokenStatus.Active));
+                queryable.Where(x => x.UserId == userId 
+                                     && tokenIds.Contains(x.TokenId)
+                                     && x.Status == TokenStatus.Active));
 
             foreach (var token in tokens)
             {

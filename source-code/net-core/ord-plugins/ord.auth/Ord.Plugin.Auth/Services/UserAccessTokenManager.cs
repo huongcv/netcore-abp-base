@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using Volo.Abp.ObjectMapping;
+using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
 {
@@ -73,11 +74,6 @@ namespace Ord.Plugin.Auth.Services
         public async Task<List<UserAccessTokenDto>> GetMyTokensAsync()
         {
             var currentUserId = AppFactory.CurrentUserId;
-            if (!currentUserId.HasValue)
-            {
-                throw new UnauthorizedAccessException("User not authenticated");
-            }
-
             var tokens = await TokenRepository.GetUserTokensAsync(currentUserId.Value);
             var currentTokenId = AppFactory.GetTokenIdFromJwt();
 
@@ -101,8 +97,9 @@ namespace Ord.Plugin.Auth.Services
 
                 // Kiểm tra quyền thu hồi token
                 var currentUserId = AppFactory.CurrentUserId;
-                var hasPermission = await AppFactory.CheckPermissionAsync("AuthPlugin.User.ManageTokens");
-                if (!hasPermission && token.UserId != currentUserId)
+                var hasAdminPermission = await AppFactory.CheckPermissionAsync("Auth.Users.ManageTokens");
+
+                if (!hasAdminPermission && token.UserId != currentUserId)
                 {
                     return CommonResultDto<bool>.Forbidden("Cannot revoke other user's token");
                 }
@@ -121,12 +118,13 @@ namespace Ord.Plugin.Auth.Services
             }
         }
 
+
         public async Task<CommonResultDto<bool>> RevokeMultipleTokensAsync(RevokeMultipleTokensDto input)
         {
             try
             {
                 var currentUserId = AppFactory.CurrentUserId;
-                var hasAdminPermission = await AppFactory.CheckPermissionAsync("Auth.Users.ManageTokens");
+                var hasAdminPermission = await AppFactory.CheckPermissionAsync("AuthPlugin.User.ManageTokens");
 
                 // Nếu không phải admin, kiểm tra tất cả token có thuộc về user hiện tại không
                 if (!hasAdminPermission && currentUserId.HasValue)
@@ -140,8 +138,12 @@ namespace Ord.Plugin.Auth.Services
                         }
                     }
                 }
+                if (!IdEncoderService.TryDecodeId(input.UserEncodedId, out var userId))
+                {
+                    ValidationExceptionHelper.ThrowNotFound();
+                }
 
-                await TokenRepository.RevokeMultipleTokensAsync(input.TokenIds, input.Reason);
+                await TokenRepository.RevokeMultipleTokensAsync(userId, input.TokenIds, input.Reason);
 
                 _logger.LogInformation("{Count} tokens revoked by user {UserId}",
                     input.TokenIds.Count, currentUserId);
@@ -191,7 +193,7 @@ namespace Ord.Plugin.Auth.Services
             try
             {
                 // Kiểm tra quyền admin
-                var hasPermission = await AppFactory.CheckPermissionAsync("Auth.Users.ManageTokens");
+                var hasPermission = await AppFactory.CheckPermissionAsync("AuthPlugin.User.ManageTokens");
                 if (!hasPermission)
                 {
                     return CommonResultDto<bool>.Forbidden("Insufficient permissions");
