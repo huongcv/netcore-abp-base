@@ -141,6 +141,22 @@ namespace Ord.Plugin.Contract.Dtos
             };
         }
 
+        public CommonResultDto<TTarget> ConvertTo<TTarget>(Func<T, TTarget> mapper)
+        {
+            if (!IsSuccessful)
+            {
+                return ToErrorResult<TTarget>();
+            }
+
+            return new CommonResultDto<TTarget>()
+            {
+                Code = Code,
+                Message = Message,
+                Data = mapper(Data),
+                Extend = Extend
+            };
+        }
+
         #endregion
     }
 }

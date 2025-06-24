@@ -6,13 +6,14 @@ import {UserService} from "@api/base/UserService";
 import {USER_POLICIES} from "@pages/Admin/Users/user.constants";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {UserDetailDto} from "@api/base/index.defs";
-import React, {lazy} from "react";
+import React from "react";
 import {UserDto} from "@api/index.defs";
 import {UserUtilities} from "@pages/Admin/Users/user.util";
-import {CheckOutlined, UndoOutlined} from "@ant-design/icons";
+import {CheckOutlined, LoginOutlined, UndoOutlined} from "@ant-design/icons";
 import {useStore} from "@ord-store/index";
 import {changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
 import {assignRoleUserModalStore} from "@pages/Admin/Users/assign-role/Modal";
+import {UserImpersonationService} from "@api/base/UserImpersonationService";
 // Stores
 const tableStore = createTableStore(UserService);
 const modalStore = createModalFormStore(UserService, {});
@@ -74,10 +75,15 @@ export const useUserLogic = () => {
         {
             title: 'loginWithAccount',
             permission: USER_POLICIES.LOGIN_WITH_ACCOUNT,
-            contentLazy: lazy(() => import("./actions/loginWithAccount")),
-            hiddenIf: (u: UserDto) => {
-                const show = sessionStore?.user?.isSuperAdmin && !UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
-                return !show;
+            icon: <LoginOutlined/>,
+            onClick: (record) => {
+                UserImpersonationService.loginAsUser({
+                    body: {
+                        encodedId: record.encodedId
+                    }
+                }).then(() => {
+                    location.href = '/';
+                });
             }
         },
         {

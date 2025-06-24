@@ -146,17 +146,13 @@ export interface AppBootstrapDto {
   isLogined?: boolean;
 
   /**  */
-  listAssignedShop?: UserCurrentShopAssign[];
+  extend?: AppBootstrapExtendDto;
 
   /**  */
-  currentShop?: number;
+  userCurrent?: AppUserCurrentDto;
+}
 
-  /**  */
-  currentShopHashId?: string;
-
-  /**  */
-  currentShopType?: ShopType;
-
+export interface AppBootstrapExtendDto {
   /**  */
   businessType?: number;
 
@@ -171,6 +167,20 @@ export interface AppBootstrapDto {
 
   /**  */
   theme?: OrdThemeDto;
+}
+
+export interface AppUserCurrentDto {
+  /**  */
+  isLoginImpersonation?: boolean;
+
+  /**  */
+  shopEncodedId?: string;
+
+  /**  */
+  shopType?: ShopType;
+
+  /**  */
+  availableShops?: UserCurrentShopAssign[];
 }
 
 export interface ApplicationApiDescriptionModel {
@@ -789,6 +799,23 @@ export interface CommonResultDtoOfUserDetailDto {
 
   /**  */
   data?: UserDetailDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfUserInformationDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: UserInformationDto;
 
   /**  */
   extend?: any | null;
@@ -1573,6 +1600,14 @@ export interface LocalizableStringDto {
   resource?: string;
 }
 
+export interface LoginAsUserInputDto {
+  /**  */
+  encodedId?: string;
+
+  /**  */
+  autoLogoutMinutes?: number;
+}
+
 export interface LoginInputDto {
   /**  */
   userName?: string;
@@ -1912,6 +1947,14 @@ export interface ProvincePagedInput {
 
   /**  */
   countryCode?: string;
+}
+
+export interface RefreshTokenRequest {
+  /**  */
+  refreshToken?: string;
+
+  /**  */
+  accessToken?: string;
 }
 
 export interface RemoteServiceErrorInfo {
@@ -2348,10 +2391,7 @@ export interface UpdateUserDto {
 
 export interface UserCurrentShopAssign {
   /**  */
-  shopId?: number;
-
-  /**  */
-  shopIdHash?: string;
+  encodedId?: string;
 
   /**  */
   shopName?: string;

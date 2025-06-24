@@ -5,10 +5,10 @@ import {
     getConfigs,
     IRequestConfig,
     IRequestOptions,
-    LoginInputDto
+    RefreshTokenRequest
 } from './index.defs';
 
-export class AuthService {
+export class RefreshTokenService {
   /** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
@@ -16,15 +16,15 @@ export class AuthService {
   /**
    *
    */
-  static login(
+  static refreshToken(
     params: {
       /** requestBody */
-      body?: LoginInputDto;
+      body?: RefreshTokenRequest;
     } = {} as any,
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfJwtDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/login';
+      let url = basePath + '/api/auth/refresh-token';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -38,9 +38,9 @@ export class AuthService {
   /**
    *
    */
-  static logout(options: IRequestOptions = {}): Promise<any> {
+  static refreshTokenCookie(options: IRequestOptions = {}): Promise<CommonResultDtoOfJwtDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/logout';
+      let url = basePath + '/api/auth/refresh-token-cookie';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

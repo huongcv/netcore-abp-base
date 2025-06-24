@@ -28,7 +28,7 @@ namespace Ord.Plugin.Auth.Services
             var targetUser = hasPermission.Data;
             var claims = new List<Claim>
             {
-                new(OrdClaimsTypes.ReturnToAdminId, AppFactory?.CurrentUserId?.ToString()),
+                new(OrdClaimsTypes.ReturnToAdminId, IdEncoder.EncodeId(AppFactory.CurrentUserId.Value)),
                 new(OrdClaimsTypes.IsLoginImpersonation, "true"),
             };
             var jwtDto = await JwtManager.CreateJwtAsync(targetUser, claims);

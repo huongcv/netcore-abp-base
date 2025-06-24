@@ -4,6 +4,7 @@ import {
     ChangePasswordUserDto,
     CommonResultDtoOfAppBootstrapDto,
     CommonResultDtoOfBoolean,
+    CommonResultDtoOfUserInformationDto,
     getConfigs,
     IRequestConfig,
     IRequestOptions
@@ -29,6 +30,18 @@ export class InformationService {
   /**
    *
    */
+  static getCurrentUser(options: IRequestOptions = {}): Promise<CommonResultDtoOfUserInformationDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/information/get-current-user';
+
+      const configs: IRequestConfig = getConfigs('get', 'application/json', url, options);
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
   static changePasswordAsync(
     params: {
       /** requestBody */
@@ -44,18 +57,6 @@ export class InformationService {
       let data = params.body;
 
       configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static ping(options: IRequestOptions = {}): Promise<string> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/information/ping';
-
-      const configs: IRequestConfig = getConfigs('get', 'application/json', url, options);
 
       axios(configs, resolve, reject);
     });

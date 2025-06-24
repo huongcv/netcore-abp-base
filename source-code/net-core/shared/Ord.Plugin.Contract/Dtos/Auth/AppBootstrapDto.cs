@@ -1,4 +1,5 @@
 ﻿using Ord.Plugin.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace Ord.Plugin.Contract.Dtos
 {
@@ -7,13 +8,23 @@ namespace Ord.Plugin.Contract.Dtos
         public Dictionary<string, object> Setting { get; set; }
         public UserInformationDto? User { get; set; }
         public bool IsLogined => User != null;
-        public IEnumerable<UserCurrentShopAssign> ListAssignedShop { get; set; }
-        public int? CurrentShop { get; set; }
-        public string? CurrentShopHashId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public AppBootstrapExtendDto? Extend { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public AppUserCurrentDto? UserCurrent { get; set; }
+    }
 
-        public ShopType? CurrentShopType { get; set; }
+    public class AppUserCurrentDto
+    {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public bool? IsLoginImpersonation { get; set; }
+        public string? ShopEncodedId { get; set; }
+        public ShopType? ShopType { get; set; }
+        public IEnumerable<UserCurrentShopAssign>? AvailableShops { get; set; }
+    }
 
-        //BUSINESS_TYPE_ENUM
+    public class AppBootstrapExtendDto
+    {
         public int BusinessType { get; set; }
 
         public bool? IsShopMain { get; set; }
@@ -23,7 +34,6 @@ namespace Ord.Plugin.Contract.Dtos
 
         public OrdThemeDto? Theme { get; set; }
     }
-
     public class OrdThemeDto
     {
         public string? ThemeInfo { get; set; }
@@ -42,6 +52,6 @@ namespace Ord.Plugin.Contract.Dtos
         public string? DashboardSlider3 { get; set; }
         public string? DashboardSlider4 { get; set; }
         public string? DashboardSlider5 { get; set; }
-        
+
     }
 }

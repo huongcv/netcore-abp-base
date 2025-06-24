@@ -1,14 +1,14 @@
 import {
     axios,
     basePath,
-    CommonResultDtoOfJwtDto,
+    CommonResultDtoOfBoolean,
     getConfigs,
     IRequestConfig,
     IRequestOptions,
-    LoginInputDto
+    LoginAsUserInputDto
 } from './index.defs';
 
-export class AuthService {
+export class UserImpersonationService {
   /** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
@@ -16,33 +16,21 @@ export class AuthService {
   /**
    *
    */
-  static login(
+  static loginAsUser(
     params: {
       /** requestBody */
-      body?: LoginInputDto;
+      body?: LoginAsUserInputDto;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfJwtDto> {
+  ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/login';
+      let url = basePath + '/api/auth/user-impersonation/login-as-user';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
       let data = params.body;
 
       configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static logout(options: IRequestOptions = {}): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/logout';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
       axios(configs, resolve, reject);
     });
