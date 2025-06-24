@@ -1,7 +1,5 @@
 ﻿using Ord.Plugin.Contract.Dtos.Auth;
-using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
-using Ord.Plugin.Core.Data;
 
 namespace Ord.Plugin.Core.Repositories
 {

@@ -171,7 +171,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "system_file_upload",
+                name: "system_file_uploads",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -193,7 +193,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_system_file_upload", x => x.Id);
+                    table.PrimaryKey("PK_system_file_uploads", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -484,8 +484,8 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 column: "ProvinceCode");
 
             migrationBuilder.CreateIndex(
-                name: "IX_system_file_upload_TenantId",
-                table: "system_file_upload",
+                name: "IX_system_file_uploads_TenantId",
+                table: "system_file_uploads",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -573,7 +573,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 name: "system_districts");
 
             migrationBuilder.DropTable(
-                name: "system_file_upload");
+                name: "system_file_uploads");
 
             migrationBuilder.DropTable(
                 name: "system_notifications");

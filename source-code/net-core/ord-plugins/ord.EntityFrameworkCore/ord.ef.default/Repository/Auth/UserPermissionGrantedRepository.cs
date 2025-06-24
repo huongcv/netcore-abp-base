@@ -5,7 +5,7 @@
         public async Task DeleteByUserId(Guid userId)
         {
             await DapperHelper.ExecuteAsync(@$"
-            DELETE from permissionusers where UserId =  @UserId
+            DELETE from permission_users where UserId =  @UserId
             ", new
             {
                 UserId = userId
@@ -15,7 +15,7 @@
         public async Task<int> InsertMany(IEnumerable<PermissionUserEntity> entities)
         {
             const string sql = @"
-            INSERT INTO permissionusers (Id, UserId, PermissionName, IsGrant)
+            INSERT INTO permission_users (Id, UserId, PermissionName, IsGrant)
             VALUES (@Id, @UserId, @PermissionName, @IsGrant)
             ";
             foreach (var e in entities)

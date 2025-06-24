@@ -180,7 +180,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("system_file_upload");
+                    b.ToTable("system_file_uploads");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.Auth.UserAccessTokenEntity", b =>

@@ -6,7 +6,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Domain.Entities.Auth
 {
-    [Table("system_file_upload")]
+    [Table("system_file_uploads")]
     public class FileUploadEntity : FullAuditedEntity<Guid>, IMultiTenant
     {
         [MaxLength(500)]

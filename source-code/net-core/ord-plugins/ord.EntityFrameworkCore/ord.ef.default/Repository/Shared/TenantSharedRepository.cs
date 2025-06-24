@@ -1,7 +1,5 @@
 ﻿using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
-using Ord.Plugin.Core.Data;
 using System.Text;
 
 namespace Ord.Plugin.Core.Repositories

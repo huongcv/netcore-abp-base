@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.EfCore.Default.MigrateDb.Migrations
 {
     [DbContext(typeof(DbContextMigrate))]
-    [Migration("20250624063653_add-auth-plugin")]
+    [Migration("20250624063904_add-auth-plugin")]
     partial class addauthplugin
     {
         /// <inheritdoc />
@@ -183,7 +183,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("system_file_upload");
+                    b.ToTable("system_file_uploads");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.Auth.UserAccessTokenEntity", b =>

@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Contract.Enums;
-using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
-using Ord.Plugin.Core.Data;
 using System.Text;
 
 namespace Ord.Plugin.Core.Repositories
