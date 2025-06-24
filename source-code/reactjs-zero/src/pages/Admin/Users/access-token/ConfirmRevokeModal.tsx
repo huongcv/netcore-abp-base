@@ -1,15 +1,8 @@
 import {Input, Modal} from "antd";
 import {useTranslation} from "react-i18next";
+import React from "react";
 
-export const ConfirmRevokeModal = ({
-                                       open,
-                                       onCancel,
-                                       onConfirm,
-                                       count,
-                                       userName,
-                                       reason,
-                                       setReason
-                                   }: {
+interface IProp {
     open: boolean;
     onCancel: () => void;
     onConfirm: () => void;
@@ -17,7 +10,17 @@ export const ConfirmRevokeModal = ({
     userName?: string;
     reason: string;
     setReason: (value: string) => void;
-}) => {
+}
+
+export const ConfirmRevokeModal: React.FC<IProp> = ({
+                                                        open,
+                                                        onCancel,
+                                                        onConfirm,
+                                                        count,
+                                                        userName,
+                                                        reason,
+                                                        setReason
+                                                    }) => {
     const {t: tConfirm} = useTranslation("confirm");
 
     return (

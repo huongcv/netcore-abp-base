@@ -1,6 +1,6 @@
-﻿using Ord.Plugin.Contract.Dtos;
-using System.ComponentModel.DataAnnotations;
-using Ord.Domain.Enums;
+﻿using Ord.Domain.Enums;
+using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.Validation.Attributes;
 
 namespace Ord.Plugin.Auth.Shared.Dtos.Users
 {
@@ -32,20 +32,20 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
     /// </summary>
     public class RevokeMultipleTokensDto
     {
-        [Required]
-        public string UserEncodedId { get; set; }
-        [Required]
+        [OrdValidateRequired]
+        public string? UserEncodedId { get; set; }
+        [OrdValidateRequired]
         public List<string> TokenIds { get; set; } = new();
 
-        [MaxLength(200)]
+        [OrdMaxLengthString(200)]
         public string? Reason { get; set; }
     }
     public class RevokeTokenDto
     {
-        [Required]
-        public string TokenId { get; set; }
+        [OrdValidateRequired]
+        public string? TokenId { get; set; }
 
-        [MaxLength(200)]
+        [OrdMaxLengthString(200)]
         public string? Reason { get; set; }
     }
     public class GetUserAccessTokenPagedInput : OrdPagedRequestDto
