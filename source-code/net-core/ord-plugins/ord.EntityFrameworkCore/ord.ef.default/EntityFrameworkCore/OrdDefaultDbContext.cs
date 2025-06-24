@@ -14,8 +14,9 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
     {
         #region user,role,auth,notification
         public virtual DbSet<UserEntity> Users { get; set; }
+        public virtual DbSet<UserAccessTokenEntity> UserAccessTokens { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
-        public virtual DbSet<UserRoleEntity> UserAuthorities { get; set; }
+        public virtual DbSet<UserRoleEntity> UserRoles { get; set; }
         public virtual DbSet<PermissionGrantEntity> PermissionGrants { get; set; }
         public virtual DbSet<PermissionUserEntity> PermissionUsers { get; set; }
         public virtual DbSet<TenantEntity> Tenants { get; set; }

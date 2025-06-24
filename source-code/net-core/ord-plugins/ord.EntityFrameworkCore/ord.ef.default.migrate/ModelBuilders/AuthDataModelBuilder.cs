@@ -2,7 +2,7 @@
 
 namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
 {
-    public  class AuthDataModelBuilder
+    public class AuthDataModelBuilder
     {
         public static void OnModelCreating(ModelBuilder builder)
         {
@@ -18,6 +18,24 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                 {
                     x.TenantId
                 });
+            });
+            builder.Entity<UserAccessTokenEntity>(b =>
+            {
+                b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.UserId
+                });
+                b.HasIndex(x => new
+                {
+                    x.TokenId
+                });
+                b.HasIndex(x => new
+                {
+                    x.Status
+                });
+                b.HasIndex(x => new { x.UserId, x.Status, x.ExpiresAt })
+                    .IsDescending(false, false, true);
             });
             builder.Entity<RoleEntity>(b =>
             {

@@ -16,6 +16,7 @@ namespace Ord.EfCore.Default.MigrateDb.Data
     public class DbContextMigrate : AbpDbContext<DbContextMigrate>
     {
         public virtual DbSet<UserEntity> Users { get; set; }
+        public virtual DbSet<UserAccessTokenEntity> UserAccessTokens { get; set; }
         public virtual DbSet<RoleEntity> Roles { get; set; }
         public virtual DbSet<UserRoleEntity> UserAuthorities { get; set; }
         public virtual DbSet<PermissionGrantEntity> PermissionGrants { get; set; }
