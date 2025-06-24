@@ -9,6 +9,8 @@ using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
+using System.Linq.Dynamic.Core;
+using System.Security.Claims;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
@@ -34,6 +36,15 @@ namespace Ord.Plugin.Auth.AppServices
                 userId = AppFactory.CurrentUserId.Value;
             }
             var paged = await TokenRepository.GetPagedTokensAsync(userId, pagedInput);
+            if (paged?.Items?.Any() == true && userId == AppFactory.CurrentUserId)
+            {
+                var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
+                var tokenId = claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value; 
+                foreach (var token in paged.Items)
+                {
+                    token.IsCurrentToken = string.Equals(tokenId, token.TokenId);
+                }
+            }
             return CommonResultDto<PagedResultDto<UserAccessTokenDto>>.Ok(paged);
         }
         [HttpPost]

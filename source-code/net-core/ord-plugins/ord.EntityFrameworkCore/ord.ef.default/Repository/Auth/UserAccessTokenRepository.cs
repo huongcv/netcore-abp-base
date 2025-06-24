@@ -16,7 +16,9 @@ namespace Ord.EfCore.Default.Repository.Auth
             var map = AppFactory.GetServiceDependency<IMapper>();
             var query = queryable.ProjectTo<UserAccessTokenDto>(map.ConfigurationProvider)
                 .OrderByDescending(x => x.ExpiresAt);
-            return await QueryPagedResultAsync(query, pagedInput);
+            var pagedResult = await QueryPagedResultAsync(query, pagedInput);
+           
+            return pagedResult;
         }
 
         protected async Task<IQueryable<UserAccessTokenEntity>> GeneratePagedQueryable(Guid userId, GetUserAccessTokenPagedInput pagedInput)
@@ -61,13 +63,13 @@ namespace Ord.EfCore.Default.Repository.Auth
                 {
                     StatusValue = true,
                     TotalCount = items.Count(x=>x.IsActived),
-                    StatusDescription = AppFactory.GetLocalizedMessage("status.access_token_active")
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.active")
                 },
                 new()
                 {
                     StatusValue = false,
                     TotalCount = items.Count(x=>!x.IsActived),
-                    StatusDescription = AppFactory.GetLocalizedMessage("status.access_token_inactive")
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.inactive")
                 }
             };
             return result;

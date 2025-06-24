@@ -69,7 +69,15 @@ const statusConfig = {
 export const UserAccessTokenColumns: TableColumnsType<UserAccessTokenDto> = [
     {
         title: 'access_token_id',
-        dataIndex: 'tokenId'
+        dataIndex: 'tokenId',
+        render: (v, dto) => {
+            return <>{v}
+                {
+                    dto.isCurrentToken &&
+                    <Tag color="green">Current Session</Tag>
+                }
+            </>;
+        }
     },
     {
         title: 'access_token_expires_at',
