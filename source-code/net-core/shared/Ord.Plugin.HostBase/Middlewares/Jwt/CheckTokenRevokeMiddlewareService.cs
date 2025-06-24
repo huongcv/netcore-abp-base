@@ -1,6 +1,5 @@
-﻿using Microsoft.IdentityModel.JsonWebTokens;
-using Ord.Domain.Enums;
-using Ord.Plugin.Auth.Shared.Repositories;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
@@ -44,7 +43,10 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
                     {
                         _ = Task.Run(async () =>
                         {
-                            await _cache.SetAsync("RevokeToken:" + tokenId, "1");
+                            await _cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
+                            {
+                                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                            });
                         });
                         return HttpStatusCode.Unauthorized;
                     }
