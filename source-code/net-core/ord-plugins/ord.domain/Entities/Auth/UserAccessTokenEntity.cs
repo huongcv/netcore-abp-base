@@ -5,7 +5,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Domain.Entities.Auth
 {
-    [Table("UserAccessTokens")]
+    [Table("user_access_tokens")]
     public class UserAccessTokenEntity : FullAuditedEntity<Guid>, IMultiTenant
     {
         public Guid? TenantId { get; set; }

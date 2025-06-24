@@ -5,7 +5,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Plugin.Auth.Shared.Entities
 {
-    [Table("UserRoles")]
+    [Table("user_roles")]
     public class UserRoleEntity : Entity<int>, IHasCreationTime, IMultiTenant
     {
         public Guid? TenantId { get; set; }

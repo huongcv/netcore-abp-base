@@ -1,7 +1,5 @@
 ﻿using Ord.Plugin.Contract.Dtos;
-using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
-using Ord.Plugin.Core.Data;
 using System.Text;
 
 namespace Ord.Plugin.Core.Repositories
@@ -23,7 +21,7 @@ namespace Ord.Plugin.Core.Repositories
         }
         public Task<IEnumerable<Guid>> GetUsersGrantedRole(Guid roleId)
         {
-            var sql = $@"SELECT ur.UserId FROM UserRoles ur  WHERE ur.RoleId = @RoleId";
+            var sql = $@"SELECT ur.UserId FROM user_roles ur  WHERE ur.RoleId = @RoleId";
             return QueryAsync<Guid>(sql, new
             {
                 RoleId = roleId

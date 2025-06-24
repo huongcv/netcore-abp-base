@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ord.EfCore.Default.MigrateDb.Migrations
 {
     /// <inheritdoc />
-    public partial class authmodule : Migration
+    public partial class addauthplugin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PermissionGrants",
+                name: "permission_grants",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -30,12 +30,12 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionGrants", x => x.Id);
+                    table.PrimaryKey("PK_permission_grants", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PermissionUsers",
+                name: "permission_users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -46,12 +46,12 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionUsers", x => x.Id);
+                    table.PrimaryKey("PK_permission_users", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -59,7 +59,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -76,12 +76,12 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_roles", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Settings",
+                name: "settings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -106,7 +106,94 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
+                    table.PrimaryKey("PK_settings", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_countries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneCode = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CurrencyCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ImageUrl = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_countries", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_districts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Level = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProvinceCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_districts", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_file_upload",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FileName = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MimeType = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BlobContainerPath = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileStoreProvider = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_file_upload", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -123,13 +210,42 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataJson = table.Column<string>(type: "json", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Severity = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    Severity = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_system_notifications", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "system_provinces",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Level = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CountryCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsActived = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_system_provinces", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -151,7 +267,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Tenants",
+                name: "tenants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -178,7 +294,47 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tenants", x => x.Id);
+                    table.PrimaryKey("PK_tenants", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "user_access_tokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    TenantId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    TokenId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TokenHash = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IpAddress = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserAgent = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DeviceName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Platform = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastUsedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RevokeReason = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RevokedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DeletionTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_access_tokens", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -214,7 +370,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "user_roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -226,12 +382,12 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                    table.PrimaryKey("PK_user_roles", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -267,50 +423,80 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionGrants_ProviderName_ProviderId",
-                table: "PermissionGrants",
+                name: "IX_permission_grants_ProviderName_ProviderId",
+                table: "permission_grants",
                 columns: new[] { "ProviderName", "ProviderId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionUsers_UserId",
-                table: "PermissionUsers",
+                name: "IX_permission_users_UserId",
+                table: "permission_users",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_Code_TenantId",
-                table: "Roles",
+                name: "IX_roles_Code_TenantId",
+                table: "roles",
                 columns: new[] { "Code", "TenantId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_TenantId",
-                table: "Roles",
+                name: "IX_roles_TenantId",
+                table: "roles",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_Name",
-                table: "Settings",
+                name: "IX_settings_Name",
+                table: "settings",
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_TenantId_Name_UserId",
-                table: "Settings",
+                name: "IX_settings_TenantId_Name_UserId",
+                table: "settings",
                 columns: new[] { "TenantId", "Name", "UserId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_Type_TenantId_UserId",
-                table: "Settings",
+                name: "IX_settings_Type_TenantId_UserId",
+                table: "settings",
                 columns: new[] { "Type", "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_UserId",
-                table: "Settings",
+                name: "IX_settings_UserId",
+                table: "settings",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_countries_Code",
+                table: "system_countries",
+                column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_districts_Code",
+                table: "system_districts",
+                column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_districts_ProvinceCode",
+                table: "system_districts",
+                column: "ProvinceCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_file_upload_TenantId",
+                table: "system_file_upload",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_provinces_Code",
+                table: "system_provinces",
+                column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_system_provinces_CountryCode",
+                table: "system_provinces",
+                column: "CountryCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_system_user_notifications_UserId_CreationTime",
@@ -319,9 +505,25 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 descending: new[] { false, true });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_Code",
-                table: "Tenants",
+                name: "IX_tenants_Code",
+                table: "tenants",
                 column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_access_tokens_ExpiresAt",
+                table: "user_access_tokens",
+                column: "ExpiresAt",
+                descending: new bool[0]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_access_tokens_TokenId",
+                table: "user_access_tokens",
+                column: "TokenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_access_tokens_UserId_Status",
+                table: "user_access_tokens",
+                columns: new[] { "UserId", "Status" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_firebase_devices_UserId_DeviceId",
@@ -329,23 +531,23 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                 columns: new[] { "UserId", "DeviceId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_RoleId",
-                table: "UserRoles",
+                name: "IX_user_roles_RoleId",
+                table: "user_roles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_UserId",
-                table: "UserRoles",
+                name: "IX_user_roles_UserId",
+                table: "user_roles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_TenantId",
-                table: "Users",
+                name: "IX_users_TenantId",
+                table: "users",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserName_TenantId",
-                table: "Users",
+                name: "IX_users_UserName_TenantId",
+                table: "users",
                 columns: new[] { "UserName", "TenantId" });
         }
 
@@ -353,34 +555,49 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PermissionGrants");
+                name: "permission_grants");
 
             migrationBuilder.DropTable(
-                name: "PermissionUsers");
+                name: "permission_users");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "roles");
 
             migrationBuilder.DropTable(
-                name: "Settings");
+                name: "settings");
+
+            migrationBuilder.DropTable(
+                name: "system_countries");
+
+            migrationBuilder.DropTable(
+                name: "system_districts");
+
+            migrationBuilder.DropTable(
+                name: "system_file_upload");
 
             migrationBuilder.DropTable(
                 name: "system_notifications");
 
             migrationBuilder.DropTable(
+                name: "system_provinces");
+
+            migrationBuilder.DropTable(
                 name: "system_user_notifications");
 
             migrationBuilder.DropTable(
-                name: "Tenants");
+                name: "tenants");
+
+            migrationBuilder.DropTable(
+                name: "user_access_tokens");
 
             migrationBuilder.DropTable(
                 name: "user_firebase_devices");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "user_roles");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "users");
         }
     }
 }

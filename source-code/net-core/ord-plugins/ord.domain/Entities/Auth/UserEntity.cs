@@ -6,7 +6,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Contract.Entities
 {
-    [Table("Users")]
+    [Table("users")]
     public class UserEntity : FullAuditedEntity<Guid>, IMultiTenant, IHasActived
     {
         [Required]

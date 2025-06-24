@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace Ord.Plugin.Auth.Shared.Entities
 {
-    [Table("PermissionUsers")]
+    [Table("permission_users")]
     public class PermissionUserEntity : Entity<Guid>
     {
         public Guid UserId { get; set; }

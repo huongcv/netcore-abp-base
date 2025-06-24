@@ -6,7 +6,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Ord.Plugin.Auth.Shared.Entities
 {
-    [Table("Tenants")]
+    [Table("tenants")]
     public class TenantEntity : FullAuditedEntity<Guid>, IHasActived
     {
         [MaxLength(50)]

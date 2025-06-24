@@ -13,8 +13,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Ord.EfCore.Default.MigrateDb.Migrations
 {
     [DbContext(typeof(DbContextMigrate))]
-    [Migration("20250622065534_alter-role-description-nullable")]
-    partial class alterroledescriptionnullable
+    [Migration("20250624063653_add-auth-plugin")]
+    partial class addauthplugin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,7 +122,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserName", "TenantId");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.Auth.FileUploadEntity", b =>
@@ -184,6 +184,103 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("system_file_upload");
+                });
+
+            modelBuilder.Entity("Ord.Domain.Entities.Auth.UserAccessTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("DeviceName")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<DateTime?>("LastUsedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Platform")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("RevokeReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("TenantId");
+
+                    b.Property<string>("TokenHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("TokenId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt")
+                        .IsDescending();
+
+                    b.HasIndex("TokenId");
+
+                    b.HasIndex("UserId", "Status");
+
+                    b.ToTable("user_access_tokens");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.MasterData.CountryEntity", b =>
@@ -413,7 +510,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("ProviderName", "ProviderId");
 
-                    b.ToTable("PermissionGrants");
+                    b.ToTable("permission_grants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.PermissionUserEntity", b =>
@@ -435,7 +532,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PermissionUsers");
+                    b.ToTable("permission_users");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.RoleEntity", b =>
@@ -508,7 +605,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Code", "TenantId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.SettingEntity", b =>
@@ -584,7 +681,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Type", "TenantId", "UserId");
 
-                    b.ToTable("Settings");
+                    b.ToTable("settings");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.TenantEntity", b =>
@@ -657,7 +754,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Code");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("tenants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.UserRoleEntity", b =>
@@ -688,7 +785,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("user_roles");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Contract.Features.Notifications.Entities.UserFirebaseDeviceEntity", b =>

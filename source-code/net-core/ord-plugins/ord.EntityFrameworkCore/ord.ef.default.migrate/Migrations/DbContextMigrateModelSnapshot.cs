@@ -119,7 +119,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserName", "TenantId");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.Auth.FileUploadEntity", b =>
@@ -270,16 +270,14 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("ExpiresAt")
+                        .IsDescending();
 
                     b.HasIndex("TokenId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "Status");
 
-                    b.HasIndex("UserId", "Status", "ExpiresAt")
-                        .IsDescending(false, false, true);
-
-                    b.ToTable("UserAccessTokens");
+                    b.ToTable("user_access_tokens");
                 });
 
             modelBuilder.Entity("Ord.Domain.Entities.MasterData.CountryEntity", b =>
@@ -509,7 +507,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("ProviderName", "ProviderId");
 
-                    b.ToTable("PermissionGrants");
+                    b.ToTable("permission_grants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.PermissionUserEntity", b =>
@@ -531,7 +529,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PermissionUsers");
+                    b.ToTable("permission_users");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.RoleEntity", b =>
@@ -604,7 +602,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Code", "TenantId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.SettingEntity", b =>
@@ -680,7 +678,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Type", "TenantId", "UserId");
 
-                    b.ToTable("Settings");
+                    b.ToTable("settings");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.TenantEntity", b =>
@@ -753,7 +751,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("Code");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("tenants");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Auth.Shared.Entities.UserRoleEntity", b =>
@@ -784,7 +782,7 @@ namespace Ord.EfCore.Default.MigrateDb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("user_roles");
                 });
 
             modelBuilder.Entity("Ord.Plugin.Contract.Features.Notifications.Entities.UserFirebaseDeviceEntity", b =>

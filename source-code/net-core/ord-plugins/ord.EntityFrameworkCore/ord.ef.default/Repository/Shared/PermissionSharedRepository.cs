@@ -10,8 +10,8 @@ namespace Ord.Plugin.Core.Repositories
        
         public Task<IEnumerable<string>> GetRoleBasedPermissionsAsync(Guid userId)
         {
-            var sql = $@"SELECT pg.PermissionName FROM UserRoles ur 
-                        join PermissionGrants pg on ur.RoleId = pg.ProviderId and pg.ProviderName = 'R'
+            var sql = $@"SELECT pg.PermissionName FROM user_roles ur 
+                        join permission_grants pg on ur.RoleId = pg.ProviderId and pg.ProviderName = 'R'
                         WHERE ur.UserId = @UserId";
             return QueryAsync<string>(sql, new
             {
@@ -20,7 +20,7 @@ namespace Ord.Plugin.Core.Repositories
         }
         public Task<IEnumerable<UserPermissionGrantedDto>> GetDirectUserPermissionsAsync(Guid userId)
         {
-            var sql = $@"SELECT UserId,PermissionName,IsGrant from PermissionUsers 
+            var sql = $@"SELECT UserId,PermissionName,IsGrant from permission_users 
                     where UserId = @UserId";
             return QueryAsync<UserPermissionGrantedDto>(sql, new
             {

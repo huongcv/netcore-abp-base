@@ -8,7 +8,7 @@ namespace Ord.Plugin.Auth.Shared.Entities
 {  /// <summary>
    /// Bảng phân quyền hệ thống
    /// </summary>
-    [Table("Roles")]
+    [Table("roles")]
     public class RoleEntity : FullAuditedEntity<Guid>, IMultiTenant, IHasActived
     {
         [MaxLength(100)]

@@ -7,7 +7,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Plugin.Auth.Shared.Entities
 {
-    [Table("Settings")]
+    [Table("settings")]
     public class SettingEntity : FullAuditedEntity<Guid>, IMultiTenant, IHasActived
     {
         public Guid? TenantId { get; set; }

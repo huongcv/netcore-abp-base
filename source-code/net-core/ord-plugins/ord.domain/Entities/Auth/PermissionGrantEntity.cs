@@ -5,7 +5,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace Ord.Plugin.Auth.Shared.Entities
 {
-    [Table("PermissionGrants")]
+    [Table("permission_grants")]
     public class PermissionGrantEntity : Entity<long>, IMultiTenant
     {
         /// <summary>
