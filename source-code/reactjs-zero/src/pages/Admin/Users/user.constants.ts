@@ -5,5 +5,6 @@ export const USER_POLICIES = {
     REMOVE: 'AuthPlugin.User.Remove',
     RESET_PASSWORD: 'AuthPlugin.User.ResetPassword',
     ASSIGN_ROLE: 'AuthPlugin.User.AssignRole',
+    MANAGE_ACCESS_TOKEN: 'AuthPlugin.User.ManageTokens',
     LOGIN_WITH_ACCOUNT: 'AuthPlugin.User.LoginPasswordless'
 } as const;

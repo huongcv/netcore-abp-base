@@ -14,6 +14,7 @@ import {useStore} from "@ord-store/index";
 import {changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
 import {assignRoleUserModalStore} from "@pages/Admin/Users/assign-role/Modal";
 import {UserImpersonationService} from "@api/base/UserImpersonationService";
+import {userAccessTokenListModalStore} from "@pages/Admin/Users/access-token/Modal";
 // Stores
 const tableStore = createTableStore(UserService);
 const modalStore = createModalFormStore(UserService, {});
@@ -25,6 +26,7 @@ export const useUserLogic = () => {
     const {sessionStore} = useStore();
     const {openModal: openChangePasswordModal} = changePasswordUserModalStore();
     const {openModal: openAssignRoleModal} = assignRoleUserModalStore();
+    const {openModal: opeAccessTokenListModal} = userAccessTokenListModalStore();
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -92,6 +94,14 @@ export const useUserLogic = () => {
             permission: USER_POLICIES.ASSIGN_ROLE,
             onClick: (user) => {
                 openAssignRoleModal(user);
+            },
+        },
+        {
+            title: 'accessTokenList',
+            icon: <CheckOutlined/>,
+            permission: USER_POLICIES.MANAGE_ACCESS_TOKEN,
+            onClick: (user) => {
+                opeAccessTokenListModal(user);
             },
         },
         {

@@ -49,5 +49,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Users
     {
         public string UserEncodedId { get; set; }
         public string? Status { get; set; }
+        public bool? IsActived { get; set; }
     }
 }

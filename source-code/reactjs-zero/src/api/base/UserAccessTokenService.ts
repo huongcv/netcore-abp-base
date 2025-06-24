@@ -3,6 +3,8 @@ import {
   CommonResultDtoOfPagedResultDtoOfUserAccessTokenDto,
   PagedResultDtoOfUserAccessTokenDto,
   UserAccessTokenDto,
+  CommonResultDtoOfListOfCounterByStatusItemDto,
+  CounterByStatusItemDto,
   CommonResultDtoOfListOfUserAccessTokenDto,
   EncodedIdDto,
   CommonResultDtoOfBoolean,
@@ -30,7 +32,7 @@ export class UserAccessTokenService {
   /**
    *
    */
-  static getPagedAsync(
+  static getPaged(
     params: {
       /** requestBody */
       body?: GetUserAccessTokenPagedInput;
@@ -38,7 +40,7 @@ export class UserAccessTokenService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfPagedResultDtoOfUserAccessTokenDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/user-access-token/get-paged-async';
+      let url = basePath + '/api/auth/user-access-token/get-paged';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -52,9 +54,31 @@ export class UserAccessTokenService {
   /**
    *
    */
-  static getMyTokensAsync(options: IRequestOptions = {}): Promise<CommonResultDtoOfListOfUserAccessTokenDto> {
+  static getCountByStatus(
+    params: {
+      /** requestBody */
+      body?: GetUserAccessTokenPagedInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/user-access-token/get-my-tokens-async';
+      let url = basePath + '/api/auth/user-access-token/get-count-by-status';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getMyTokens(options: IRequestOptions = {}): Promise<CommonResultDtoOfListOfUserAccessTokenDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/user-access-token/get-my-tokens';
 
       const configs: IRequestConfig = getConfigs('get', 'application/json', url, options);
 
@@ -64,7 +88,7 @@ export class UserAccessTokenService {
   /**
    *
    */
-  static revokeAllTokensAsync(
+  static revokeAllTokens(
     params: {
       /** requestBody */
       body?: EncodedIdDto;
@@ -72,7 +96,7 @@ export class UserAccessTokenService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/user-access-token/revoke-all-tokens-async';
+      let url = basePath + '/api/auth/user-access-token/revoke-all-tokens';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -86,7 +110,7 @@ export class UserAccessTokenService {
   /**
    *
    */
-  static revokeTokensAsync(
+  static revokeTokens(
     params: {
       /** requestBody */
       body?: RevokeMultipleTokensDto;
@@ -94,7 +118,7 @@ export class UserAccessTokenService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/user-access-token/revoke-tokens-async';
+      let url = basePath + '/api/auth/user-access-token/revoke-tokens';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -108,9 +132,9 @@ export class UserAccessTokenService {
   /**
    *
    */
-  static revokeAllOtherTokensAsync(options: IRequestOptions = {}): Promise<CommonResultDtoOfBoolean> {
+  static revokeAllOtherTokens(options: IRequestOptions = {}): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/user-access-token/revoke-all-other-tokens-async';
+      let url = basePath + '/api/auth/user-access-token/revoke-all-other-tokens';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

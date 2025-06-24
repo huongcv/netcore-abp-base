@@ -7,6 +7,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Base;
+using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
 
@@ -26,7 +27,7 @@ namespace Ord.Plugin.Auth.AppServices
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
-        public async Task<CommonResultDto<PagedResultDto<UserAccessTokenDto>>> GetPagedAsync(GetUserAccessTokenPagedInput pagedInput)
+        public async Task<CommonResultDto<PagedResultDto<UserAccessTokenDto>>> GetPaged(GetUserAccessTokenPagedInput pagedInput)
         {
             if (!IdEncoderService.TryDecodeId(pagedInput.UserEncodedId, out var userId))
             {
@@ -35,8 +36,20 @@ namespace Ord.Plugin.Auth.AppServices
             var paged = await TokenRepository.GetPagedTokensAsync(userId, pagedInput);
             return CommonResultDto<PagedResultDto<UserAccessTokenDto>>.Ok(paged);
         }
+        [HttpPost]
+        [ActionName("GetCountByStatus")]
+        public virtual async Task<CommonResultDto<List<CounterByStatusItemDto>>> GetCountByStatus(GetUserAccessTokenPagedInput input)
+        {
+            if (!IdEncoderService.TryDecodeId(input.UserEncodedId, out var userId))
+            {
+                userId = AppFactory.CurrentUserId.Value;
+            }
+            await CheckPermissionForOperation(CrudOperationType.GetPaged);
+            var counter = await TokenRepository.GetCountByStatus(userId,input);
+            return AppFactory.CreateSuccessResult(counter);
+        }
         [OrdAuth]
-        public async Task<CommonResultDto<List<UserAccessTokenDto>>> GetMyTokensAsync()
+        public async Task<CommonResultDto<List<UserAccessTokenDto>>> GetMyTokens()
         {
             var tokens = await UserAccessTokenManager.GetMyTokensAsync();
             var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
@@ -49,7 +62,7 @@ namespace Ord.Plugin.Auth.AppServices
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
-        public async Task<CommonResultDto<bool>> RevokeAllTokensAsync(EncodedIdDto input)
+        public async Task<CommonResultDto<bool>> RevokeAllTokens(EncodedIdDto input)
         {
             if (!IdEncoderService.TryDecodeId(input.EncodedId, out var userId))
             {
@@ -59,13 +72,13 @@ namespace Ord.Plugin.Auth.AppServices
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
-        public async Task<CommonResultDto<bool>> RevokeTokensAsync(RevokeMultipleTokensDto input)
+        public async Task<CommonResultDto<bool>> RevokeTokens(RevokeMultipleTokensDto input)
         {
             return await UserAccessTokenManager.RevokeMultipleTokensAsync(input);
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
-        public async Task<CommonResultDto<bool>> RevokeAllOtherTokensAsync()
+        public async Task<CommonResultDto<bool>> RevokeAllOtherTokens()
         {
             return await UserAccessTokenManager.RevokeAllOtherTokensAsync();
         }

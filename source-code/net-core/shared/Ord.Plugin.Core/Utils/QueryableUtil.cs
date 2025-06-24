@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ord.Contract.Dtos.CommonDto;
+using Ord.Plugin.Contract.Dtos;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using Volo.Abp.Application.Dtos;
@@ -63,6 +64,12 @@ namespace Ord.Plugin.Core.Utils
 
             return query.Where(predicate);
         }
+        public static IQueryable<T> WhereLikeText<T>(this IQueryable<T> query, OrdPagedRequestDto input, Expression<Func<T, object>> properties)
+
+        {
+            return WhereLikeText(query, input.TextSearch, properties);
+        }
+
         public static IQueryable<T> WhereLikeText<T>(this IQueryable<T> query, string textSearch, Expression<Func<T, object>> properties)
 
         {

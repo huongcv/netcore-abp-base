@@ -15,5 +15,8 @@
   "description": "Mô tả",
   "user_name": "Tên đăng nhập",
   "phone_number": "Điện thoại",
-  "email": "Email"
+  "email": "Email",
+  "access_token_id": "Token id",
+  "access_token_expires_at": "Thời gian hết hạn",
+  "creation_time": "Ngày tạo"
 }

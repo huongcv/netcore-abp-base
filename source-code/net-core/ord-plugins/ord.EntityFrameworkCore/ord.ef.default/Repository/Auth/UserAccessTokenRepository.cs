@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Ord.Domain.Entities.Auth;
 using Ord.Domain.Enums;
 using Ord.Plugin.Auth.Shared.Dtos.Users;
+using Ord.Plugin.Contract.Dtos;
 
 namespace Ord.EfCore.Default.Repository.Auth
 {
@@ -11,14 +12,67 @@ namespace Ord.EfCore.Default.Repository.Auth
     {
         public async Task<PagedResultDto<UserAccessTokenDto>> GetPagedTokensAsync(Guid userId, GetUserAccessTokenPagedInput pagedInput)
         {
-            var queryable = await GetQueryableAsNoTracking();
-            queryable = queryable.Where(x => x.UserId == userId)
-                .WhereIfHasValue(pagedInput.Status, x => x.Status == pagedInput.Status);
+            var queryable = await GeneratePagedQueryable(userId, pagedInput);
             var map = AppFactory.GetServiceDependency<IMapper>();
             var query = queryable.ProjectTo<UserAccessTokenDto>(map.ConfigurationProvider)
                 .OrderByDescending(x => x.ExpiresAt);
             return await QueryPagedResultAsync(query, pagedInput);
         }
+
+        protected async Task<IQueryable<UserAccessTokenEntity>> GeneratePagedQueryable(Guid userId, GetUserAccessTokenPagedInput pagedInput)
+        {
+            var queryable = await GetQueryableAsNoTracking();
+            queryable = queryable.Where(x => x.UserId == userId)
+                .WhereLikeText(pagedInput, x => new
+                {
+                    x.TokenId
+                })
+                .WhereIfHasValue(pagedInput.Status, x => x.Status == pagedInput.Status);
+            var now = DateTime.Now;
+            if (pagedInput.IsActived == true)
+            {
+                queryable = queryable.Where(x => x.Status == TokenStatus.Active
+                                                 && x.ExpiresAt > now);
+            }
+            if (pagedInput.IsActived == false)
+            {
+                queryable = queryable.Where(x => !(x.Status == TokenStatus.Active
+                                                   && x.ExpiresAt > now));
+            }
+
+            return queryable;
+        }
+        public async Task<List<CounterByStatusItemDto>> GetCountByStatus(Guid userId, GetUserAccessTokenPagedInput pagedInput)
+        {
+            pagedInput.IsActived = null;
+            var queryable = await GeneratePagedQueryable(userId, pagedInput);
+            var now = DateTime.Now;
+            var query = queryable.Select(x => new
+            {
+                x.ExpiresAt,
+                x.Status,
+                IsActived = x.Status == TokenStatus.Active
+                            && x.ExpiresAt > now
+            });
+            var items = await query.ToListAsync();
+            var result = new List<CounterByStatusItemDto>()
+            {
+                new()
+                {
+                    StatusValue = true,
+                    TotalCount = items.Count(x=>x.IsActived),
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.access_token_active")
+                },
+                new()
+                {
+                    StatusValue = false,
+                    TotalCount = items.Count(x=>!x.IsActived),
+                    StatusDescription = AppFactory.GetLocalizedMessage("status.access_token_inactive")
+                }
+            };
+            return result;
+        }
+
 
         public async Task<UserAccessTokenEntity?> GetByTokenIdAsync(string tokenId)
         {
@@ -62,7 +116,7 @@ namespace Ord.EfCore.Default.Repository.Auth
         {
             var queryable = await GetQueryableAsync();
             var tokens = await AsyncExecuter.ToListAsync(
-                queryable.Where(x => x.UserId == userId 
+                queryable.Where(x => x.UserId == userId
                                      && tokenIds.Contains(x.TokenId)
                                      && x.Status == TokenStatus.Active));
 

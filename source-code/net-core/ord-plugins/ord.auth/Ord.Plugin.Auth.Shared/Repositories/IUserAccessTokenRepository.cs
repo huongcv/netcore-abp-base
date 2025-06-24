@@ -1,5 +1,6 @@
 ﻿using Ord.Domain.Entities.Auth;
 using Ord.Plugin.Auth.Shared.Dtos.Users;
+using Ord.Plugin.Contract.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 
@@ -8,6 +9,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
     public interface IUserAccessTokenRepository : IBasicRepository<UserAccessTokenEntity, Guid>
     {
         Task<PagedResultDto<UserAccessTokenDto>> GetPagedTokensAsync(Guid userId, GetUserAccessTokenPagedInput pagedInput);
+        Task<List<CounterByStatusItemDto>> GetCountByStatus(Guid userId, GetUserAccessTokenPagedInput pagedInput);
         /// <summary>
         /// Lấy token theo TokenId
         /// </summary>

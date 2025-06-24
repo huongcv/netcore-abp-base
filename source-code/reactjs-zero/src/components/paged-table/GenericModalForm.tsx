@@ -14,6 +14,7 @@ export interface ModifyModalFormProps<T = any>
     initialValues?: Record<string, any>;
     onSave?: (formValue: any) => Promise<boolean>;
     children?: any;
+    hiddenOk?: boolean;
 }
 
 export const GenericModalForm = <T extends object>({
@@ -23,6 +24,7 @@ export const GenericModalForm = <T extends object>({
                                                        initialValues = {},
                                                        onSave,
                                                        children,
+                                                       hiddenOk,
                                                        ...modalProps
                                                    }: ModifyModalFormProps<T>) => {
     const {open, close, dataItem} = modalStore();
@@ -103,6 +105,7 @@ export const GenericModalForm = <T extends object>({
             isAddNewContinueChange={setIsAddNewContinue}
             onOk={onOkModal}
             onCancel={closeModal}
+            hiddenOk={hiddenOk}
         />
     );
 

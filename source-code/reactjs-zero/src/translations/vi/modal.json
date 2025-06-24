@@ -6,5 +6,8 @@
   "userAssignRole": {
     "title": "Gán vai trò người dùng",
     "success": "Gán vai trò thành công cho người dùng: {{userName}}"
+  },
+  "userAccessTokenListModal": {
+    "title": "Danh sách access token của: {{userName}}"
   }
 }

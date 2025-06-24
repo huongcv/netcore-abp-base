@@ -13,6 +13,7 @@ import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {ChangePasswordUserModal} from "@pages/Admin/Users/change-password/Modal";
 import {AssignRoleUserModal} from "@pages/Admin/Users/assign-role/Modal";
+import {UserAccessTokenListModal} from "@pages/Admin/Users/access-token/Modal";
 
 
 const User: React.FC = () => {
@@ -48,7 +49,7 @@ const User: React.FC = () => {
             />
             <ChangePasswordUserModal/>
             <AssignRoleUserModal/>
-
+            <UserAccessTokenListModal/>
         </>)
         ;
 }

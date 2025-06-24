@@ -1531,13 +1531,13 @@ export interface GetUserAccessTokenPagedInput {
   filter?: string;
 
   /**  */
-  isActived?: boolean;
-
-  /**  */
   userEncodedId?: string;
 
   /**  */
   status?: string;
+
+  /**  */
+  isActived?: boolean;
 }
 
 export interface GetUserNotificationInput {

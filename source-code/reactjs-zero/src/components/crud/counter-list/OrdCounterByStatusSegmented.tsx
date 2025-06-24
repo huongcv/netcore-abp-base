@@ -6,13 +6,15 @@ import {useDebounce} from "@ord-core/hooks/useDebounce";
 export const OrdCounterByStatusSegmented = (props: {
     statusFieldName: string,
     fetcher: StaticCounterByStatusApiFetcher,
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>,
+    initialValueStatus?: string | number | null | boolean
 }) => {
     const {fetcher, tableStore, statusFieldName} = props;
     const {searchParams, setSearchParams, reloadStatusCounter, onLoadData} = tableStore();
+    const {initialValueStatus} = props;
     const [statusOptions, setStatusOptions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState<string | number | null>(null);
+    const [status, setStatus] = useState<string | number | null | boolean>(initialValueStatus || null);
 
     const fetchCounterData = useCallback(async () => {
         try {
@@ -37,7 +39,6 @@ export const OrdCounterByStatusSegmented = (props: {
                 ),
                 value: item.statusValue
             }));
-
             setStatusOptions(options);
         } catch (error) {
             setStatusOptions([]);

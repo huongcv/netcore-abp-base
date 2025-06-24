@@ -41,8 +41,9 @@ namespace Ord.Plugin.Core.Services.Security
         public TKey DecodeId(string encodedId)
         {
             if (string.IsNullOrEmpty(encodedId))
-                return default;
-
+            {
+                throw new IdDecodeException(encodedId, _entityType);
+            }
             try
             {
                 // Base64 URL-safe decoding
@@ -56,7 +57,7 @@ namespace Ord.Plugin.Core.Services.Security
                     throw new IdDecodeException(encodedId, _entityType);
                 }
 
-                var id =  payload.Id;
+                var id = payload.Id;
                 var encodedIdCheck = EncodeId(id);
                 if (!string.Equals(encodedId, encodedIdCheck))
                 {
