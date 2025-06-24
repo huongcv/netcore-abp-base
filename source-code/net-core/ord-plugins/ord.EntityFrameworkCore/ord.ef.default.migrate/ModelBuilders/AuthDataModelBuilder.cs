@@ -24,18 +24,15 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                 b.ConfigureByConvention();
                 b.HasIndex(x => new
                 {
-                    x.UserId
+                    x.UserId,
+                    x.Status
                 });
                 b.HasIndex(x => new
                 {
                     x.TokenId
                 });
-                b.HasIndex(x => new
-                {
-                    x.Status
-                });
-                b.HasIndex(x => new { x.UserId, x.Status, x.ExpiresAt })
-                    .IsDescending(false, false, true);
+                b.HasIndex(x => new {  x.ExpiresAt })
+                    .IsDescending(true);
             });
             builder.Entity<RoleEntity>(b =>
             {

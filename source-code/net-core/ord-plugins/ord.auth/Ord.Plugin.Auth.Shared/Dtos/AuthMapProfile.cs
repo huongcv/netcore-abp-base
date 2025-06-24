@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Ord.Contract.Entities;
+using Ord.Domain.Entities.Auth;
 using Ord.Plugin.Auth.Shared.Dtos.Tenants;
+using Ord.Plugin.Auth.Shared.Dtos.Users;
 using Ord.Plugin.Auth.Shared.Entities;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
@@ -16,6 +18,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
             CreateMap<UpdateUserDto, UserEntity>().ReverseMap();
             CreateMap<UserLoginDto, UserEntity>().ReverseMap();
             CreateMap<TenantUserDto, UserEntity>().ReverseMap();
+            CreateMap<UserAccessTokenEntity, UserAccessTokenDto>().ReverseMap();
 
             CreateMap<TenantPagedDto, TenantEntity>().ReverseMap();
             CreateMap<TenantDetailDto, TenantEntity>().ReverseMap();

@@ -22,6 +22,7 @@ namespace Ord.Plugin.Auth.Services
     public class JwtManager(IGuidGenerator guidGenerator) : OrdAuthManagerBase, IJwtManager
     {
         private IRefreshTokenStore RefreshTokenStore => AppFactory.GetServiceDependency<IRefreshTokenStore>();
+        private IUserAccessTokenManager UserAccessTokenManager => AppFactory.GetServiceDependency<IUserAccessTokenManager>();
 
         public async Task<JwtDto> CreateJwtAsync(UserLoginDto loginUser, IEnumerable<Claim> extendClaims = null)
         {
@@ -38,6 +39,7 @@ namespace Ord.Plugin.Auth.Services
 
             var jwt = await CreateJwtAsync(claims, loginUser, tokenId);
             await SetJwtCookie(jwt);
+            await UserAccessTokenManager.SaveTokenAsync(loginUser, jwt);
             return jwt;
         }
 
