@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Ord.Domain.Enums;
 using Volo.Abp.Guids;
 using Volo.Abp.Security.Claims;
 
@@ -145,6 +146,13 @@ namespace Ord.Plugin.Auth.Services
                 if (string.IsNullOrEmpty(jwtId))
                 {
                     throw new InvalidOperationException("Invalid access token: JWT ID not found");
+                }
+
+                var userAccessRepos = AppFactory.GetServiceDependency<IUserAccessTokenRepository>();
+                var tokenDto = await userAccessRepos.GetByTokenIdAsync(jwtId);
+                if (tokenDto != null && tokenDto?.Status != TokenStatus.Active)
+                {
+                    throw new InvalidOperationException("Token Id revoked");
                 }
 
                 // Validate refresh token với JWT ID
