@@ -27,10 +27,10 @@ namespace Ord.Plugin.HostBase.Services.Auth
             }
 
             var context = appFactory.HttpContextAccessor().HttpContext;
+            var cache = appFactory.LazyService<IDistributedCache<string>>();
             // cho phép refresh token lại đối với người đổi mật khẩu
             if (context.Request.Path.ToString().ToLower().Contains("auth/refresh-token"))
             {
-                var cache = appFactory.LazyService<IDistributedCache<string>>();
                 var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
                 var cacheDataChangePwdByToken = await cache.GetAsync("ChangePwdByToken:" + tokenId);
                 if (!string.IsNullOrEmpty(cacheDataChangePwdByToken))
@@ -40,8 +40,8 @@ namespace Ord.Plugin.HostBase.Services.Auth
             }
             var changePasswordDateTime = claims.FirstOrDefault(x => x.Type == OrdClaimsTypes.ChangePasswordDateTime)?.Value ?? "";
             var userId = claims.FirstOrDefault(x => x.Type == AbpClaimTypes.UserId)?.Value;
-            var _cache = appFactory.LazyService<IDistributedCache<string>>();
-            var cacheData = await _cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, () => DoGetChangePasswordDateTime(userId));
+           
+            var cacheData = await cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, () => DoGetChangePasswordDateTime(userId));
             if (!string.Equals(cacheData, changePasswordDateTime))
             {
                 return "exception.access_token_invalid";
