@@ -55,7 +55,19 @@ namespace Ord.Domain.Entities.Auth
         /// </summary>
         [MaxLength(20)]
         public string Status { get; set; } = "active";
-        public bool IsExpired => DateTime.UtcNow > ExpiresAt;
+
+        /// <summary>
+        /// Lý do thu hồi token (nếu có)
+        /// </summary>
+        [MaxLength(200)]
+        public string? RevokeReason { get; set; }
+
+        /// <summary>
+        /// Thời gian thu hồi token
+        /// </summary>
+        public DateTime? RevokedAt { get; set; }
+
+        public bool IsExpired => DateTime.Now > ExpiresAt;
         public bool IsValid => Status == "active" && !IsExpired;
 
     }
