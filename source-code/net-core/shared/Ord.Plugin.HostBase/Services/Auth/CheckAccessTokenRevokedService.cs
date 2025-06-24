@@ -39,7 +39,7 @@ namespace Ord.Plugin.HostBase.Services.Auth
                     {
                         await _cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
                         {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(15)
                         });
                     });
                     return "exception.access_token_revoked";

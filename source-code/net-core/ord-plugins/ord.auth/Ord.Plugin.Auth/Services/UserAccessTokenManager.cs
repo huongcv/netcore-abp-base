@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DeviceDetectorNET.Cache;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Ord.Contract.Entities;
 using Ord.Domain.Entities.Auth;
 using Ord.Domain.Enums;
@@ -15,6 +17,7 @@ using Ord.Plugin.Core.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
+using Volo.Abp.Caching;
 using Volo.Abp.ObjectMapping;
 
 namespace Ord.Plugin.Auth.Services
@@ -124,11 +127,12 @@ namespace Ord.Plugin.Auth.Services
             {
                 var currentUserId = AppFactory.CurrentUserId;
                 var hasAdminPermission = await AppFactory.CheckPermissionAsync("AuthPlugin.User.ManageTokens");
+                var tokenIds = input.TokenIds.Distinct().ToList();
 
                 // Nếu không phải admin, kiểm tra tất cả token có thuộc về user hiện tại không
                 if (!hasAdminPermission && currentUserId.HasValue)
                 {
-                    foreach (var tokenId in input.TokenIds)
+                    foreach (var tokenId in tokenIds)
                     {
                         var token = await TokenRepository.GetByTokenIdAsync(tokenId);
                         if (token != null && token.UserId != currentUserId.Value)
@@ -142,10 +146,17 @@ namespace Ord.Plugin.Auth.Services
                     ValidationExceptionHelper.ThrowNotFound();
                 }
 
-                await TokenRepository.RevokeMultipleTokensAsync(userId, input.TokenIds, input.Reason);
-
+                await TokenRepository.RevokeMultipleTokensAsync(userId, tokenIds, input.Reason);
+                var cache = AppFactory.LazyService<IDistributedCache<string>>();
+                foreach (var tokenId in tokenIds)
+                {
+                    cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(15)
+                    });
+                }
                 _logger.LogInformation("{Count} tokens revoked by user {UserId}",
-                    input.TokenIds.Count, currentUserId);
+                    tokenIds.Count, currentUserId);
 
                 return CommonResultDto<bool>.Ok(true);
             }
