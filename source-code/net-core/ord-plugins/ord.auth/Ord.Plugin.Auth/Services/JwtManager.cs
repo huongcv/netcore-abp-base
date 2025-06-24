@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Ord.Domain.Enums;
 using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
@@ -9,12 +10,12 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Core.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Ord.Domain.Enums;
 using Volo.Abp.Guids;
 using Volo.Abp.Security.Claims;
 
@@ -148,9 +149,9 @@ namespace Ord.Plugin.Auth.Services
                     throw new InvalidOperationException("Invalid access token: JWT ID not found");
                 }
 
-                var userAccessRepos = AppFactory.GetServiceDependency<IUserAccessTokenRepository>();
-                var tokenDto = await userAccessRepos.GetByTokenIdAsync(jwtId);
-                if (tokenDto != null && tokenDto?.Status != TokenStatus.Active)
+                var userAccessRepos = AppFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
+                var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(jwtId);
+                if (isTokenInActive)
                 {
                     throw new InvalidOperationException("Token Id revoked");
                 }

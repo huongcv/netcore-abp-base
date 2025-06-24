@@ -1,6 +1,9 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
+using Ord.Domain.Enums;
+using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services.Auth;
 using System.Net;
 using System.Security.Claims;
@@ -33,6 +36,16 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
                     var cacheData = await _cache.GetAsync("RevokeToken:" + tokenId);
                     if (!string.IsNullOrEmpty(cacheData))
                     {
+                        return HttpStatusCode.Unauthorized;
+                    }
+                    var userAccessRepos = _appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
+                    var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(tokenId);
+                    if (isTokenInActive)
+                    {
+                        _ = Task.Run(async () =>
+                        {
+                            await _cache.SetAsync("RevokeToken:" + tokenId, "1");
+                        });
                         return HttpStatusCode.Unauthorized;
                     }
                 }
