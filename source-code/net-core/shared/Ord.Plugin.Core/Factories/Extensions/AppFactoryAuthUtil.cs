@@ -1,6 +1,8 @@
-﻿using Ord.Plugin.Contract.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Exceptions;
 using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Core.Factories;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Authorization;
 using Volo.Abp.Validation;
@@ -41,7 +43,7 @@ namespace Ord
                 throw new NotAccessPermissionException(factory.GetLocalizedMessage("auth.not_access_to_host_feature"));
             }
         }
-        public static async Task ValidateUserCanGrantPermissionsAsync(this IAppFactory factory,IEnumerable<string> listOfPermissions)
+        public static async Task ValidateUserCanGrantPermissionsAsync(this IAppFactory factory, IEnumerable<string> listOfPermissions)
         {
             var userSession = await factory.GetUserSessionAsync();
             if (userSession == null)
@@ -64,5 +66,23 @@ namespace Ord
                 }
             }
         }
+        public static void ClearJwtCookie(this IAppFactory factory)
+        {
+            var httpContext = factory.HttpContextAccessor().HttpContext;
+            if (httpContext == null) return;
+            var isHttps = httpContext.Request.IsHttps;
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = isHttps,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set thời gian quá khứ để xóa cookie
+                Path = "/"
+            };
+
+            httpContext.Response.Cookies.Append("jwt", "", cookieOptions);
+            httpContext.Response.Cookies.Append("refresh_token", "", cookieOptions);
+        }
+
     }
 }

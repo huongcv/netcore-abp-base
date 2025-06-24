@@ -23,7 +23,6 @@ namespace Ord.Plugin.Contract.Dtos
         /// Kết quả chính của api
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyOrder(3)]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public T Data { get; set; }
         /// <summary>
         /// Thông tin bổ sung, nếu cần thiết

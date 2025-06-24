@@ -26,6 +26,7 @@ namespace Ord.Plugin.HostBase.Filters
             var result = context.Exception switch
             {
                 AbpValidationException validationEx => HandleValidationException(validationEx),
+                
                 BusinessException businessEx => HandleBusinessException(businessEx),
                 IdDecodeException idDecodeEx => HandleIdDecodeException(idDecodeEx),
                 OrdCommonException commonEx => HandleOrdCommonException(commonEx),

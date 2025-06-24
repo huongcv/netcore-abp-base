@@ -12,7 +12,7 @@ using Ord.Plugin.Core.Features.RateLimits;
 using Ord.Plugin.Core.Middlewares;
 using Ord.Plugin.HostBase.Configurations;
 using Ord.Plugin.HostBase.Middlewares;
-using Ord.Plugin.HostBase.Middlewares.Jwt;
+using Ord.Plugin.HostBase.Services.Auth;
 using System.IO.Compression;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -74,8 +74,8 @@ namespace Ord.Plugin.HostBase
 #else
             services.AddHangfireMysql();
 #endif
-            services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckPasswordChangeTokenMiddlewareService>();
-            services.AddTransient<ICheckClaimTokenJwtMiddlewareService, CheckTokenRevokeMiddlewareService>();
+            services.AddTransient<ICheckAccessTokenService, CheckPasswordChangeAccessTokenService>();
+            services.AddTransient<ICheckAccessTokenService, CheckAccessTokenRevokedService>();
 
         }
         void ConfigureCors(IServiceCollection services, IConfiguration configuration)
@@ -151,7 +151,6 @@ namespace Ord.Plugin.HostBase
             app.UseAbpClaimsMap();
             app.UseUnitOfWork();
             app.UseMiddleware<RateLimitMiddleware>();
-            app.UseMiddleware<CheckTokenJWTLocalMiddleware>();
             app.UseMiddleware<LanguageMiddleware>();
             app.UseDynamicClaims();
             app.UseMiddleware<OrdMultiTenancyMiddleware>();

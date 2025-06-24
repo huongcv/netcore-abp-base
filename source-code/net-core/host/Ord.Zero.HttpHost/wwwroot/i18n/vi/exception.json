@@ -138,5 +138,8 @@
   "calibration_required": "Yêu cầu hiệu chỉnh",
   "maintenance_required": "Yêu cầu bảo trì",
   "replacement_required": "Yêu cầu thay thế",
-  "contact_support": "Vui lòng liên hệ hỗ trợ kỹ thuật"
+  "contact_support": "Vui lòng liên hệ hỗ trợ kỹ thuật",
+  "access_token_revoked": "Access token đã bị thu hồi",
+  "access_token_invalid": "Access token không hợp lệ",
+  "user_unauthorized": "Người dùng chưa đăng nhập"
 }

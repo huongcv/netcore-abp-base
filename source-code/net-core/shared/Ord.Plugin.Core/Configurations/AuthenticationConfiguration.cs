@@ -1,49 +1,44 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Ord.Plugin.Contract.Configurations;
-using Polly;
+using Ord.Plugin.Contract.Factories;
+using Ord.Plugin.Contract.Services.Auth;
 using System.Text;
-
-namespace Ord.Plugin.Core.Configurations;
+using System.Text.Json;
 
 public static class AuthenticationConfiguration
 {
+    private const string SchemeSelector = "JWT_OR_COOKIE";
+    private const string JwtScheme = "Local";
+    private const string CookieJwtScheme = "LocalCookie";
+
     public static void AddAuthenticationServices(this IServiceCollection services)
     {
         var configuration = services.GetConfiguration();
         var tokenAuthConfig = configuration.GetSection("Authentication:JwtBearer").Get<TokenAuthConfiguration>();
-        tokenAuthConfig.SecurityKey = tokenAuthConfig.SecurityKey + "0r3nd@";
-        tokenAuthConfig.AccessTokenExpiration = TimeSpan.FromSeconds(tokenAuthConfig.TimeLifeTokenSeconds);
-        services.AddSingleton<TokenAuthConfiguration>(tokenAuthConfig);
 
-        var authenticationBuilder = services.AddAuthentication("JWT_OR_COOKIE");
-        authenticationBuilder.AddPolicyScheme("JWT_OR_COOKIE", "Jwt Bearer or Cookie", options =>
+        tokenAuthConfig.SecurityKey += "0r3nd@";
+        tokenAuthConfig.AccessTokenExpiration = TimeSpan.FromSeconds(tokenAuthConfig.TimeLifeTokenSeconds);
+        services.AddSingleton(tokenAuthConfig);
+
+        var authenticationBuilder = services.AddAuthentication(SchemeSelector);
+
+        authenticationBuilder.AddPolicyScheme(SchemeSelector, "Jwt or Cookie", options =>
         {
             options.ForwardDefaultSelector = ctx =>
             {
                 var cookieToken = ctx.Request.Cookies["jwt"];
-                if (!string.IsNullOrEmpty(cookieToken))
-                {
-                    return "LocalCookie";
-                }
-                var authHeader = ctx.Request.Headers["Authorization"].FirstOrDefault();
-                if (string.IsNullOrEmpty(authHeader))
-                {
-                    return CookieAuthenticationDefaults.AuthenticationScheme;
-                }
-                var isJwtBearerAuth = authHeader?.StartsWith(JwtBearerDefaults.AuthenticationScheme) ?? false;
-                if (!isJwtBearerAuth)
-                {
-                    return CookieAuthenticationDefaults.AuthenticationScheme;
-                }
+                if (!string.IsNullOrEmpty(cookieToken)) return CookieJwtScheme;
 
-                return "Local";
+                var authHeader = ctx.Request.Headers["Authorization"].FirstOrDefault();
+                return authHeader?.StartsWith("Bearer ") == true ? JwtScheme : CookieJwtScheme;
             };
         });
+
         authenticationBuilder.AddCookie(options =>
         {
             options.LoginPath = new PathString("/Account/Login");
@@ -52,104 +47,116 @@ public static class AuthenticationConfiguration
             options.Cookie.Name = "OrdPlugin.Identity";
             options.SlidingExpiration = true;
 #if DEBUG
-            options.ExpireTimeSpan = TimeSpan.FromDays(3600);
+            options.ExpireTimeSpan = TimeSpan.FromDays(360);
 #else
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+            options.ExpireTimeSpan = TimeSpan.FromDays(1);
 #endif
-
         });
-        authenticationBuilder.AddJwtBearer("Local", options =>
-        {
-            options.SaveToken = true;
-            options.TokenValidationParameters = CreateTokenValidationParameters(tokenAuthConfig);
-            options.Events = new JwtBearerEvents
-            {
-                OnTokenValidated = async context =>
-                {
-                    await ValidateJwtTokenAsync(context);
-                },
-                OnAuthenticationFailed = context =>
-                {
-                    LogAuthenticationFailure(context);
-                    return Task.CompletedTask;
-                },
-                OnMessageReceived = context =>
-                {
-                    // ✅ Ưu tiên lấy từ Header nếu có
-                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-                    {
-                        context.Token = authHeader.Substring("Bearer ".Length).Trim();
-                    }
-                    else
-                    {
-                        // ✅ Nếu không có header, fallback sang Cookie
-                        var cookieToken = context.HttpContext.Request.Cookies["jwt"];
-                        if (!string.IsNullOrEmpty(cookieToken))
-                        {
-                            context.Token = cookieToken;
-                        }
-                    }
 
-                    return Task.CompletedTask;
-                }
-            };
-        });
-        authenticationBuilder.AddJwtBearer("LocalCookie", options =>
-        {
-            options.SaveToken = true;
-            options.TokenValidationParameters = CreateTokenValidationParameters(tokenAuthConfig);
-            options.Events = new JwtBearerEvents
-            {
-                OnTokenValidated = async context =>
-                {
-                    await ValidateJwtTokenAsync(context);
-                },
-                OnAuthenticationFailed = context =>
-                {
-                    LogAuthenticationFailure(context);
-                    return Task.CompletedTask;
-                },
-                OnMessageReceived = context =>
-                { 
-                    // ✅ Nếu không có header, fallback sang Cookie
-                    var cookieToken = context.HttpContext.Request.Cookies["jwt"];
-                    if (!string.IsNullOrEmpty(cookieToken))
-                    {
-                        context.Token = cookieToken;
-                    }
+        authenticationBuilder.AddJwtBearer(JwtScheme, options =>
+            ConfigureJwtBearerOptions(options, tokenAuthConfig, true));
 
-                    return Task.CompletedTask;
-                }
-            };
-        });
+        authenticationBuilder.AddJwtBearer(CookieJwtScheme, options =>
+            ConfigureJwtBearerOptions(options, tokenAuthConfig, false));
     }
-    private static TokenValidationParameters CreateTokenValidationParameters(TokenAuthConfiguration tokenAuthConfig)
+
+    private static void ConfigureJwtBearerOptions(JwtBearerOptions options, TokenAuthConfiguration config, bool checkHeader)
     {
-        return new TokenValidationParameters
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenAuthConfig.SecurityKey)),
-
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.SecurityKey)),
             ValidateIssuer = true,
-            ValidIssuer = tokenAuthConfig.Issuer,
-
+            ValidIssuer = config.Issuer,
             ValidateAudience = true,
-            ValidAudience = tokenAuthConfig.Audience,
-
+            ValidAudience = config.Audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
         };
-    }
-    private static async Task ValidateJwtTokenAsync(TokenValidatedContext context)
-    {
-        var services = context.HttpContext.RequestServices;
-    }
-    private static void LogAuthenticationFailure(AuthenticationFailedContext context)
-    {
-        // TODO: Implement proper logging
-        // var logger = context.HttpContext.RequestServices.GetService<ILogger<AuthenticationConfiguration>>();
-        // logger?.LogWarning("Authentication failed: {Exception}", context.Exception.Message);
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = ValidateJwtTokenAsync,
+            OnChallenge = OnChallenge,
+            OnAuthenticationFailed = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetService<ILogger<JwtBearerEvents>>();
+                logger?.LogWarning("JWT authentication failed: {Message}", context.Exception?.Message);
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = context =>
+            {
+                if (checkHeader)
+                {
+                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+                    {
+                        context.Token = authHeader["Bearer ".Length..].Trim();
+                        return Task.CompletedTask;
+                    }
+                }
+
+                var cookieToken = context.HttpContext.Request.Cookies["jwt"];
+                if (!string.IsNullOrEmpty(cookieToken))
+                {
+                    context.Token = cookieToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     }
 
+    private static async Task ValidateJwtTokenAsync(TokenValidatedContext context)
+    {
+        var appFactory = context.HttpContext.RequestServices.GetService<IAppFactory>();
+        var middlewares = appFactory.GetServiceDependency<IEnumerable<ICheckAccessTokenService>>();
+        var claims = context.Principal?.Claims;
+
+        if (middlewares != null && claims?.Any() == true)
+        {
+            foreach (var service in middlewares)
+            {
+                var error = await service.CheckClaims(claims);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    context.Fail(error);
+                    return;
+                }
+            }
+        }
+    }
+
+    private static Task OnChallenge(JwtBearerChallengeContext context)
+    {
+        var logger = context.HttpContext.RequestServices.GetService<ILogger<JwtBearerEvents>>();
+        var appFactory = context.HttpContext.RequestServices.GetService<IAppFactory>();
+
+        logger?.LogDebug("JWT challenge for path: {Path}", context.Request.Path);
+
+        if (context.AuthenticateFailure != null)
+        {
+            context.Response.StatusCode = 401;
+            context.Response.ContentType = "application/json";
+            context.Response.Headers["WWW-Authenticate"] = "Bearer";
+            var message = context.AuthenticateFailure?.Message ?? "exception.user_unauthorized";
+            if (!message.StartsWith("exception"))
+            {
+                message = "exception.user_unauthorized";
+            }
+
+            var response = new
+            {
+                isSuccessful = false,
+                code = "unauthorized",
+                message = appFactory.GetLocalizedMessage(message)
+            };
+
+            context.HandleResponse();
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+
+        return Task.CompletedTask;
+    }
 }

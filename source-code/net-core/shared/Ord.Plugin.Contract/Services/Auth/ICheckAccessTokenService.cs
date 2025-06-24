@@ -4,7 +4,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Contract.Services.Auth
 {
-    public interface ICheckClaimTokenJwtMiddlewareService:ITransientDependency
+    public interface ICheckAccessTokenService:ITransientDependency
     {
         /// <summary>
         /// Trả về string.Empty nếu check điều kiện thỏa mãn

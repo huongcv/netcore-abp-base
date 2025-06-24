@@ -73,20 +73,7 @@ namespace Ord.Plugin.Auth.Services
 
         public async Task ClearJwtCookie()
         {
-            var httpContext = AppFactory.HttpContextAccessor().HttpContext;
-            if (httpContext == null) return;
-            var isHttps = httpContext.Request.IsHttps;
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = isHttps,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddDays(-1), // Set thời gian quá khứ để xóa cookie
-                Path = "/"
-            };
-
-            httpContext.Response.Cookies.Append("jwt", "", cookieOptions);
-            httpContext.Response.Cookies.Append("refresh_token", "", cookieOptions);
+            AppFactory.ClearJwtCookie();
         }
 
         protected async Task<JwtDto> CreateJwtAsync(List<Claim> claims, UserLoginDto loginUser, string jwtId)

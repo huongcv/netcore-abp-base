@@ -4,21 +4,13 @@ using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Factories;
 using Ord.Plugin.Contract.Repositories;
 using Ord.Plugin.Contract.Services.Auth;
-using System.Net;
 using System.Security.Claims;
 using Volo.Abp.Caching;
 
-namespace Ord.Plugin.HostBase.Middlewares.Jwt
+namespace Ord.Plugin.HostBase.Services.Auth
 {
-    public class CheckTokenRevokeMiddlewareService : ICheckClaimTokenJwtMiddlewareService
+    public class CheckAccessTokenRevokedService(IAppFactory appFactory) : ICheckAccessTokenService
     {
-        private readonly IAppFactory _appFactory;
-
-        public CheckTokenRevokeMiddlewareService(IAppFactory appFactory)
-        {
-            _appFactory = appFactory;
-        }
-
         public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
         {
             if (claims?.Any() != true)
@@ -33,13 +25,13 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
             var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
             if (!string.IsNullOrEmpty(tokenId))
             {
-                var _cache = _appFactory.LazyService<IDistributedCache<string>>();
+                var _cache = appFactory.LazyService<IDistributedCache<string>>();
                 var cacheData = await _cache.GetAsync("RevokeToken:" + tokenId);
                 if (!string.IsNullOrEmpty(cacheData))
                 {
-                    return "Access token is revoked or expired";
+                    return "exception.access_token_revoked";
                 }
-                var userAccessRepos = _appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
+                var userAccessRepos = appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
                 var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(tokenId);
                 if (isTokenInActive)
                 {
@@ -50,7 +42,7 @@ namespace Ord.Plugin.HostBase.Middlewares.Jwt
                             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
                         });
                     });
-                    return string.Empty;
+                    return "exception.access_token_revoked";
                 }
             }
             return string.Empty;
