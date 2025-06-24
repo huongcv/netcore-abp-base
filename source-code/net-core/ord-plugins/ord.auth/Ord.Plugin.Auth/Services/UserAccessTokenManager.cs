@@ -16,7 +16,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 using Volo.Abp.ObjectMapping;
-using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
 {
@@ -49,7 +48,7 @@ namespace Ord.Plugin.Auth.Services
                     TenantId = jwt.TenantId,
                     TokenId = tokenId,
                     TokenHash = ComputeTokenHash(jwt.AccessToken),
-                    ExpiresAt = DateTime.UtcNow.AddSeconds(jwt.ExpireInSeconds),
+                    ExpiresAt = jwt.ExpiresAt,
                     IpAddress = clientInfo.IpAddress,
                     UserAgent = clientInfo.UserAgent,
                     DeviceName = UserAgentUtil.GetDeviceNameFromUserAgent(clientInfo.UserAgent),
