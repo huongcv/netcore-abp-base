@@ -5,14 +5,13 @@ import React, {useEffect, useMemo, useState} from "react";
 import {UserAccessTokenService} from "@api/base/UserAccessTokenService";
 import {UserDto} from "@api/index.defs";
 import TableUtil from "@ord-core/utils/table.util";
-import {Button, Space} from "antd";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {UserPagedDto} from "@api/base/index.defs";
 import {UserAccessTokenColumns} from "@pages/Admin/Users/access-token/Columns";
-import {DeleteOutlined} from "@ant-design/icons";
 import {ConfirmRevokeModal} from "@pages/Admin/Users/access-token/ConfirmRevokeModal";
 import {useAccessTokenModalLogic} from "@pages/Admin/Users/access-token/useAccessTokenModalLogic";
 import {SearchablePagedTable} from "@ord-components/paged-table/components/SearchablePagedTable";
+import {UserAccessTokenBulkActionToolbar} from "@pages/Admin/Users/access-token/UserAccessTokenBulkActionToolbar";
 
 export const userAccessTokenListModalStore = createModalStore();
 export const UserAccessTokenListModal = () => {
@@ -53,53 +52,11 @@ export const UserAccessTokenListModal = () => {
     const handleSave = async () => {
         return true;
     }
-
     const columns = TableUtil.getColumns<UserDto>([
         ...UserAccessTokenColumns
     ], {
         actions: []
     });
-    // Bulk action toolbar (only show when tokens are selected and on active tab)
-    const BulkActionToolbar = () => {
-        if (selectedRowKeys.length === 0) {
-            return null;
-        }
-
-        return (
-            <div style={{
-                marginBottom: 16,
-                padding: '12px 16px',
-                background: '#e6f7ff',
-                border: '1px solid #91d5ff',
-                borderRadius: '6px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-            }}>
-                <Space>
-                    <span style={{fontWeight: 500}}>
-                        {tCommon('selectedItems', {count: selectedRowKeys.length})}
-                    </span>
-                </Space>
-
-                <Space>
-                    <Button
-                        type="primary"
-                        danger
-                        icon={<DeleteOutlined/>}
-                        disabled={selectedRowKeys.length === 0}
-                        onClick={() => {
-                            setOpenConfirm(true);
-                        }}
-                    >
-                        {tCommon('revokeSelected', {count: selectedRowKeys.length})}
-                    </Button>
-
-
-                </Space>
-            </div>
-        );
-    };
     const SearchFormFields = <>
         <SearchFilterText span={12}/>
     </>;
@@ -113,21 +70,24 @@ export const UserAccessTokenListModal = () => {
                 onSave={handleSave}
             >
                 <SearchablePagedTable searchForm={searchForm}
-                                          searchFields={SearchFormFields}
-                                          apiService={UserAccessTokenService}
-                                          rowKey={'tokenId'}
-                                          columns={columns}
-                                          rowSelection={rowSelection}
-                                          initialSearchParams={{
-                                              isActived: true,
-                                              userEncodedId: user?.encodedId,
-                                          }}
-                                          counterByStatus={{
-                                              statusFieldName: 'isActived',
-                                              initialValueStatus: true,
-                                              fetcher: UserAccessTokenService.getCountByStatus
-                                          }}
-                                          bulkActionToolbar={<BulkActionToolbar/>}
+                                      searchFields={SearchFormFields}
+                                      apiService={UserAccessTokenService}
+                                      rowKey={'tokenId'}
+                                      columns={columns}
+                                      rowSelection={rowSelection}
+                                      initialSearchParams={{
+                                          isActived: true,
+                                          userEncodedId: user?.encodedId,
+                                      }}
+                                      counterByStatus={{
+                                          statusFieldName: 'isActived',
+                                          initialValueStatus: true,
+                                          fetcher: UserAccessTokenService.getCountByStatus
+                                      }}
+                                      bulkActionToolbar={<UserAccessTokenBulkActionToolbar
+                                          selectedCount={selectedRowKeys.length}
+                                          onRevokeClick={() => setOpenConfirm(true)}
+                                      />}
                 />
                 <ConfirmRevokeModal
                     open={openConfirm}
