@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
 using Ord.Plugin.Auth.Shared.Services;
-using Ord.Plugin.Contract.Attributes;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Utils;
@@ -11,7 +10,6 @@ namespace Ord.Plugin.Auth.AppServices
 {
     [ApiController]
     [Route("api/auth")]
-    [IgnoreJwtCheck]
     public class RefreshTokenAppService : OrdAppServiceBase
     {
         private IJwtManager JwtManager => AppFactory.GetServiceDependency<IJwtManager>();

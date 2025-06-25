@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ord.Plugin.Auth.Shared.Dtos.Auths;
 using Ord.Plugin.Auth.Shared.Services;
-using Ord.Plugin.Contract.Attributes;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Base;
 
@@ -17,7 +15,6 @@ namespace Ord.Plugin.Auth.AppServices
         private ILoginFirebaseManager LoginFirebaseManager => AppFactory.GetServiceDependency<ILoginFirebaseManager>();
 
         [HttpPost("login")]
-        [IgnoreJwtCheck]
         public async Task<CommonResultDto<JwtDto>> Login(LoginInputDto input)
         {
             var result = await AuthManager.LoginAsync(input);
@@ -29,7 +26,6 @@ namespace Ord.Plugin.Auth.AppServices
             return result;
         }
         [HttpPost("logout")]
-        [IgnoreJwtCheck]
         public async Task Logout()
         {
             if (AppFactory?.CurrentUserId.HasValue == true)

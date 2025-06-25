@@ -10,53 +10,68 @@ using Volo.Abp.Caching;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Uow;
 
-namespace Ord.Plugin.HostBase.Services.Auth
-{
-    public class CheckPasswordChangeAccessTokenService(IAppFactory appFactory) : ICheckAccessTokenService
-    {
-        public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
-        {
-            if (claims?.Any() != true)
-            {
-                return string.Empty;
-            }
-            var allSetting = FullAppSettingConfig.GetInstance();
-            if (allSetting?.Authentication?.IsPasswordChangeMiddleware != true)
-            {
-                return string.Empty;
-            }
+namespace Ord.Plugin.HostBase.Services.Auth;
 
-            var context = appFactory.HttpContextAccessor().HttpContext;
-            var cache = appFactory.LazyService<IDistributedCache<string>>();
-            // cho phép refresh token lại đối với người đổi mật khẩu
-            if (context.Request.Path.ToString().ToLower().Contains("auth/refresh-token"))
-            {
-                var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-                var cacheDataChangePwdByToken = await cache.GetAsync("ChangePwdByToken:" + tokenId);
-                if (!string.IsNullOrEmpty(cacheDataChangePwdByToken))
-                {
-                    return string.Empty;
-                }
-            }
-            var changePasswordDateTime = claims.FirstOrDefault(x => x.Type == OrdClaimsTypes.ChangePasswordDateTime)?.Value ?? "";
-            var userId = claims.FirstOrDefault(x => x.Type == AbpClaimTypes.UserId)?.Value;
-           
-            var cacheData = await cache.GetOrAddAsync("ChangePasswordDateTime:" + userId, () => DoGetChangePasswordDateTime(userId));
-            if (!string.Equals(cacheData, changePasswordDateTime))
-            {
-                return "exception.access_token_invalid";
-            }
+public class CheckPasswordChangeAccessTokenService(IAppFactory appFactory) : ICheckAccessTokenService
+{
+    private const string ChangePasswordCachePrefix = "ChangePasswordDateTime:";
+    private const string ChangePwdByTokenPrefix = "ChangePwdByToken:";
+
+    public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
+    {
+        if (claims is null || !claims.Any())
+        {
             return string.Empty;
         }
 
-        private async Task<string> DoGetChangePasswordDateTime(string? userId)
+        var settings = FullAppSettingConfig.GetInstance();
+        if (settings?.Authentication?.IsPasswordChangeMiddleware != true)
         {
-            var userSer = appFactory.GetServiceDependency<IUserSharedRepository>();
-            var uowManager = appFactory.GetServiceDependency<IUnitOfWorkManager>();
-            using var uow = uowManager.Begin();
-            var changeTime = await userSer.GetChangePasswordDateTime(userId);
-            await uow.CompleteAsync();
-            return changeTime.HasValue ? changeTime.Value.ToString(OrdClaimsTypes.FormatClaimDateType) : "";
+            return string.Empty;
         }
+
+        var context = appFactory.HttpContextAccessor().HttpContext;
+        var cache = appFactory.LazyService<IDistributedCache<string>>();
+
+        var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+        var userId = claims.FirstOrDefault(x => x.Type == AbpClaimTypes.UserId)?.Value;
+        var tokenChangePwdDate = claims.FirstOrDefault(x => x.Type == OrdClaimsTypes.ChangePasswordDateTime)?.Value ?? "";
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return "exception.access_token_invalid";
+        }
+
+        // Cho phép refresh token sau khi đổi mật khẩu, nếu đã được cache xác nhận
+        if (context.Request.Path.ToString().ToLowerInvariant().Contains("auth/refresh-token") && !string.IsNullOrEmpty(tokenId))
+        {
+            var allowRefresh = await cache.GetAsync(ChangePwdByTokenPrefix + tokenId);
+            if (!string.IsNullOrEmpty(allowRefresh))
+            {
+                return string.Empty;
+            }
+        }
+
+        var cacheKey = ChangePasswordCachePrefix + userId;
+        var storedChangePwdDate = await cache.GetOrAddAsync(cacheKey, () => GetChangePasswordDateTimeAsync(userId));
+
+        if (!string.Equals(storedChangePwdDate, tokenChangePwdDate))
+        {
+            return "exception.access_token_invalid";
+        }
+
+        return string.Empty;
+    }
+
+    private async Task<string> GetChangePasswordDateTimeAsync(string userId)
+    {
+        var userRepo = appFactory.GetServiceDependency<IUserSharedRepository>();
+        var uowManager = appFactory.GetServiceDependency<IUnitOfWorkManager>();
+
+        using var uow = uowManager.Begin();
+        var changeTime = await userRepo.GetChangePasswordDateTime(userId);
+        await uow.CompleteAsync();
+
+        return changeTime?.ToString(OrdClaimsTypes.FormatClaimDateType) ?? string.Empty;
     }
 }

@@ -7,45 +7,67 @@ using Ord.Plugin.Contract.Services.Auth;
 using System.Security.Claims;
 using Volo.Abp.Caching;
 
-namespace Ord.Plugin.HostBase.Services.Auth
+namespace Ord.Plugin.HostBase.Services.Auth;
+
+public class CheckAccessTokenRevokedService(IAppFactory appFactory) : ICheckAccessTokenService
 {
-    public class CheckAccessTokenRevokedService(IAppFactory appFactory) : ICheckAccessTokenService
+    private const string RevokedTokenPrefix = "RevokeToken:";
+    private const string ActiveTokenPrefix = "TokenValid:";
+
+    private readonly IDistributedCache<string> _cache = appFactory.GetServiceDependency<IDistributedCache<string>>();
+    private readonly IUserAccessTokenSharedRepository _userAccessRepo = appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
+    private readonly bool _isCheckRevokeEnabled = FullAppSettingConfig.GetInstance()?.Authentication?.IsCheckRevokeToken == true;
+
+    public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
     {
-        public async Task<string> CheckClaims(IEnumerable<Claim>? claims)
+        if (!_isCheckRevokeEnabled || claims is null || !claims.Any())
         {
-            if (claims?.Any() != true)
-            {
-                return string.Empty;
-            }
-            var allSetting = FullAppSettingConfig.GetInstance();
-            if (allSetting?.Authentication?.IsCheckRevokeToken != true)
-            {
-                return string.Empty;
-            }
-            var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-            if (!string.IsNullOrEmpty(tokenId))
-            {
-                var _cache = appFactory.LazyService<IDistributedCache<string>>();
-                var cacheData = await _cache.GetAsync("RevokeToken:" + tokenId);
-                if (!string.IsNullOrEmpty(cacheData))
-                {
-                    return "exception.access_token_revoked";
-                }
-                var userAccessRepos = appFactory.GetServiceDependency<IUserAccessTokenSharedRepository>();
-                var isTokenInActive = await userAccessRepos.CheckAccessTokenInActive(tokenId);
-                if (isTokenInActive)
-                {
-                    _ = Task.Run(async () =>
-                    {
-                        await _cache.SetAsync("RevokeToken:" + tokenId, "1", new DistributedCacheEntryOptions()
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(15)
-                        });
-                    });
-                    return "exception.access_token_revoked";
-                }
-            }
             return string.Empty;
         }
+        var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+        var userId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
+
+        if (string.IsNullOrEmpty(tokenId))
+        {
+            return string.Empty;
+        }
+
+        var revokedKey = RevokedTokenPrefix + tokenId;
+        var activeKey = $"{ActiveTokenPrefix}{userId}:{tokenId}";
+
+        if (!string.IsNullOrEmpty(await _cache.GetAsync(revokedKey)))
+        {
+            return "exception.access_token_revoked";
+        }
+
+        if (!string.IsNullOrEmpty(await _cache.GetAsync(activeKey)))
+        {
+            return string.Empty;
+        }
+
+        if (await _userAccessRepo.CheckAccessTokenInActive(tokenId))
+        {
+            CacheRevokedTokenAsync(revokedKey);
+            return "exception.access_token_revoked";
+        }
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            CacheActiveTokenAsync(activeKey);
+        }
+
+        return string.Empty;
     }
+
+    private Task CacheRevokedTokenAsync(string key) =>
+        _cache.SetAsync(key, "1", new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(15)
+        });
+
+    private Task CacheActiveTokenAsync(string key) =>
+        _cache.SetAsync(key, "1", new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+        });
 }
