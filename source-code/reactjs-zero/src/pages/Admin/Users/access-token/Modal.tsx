@@ -171,10 +171,6 @@ export const UserAccessTokenListModal = () => {
                             <SearchFilterText span={12}/>
                         </>
                     }
-                    initialValues={{
-                        userEncodedId: user?.encodedId,
-                        isActived: true
-                    }}
                 />
 
                 <div className={'mt-5'}>

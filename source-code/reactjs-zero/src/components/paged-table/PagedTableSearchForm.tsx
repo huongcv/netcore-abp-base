@@ -29,8 +29,7 @@ export const PagedTableSearchForm = ({
     }
     const onSearch = async () => {
         const values = usedForm.getFieldsValue();
-        const initial = initialValues || {};
-        setSearchParams({...initial, ...values});
+        setSearchParams({...values});
     };
     const extendResetTick_w = useWatch('extendResetTick', usedForm);
     useEffect(() => {
