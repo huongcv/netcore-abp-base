@@ -25,7 +25,7 @@ public class CheckAccessTokenRevokedService(IAppFactory appFactory) : ICheckAcce
             return string.Empty;
         }
         var tokenId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-        var userId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
+        var userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(tokenId))
         {

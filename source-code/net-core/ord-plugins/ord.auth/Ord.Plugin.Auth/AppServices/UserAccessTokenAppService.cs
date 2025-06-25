@@ -38,7 +38,7 @@ namespace Ord.Plugin.Auth.AppServices
             if (paged?.Items?.Any() == true && userId == AppFactory.CurrentUserId)
             {
                 var claims = AppFactory.HttpContextAccessor().HttpContext?.User?.Claims;
-                var tokenId = claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value; 
+                var tokenId = claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
                 foreach (var token in paged.Items)
                 {
                     token.IsCurrentToken = string.Equals(tokenId, token.TokenId);
@@ -55,7 +55,7 @@ namespace Ord.Plugin.Auth.AppServices
                 userId = AppFactory.CurrentUserId.Value;
             }
             await CheckPermissionForOperation(CrudOperationType.GetPaged);
-            var counter = await TokenRepository.GetCountByStatus(userId,input);
+            var counter = await TokenRepository.GetCountByStatus(userId, input);
             return AppFactory.CreateSuccessResult(counter);
         }
         [OrdAuth]
@@ -78,19 +78,35 @@ namespace Ord.Plugin.Auth.AppServices
             {
                 ValidationExceptionHelper.ThrowNotFound();
             }
+            ClearCacheTokenValidStatus(userId);
             return await UserAccessTokenManager.RevokeAllUserTokensAsync(userId);
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
         public async Task<CommonResultDto<bool>> RevokeTokens(RevokeMultipleTokensDto input)
         {
+            if (!IdEncoderService.TryDecodeId(input.UserEncodedId, out var userId))
+            {
+                ValidationExceptionHelper.ThrowNotFound();
+            }
+            ClearCacheTokenValidStatus(userId);
             return await UserAccessTokenManager.RevokeMultipleTokensAsync(input);
         }
         [HttpPost]
         [OrdAuth("AuthPlugin.User.ManageTokens")]
         public async Task<CommonResultDto<bool>> RevokeAllOtherTokens()
         {
+            ClearCacheTokenValidStatus(AppFactory.CurrentUserId.Value);
             return await UserAccessTokenManager.RevokeAllOtherTokensAsync();
+        }
+
+        /// <summary>
+        /// xóa cache valid khi check access_token tại CheckAccessTokenRevokedService
+        /// </summary>
+        /// <returns></returns>
+        private void ClearCacheTokenValidStatus(Guid userId)
+        {
+            AppFactory.RemoveRedisCacheContainKey("TokenValid:" + userId);
         }
     }
 }
