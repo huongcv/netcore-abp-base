@@ -6,7 +6,7 @@ import {UserService} from "@api/base/UserService";
 import {USER_POLICIES} from "@pages/Admin/Users/user.constants";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {UserDetailDto} from "@api/base/index.defs";
-import React from "react";
+import React, {useCallback} from "react";
 import {UserDto} from "@api/index.defs";
 import {UserUtilities} from "@pages/Admin/Users/user.util";
 import {CheckOutlined, KeyOutlined, LoginOutlined, UndoOutlined} from "@ant-design/icons";
@@ -24,17 +24,33 @@ export const useUserLogic = () => {
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     const {sessionStore} = useStore();
-    const {openModal: openChangePasswordModal} = changePasswordUserModalStore();
-    const {openModal: openAssignRoleModal} = assignRoleUserModalStore();
-    const {openModal: opeAccessTokenListModal} = userAccessTokenListModalStore();
+    const {openModal: openModalChangePassword} = changePasswordUserModalStore();
+    const {openModal: openModalAssignRole} = assignRoleUserModalStore();
+    const {openModal: openModalAccessToken} = userAccessTokenListModalStore();
+    // Memoized handlers để tránh re-render
+    const handleExportExcel = useCallback(async () => {
+        try {
+            await onExportExcel();
+        } catch (error) {
+        }
+    }, [onExportExcel]);
+
+    const handleImpersonation = useCallback(async (record: UserDetailDto) => {
+        try {
+            await UserImpersonationService.loginAsUser({
+                body: {encodedId: record.encodedId}
+            });
+            location.href = '/';
+        } catch (error) {
+        }
+    }, []);
+
     // Top actions
     const topActions: IActionBtn[] = [
         {
             title: 'exportExcel',
             permission: USER_POLICIES.BASE,
-            onClick: () => {
-                onExportExcel().then();
-            }
+            onClick: handleExportExcel
         },
         {
             title: 'addNew',
@@ -59,7 +75,7 @@ export const useUserLogic = () => {
             permission: USER_POLICIES.RESET_PASSWORD,
             icon: <UndoOutlined/>,
             onClick: (user) => {
-                openChangePasswordModal(user);
+                openModalChangePassword(user);
             },
             hiddenIf: (u: UserDto) => {
                 return UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
@@ -78,22 +94,14 @@ export const useUserLogic = () => {
             title: 'loginWithAccount',
             permission: USER_POLICIES.LOGIN_WITH_ACCOUNT,
             icon: <LoginOutlined/>,
-            onClick: (record) => {
-                UserImpersonationService.loginAsUser({
-                    body: {
-                        encodedId: record.encodedId
-                    }
-                }).then(() => {
-                    location.href = '/';
-                });
-            }
+            onClick: handleImpersonation
         },
         {
             title: 'assignRole',
             icon: <CheckOutlined/>,
             permission: USER_POLICIES.ASSIGN_ROLE,
             onClick: (user) => {
-                openAssignRoleModal(user);
+                openModalAssignRole(user);
             },
         },
         {
@@ -101,7 +109,7 @@ export const useUserLogic = () => {
             icon: <KeyOutlined/>,
             permission: USER_POLICIES.MANAGE_ACCESS_TOKEN,
             onClick: (user) => {
-                opeAccessTokenListModal(user);
+                openModalAccessToken(user);
             },
         },
         {
