@@ -10,7 +10,7 @@ export const OrdCounterByStatusSegmented = (props: {
     initialValueStatus?: string | number | null | boolean
 }) => {
     const {fetcher, tableStore, statusFieldName} = props;
-    const {searchParams, setSearchParams, reloadStatusCounter, onLoadData} = tableStore();
+    const {searchParams, setSearchStatusParams, reloadStatusCounter, onLoadData} = tableStore();
     const {initialValueStatus} = props;
     const [statusOptions, setStatusOptions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -52,11 +52,11 @@ export const OrdCounterByStatusSegmented = (props: {
     }, []);
 
     // Debounce fetch counter data when searchParams change
-    useDebounce(fetchCounterData, 300, [searchParams, reloadStatusCounter]);
+    useDebounce(fetchCounterData, 300, [reloadStatusCounter]);
 
     // Debounce update searchParams when status changes
     useDebounce(() => {
-        setSearchParams({
+        setSearchStatusParams({
             [statusFieldName]: status
         });
     }, 300, [status, statusFieldName]);

@@ -197,7 +197,7 @@ export const ModifyModalForm = <T extends object>({
             onCancel={closeModal}
             onOk={handleFinish}
             maskClosable={false}
-            destroyOnClose
+            destroyOnHidden={true}
             title={renderTitle()}
             footer={
                 <FooterCrudModal

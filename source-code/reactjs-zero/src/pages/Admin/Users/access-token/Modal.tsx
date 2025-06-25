@@ -1,13 +1,13 @@
 import {createModalStore} from "@ord-components/paged-table/useModalStoreFactory";
 import {useTranslation} from "react-i18next";
 import {GenericModalForm} from "@ord-components/paged-table/GenericModalForm";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {createTableStore, PagedTable} from "@ord-components/paged-table";
 import {UserAccessTokenService} from "@api/base/UserAccessTokenService";
 import {UserDto} from "@api/index.defs";
 import TableUtil from "@ord-core/utils/table.util";
 import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
-import {Button, Form, Input, Popconfirm, Space} from "antd";
+import {Button, Form, Space} from "antd";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {GetUserAccessTokenPagedInput, UserAccessTokenDto, UserPagedDto} from "@api/base/index.defs";
 import {UserAccessTokenColumns} from "@pages/Admin/Users/access-token/Columns";
@@ -31,8 +31,8 @@ export const userAccessTokenTableStore = createTableStore({
     }
 });
 const rowSelectionStore = createRowSelectionHook<UserAccessTokenDto>({
-    isRowDisabled: record => {
-        return !record.isActived || record.isCurrentToken;
+    isRowDisabled: (record) => {
+        return !record?.isActived || !!record?.isCurrentToken;
     }
 });
 
@@ -51,16 +51,18 @@ export const UserAccessTokenListModal = () => {
         selectedRows,
         clearSelection,
     } = rowSelectionStore();
-    const {onLoadData, setReloadStatusCounter} = userAccessTokenTableStore();
+    const {onLoadData, setReloadStatusCounter, reset} = userAccessTokenTableStore();
 
     useEffect(() => {
-        if (dataItem) {
-            setUser(dataItem);
+        if (open) {
+            searchForm.resetFields();
+            if (dataItem) {
+                setUser(dataItem);
+            }
+        } else {
+            clearSelection();
         }
-        clearSelection();
-
     }, [open]);
-
     useEffect(() => {
         if (user) {
             searchForm.setFieldsValue({
@@ -159,6 +161,7 @@ export const UserAccessTokenListModal = () => {
                 hiddenOk
                 title={title}
                 onSave={handleSave}
+                destroyOnHidden={true}
             >
                 <PagedTableSearchForm
                     form={searchForm}
@@ -166,8 +169,6 @@ export const UserAccessTokenListModal = () => {
                     searchFields={
                         <>
                             <SearchFilterText span={12}/>
-                            <Form.Item name={'userEncodedId'} noStyle/>
-                            <Form.Item name={'isActived'} noStyle/>
                         </>
                     }
                     initialValues={{
@@ -192,6 +193,10 @@ export const UserAccessTokenListModal = () => {
                     columns={columns}
                     tableStore={userAccessTokenTableStore}
                     rowSelection={rowSelection}
+                    initialSearchParams={{
+                        isActived: true,
+                        userEncodedId: user?.encodedId,
+                    }}
                 />
                 <ConfirmRevokeModal
                     open={openConfirm}

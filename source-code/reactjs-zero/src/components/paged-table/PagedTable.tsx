@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableProps<T> extends TableProps<T> {
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>,
+    initialSearchParams?: Record<string, any>; // Search params để set sau khi reset
 }
 
 export const PagedTable = <T extends object>({
                                                  tableStore,
+                                                 initialSearchParams,
                                                  ...tableProps
                                              }: PagedTableProps<T>) => {
     const {
@@ -20,9 +22,16 @@ export const PagedTable = <T extends object>({
         searchParams,
         setLoading,
         setPagination,
-        onLoadData
+        onLoadData,
+        reset
     } = tableStore();
     const {t} = useTranslation();
+    const [tick, setTick] = useState<number>(Number(new Date()));
+    useEffect(() => {
+        reset(initialSearchParams);
+        setTick(tick + 1);
+    }, []);
+
     const loadData = async () => {
         setLoading(true);
         try {
@@ -33,7 +42,11 @@ export const PagedTable = <T extends object>({
     };
     useDebounce(() => {
         loadData().then();
-    }, 100, [page, pageSize, searchParams])
+    }, 100, [tick]);
+
+    useEffect(() => {
+        setTick(tick + 1);
+    }, [page, pageSize, searchParams]);
 
     return (
         <>

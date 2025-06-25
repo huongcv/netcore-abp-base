@@ -19,20 +19,18 @@ export const PagedTableSearchForm = ({
                                      }: PagedTableSearchFormProps) => {
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
-    const {setSearchParams} = tableStore();
+    const {setSearchParams, reset} = tableStore();
 
     useEffect(() => {
-        if (initialValues) {
-            usedForm.setFieldsValue(initialValues);
-            setSearchParams(initialValues); // tự động gọi search ban đầu nếu có
-        }
+        onSearch().then();
     }, []);
     const onFinishFormSearch = () => {
         onSearch().then();
     }
     const onSearch = async () => {
         const values = usedForm.getFieldsValue();
-        setSearchParams({...values});
+        const initial = initialValues || {};
+        setSearchParams({...initial, ...values});
     };
     const extendResetTick_w = useWatch('extendResetTick', usedForm);
     useEffect(() => {

@@ -20,7 +20,8 @@ interface TableStoredState {
     setData: (data: any[], total: number) => void;
     setPagination: (page: number, pageSize: number) => void;
     setSearchParams: (params: Record<string, any>) => void;
-    reset: () => void;
+    setSearchStatusParams: (params: Record<string, any>) => void;
+    reset: (initSearchParams?: any) => void;
     onLoadData: () => Promise<void>;
     onExportExcel: () => Promise<void>;
     setReloadStatusCounter: () => void;
@@ -38,7 +39,7 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
     setData: (data, total) => set({data, total}),
     setPagination: (page, pageSize) => set({page, pageSize}),
     setSearchParams: (params) => {
-        const {searchParams} = get();
+        const {searchParams, reloadStatusCounter} = get();
         let newSearchParams = _.omit({...searchParams, ...params}, [
             'isShowAdvanceSearch',
             'extendResetTick',
@@ -46,18 +47,30 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
             'onSearchBeginning'
 
         ]);
-
-        set({searchParams: {...newSearchParams}, page: 1})
+        set({searchParams: {...newSearchParams}, page: 1, reloadStatusCounter: reloadStatusCounter + 1})
     },
-    reset: () =>
+    setSearchStatusParams: (params) => {
+        const {searchParams} = get();
+        set({
+            searchParams: {
+                ...searchParams,
+                ...params
+            }
+        });
+    },
+    reset: (initSearchParams?: any) => {
+        const prm = initSearchParams || {};
+        const {reloadStatusCounter} = get();
         set({
             data: [],
             total: 0,
             loading: false,
             page: 1,
             pageSize: 10,
-            searchParams: {},
-        }),
+            searchParams: {...prm},
+            reloadStatusCounter: reloadStatusCounter + 1
+        });
+    },
     setReloadStatusCounter: () => {
         const {reloadStatusCounter} = get();
         set({reloadStatusCounter: reloadStatusCounter + 1})

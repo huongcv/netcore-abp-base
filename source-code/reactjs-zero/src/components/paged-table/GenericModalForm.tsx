@@ -115,7 +115,7 @@ export const GenericModalForm = <T extends object>({
             onCancel={closeModal}
             onOk={handleFinish}
             maskClosable={false}
-            destroyOnClose
+            destroyOnHidden={true}
             footer={defaultFooter}
             width={680}
             style={{
