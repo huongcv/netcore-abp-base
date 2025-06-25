@@ -31,15 +31,15 @@ export const userAccessTokenTableStore = createTableStore({
     }
 });
 const rowSelectionStore = createRowSelectionHook<UserAccessTokenDto>({
-    isRowDisabled: d => {
-        return !!!d.isActived || d.isCurrentToken;
+    isRowDisabled: record => {
+        return !record.isActived || record.isCurrentToken;
     }
 });
 
 export const UserAccessTokenListModal = () => {
-    const {t} = useTranslation('modal');
+    const {t} = useTranslation("modal");
     const {t: tCommon} = useTranslation();
-    const {t: tConfirm} = useTranslation('confirm');
+    const {t: tConfirm} = useTranslation("confirm");
     const {open, dataItem} = userAccessTokenListModalStore();
     const [searchForm] = Form.useForm();
     const [user, setUser] = useState<UserPagedDto>();

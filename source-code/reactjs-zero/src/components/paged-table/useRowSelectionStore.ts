@@ -1,5 +1,6 @@
 import {TableRowSelection} from 'antd/es/table/interface';
 import {create} from 'zustand';
+import React from "react";
 
 interface RowSelectionState<T> {
     selectedRowKeys: React.Key[];
@@ -8,7 +9,6 @@ interface RowSelectionState<T> {
     clearSelection: () => void;
 }
 
-type RowDisableFn<T> = (record: T) => boolean;
 // Dùng 1 global store per T
 const useRowSelectionStore = <T>() =>
     create<RowSelectionState<T>>((set) => ({
@@ -24,7 +24,7 @@ const useRowSelectionStore = <T>() =>
 
 // Tạo 1 instance hook reusable
 export function createRowSelectionHook<T>(config: {
-    isRowDisabled?: RowDisableFn<T>
+    isRowDisabled?: (record: T) => boolean
 }) {
     const store = useRowSelectionStore<T>();
     const {isRowDisabled} = config;
@@ -40,7 +40,7 @@ export function createRowSelectionHook<T>(config: {
             selectedRowKeys,
             onChange: (keys, rows) => setSelection(keys, rows),
             getCheckboxProps: isRowDisabled
-                ? (record) => ({ disabled: isRowDisabled(record) })
+                ? (record) => ({disabled: isRowDisabled(record)})
                 : undefined,
         };
 
