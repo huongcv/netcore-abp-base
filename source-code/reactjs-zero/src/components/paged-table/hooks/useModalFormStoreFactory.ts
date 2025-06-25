@@ -27,7 +27,7 @@ interface ICrudModalFormStoreSetting {
     onSuccess?: (result: ICommonResultDtoApi<any>, mode: ModalMode) => void;
 }
 
-export const createModalFormStore = <TDetail>(service: IModifyApiService, options?: ICrudModalFormStoreSetting) =>
+export const createModalFormStore = <TDetail extends object>(service: IModifyApiService, options?: ICrudModalFormStoreSetting) =>
     create<ModalFormState<TDetail>>((set, get) => ({
         open: false,
         editingItem: null,

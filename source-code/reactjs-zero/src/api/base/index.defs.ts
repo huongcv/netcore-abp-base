@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
+import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**
@@ -1570,6 +1570,26 @@ export interface GetUserNotificationInput {
 
   /**  */
   toDate?: Date;
+}
+
+export interface GetUsersAssignableToRoleInput {
+  /**  */
+  maxResultCount?: number;
+
+  /**  */
+  skipCount?: number;
+
+  /**  */
+  sorting?: string;
+
+  /**  */
+  filter?: string;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  encodedId?: string;
 }
 
 export interface GetUsersInRoleInput {

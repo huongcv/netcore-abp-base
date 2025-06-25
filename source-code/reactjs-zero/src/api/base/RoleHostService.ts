@@ -1,40 +1,26 @@
 import {
-  AssignPermissionsToRoleDto,
-  CommonResultDtoOfBoolean,
-  EncodedIdDto,
-  CommonResultDtoOfListOfString,
-  GetComboOptionInputDto,
-  CommonResultDtoOfListOfComboOptionDto,
-  ComboOptionDto,
-  GetUsersInRoleInput,
-  CommonResultDtoOfPagedResultDtoOfUserInRoleDto,
-  PagedResultDtoOfUserInRoleDto,
-  UserInRoleDto,
-  UsersToRoleDto,
-  RolePagedInput,
-  CreateRoleDto,
-  CommonResultDtoOfRoleDetailDto,
-  RoleDetailDto,
-  UpdateRoleDto,
-  SetActiveStatusDto,
-  CommonResultDtoOfPagedResultDtoOfRolePagedDto,
-  PagedResultDtoOfRolePagedDto,
-  RolePagedDto,
-  CommonResultDtoOfListOfCounterByStatusItemDto,
-  CounterByStatusItemDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    AssignPermissionsToRoleDto,
+    axios,
+    basePath,
+    CommonResultDtoOfBoolean,
+    CommonResultDtoOfListOfComboOptionDto,
+    CommonResultDtoOfListOfCounterByStatusItemDto,
+    CommonResultDtoOfListOfString,
+    CommonResultDtoOfPagedResultDtoOfRolePagedDto,
+    CommonResultDtoOfPagedResultDtoOfUserInRoleDto,
+    CommonResultDtoOfRoleDetailDto,
+    CreateRoleDto,
+    EncodedIdDto,
+    GetComboOptionInputDto,
+    getConfigs,
+    GetUsersAssignableToRoleInput,
+    GetUsersInRoleInput,
+    IRequestConfig,
+    IRequestOptions,
+    RolePagedInput,
+    SetActiveStatusDto,
+    UpdateRoleDto,
+    UsersToRoleDto
 } from './index.defs';
 
 export class RoleHostService {
@@ -120,6 +106,28 @@ export class RoleHostService {
   ): Promise<CommonResultDtoOfPagedResultDtoOfUserInRoleDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/role-host/get-users-in-role';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getUsersAssignableToRole(
+    params: {
+      /** requestBody */
+      body?: GetUsersAssignableToRoleInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfPagedResultDtoOfUserInRoleDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/role-host/get-users-assignable-to-role';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

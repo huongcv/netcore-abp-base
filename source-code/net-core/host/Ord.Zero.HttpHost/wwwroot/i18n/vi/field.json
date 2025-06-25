@@ -482,5 +482,6 @@
   "RealTimeData": "Dữ liệu thời gian thực",
   "Code": "Mã",
   "CreationTime": "Ngày tạo",
-  "RowIndex": "STT"
+  "RowIndex": "STT",
+  "EncodedId": "Id mã hóa"
 }

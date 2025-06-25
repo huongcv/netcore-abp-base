@@ -61,12 +61,18 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public bool IsActived { get; set; }
-        public DateTime AssignedDate { get; set; }
+        public DateTime? AssignedDate { get; set; }
         public string UserEncodedId { get; set; }
     }
     public class UsersToRoleDto : EncodedIdDto
     {
         public List<Guid> UserIds { get; set; } = new();
+    }
+
+    public class GetUsersAssignableToRoleInput : OrdPagedRequestDto
+    {
+        [OrdValidateRequired]
+        public string? EncodedId { get; set; }
     }
     #endregion
 

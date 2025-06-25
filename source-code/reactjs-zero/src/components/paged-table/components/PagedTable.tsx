@@ -30,7 +30,7 @@ export const PagedTable = <T extends object>({
         reset
     } = tableStore();
     const {t} = useTranslation();
-    const [tick, setTick] = useState<number>(Number(new Date()));
+    const [tick, setTick] = useState<number>(0);
     useEffect(() => {
         reset(initialSearchParams);
         setTick(tick + 1);
@@ -39,6 +39,7 @@ export const PagedTable = <T extends object>({
     const loadData = async () => {
         setLoading(true);
         try {
+            console.log('loading data');
             await onLoadData();
         } finally {
             setLoading(false);
@@ -49,6 +50,7 @@ export const PagedTable = <T extends object>({
     }, 100, [tick]);
 
     useEffect(() => {
+        console.log('searchParams', searchParams, page)
         setTick(tick + 1);
     }, [page, pageSize, searchParams]);
 

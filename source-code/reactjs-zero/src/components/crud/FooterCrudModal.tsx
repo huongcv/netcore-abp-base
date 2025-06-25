@@ -4,6 +4,7 @@ import {Button, Checkbox, CheckboxProps, Space} from "antd";
 import {CloseOutlined, SaveOutlined} from "@ant-design/icons";
 import {debounce} from "lodash";
 import {l} from "@ord-core/language/lang.utils";
+import {OrdModalCloseButton} from "@ord-components/modal/footer/OrdModalCloseButton";
 
 interface IProp {
     hasAddNewContinue?: boolean,

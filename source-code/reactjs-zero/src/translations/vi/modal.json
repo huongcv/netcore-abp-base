@@ -12,5 +12,8 @@
   },
   "roleListUser": {
     "title": "Danh sách người dùng được gán vai trò: {{name}}"
+  },
+  "usersAssignableToRole": {
+    "title": "Gán vai trò {{name}} cho người dùng"
   }
 }

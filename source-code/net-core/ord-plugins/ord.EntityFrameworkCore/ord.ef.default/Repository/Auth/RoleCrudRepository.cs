@@ -215,7 +215,52 @@ namespace Ord.Plugin.Auth.Repositories
             });
         }
 
+        public async Task<PagedResultDto<UserInRoleDto>> GetUsersAssignableToRoleAsync(Guid roleId, GetUsersAssignableToRoleInput input)
+        {
+            var roleEntity = await GetByIdAsync(roleId, true);
+            // bổ sung thêm điều kiện lọc nếu cần
+            var userQueryable = await GetEntityQueryable<UserEntity>();
+            var userRoleQueryable = await GetEntityQueryable<UserRoleEntity>();
+            // Lọc theo từ khóa và trạng thái
+            userQueryable = userQueryable
+                .WhereLikeText(input.TextSearch, x => new
+                {
+                    x.UserName,
+                    x.Name,
+                    x.Email,
+                    x.PhoneNumber
+                })
+                .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
 
+            // LEFT JOIN với UserRole theo roleId
+            var query = from user in userQueryable
+                join userRole in userRoleQueryable
+                    on user.Id equals userRole.UserId into userRoleGroup
+                from userRole in userRoleGroup
+                    .Where(x => x.RoleId == roleId)
+                    .DefaultIfEmpty() // LEFT JOIN
+                where userRole == null // chỉ lấy user chưa gán role
+                select new UserInRoleDto
+                {
+                    UserId = user.Id,
+                    TenantId = user.TenantId,
+                    UserName = user.UserName,
+                    Name = user.Name,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IsActived = user.IsActived,
+                    AssignedDate = null // chưa được gán
+                };
+
+            // Sắp xếp nếu cần
+            query = query.OrderByDescending(x => x.UserName);
+
+            var encodeSer = AppFactory.GetServiceDependency<IIdEncoderService<UserEntity, Guid>>();
+            return await QueryPagedResultAsync(query, input, async (user) =>
+            {
+                user.UserEncodedId = encodeSer.EncodeId(user.UserId);
+            });
+        }
 
         #endregion
 

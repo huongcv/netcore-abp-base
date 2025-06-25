@@ -102,6 +102,14 @@ namespace Ord.Plugin.Auth.AppServices
             return AppFactory.CreateSuccessResult(result);
         }
         [HttpPost]
+        public async Task<CommonResultDto<PagedResultDto<UserInRoleDto>>> GetUsersAssignableToRole(GetUsersAssignableToRoleInput input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.GetDetail);
+            var roleId = ConvertEncodeId(input.EncodedId);
+            var result = await RoleCrudRepository.GetUsersAssignableToRoleAsync(roleId, input);
+            return AppFactory.CreateSuccessResult(result);
+        }
+        [HttpPost]
         public async Task<CommonResultDto<bool>> AddUsersToRole(UsersToRoleDto input)
         {
             await CheckPermissionForActionName("AssignUsers");

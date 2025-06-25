@@ -6,25 +6,25 @@ import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {RoleService} from "@api/base/RoleService";
 import {RolePagedDto} from "@api/base/index.defs";
 import {useTranslation} from "react-i18next";
-import {useUserListOfRoleLogic} from "@pages/Admin/Roles/ListUsers/useLogic";
 import TableUtil from "@ord-core/utils/table.util";
 import {UserDto} from "@api/index.defs";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
-import {UserListBulkActionToolbar} from "@pages/Admin/Roles/ListUsers/BulkActionToolbar";
+import {useUserListAssignableRoleLogic} from "@pages/Admin/Roles/ListUserAssignable/useLogic";
 import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
+import {UserListBulkAssignableToRoleActionToolbar} from "@pages/Admin/Roles/ListUserAssignable/BulkActionToolbar";
 
-export const roleUserListModalStore = createModalStore<RolePagedDto>();
+export const userListModalAssignableRoleStore = createModalStore<RolePagedDto>();
 
-export const UserListModal = () => {
-    const {open, dataItem: roleDto, close} = roleUserListModalStore();
+export const UserListAssignableRoleModal = () => {
+    const {open, dataItem, close} = userListModalAssignableRoleStore();
     const {t} = useTranslation("modal");
     const {
         searchForm,
         rowSelection,
         selectedRowKeys,
-        handleBulkRevoke,
-    } = useUserListOfRoleLogic(roleDto);
-    const title = useMemo(() => t('roleListUser.title', {...roleDto}), [roleDto]);
+        handleBulkAssign
+    } = useUserListAssignableRoleLogic(dataItem);
+    const title = useMemo(() => t('usersAssignableToRole.title', {...dataItem}), [dataItem]);
     useEffect(() => {
         if (open) {
             searchForm.resetFields();
@@ -41,15 +41,15 @@ export const UserListModal = () => {
     return (
         <>
             <GenericModalForm
-                modalStore={roleUserListModalStore}
+                modalStore={userListModalAssignableRoleStore}
                 width={1200}
                 hiddenOk
                 title={title}
                 footer={<OrdModalFooter onClose={() => {
                     close();
                 }}
-                                        left={<UserListBulkActionToolbar
-                                            onRevokeClick={handleBulkRevoke}
+                                        left={<UserListBulkAssignableToRoleActionToolbar
+                                            onClick={handleBulkAssign}
                                             selectedCount={selectedRowKeys.length}
                                         />}
 
@@ -60,9 +60,9 @@ export const UserListModal = () => {
                                       apiService={{
                                           getPaged: (params, options) => {
                                               const body = params?.body;
-                                              return RoleService.getUsersInRole({
+                                              return RoleService.getUsersAssignableToRole({
                                                   body: {
-                                                      encodedId: roleDto?.encodedId,
+                                                      encodedId: dataItem?.encodedId,
                                                       ...body
                                                   }
                                               })

@@ -2,14 +2,15 @@ import {createTableStore} from "@ord-components/paged-table";
 import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
-import {UserDetailDto} from "@api/base/index.defs";
+import {RolePagedDto, UserDetailDto} from "@api/base/index.defs";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {PERMISSION_APP} from "@ord-core/config/permissions";
 import {RoleService} from "@api/base/RoleService";
-import {UserOutlined} from "@ant-design/icons";
+import {CheckCircleOutlined, UserOutlined} from "@ant-design/icons";
 import ListUserAssign from "@pages/Admin/Roles/ListUserAssign";
 import React from "react";
 import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
+import {userListModalAssignableRoleStore} from "@pages/Admin/Roles/ListUserAssignable/Modal";
 // Stores
 const tableStore = createTableStore(RoleService);
 const modalStore = createModalFormStore(RoleService, {});
@@ -52,17 +53,13 @@ export const useRoleLogic = () => {
             permission: policies.edit,
             onClick: (d) => {
                 roleUserListModalStore.getInitialState().openModal(d);
-                // entityModalStore.openModalView({
-                //     modal: {
-                //         title: t('ListUserAssignTitleModal', {...d}),
-                //         width: '90vw',
-                //         style: {
-                //             maxWidth: 1100
-                //         },
-                //         hiddenOk: true
-                //     },
-                //     modalContent: <ListUserAssign roleId={d.id} roleName={d.name}/>
-                // });
+            },
+        }, {
+            title: 'AssignableUsersToRole',
+            icon: <CheckCircleOutlined/>,
+            permission: policies.edit,
+            onClick: (d) => {
+                userListModalAssignableRoleStore.getInitialState().openModal(d);
             },
         },
         {

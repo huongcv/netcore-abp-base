@@ -18,6 +18,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
 
         #region User Management
         Task<PagedResultDto<UserInRoleDto>> GetUsersInRoleAsync(Guid roleId, GetUsersInRoleInput input);
+        Task<PagedResultDto<UserInRoleDto>> GetUsersAssignableToRoleAsync(Guid roleId, GetUsersAssignableToRoleInput input);
         #endregion
 
         #region Role template

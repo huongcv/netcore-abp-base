@@ -35,5 +35,8 @@
     "close": "Đóng",
     "cancel": "Đóng"
   },
-  "accessTokenList": "Danh sách token"
+  "accessTokenList": "Danh sách token",
+  "revokeUsersToRole": "Thu hồi vai trò của {{selectedCount}} người dùng đã chọn",
+  "bulkUserAssignableToRole": "Gán vai trò cho {{selectedCount}} người dùng đã chọn",
+  "AssignableUsersToRole": "Gán vai trò người dùng"
 }
