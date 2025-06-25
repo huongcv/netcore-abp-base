@@ -44,8 +44,8 @@ export const createTableStore = (service: IGetPagedApiService) => create<TableSt
             'isShowAdvanceSearch',
             'extendResetTick',
             'hotKeyScopeId',
-            'onSearchBeginning'
-
+            'onSearchBeginning',
+            'extendUI'
         ]);
         set({searchParams: {...newSearchParams}, page: 1, reloadStatusCounter: reloadStatusCounter + 1})
     },

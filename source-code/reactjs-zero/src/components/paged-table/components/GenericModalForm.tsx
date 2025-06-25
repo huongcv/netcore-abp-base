@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
-    modalStore: ReturnType<typeof import('@ord-components/paged-table/useModalStoreFactory').createModalStore>;
+    modalStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useModalStoreFactory').createModalStore>;
     formFields?: React.ReactNode;
     form?: FormInstance;
     initialValues?: Record<string, any>;

@@ -4,7 +4,7 @@ import {useWatch} from "antd/es/form/Form";
 import {debounce} from "lodash";
 
 export interface Props extends FormProps {
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
     children: React.ReactNode;
     form?: FormInstance;
 }
@@ -17,7 +17,7 @@ export const TableSearchForm: React.FC<Props> = ({
                                                  }) => {
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
-    const {setSearchParams, reset} = tableStore();
+    const {setSearchParams} = tableStore();
 
     useEffect(() => {
         onSearch().then();

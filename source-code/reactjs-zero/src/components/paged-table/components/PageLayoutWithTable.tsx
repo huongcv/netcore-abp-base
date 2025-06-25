@@ -5,11 +5,11 @@ import {PageTopTitleAndAction} from "@ord-components/common/page/PageTopTitleAnd
 import {TopAction} from "@ord-components/crud/TopAction";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {Form, FormInstance} from "antd";
-import {TableSearchForm} from "@ord-components/paged-table/TableSearchForm";
+import {TableSearchForm} from "@ord-components/paged-table/components/TableSearchForm";
 
 interface PageLayoutWithTableProps {
     children: React.ReactNode;
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
     topActions?: IActionBtn[],
     topActionContent?: React.ReactNode,
     hiddenTopAction?: boolean;

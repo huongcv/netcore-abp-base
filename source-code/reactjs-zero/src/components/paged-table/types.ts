@@ -1,5 +1,4 @@
 import {IRequestOptions} from "@api/index.defs";
-import {CountryPagedInput} from "@api/base/index.defs";
 
 export interface ICommonResultDtoApi<T> {
     code?: string;

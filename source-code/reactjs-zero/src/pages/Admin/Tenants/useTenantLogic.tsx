@@ -1,5 +1,5 @@
 import {createTableStore} from "@ord-components/paged-table";
-import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
+import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {UserDetailDto} from "@api/base/index.defs";

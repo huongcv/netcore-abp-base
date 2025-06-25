@@ -1,8 +1,8 @@
-import {createModalStore} from "@ord-components/paged-table/useModalStoreFactory";
+import {createModalStore} from "@ord-components/paged-table/hooks/useModalStoreFactory";
 import {useTranslation} from "react-i18next";
 import {AssignRolesToUserDto, ResetPasswordUserDto} from "@api/base/index.defs";
 import UiUtils from "@ord-core/utils/ui.utils";
-import {GenericModalForm} from "@ord-components/paged-table/GenericModalForm";
+import {GenericModalForm} from "@ord-components/paged-table/components/GenericModalForm";
 import React, {useEffect} from "react";
 import {UserService} from "@api/base/UserService";
 import {AssignRoleForm} from "@pages/Admin/Users/assign-role/Form";

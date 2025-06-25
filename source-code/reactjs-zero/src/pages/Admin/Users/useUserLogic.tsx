@@ -1,6 +1,6 @@
 // pages/Admin/MasterData/Country/useCountryLogic.ts
 import {createTableStore} from "@ord-components/paged-table";
-import {createModalFormStore} from "@ord-components/paged-table/useModalFormStoreFactory";
+import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {UserService} from "@api/base/UserService";
 import {USER_POLICIES} from "@pages/Admin/Users/user.constants";

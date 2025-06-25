@@ -3,12 +3,14 @@ import {useCallback, useState} from "react";
 import {CounterByStatusItemDto, StaticCounterByStatusApiFetcher} from "@ord-components/paged-table/types";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
-export const OrdCounterByStatusSegmented = (props: {
+export interface OrdCounterByStatusSegmentedProps {
     statusFieldName: string,
     fetcher: StaticCounterByStatusApiFetcher,
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>,
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>,
     initialValueStatus?: string | number | null | boolean
-}) => {
+}
+
+export const OrdCounterByStatusSegmented = (props: OrdCounterByStatusSegmentedProps) => {
     const {fetcher, tableStore, statusFieldName} = props;
     const {searchParams, setSearchStatusParams, reloadStatusCounter, onLoadData} = tableStore();
     const {initialValueStatus} = props;

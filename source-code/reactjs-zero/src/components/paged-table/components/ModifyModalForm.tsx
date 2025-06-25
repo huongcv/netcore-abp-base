@@ -6,12 +6,12 @@ import uiUtils from "@ord-core/utils/ui.utils";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 import {useHotkeys} from "react-hotkeys-hook";
-import {useModifyModalI18n, ModifyModalI18nConfig} from './useModifyModalI18n';
+import {ModifyModalI18nConfig, useModifyModalI18n} from '../hooks/useModifyModalI18n';
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
-    modalStore: ReturnType<typeof import('@ord-components/paged-table/useModalFormStoreFactory').createModalFormStore>;
-    tableStore?: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
+    modalStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useModalFormStoreFactory').createModalFormStore>;
+    tableStore?: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
     formFields: React.ReactNode;
     form?: FormInstance;
     initialValues?: Record<string, any>;

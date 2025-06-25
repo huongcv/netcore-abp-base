@@ -1,2 +1,2 @@
-export * from './PagedTable';
-export * from './useTableStoreFactory';
+export * from './components/PagedTable';
+export * from './hooks/useTableStoreFactory';

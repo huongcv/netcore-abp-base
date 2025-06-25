@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 
 export interface PagedTableProps<T> extends TableProps<T> {
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>,
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>,
     initialSearchParams?: Record<string, any>; // Search params để set sau khi reset
 }
 

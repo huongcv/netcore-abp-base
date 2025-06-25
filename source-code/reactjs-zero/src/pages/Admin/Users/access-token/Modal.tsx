@@ -1,59 +1,36 @@
-import {createModalStore} from "@ord-components/paged-table/useModalStoreFactory";
+import {createModalStore} from "@ord-components/paged-table/hooks/useModalStoreFactory";
 import {useTranslation} from "react-i18next";
-import {GenericModalForm} from "@ord-components/paged-table/GenericModalForm";
+import {GenericModalForm} from "@ord-components/paged-table/components/GenericModalForm";
 import React, {useEffect, useMemo, useState} from "react";
-import {createTableStore, PagedTable} from "@ord-components/paged-table";
 import {UserAccessTokenService} from "@api/base/UserAccessTokenService";
 import {UserDto} from "@api/index.defs";
 import TableUtil from "@ord-core/utils/table.util";
-import {PagedTableSearchForm} from "@ord-components/paged-table/PagedTableSearchForm";
-import {Button, Form, Space} from "antd";
+import {Button, Space} from "antd";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
-import {GetUserAccessTokenPagedInput, UserAccessTokenDto, UserPagedDto} from "@api/base/index.defs";
+import {UserPagedDto} from "@api/base/index.defs";
 import {UserAccessTokenColumns} from "@pages/Admin/Users/access-token/Columns";
-import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
-import {createRowSelectionHook} from "@ord-components/paged-table/useRowSelectionStore";
 import {DeleteOutlined} from "@ant-design/icons";
-import UiUtils from "@ord-core/utils/ui.utils";
 import {ConfirmRevokeModal} from "@pages/Admin/Users/access-token/ConfirmRevokeModal";
-import {TableSearchForm} from "@ord-components/paged-table/TableSearchForm";
+import {useAccessTokenModalLogic} from "@pages/Admin/Users/access-token/useAccessTokenModalLogic";
+import {SearchablePagedTable} from "@ord-components/paged-table/components/SearchablePagedTable";
 
 export const userAccessTokenListModalStore = createModalStore();
-export const userAccessTokenTableStore = createTableStore({
-    getPaged: params => {
-        // @ts-ignore
-        const body: GetUserAccessTokenPagedInput = params?.body;
-        if (body?.isActived == null) {
-            body.isActived = true;
-        }
-        return UserAccessTokenService.getPaged({
-            body
-        });
-    }
-});
-const rowSelectionStore = createRowSelectionHook<UserAccessTokenDto>({
-    isRowDisabled: (record) => {
-        return !record?.isActived || !!record?.isCurrentToken;
-    }
-});
-
 export const UserAccessTokenListModal = () => {
     const {t} = useTranslation("modal");
     const {t: tCommon} = useTranslation();
-    const {t: tConfirm} = useTranslation("confirm");
     const {open, dataItem} = userAccessTokenListModalStore();
-    const [searchForm] = Form.useForm();
     const [user, setUser] = useState<UserPagedDto>();
-    const [revokeReason, setRevokeReason] = useState('');
-    const [openConfirm, setOpenConfirm] = useState(false);
     const {
+        searchForm,
         rowSelection,
         selectedRowKeys,
-        selectedRows,
-        clearSelection,
-    } = rowSelectionStore();
-    const {onLoadData, setReloadStatusCounter, reset} = userAccessTokenTableStore();
-
+        revokeReason,
+        setRevokeReason,
+        openConfirm,
+        setOpenConfirm,
+        handleBulkRevoke,
+        clearSelection
+    } = useAccessTokenModalLogic(user);
     useEffect(() => {
         if (open) {
             searchForm.resetFields();
@@ -75,36 +52,6 @@ export const UserAccessTokenListModal = () => {
 
     const handleSave = async () => {
         return true;
-    }
-    const handleBulkRevoke = async () => {
-        UiUtils.setBusy();
-        try {
-
-            const result = await UserAccessTokenService.revokeTokens({
-                body: {
-                    userEncodedId: user?.encodedId,
-                    reason: revokeReason,
-                    // @ts-ignore
-                    tokenIds: [...selectedRowKeys]
-                }
-            });
-            if (result.isSuccessful) {
-                UiUtils.showSuccess(tConfirm('revokeToken.success', {
-                    count: selectedRowKeys.length
-                }));
-                setRevokeReason('');
-                clearSelection();
-                onLoadData().then();
-                setReloadStatusCounter();
-            } else {
-                UiUtils.showError(result.message);
-            }
-        } catch {
-
-        } finally {
-            UiUtils.clearBusy();
-        }
-
     }
 
     const columns = TableUtil.getColumns<UserDto>([
@@ -153,7 +100,9 @@ export const UserAccessTokenListModal = () => {
             </div>
         );
     };
-
+    const SearchFormFields = <>
+        <SearchFilterText span={12}/>
+    </>;
     return (
         <>
             <GenericModalForm
@@ -163,32 +112,22 @@ export const UserAccessTokenListModal = () => {
                 title={title}
                 onSave={handleSave}
             >
-                <TableSearchForm
-                    form={searchForm}
-                    tableStore={userAccessTokenTableStore}>
-                    <SearchFilterText span={12}/>
-                </TableSearchForm>
-
-                <div className={'mt-5'}>
-                    <OrdCounterByStatusSegmented
-                        tableStore={userAccessTokenTableStore}
-                        statusFieldName={'isActived'}
-                        initialValueStatus={true}
-                        fetcher={UserAccessTokenService.getCountByStatus}
-                    />
-                </div>
-
-                {/* Bulk Action Toolbar - only show on active tab */}
-                <BulkActionToolbar/>
-                <PagedTable
-                    rowKey={'tokenId'}
-                    columns={columns}
-                    tableStore={userAccessTokenTableStore}
-                    rowSelection={rowSelection}
-                    initialSearchParams={{
-                        isActived: true,
-                        userEncodedId: user?.encodedId,
-                    }}
+                <SearchablePagedTable searchForm={searchForm}
+                                          searchFields={SearchFormFields}
+                                          apiService={UserAccessTokenService}
+                                          rowKey={'tokenId'}
+                                          columns={columns}
+                                          rowSelection={rowSelection}
+                                          initialSearchParams={{
+                                              isActived: true,
+                                              userEncodedId: user?.encodedId,
+                                          }}
+                                          counterByStatus={{
+                                              statusFieldName: 'isActived',
+                                              initialValueStatus: true,
+                                              fetcher: UserAccessTokenService.getCountByStatus
+                                          }}
+                                          bulkActionToolbar={<BulkActionToolbar/>}
                 />
                 <ConfirmRevokeModal
                     open={openConfirm}

@@ -1,7 +1,7 @@
 import {TableRowSelection} from 'antd/es/table/interface';
 import {create} from 'zustand';
 import {subscribeWithSelector} from 'zustand/middleware';
-import React, {useMemo, useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 
 interface RowSelectionState<T> {
     selectedRowKeys: React.Key[];
@@ -192,3 +192,8 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
         };
     };
 }
+
+export const useRowSelectionStore = <T extends object>(options?: RowSelectionConfig<T>) => {
+    const useStore = useMemo(() => createRowSelectionHook<T>(options), []);
+    return useStore();
+};

@@ -1,5 +1,4 @@
-import {useTranslation} from "react-i18next";
-import {Trans} from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 import React from "react";
 
 export interface ModifyModalI18nConfig {
