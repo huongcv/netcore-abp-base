@@ -1,5 +1,6 @@
 import {Trans, useTranslation} from "react-i18next";
 import React from "react";
+import {OrdTransConfirm} from "@ord-components/common/translation/OrdTransConfirm";
 
 export interface ModifyModalI18nConfig {
     titleI18nKey?: {
@@ -94,11 +95,10 @@ export const useModifyModalI18n = ({
     const getConfirmContent = (deletingItem: any): React.ReactNode => {
         if (i18nConfig?.confirmI18nKey?.remove) {
             return (
-                <Trans
+                <OrdTransConfirm
                     ns={i18nConfig.translationNamespace || ['modify-modal']}
                     i18nKey={i18nConfig.confirmI18nKey.remove}
                     values={deletingItem}
-                    components={{italic: <i/>, bold: <strong/>}}
                 />
             );
         } else {
@@ -106,11 +106,10 @@ export const useModifyModalI18n = ({
             const entity = t('entity.' + entityTranslationNs);
             const i18nKey = t('common.confirm.remove', {entity});
             return (
-                <Trans
+                <OrdTransConfirm
                     ns={'confirm'}
                     i18nKey={i18nKey}
                     values={deletingItem}
-                    components={{italic: <i/>, bold: <strong/>}}
                 />
             );
         }

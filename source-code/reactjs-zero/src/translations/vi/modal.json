@@ -9,5 +9,8 @@
   },
   "userAccessTokenListModal": {
     "title": "Danh sách access token của: {{userName}}"
+  },
+  "roleListUser": {
+    "title": "Danh sách người dùng được gán vai trò: {{name}}"
   }
 }

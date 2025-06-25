@@ -297,5 +297,6 @@
   "ListRole": "Danh sách vai trò",
   "returnAdminAccountLoginImpersonation": "Quay lại tài khoản chính",
   "selectedItems": "Đã chọn: {{count}} bản ghi",
-  "revokeSelected": "Thu hồi {{count}} token đã chọn"
+  "revokeSelected": "Thu hồi {{count}} token đã chọn",
+  "revokeRoleUsersSelected": "Thu hồi vai trò của {{count}} người dùng đã chọn"
 }

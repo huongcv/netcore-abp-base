@@ -1,16 +1,16 @@
 import {useState} from "react";
-import {UserAccessTokenService} from "@api/base/UserAccessTokenService";
 import {RolePagedDto} from "@api/base/index.defs";
-import UiUtils from "@ord-core/utils/ui.utils";
 import {useTranslation} from "react-i18next";
 import {useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 import {Form} from "antd";
+import {RoleService} from "@api/base/RoleService";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
+import {useApiActionHandler} from "@ord-core/hooks/useApiActionHandler";
 
-export const useUserListOfRoleLogic = (user?: RolePagedDto) => {
-    const {t: tConfirm} = useTranslation("confirm");
-    const [revokeReason, setRevokeReason] = useState('');
+export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
+    const {t} = useTranslation("confirm");
     const [openConfirm, setOpenConfirm] = useState(false);
+    const {executeApiAction} = useApiActionHandler();
     const [searchForm] = Form.useForm();
     const {
         rowSelection,
@@ -20,33 +20,27 @@ export const useUserListOfRoleLogic = (user?: RolePagedDto) => {
     } = useRowSelectionStore<RolePagedDto>({});
 
     const handleBulkRevoke = async () => {
-        UiUtils.setBusy();
-        try {
-
-            const result = await UserAccessTokenService.revokeTokens({
-                body: {
-                    userEncodedId: user?.encodedId,
-                    reason: revokeReason,
-                    // @ts-ignore
-                    tokenIds: [...selectedRowKeys]
+        executeApiAction(
+            () => {
+                const userIds = selectedRowKeys.map((rowKey) => rowKey + '');
+                return RoleService.removeUsersFromRole({
+                    body: {
+                        encodedId: roleDto?.encodedId,
+                        userIds
+                    }
+                });
+            },
+            {
+                successMessage: 'confirm.revokeRole.success',
+                successMessagePrm: {
+                    count: selectedRowKeys.length,
+                },
+                afterSuccess: (data) => {
+                    clearSelection();
+                    formSignalUtils.reloadTableOnly(searchForm);
                 }
-            });
-
-            if (result.isSuccessful) {
-                UiUtils.showSuccess(tConfirm('revokeToken.success', {
-                    count: selectedRowKeys.length
-                }));
-                setRevokeReason('');
-                clearSelection();
-                formSignalUtils.reloadTableAndCounter(searchForm);
-            } else {
-                UiUtils.showError(result.message);
             }
-        } catch {
-            // xử lý lỗi nếu cần
-        } finally {
-            UiUtils.clearBusy();
-        }
+        );
     };
 
     return {
@@ -54,8 +48,6 @@ export const useUserListOfRoleLogic = (user?: RolePagedDto) => {
         selectedRowKeys,
         selectedRows,
         clearSelection,
-        revokeReason,
-        setRevokeReason,
         openConfirm,
         setOpenConfirm,
         handleBulkRevoke,

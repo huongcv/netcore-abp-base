@@ -1,7 +1,6 @@
 import {createModalStore} from "@ord-components/paged-table/hooks/useModalStoreFactory";
 import {GenericModalForm} from "@ord-components/paged-table/components/GenericModalForm";
 import {SearchablePagedTable} from "@ord-components/paged-table/components/SearchablePagedTable";
-import {UserAccessTokenBulkActionToolbar} from "@pages/Admin/Users/access-token/UserAccessTokenBulkActionToolbar";
 import React, {useEffect, useMemo} from "react";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {RoleService} from "@api/base/RoleService";
@@ -11,6 +10,7 @@ import {useUserListOfRoleLogic} from "@pages/Admin/Roles/ListUsers/useLogic";
 import TableUtil from "@ord-core/utils/table.util";
 import {UserDto} from "@api/index.defs";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
+import {UserListBulkActionToolbar} from "@pages/Admin/Roles/ListUsers/BulkActionToolbar";
 
 export const roleUserListModalStore = createModalStore<RolePagedDto>();
 
@@ -21,10 +21,7 @@ export const UserListModal = () => {
         searchForm,
         rowSelection,
         selectedRowKeys,
-        openConfirm,
-        setOpenConfirm,
         handleBulkRevoke,
-        clearSelection
     } = useUserListOfRoleLogic(dataItem);
     const title = useMemo(() => t('roleListUser.title', {...dataItem}), [dataItem]);
     useEffect(() => {
@@ -61,17 +58,13 @@ export const UserListModal = () => {
                                               })
                                           }
                                       }}
-                                      rowKey={'userEncodedId'}
+                                      rowKey={'userId'}
                                       columns={columns}
                                       rowSelection={rowSelection}
-                    // counterByStatus={{
-                    //     statusFieldName: 'isActived',
-                    //     initialValueStatus: true,
-                    //     fetcher: UserAccessTokenService.getCountByStatus
-                    // }}
-                                      bulkActionToolbar={<UserAccessTokenBulkActionToolbar
+                                      bulkActionToolbar={<UserListBulkActionToolbar
+                                          roleDto={dataItem}
                                           selectedCount={selectedRowKeys.length}
-                                          onRevokeClick={() => setOpenConfirm(true)}
+                                          onRevokeClick={() => handleBulkRevoke()}
                                       />}
                 />
             </GenericModalForm>
