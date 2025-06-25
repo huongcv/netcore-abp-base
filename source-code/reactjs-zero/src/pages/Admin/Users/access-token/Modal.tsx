@@ -1,7 +1,7 @@
 import {createModalStore} from "@ord-components/paged-table/useModalStoreFactory";
 import {useTranslation} from "react-i18next";
 import {GenericModalForm} from "@ord-components/paged-table/GenericModalForm";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {createTableStore, PagedTable} from "@ord-components/paged-table";
 import {UserAccessTokenService} from "@api/base/UserAccessTokenService";
 import {UserDto} from "@api/index.defs";
@@ -16,6 +16,7 @@ import {createRowSelectionHook} from "@ord-components/paged-table/useRowSelectio
 import {DeleteOutlined} from "@ant-design/icons";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {ConfirmRevokeModal} from "@pages/Admin/Users/access-token/ConfirmRevokeModal";
+import {TableSearchForm} from "@ord-components/paged-table/TableSearchForm";
 
 export const userAccessTokenListModalStore = createModalStore();
 export const userAccessTokenTableStore = createTableStore({
@@ -161,17 +162,12 @@ export const UserAccessTokenListModal = () => {
                 hiddenOk
                 title={title}
                 onSave={handleSave}
-                destroyOnHidden={true}
             >
-                <PagedTableSearchForm
+                <TableSearchForm
                     form={searchForm}
-                    tableStore={userAccessTokenTableStore}
-                    searchFields={
-                        <>
-                            <SearchFilterText span={12}/>
-                        </>
-                    }
-                />
+                    tableStore={userAccessTokenTableStore}>
+                    <SearchFilterText span={12}/>
+                </TableSearchForm>
 
                 <div className={'mt-5'}>
                     <OrdCounterByStatusSegmented

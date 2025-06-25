@@ -1,21 +1,22 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {v4 as uuidv4} from "uuid";
 import {HotkeysProvider} from "react-hotkeys-hook";
 import {PageTopTitleAndAction} from "@ord-components/common/page/PageTopTitleAndAction";
 import {TopAction} from "@ord-components/crud/TopAction";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
-import {Form, Row} from "antd";
-import {useWatch} from "antd/es/form/Form";
-import {debounce} from "lodash";
+import {Form, FormInstance} from "antd";
+import {TableSearchForm} from "@ord-components/paged-table/TableSearchForm";
 
 interface PageLayoutWithTableProps {
+    children: React.ReactNode;
+    tableStore: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
     topActions?: IActionBtn[],
     topActionContent?: React.ReactNode,
     hiddenTopAction?: boolean;
     searchFields: React.ReactNode;
     searchInitData?: any;
-    children: React.ReactNode;
-    tableStore?: ReturnType<typeof import('@ord-components/paged-table/useTableStoreFactory').createTableStore>;
+    form?: FormInstance;
+
 }
 
 export const PageLayoutWithTable = ({
@@ -25,25 +26,12 @@ export const PageLayoutWithTable = ({
                                         children,
                                         searchFields,
                                         tableStore,
-                                        searchInitData
+                                        searchInitData,
+                                        form
                                     }: PageLayoutWithTableProps) => {
     const hotKeyScopeId = useMemo(() => `crudPageScope-${uuidv4()}`, []);
-    const [searchFormRef] = Form.useForm();
-    const {setSearchParams} = tableStore?.() || {};
-    const extendResetTick_w = useWatch('extendResetTick', searchFormRef);
-
-    const onFinishFormSearch = () => {
-        if (setSearchParams) {
-            const values = searchFormRef.getFieldsValue();
-            setSearchParams(values);
-        }
-    }
-    useEffect(() => {
-        if (extendResetTick_w > 0) {
-            searchFormRef.resetFields();
-            searchFormRef.submit();
-        }
-    }, [extendResetTick_w]);
+    const [internalForm] = Form.useForm();
+    const usedForm = form || internalForm;
     return (
         <HotkeysProvider initiallyActiveScopes={[hotKeyScopeId]}>
             <div>
@@ -57,26 +45,16 @@ export const PageLayoutWithTable = ({
                         </>
                     </PageTopTitleAndAction>
                 }
-                <Form form={searchFormRef} className={'crud-search-box'}
-                      initialValues={searchInitData}
-                      layout='vertical'
-                      onFinish={debounce((d) => {
-                          onFinishFormSearch()
-                      }, 250)}
-                >
-                    {
-                        (searchFields) &&
-                        <div className={'ord-container-box'}>
-                            <Row gutter={[16, 8]}>
-                                {searchFields}
-                            </Row>
-                            <div hidden>
-                                <Form.Item hidden name={'hotKeyScopeId'} initialValue={hotKeyScopeId} noStyle/>
-                            </div>
-
-                        </div>
-                    }
-                </Form>
+                <div className={'ord-container-box'}>
+                    <TableSearchForm
+                        form={usedForm}
+                        initialValues={searchInitData}
+                        layout='vertical'
+                        tableStore={tableStore}>
+                        {searchFields}
+                        <Form.Item hidden name={'hotKeyScopeId'} initialValue={hotKeyScopeId} noStyle/>
+                    </TableSearchForm>
+                </div>
                 <div className={'ord-container-box ord-crud-list'}>
                     {/* Table */}
                     {children}
