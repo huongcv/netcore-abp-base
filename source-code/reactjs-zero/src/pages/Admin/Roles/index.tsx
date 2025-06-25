@@ -11,10 +11,10 @@ import {createNotificationTransform} from "@ord-components/paged-table/utils/not
 import {RoleService} from "@api/base/RoleService";
 import RoleEntityForm from "@pages/Admin/Roles/EntityForm";
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
-import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
+import {roleUserListModalStore, UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
 import {UserListAssignableRoleModal} from "@pages/Admin/Roles/ListUserAssignable/Modal";
-import {useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
-import {RolePagedDto} from "@api/base/index.defs";
+import {UserOutlined} from "@ant-design/icons";
+import {l} from "@ord-core/language/lang.utils";
 
 const Roles: React.FC = () => {
     const {
@@ -28,12 +28,25 @@ const Roles: React.FC = () => {
         {
             title: 'code',
             dataIndex: 'code',
-            width: 200,
+            width: 100,
         },
         {
             title: 'name',
             dataIndex: 'name',
             width: 200,
+        }, {
+            title: 'user_assigned_role_count',
+            dataIndex: 'userAssignedCount',
+            width: 150,
+            align: 'right',
+            render: (value, dto) => <>
+                <a onClick={() => {
+                    roleUserListModalStore.getInitialState().openModal(dto);
+                }} title={l.transCommon("view_list_detail")}>
+                    <span className={'me-2'}>{value}</span>
+                    <UserOutlined/>
+                </a>
+            </>
         }, {
             title: 'description',
             dataIndex: 'description'

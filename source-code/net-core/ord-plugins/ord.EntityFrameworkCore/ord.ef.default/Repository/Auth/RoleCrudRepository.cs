@@ -21,6 +21,23 @@ namespace Ord.Plugin.Auth.Repositories
             return queryable;
         }
 
+        protected override async Task ProcessPagedItemsAsync(List<RolePagedDto> items, RolePagedInput input)
+        {
+            var listRoleId = items.Select(x => x.Id).ToList();
+            var userRoleQueryable = await GetEntityQueryable<UserRoleEntity>(true);
+            var countUsers = await userRoleQueryable.Where(x => listRoleId.Contains(x.RoleId))
+                .GroupBy(x => x.RoleId)
+                .Select(x => new
+                {
+                    RoleId = x.Key,
+                    UserAssigned = x.Count()
+                }).ToListAsync();
+            foreach (var item in items)
+            {
+                item.UserAssignedCount = countUsers.FirstOrDefault(x => x.RoleId == item.Id)?.UserAssigned ?? 0;
+            }
+        }
+
         protected override async Task ValidateBeforeCreateAsync(CreateRoleDto createInput)
         {
             var isCodeUnique = await IsCodeUniqueAsync(createInput.Code);
@@ -74,7 +91,7 @@ namespace Ord.Plugin.Auth.Repositories
         public async Task<List<string>> GetRolePermissionGrants(List<Guid> roleIds)
         {
             var queryable = await PermissionGrantRepository.GetQueryableAsync();
-            var query =  queryable.AsNoTracking()
+            var query = queryable.AsNoTracking()
                 .Where(x => x.ProviderName == PermissionGrantProviderName.Role && roleIds.Contains(x.ProviderId));
             return await query.Select(x => x.PermissionName).ToListAsync();
         }
@@ -234,23 +251,23 @@ namespace Ord.Plugin.Auth.Repositories
 
             // LEFT JOIN với UserRole theo roleId
             var query = from user in userQueryable
-                join userRole in userRoleQueryable
-                    on user.Id equals userRole.UserId into userRoleGroup
-                from userRole in userRoleGroup
-                    .Where(x => x.RoleId == roleId)
-                    .DefaultIfEmpty() // LEFT JOIN
-                where userRole == null // chỉ lấy user chưa gán role
-                select new UserInRoleDto
-                {
-                    UserId = user.Id,
-                    TenantId = user.TenantId,
-                    UserName = user.UserName,
-                    Name = user.Name,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    IsActived = user.IsActived,
-                    AssignedDate = null // chưa được gán
-                };
+                        join userRole in userRoleQueryable
+                            on user.Id equals userRole.UserId into userRoleGroup
+                        from userRole in userRoleGroup
+                            .Where(x => x.RoleId == roleId)
+                            .DefaultIfEmpty() // LEFT JOIN
+                        where userRole == null // chỉ lấy user chưa gán role
+                        select new UserInRoleDto
+                        {
+                            UserId = user.Id,
+                            TenantId = user.TenantId,
+                            UserName = user.UserName,
+                            Name = user.Name,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            IsActived = user.IsActived,
+                            AssignedDate = null // chưa được gán
+                        };
 
             // Sắp xếp nếu cần
             query = query.OrderByDescending(x => x.UserName);

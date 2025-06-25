@@ -24,6 +24,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
         public Guid Id { get; set; }
         public string? EncodedId { get; set; }
         public DateTime CreationTime { get; set; }
+        public int UserAssignedCount { get; set; }
     }
     public class RolePagedInput : OrdPagedRequestDto
     {
