@@ -5,10 +5,13 @@ import {FooterCrudModal} from '@ord-components/crud/FooterCrudModal';
 import uiUtils from "@ord-core/utils/ui.utils";
 import {useHotkeys} from "react-hotkeys-hook";
 import {useTranslation} from "react-i18next";
+import {UseBoundStore} from "zustand/react";
+import {StoreApi} from "zustand/vanilla";
+import {ModalFormState} from "@ord-components/paged-table/hooks/useModalStoreFactory";
 
-export interface ModifyModalFormProps<T = any>
+export interface Props<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
-    modalStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useModalStoreFactory').createModalStore>;
+    modalStore: UseBoundStore<StoreApi<ModalFormState<T>>>;
     formFields?: React.ReactNode;
     form?: FormInstance;
     initialValues?: Record<string, any>;
@@ -26,7 +29,7 @@ export const GenericModalForm = <T extends object>({
                                                        children,
                                                        hiddenOk,
                                                        ...modalProps
-                                                   }: ModifyModalFormProps<T>) => {
+                                                   }: Props<T>) => {
     const {open, close, dataItem} = modalStore();
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;

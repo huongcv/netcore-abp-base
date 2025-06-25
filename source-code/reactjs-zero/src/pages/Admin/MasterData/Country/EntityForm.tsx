@@ -4,7 +4,7 @@ import React from "react";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 
-export const EntityForm = () => {
+export const CountryEntityForm = () => {
     const focusRef = useAutoFocus();
     return (<>
         <Row gutter={18}>

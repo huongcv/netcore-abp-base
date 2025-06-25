@@ -1,6 +1,8 @@
 import {create} from 'zustand';
 import UiUtils from "@ord-core/utils/ui.utils";
 import {ICommonResultDtoApi, IModifyApiService} from "@ord-components/paged-table/types";
+import {useMemo} from "react";
+import {createRowSelectionHook} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 
 export type ModalMode = 'create' | 'edit' | 'viewDetail';
 
@@ -19,12 +21,13 @@ export interface ModalFormState<T = any> {
     onDelete: () => Promise<ICommonResultDtoApi<any> | null>;
 }
 
-export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModifyApiService,
-                                                                options?: {
-                                                                    transformBeforeCreate?: (values: any) => void;
-                                                                    transformBeforeUpdate?: (values: any, editingItem: any) => void;
-                                                                    onSuccess?: (result: ICommonResultDtoApi<any>, mode: ModalMode) => void;
-                                                                }) =>
+interface ICrudModalFormStoreSetting {
+    transformBeforeCreate?: (values: any) => void;
+    transformBeforeUpdate?: (values: any, editingItem: any) => void;
+    onSuccess?: (result: ICommonResultDtoApi<any>, mode: ModalMode) => void;
+}
+
+export const createModalFormStore = <TDetail>(service: IModifyApiService, options?: ICrudModalFormStoreSetting) =>
     create<ModalFormState<TDetail>>((set, get) => ({
         open: false,
         editingItem: null,
@@ -93,3 +96,6 @@ export const createModalFormStore = <TDetail, TCreate, TUpdate>(service: IModify
 
         }
     }));
+export const useCrudModalStore = <T extends object>(apiService: IModifyApiService, options?: ICrudModalFormStoreSetting) => {
+    return useMemo(() => createModalFormStore<T>(apiService, options), [apiService]);
+};

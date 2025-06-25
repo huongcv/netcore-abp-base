@@ -11,6 +11,7 @@ import {createNotificationTransform} from "@ord-components/paged-table/utils/not
 import {RoleService} from "@api/base/RoleService";
 import RoleEntityForm from "@pages/Admin/Roles/EntityForm";
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
+import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
 
 const Roles: React.FC = () => {
     const {
@@ -58,6 +59,7 @@ const Roles: React.FC = () => {
                     name: 'name'
                 })}
             />
+            <UserListModal/>
         </>)
         ;
 }

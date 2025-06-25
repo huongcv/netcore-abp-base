@@ -1,45 +1,26 @@
 import React from "react";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
-import {TableColumnsType} from "antd";
 import TableUtil from "@ord-core/utils/table.util";
-import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
-import {createTableStore, PagedTable} from "@ord-components/paged-table";
-import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
+import {PagedTable} from "@ord-components/paged-table";
+import {useCrudModalStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {CountryService} from "@api/base/CountryService";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {ModifyModalForm} from "@ord-components/paged-table/components/ModifyModalForm";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
-import {EntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
-import {CountryDto} from "@api/index.defs";
+import {CountryEntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
-
-
-const tableStore = createTableStore(CountryService);
-const modalStore = createModalFormStore(CountryService, {});
+import {CountryDataTableColumn} from "@pages/Admin/MasterData/Country/Columns";
+import {useTableStore} from "@ord-components/paged-table/hooks/useTableStore";
+import {CountryPagedDto} from "@api/base/index.defs";
 
 const Country: React.FC = () => {
+    const tableStore = useTableStore(CountryService);
+    const modalStore = useCrudModalStore(CountryService);
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     const {onExportExcel} = tableStore();
-    const columns: TableColumnsType<any> = TableUtil.getColumns([
-        {
-            title: 'ma_quoc_gia',
-            dataIndex: 'code',
-            width: 200
-        },
-        {
-            title: 'ten_quoc_gia',
-            dataIndex: 'name',
-        },
-        {
-            dataIndex: 'phoneCode',
-            title: 'phoneCode',
-        },
-        {
-            dataIndex: 'currencyCode',
-            title: 'currencyCode',
-        },
-        IsActivedColumn()
+    const columns = TableUtil.getColumns<CountryPagedDto>([
+        ...CountryDataTableColumn
     ], {
         actions: [
             {
@@ -93,7 +74,7 @@ const Country: React.FC = () => {
                 modalStore={modalStore}
                 tableStore={tableStore}
                 entityTranslationNs="country"
-                formFields={<EntityForm/>}
+                formFields={<CountryEntityForm/>}
                 transformNotificationParameter={createNotificationTransform.fromField('name')}
             />
         </>)

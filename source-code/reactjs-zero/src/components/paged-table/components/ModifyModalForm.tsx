@@ -7,11 +7,15 @@ import UiUtils from "@ord-core/utils/ui.utils";
 import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 import {useHotkeys} from "react-hotkeys-hook";
 import {ModifyModalI18nConfig, useModifyModalI18n} from '../hooks/useModifyModalI18n';
+import {UseBoundStore} from "zustand/react";
+import {StoreApi} from "zustand/vanilla";
+import {TableStoredState} from "@ord-components/paged-table";
+import {ModalFormState} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 
 export interface ModifyModalFormProps<T = any>
     extends Omit<ModalProps, 'onOk' | 'open' | 'onCancel'> {
-    modalStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useModalFormStoreFactory').createModalFormStore>;
-    tableStore?: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
+    modalStore: UseBoundStore<StoreApi<ModalFormState<T>>>;
+    tableStore?: UseBoundStore<StoreApi<TableStoredState>>;
     formFields: React.ReactNode;
     form?: FormInstance;
     initialValues?: Record<string, any>;

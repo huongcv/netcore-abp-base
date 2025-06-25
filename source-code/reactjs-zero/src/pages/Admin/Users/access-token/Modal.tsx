@@ -13,7 +13,7 @@ import {useAccessTokenModalLogic} from "@pages/Admin/Users/access-token/useAcces
 import {SearchablePagedTable} from "@ord-components/paged-table/components/SearchablePagedTable";
 import {UserAccessTokenBulkActionToolbar} from "@pages/Admin/Users/access-token/UserAccessTokenBulkActionToolbar";
 
-export const userAccessTokenListModalStore = createModalStore();
+export const userAccessTokenListModalStore = createModalStore<UserPagedDto>();
 export const UserAccessTokenListModal = () => {
     const {t} = useTranslation("modal");
     const {t: tCommon} = useTranslation();

@@ -7,7 +7,7 @@ export interface ModalFormState<T = any> {
     close: () => void;
 }
 
-export const createModalStore = <TDetail>() =>
+export const createModalStore = <TDetail extends object>() =>
     create<ModalFormState<TDetail>>((set, get) => ({
         open: false,
         dataItem: null,

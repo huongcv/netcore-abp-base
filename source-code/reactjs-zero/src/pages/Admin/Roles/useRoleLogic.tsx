@@ -9,6 +9,7 @@ import {RoleService} from "@api/base/RoleService";
 import {UserOutlined} from "@ant-design/icons";
 import ListUserAssign from "@pages/Admin/Roles/ListUserAssign";
 import React from "react";
+import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
 // Stores
 const tableStore = createTableStore(RoleService);
 const modalStore = createModalFormStore(RoleService, {});
@@ -50,6 +51,7 @@ export const useRoleLogic = () => {
             icon: <UserOutlined/>,
             permission: policies.edit,
             onClick: (d) => {
+                roleUserListModalStore.getInitialState().openModal(d);
                 // entityModalStore.openModalView({
                 //     modal: {
                 //         title: t('ListUserAssignTitleModal', {...d}),

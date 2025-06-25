@@ -24,9 +24,6 @@ export const useUserLogic = () => {
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete} = modalStore();
     const {sessionStore} = useStore();
-    const {openModal: openModalChangePassword} = changePasswordUserModalStore();
-    const {openModal: openModalAssignRole} = assignRoleUserModalStore();
-    const {openModal: openModalAccessToken} = userAccessTokenListModalStore();
     // Memoized handlers để tránh re-render
     const handleExportExcel = useCallback(async () => {
         try {
@@ -75,7 +72,7 @@ export const useUserLogic = () => {
             permission: USER_POLICIES.RESET_PASSWORD,
             icon: <UndoOutlined/>,
             onClick: (user) => {
-                openModalChangePassword(user);
+                changePasswordUserModalStore.getInitialState().openModal(user);
             },
             hiddenIf: (u: UserDto) => {
                 return UserUtilities.isUserCurrentLogin(u, sessionStore.userId);
@@ -101,7 +98,7 @@ export const useUserLogic = () => {
             icon: <CheckOutlined/>,
             permission: USER_POLICIES.ASSIGN_ROLE,
             onClick: (user) => {
-                openModalAssignRole(user);
+                assignRoleUserModalStore.getInitialState().openModal(user);
             },
         },
         {
@@ -109,7 +106,7 @@ export const useUserLogic = () => {
             icon: <KeyOutlined/>,
             permission: USER_POLICIES.MANAGE_ACCESS_TOKEN,
             onClick: (user) => {
-                openModalAccessToken(user);
+                userAccessTokenListModalStore.getInitialState().openModal(user);
             },
         },
         {

@@ -2,9 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Pagination, Table, TableProps} from 'antd';
 import {useTranslation} from "react-i18next";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
+import {UseBoundStore} from "zustand/react";
+import {StoreApi} from "zustand/vanilla";
+import {ModalFormState} from "@ord-components/paged-table/hooks/useModalStoreFactory";
+import {TableStoredState} from '../hooks/useTableStoreFactory';
 
 export interface PagedTableProps<T> extends TableProps<T> {
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>,
+    tableStore: UseBoundStore<StoreApi<TableStoredState>>,
     initialSearchParams?: Record<string, any>; // Search params để set sau khi reset
 }
 
