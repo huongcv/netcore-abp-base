@@ -16,7 +16,7 @@ import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 export const roleUserListModalStore = createModalStore<RolePagedDto>();
 
 export const UserListModal = () => {
-    const {open, dataItem: roleDto, close} = roleUserListModalStore();
+    const {open, dataItem: roleDto, close, handler} = roleUserListModalStore();
     const {t} = useTranslation("modal");
     const {
         searchForm,
@@ -38,6 +38,14 @@ export const UserListModal = () => {
     const SearchFormFields = <>
         <SearchFilterText span={12}/>
     </>;
+    const onRevoke = () => {
+        const callBack = () => {
+            if (handler?.onAfterSuccess) {
+                handler.onAfterSuccess();
+            }
+        }
+        handleBulkRevoke(callBack).then();
+    }
     return (
         <>
             <GenericModalForm
@@ -49,7 +57,7 @@ export const UserListModal = () => {
                     close();
                 }}
                                         left={<UserListBulkActionToolbar
-                                            onRevokeClick={handleBulkRevoke}
+                                            onRevokeClick={onRevoke}
                                             selectedCount={selectedRowKeys.length}
                                         />}
 

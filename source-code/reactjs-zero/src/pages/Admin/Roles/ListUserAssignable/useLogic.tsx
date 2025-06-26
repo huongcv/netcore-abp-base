@@ -6,6 +6,7 @@ import {Form} from "antd";
 import {RoleService} from "@api/base/RoleService";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
 import {useApiActionHandler} from "@ord-core/hooks/useApiActionHandler";
+import {userListModalAssignableRoleStore} from "@pages/Admin/Roles/ListUserAssignable/Modal";
 
 export const useUserListAssignableRoleLogic = (roleDto?: RolePagedDto | null) => {
     const {t} = useTranslation("confirm");
@@ -19,7 +20,7 @@ export const useUserListAssignableRoleLogic = (roleDto?: RolePagedDto | null) =>
         clearSelection,
     } = useRowSelectionStore<RolePagedDto>({});
 
-    const handleBulkAssign = async () => {
+    const handleBulkAssign = async (callBack: () => void) => {
         executeApiAction(
             () => {
                 const userIds = selectedRowKeys.map((rowKey) => rowKey + '');
@@ -39,6 +40,7 @@ export const useUserListAssignableRoleLogic = (roleDto?: RolePagedDto | null) =>
                 afterSuccess: (data) => {
                     clearSelection();
                     formSignalUtils.reloadTableOnly(searchForm);
+                    callBack();
                 }
             }
         );

@@ -19,7 +19,7 @@ export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
         clearSelection,
     } = useRowSelectionStore<RolePagedDto>({});
 
-    const handleBulkRevoke = async () => {
+    const handleBulkRevoke = async (callBackRevokeSuccess: () => void) => {
         executeApiAction(
             () => {
                 const userIds = selectedRowKeys.map((rowKey) => rowKey + '');
@@ -38,6 +38,7 @@ export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
                 afterSuccess: (data) => {
                     clearSelection();
                     formSignalUtils.reloadTableOnly(searchForm);
+                    callBackRevokeSuccess();
                 }
             }
         );

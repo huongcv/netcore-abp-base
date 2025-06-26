@@ -16,7 +16,7 @@ import {UserListBulkAssignableToRoleActionToolbar} from "@pages/Admin/Roles/List
 export const userListModalAssignableRoleStore = createModalStore<RolePagedDto>();
 
 export const UserListAssignableRoleModal = () => {
-    const {open, dataItem, close} = userListModalAssignableRoleStore();
+    const {open, dataItem, close, handler} = userListModalAssignableRoleStore();
     const {t} = useTranslation("modal");
     const {
         searchForm,
@@ -35,6 +35,14 @@ export const UserListAssignableRoleModal = () => {
     ], {
         actions: []
     });
+    const onBulkAssign = () => {
+        const callBack = () => {
+            if (handler?.onAfterSuccess) {
+                handler.onAfterSuccess();
+            }
+        }
+        handleBulkAssign(callBack);
+    }
     const SearchFormFields = <>
         <SearchFilterText span={12}/>
     </>;
@@ -49,7 +57,7 @@ export const UserListAssignableRoleModal = () => {
                     close();
                 }}
                                         left={<UserListBulkAssignableToRoleActionToolbar
-                                            onClick={handleBulkAssign}
+                                            onClick={onBulkAssign}
                                             selectedCount={selectedRowKeys.length}
                                         />}
 
