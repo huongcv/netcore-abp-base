@@ -6,7 +6,6 @@ import {Form} from "antd";
 import {RoleService} from "@api/base/RoleService";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
 import {useApiActionHandler} from "@ord-core/hooks/useApiActionHandler";
-import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
 
 export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
     const {t} = useTranslation("confirm");
