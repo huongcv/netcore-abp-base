@@ -1,3 +1,4 @@
+@import "./table-copyable-wrapper";
 
 .btn-other {
   background: #D0D0D0 !important;
@@ -62,18 +63,21 @@
   color: var(--main-color);
 }
 
-.ant-radio-wrapper{
+.ant-radio-wrapper {
   font-weight: normal;
 }
-.ant-radio-wrapper .ant-radio-checked .ant-radio-inner{
+
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
   border-color: var(--active-color);
   background-color: white;
 }
-.ant-radio-wrapper .ant-radio-inner::after{
+
+.ant-radio-wrapper .ant-radio-inner::after {
   background-color: var(--active-color)
 }
-.float-label{
-  .ant-radio-group{
+
+.float-label {
+  .ant-radio-group {
     padding-top: 14px;
   }
 }
