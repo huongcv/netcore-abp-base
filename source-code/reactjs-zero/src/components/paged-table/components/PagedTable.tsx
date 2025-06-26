@@ -39,7 +39,6 @@ export const PagedTable = <T extends object>({
     const loadData = async () => {
         setLoading(true);
         try {
-            console.log('loading data');
             await onLoadData();
         } finally {
             setLoading(false);
@@ -50,7 +49,6 @@ export const PagedTable = <T extends object>({
     }, 100, [tick]);
 
     useEffect(() => {
-        console.log('searchParams', searchParams, page)
         setTick(tick + 1);
     }, [page, pageSize, searchParams]);
 
@@ -64,12 +62,6 @@ export const PagedTable = <T extends object>({
                         rowKey={tableProps.rowKey || 'view_id'}/>
                 <div className={'custom-pagination mt-3 flex flex-wrap items-center justify-between'}>
                     <div>
-                        {/*<span className={'me-1'}>*/}
-                        {/*    {t('totalRecord')}:*/}
-                        {/*</span>*/}
-                        {/*<span className={'font-semibold'}>*/}
-                        {/*   {props.totalCount} {t('record')}*/}
-                        {/*</span>*/}
                     </div>
                     <div className="flex items-center">
                         <Pagination

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {RolePagedDto} from "@api/base/index.defs";
 import {useTranslation} from "react-i18next";
 import {useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
@@ -6,6 +6,7 @@ import {Form} from "antd";
 import {RoleService} from "@api/base/RoleService";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
 import {useApiActionHandler} from "@ord-core/hooks/useApiActionHandler";
+import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
 
 export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
     const {t} = useTranslation("confirm");
@@ -18,7 +19,18 @@ export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
         selectedRows,
         clearSelection,
     } = useRowSelectionStore<RolePagedDto>({});
-
+    // ✅ Memoize apiService để tránh re-create object mỗi lần render
+    const apiService = useMemo(() => ({
+        getPaged: (params: any, options?: any) => {
+            const body = params?.body;
+            return RoleService.getUsersInRole({
+                body: {
+                    encodedId: roleDto?.encodedId,
+                    ...body
+                }
+            });
+        }
+    }), [roleDto?.encodedId]);
     const handleBulkRevoke = async (callBackRevokeSuccess: () => void) => {
         executeApiAction(
             () => {
@@ -45,6 +57,7 @@ export const useUserListOfRoleLogic = (roleDto?: RolePagedDto | null) => {
     };
 
     return {
+        apiService,
         rowSelection,
         selectedRowKeys,
         selectedRows,

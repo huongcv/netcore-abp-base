@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {RolePagedDto} from "@api/base/index.defs";
 import {useTranslation} from "react-i18next";
 import {useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
@@ -19,7 +19,18 @@ export const useUserListAssignableRoleLogic = (roleDto?: RolePagedDto | null) =>
         selectedRows,
         clearSelection,
     } = useRowSelectionStore<RolePagedDto>({});
-
+    // ✅ Memoize apiService để tránh re-create object mỗi lần render
+    const apiService = useMemo(() => ({
+        getPaged: (params: any, options?: any) => {
+            const body = params?.body;
+            return RoleService.getUsersAssignableToRole({
+                body: {
+                    encodedId: roleDto?.encodedId,
+                    ...body
+                }
+            })
+        }
+    }), [roleDto?.encodedId]);
     const handleBulkAssign = async (callBack: () => void) => {
         executeApiAction(
             () => {
@@ -47,6 +58,7 @@ export const useUserListAssignableRoleLogic = (roleDto?: RolePagedDto | null) =>
     };
 
     return {
+        apiService,
         rowSelection,
         selectedRowKeys,
         selectedRows,

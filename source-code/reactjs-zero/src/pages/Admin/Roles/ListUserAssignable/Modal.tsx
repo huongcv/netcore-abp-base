@@ -16,15 +16,16 @@ import {UserListBulkAssignableToRoleActionToolbar} from "@pages/Admin/Roles/List
 export const userListModalAssignableRoleStore = createModalStore<RolePagedDto>();
 
 export const UserListAssignableRoleModal = () => {
-    const {open, dataItem, close, handler} = userListModalAssignableRoleStore();
+    const {open, dataItem: roleDto, close, handler} = userListModalAssignableRoleStore();
     const {t} = useTranslation("modal");
     const {
+        apiService,
         searchForm,
         rowSelection,
         selectedRowKeys,
         handleBulkAssign
-    } = useUserListAssignableRoleLogic(dataItem);
-    const title = useMemo(() => t('usersAssignableToRole.title', {...dataItem}), [dataItem]);
+    } = useUserListAssignableRoleLogic(roleDto);
+    const title = useMemo(() => t('usersAssignableToRole.title', {...roleDto}), [roleDto]);
     useEffect(() => {
         if (open) {
             searchForm.resetFields();
@@ -35,6 +36,11 @@ export const UserListAssignableRoleModal = () => {
     ], {
         actions: []
     });
+
+    const SearchFormFields = <>
+        <SearchFilterText span={12}/>
+    </>;
+
     const onBulkAssign = () => {
         const callBack = () => {
             if (handler?.onAfterSuccess) {
@@ -43,9 +49,6 @@ export const UserListAssignableRoleModal = () => {
         }
         handleBulkAssign(callBack);
     }
-    const SearchFormFields = <>
-        <SearchFilterText span={12}/>
-    </>;
     return (
         <>
             <GenericModalForm
@@ -65,17 +68,7 @@ export const UserListAssignableRoleModal = () => {
             >
                 <SearchablePagedTable searchForm={searchForm}
                                       searchFields={SearchFormFields}
-                                      apiService={{
-                                          getPaged: (params, options) => {
-                                              const body = params?.body;
-                                              return RoleService.getUsersAssignableToRole({
-                                                  body: {
-                                                      encodedId: dataItem?.encodedId,
-                                                      ...body
-                                                  }
-                                              })
-                                          }
-                                      }}
+                                      apiService={apiService}
                                       rowKey={'userId'}
                                       columns={columns}
                                       rowSelection={rowSelection}

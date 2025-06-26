@@ -19,6 +19,7 @@ export const UserListModal = () => {
     const {open, dataItem: roleDto, close, handler} = roleUserListModalStore();
     const {t} = useTranslation("modal");
     const {
+        apiService,
         searchForm,
         rowSelection,
         selectedRowKeys,
@@ -38,6 +39,7 @@ export const UserListModal = () => {
     const SearchFormFields = <>
         <SearchFilterText span={12}/>
     </>;
+
     const onRevoke = () => {
         const callBack = () => {
             if (handler?.onAfterSuccess) {
@@ -46,6 +48,7 @@ export const UserListModal = () => {
         }
         handleBulkRevoke(callBack).then();
     }
+
     return (
         <>
             <GenericModalForm
@@ -65,17 +68,7 @@ export const UserListModal = () => {
             >
                 <SearchablePagedTable searchForm={searchForm}
                                       searchFields={SearchFormFields}
-                                      apiService={{
-                                          getPaged: (params, options) => {
-                                              const body = params?.body;
-                                              return RoleService.getUsersInRole({
-                                                  body: {
-                                                      encodedId: roleDto?.encodedId,
-                                                      ...body
-                                                  }
-                                              })
-                                          }
-                                      }}
+                                      apiService={apiService}
                                       rowKey={'userId'}
                                       columns={columns}
                                       rowSelection={rowSelection}
