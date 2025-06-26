@@ -6,7 +6,7 @@ import {ModifyModalForm} from "@ord-components/paged-table/components/ModifyModa
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {CountryEntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
-import {CountryDataTableColumn, getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
+import {getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
 import {CountryPagedDto} from "@api/base/index.defs";
 import {useCountryLogic} from "./useCountryLogic";
 

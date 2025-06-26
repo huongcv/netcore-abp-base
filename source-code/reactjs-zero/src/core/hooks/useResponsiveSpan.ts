@@ -1,34 +1,38 @@
-import {useEffect, useState} from 'react';
-import {ColProps, ColSize} from "antd/es/grid/col";
+import {useMemo} from 'react';
+import {ColProps} from "antd/es/grid/col";
 
-export const useResponsiveSpan = (width: number) => {
-    const [spanResponsive, setSpanResponsive] = useState<ColProps>({
-        span: 24,
-        sm: 24,
-        md: width < 8 ? 12 : 24,
-        lg: width < 8 ? 8 : width < 16 ? 16 : 24,
-        xl: width
-    });
+export const useResponsiveSpan = (
+    width: number,
+    disableResponsive?: boolean
+): ColProps => {
+    return useMemo(() => {
+        if (disableResponsive) {
+            return {
+                span: width,
+                sm: 24,
+            };
+        }
 
-    useEffect(() => {
-        setSpanResponsive({
+        const getResponsiveSpan = (): ColProps => {
+            // Dựa trên width mong muốn cho XL (tham số truyền vào), và scale dần cho các breakpoint khác
+            const xl = width;
+            const lg = width >= 24 ? 24 : width >= 16 ? 16 : width >= 8 ? 8 : 6;
+            const md = width >= 16 ? 24 : 12;
+            const sm = 24;
+            const xs = 24;
+            const xxl = width >= 24 ? 24 : xl; // fallback
 
-            span: 24,
-            sm: 24,
-            md: width < 8 ? 12 : 24,
-            lg: width < 8 ? 8 : width < 16 ? 16 : 24,
-            xl: width
-        });
-    }, [width]);
+            return {
+                span: 24,
+                xs,
+                sm,
+                md,
+                lg,
+                xl,
+                xxl,
+            };
+        };
 
-    return spanResponsive;
+        return getResponsiveSpan();
+    }, [width, disableResponsive]);
 };
-
-interface ISpanResponsive {
-    span?: number | string;
-    sm?: number | ColSize;
-    md?: number | ColSize;
-    lg?: number | ColSize;
-    xl?: number | ColSize;
-    xxl?: number | ColSize;
-}

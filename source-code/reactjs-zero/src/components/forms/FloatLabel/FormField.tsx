@@ -3,13 +3,14 @@ import React from "react";
 import {Form, Input, Checkbox} from "antd";
 import {FloatFieldLabel} from "@ord-components/forms/FloatLabel";
 import {FieldLabel} from "@ord-components/forms/FloatLabel";
+import {Rule} from "antd/es/form";
 
 export interface FormFieldProps {
     label: React.ReactNode;
     name: string;
     required?: boolean;
     children?: React.ReactNode;
-    rules?: any[];
+    rules?: Rule[];
     disabled?: boolean;
     isCheckbox?: boolean;
     placeholder?: string;
@@ -34,8 +35,8 @@ export const OrdFormField = ({
                              }: FormFieldProps) => {
     if (isCheckbox) {
         return (
-            <Form.Item name={name} valuePropName={valuePropName || "checked"}  initialValue={initialValue}>
-                <Checkbox><FieldLabel label={'check_box.' + label}/></Checkbox>
+            <Form.Item name={name} valuePropName={valuePropName || "checked"} initialValue={initialValue}>
+                <Checkbox disabled={disabled}><FieldLabel label={'check_box.' + label}/></Checkbox>
             </Form.Item>
         );
     }
