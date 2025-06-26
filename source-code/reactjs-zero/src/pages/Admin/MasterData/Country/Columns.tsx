@@ -1,8 +1,7 @@
 import {TableColumnsType} from "antd";
 import {CountryPagedDto} from "@api/base/index.defs";
-import {ColumnBuilder, ColumnPresets, ResponsivePresets} from "@ord-components/paged-table/columns";
+import {ColumnBuilder, ColumnPresets} from "@ord-components/paged-table/columns";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
-import ResponsiveText from "@ord-components/common/display/ResponsiveText";
 
 export const CountryDataTableColumn: TableColumnsType<CountryPagedDto> = [
     {
@@ -34,11 +33,11 @@ export const getCountryColumns = () => {
             width: 120,
             copyable: true,
         })
-        .addCustom({
+        .addText({
             title: 'ten_quoc_gia',
             dataIndex: 'name',
             minWidth: 200,
-            ellipsis: true
+            copyable: true
         })
         .addText({
             title: 'currency_code',

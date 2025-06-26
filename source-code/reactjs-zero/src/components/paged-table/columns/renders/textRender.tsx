@@ -2,7 +2,7 @@ import React from 'react';
 import {TextColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
-import {Tooltip} from "antd";
+import {EllipsisText} from "@ord-components/common/display/EllipsisText";
 
 export class TextRender {
     static render(
@@ -15,24 +15,11 @@ export class TextRender {
         }
 
         const text = String(value);
-        const {maxLength} = config;
+        const {maxLines = 2} = config;
 
-        // Simple maxLength handling
-        let displayText = text;
-        let shouldShowTooltip = false;
 
-        if (maxLength && text.length > maxLength) {
-            displayText = `${text.substring(0, maxLength)}...`;
-            shouldShowTooltip = true;
-        }
-
-        const textContent = shouldShowTooltip ? (
-            <Tooltip title={text} placement={'top'}>
-                <span>{displayText}</span>
-            </Tooltip>
-        ) : (
-            <span>{displayText}</span>
-        );
+        const textContent = <EllipsisText text={text}
+                                          maxLines={maxLines}/>
 
         const content = (
             <CopyableWrapper

@@ -1,5 +1,6 @@
 .enhanced-table {
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .enhanced-table .ant-table-cell {
@@ -17,7 +18,7 @@
 }
 
 .copyable-content:hover {
-    background-color: rgba(24, 144, 255, 0.05) !important;
+    /*background-color: rgba(24, 144, 255, 0.05) !important;*/
 }
 
 .copyable-content:active {

@@ -1,5 +1,4 @@
 import React from 'react';
-import {CellEllipsisType} from "rc-table/lib/interface";
 import {ColumnType} from "antd/es/table/interface";
 
 export type ColorType = 'success' | 'error' | 'warning' | 'primary' | 'secondary' | 'info' | 'default';
@@ -33,7 +32,6 @@ export interface EnhancedColumnConfig<T = any> extends ColumnType {
     sortable?: boolean;
     filterable?: boolean;
     align?: 'left' | 'center' | 'right';
-    ellipsis?: CellEllipsisType;
     minWidth?: number;
     // Custom render function
     render?: (value: any, record: T, index: number) => React.ReactNode;
@@ -61,7 +59,7 @@ export interface DateColumnOptions extends BaseColumnConfig {
 }
 
 export interface TextColumnOptions extends BaseColumnConfig {
-    maxLength?: number;
+    maxLines?: number;
 }
 
 export interface BooleanColumnOptions extends BaseColumnConfig {
