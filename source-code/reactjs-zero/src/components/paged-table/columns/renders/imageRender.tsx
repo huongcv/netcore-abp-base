@@ -1,0 +1,46 @@
+import React from 'react';
+import {ImageColumnConfig} from '../types';
+import {CopyableWrapper} from '../utils/copyableWrapper';
+import {StyleWrapper} from '../utils/styleWrapper';
+
+export class ImageRender {
+    static render(value: any, record: any, config: ImageColumnConfig): React.ReactNode {
+        if (!value) {
+            return StyleWrapper.wrapWithStyle('', value, record, config);
+        }
+
+        const {
+            imageWidth = 40,
+            imageHeight = 40,
+            fallbackSrc
+        } = config;
+
+        const imageElement = (
+            <img
+                src={value}
+                alt=""
+                style={{
+                    width: imageWidth,
+                    height: imageHeight,
+                    objectFit: 'cover',
+                    borderRadius: 4
+                }}
+                onError={(e) => {
+                    if (fallbackSrc) {
+                        (e.target as HTMLImageElement).src = fallbackSrc;
+                    }
+                }}
+            />
+        );
+
+        const content = (
+            <CopyableWrapper
+                content={imageElement}
+                copyText={value} // Copy the image URL
+                config={config}
+            />
+        );
+
+        return StyleWrapper.wrapWithStyle(content, value, record, config);
+    }
+}

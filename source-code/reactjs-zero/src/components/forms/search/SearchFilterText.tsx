@@ -1,18 +1,19 @@
+import React, {useCallback, useMemo, useRef} from "react";
 import {useTranslation} from "react-i18next";
 import {Button, Col, Form, Input, Row, Space, Tooltip} from "antd";
-import React, {useRef} from "react";
-import {ISearchProp} from "@ord-components/forms/search/ISearchProp";
-import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import {debounce} from "lodash";
 import {useHotkeys} from "react-hotkeys-hook";
+import {ZoomInOutlined, ZoomOutOutlined} from "@ant-design/icons";
+
+import {ISearchProp} from "@ord-components/forms/search/ISearchProp";
+import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import {HotKeyScope} from "@ord-core/AppConst";
 import {IconlyLight} from "@ord-components/icon/IconlyLight";
 import {IconlyLightSearch} from "@ord-components/icon/IconlyLightSearch";
 import FloatLabel from "@ord-components/forms/FloatLabel";
-import {ZoomInOutlined, ZoomOutOutlined} from "@ant-design/icons";
 
-interface SearchFilterTextProp extends ISearchProp {
+interface SearchFilterTextProps extends ISearchProp {
     onReset?: () => void;
     onSubmit?: () => void;
     hasAdvanceSearchBtn?: boolean;
@@ -21,100 +22,175 @@ interface SearchFilterTextProp extends ISearchProp {
     placeHolder?: string;
     labelFilter?: string;
     isCustomReset?: boolean;
-    iconSearchCustom?: React.ReactNode
+    iconSearchCustom?: React.ReactNode;
 }
 
-export const SearchFilterText = (props: SearchFilterTextProp) => {
-    const {t} = useTranslation(['form']);
-    const {hasAdvanceSearchBtn, isHiddenAdvanceSearchBtnText, placeHolder, iconSearchCustom, ...rest} = props;
+export const SearchFilterText: React.FC<SearchFilterTextProps> = ({
+                                                                      hasAdvanceSearchBtn,
+                                                                      isHiddenAdvanceSearchBtnText,
+                                                                      placeHolder,
+                                                                      iconSearchCustom,
+                                                                      onReset,
+                                                                      onSubmit,
+                                                                      ignoreAutoFocus = false,
+                                                                      labelFilter,
+                                                                      isCustomReset = false,
+                                                                      span = 6,
+                                                                      ...rest
+                                                                  }) => {
+    const {t} = useTranslation('form');
     const form = Form.useFormInstance();
-    const inputSearch = props.ignoreAutoFocus == true ? useRef(null) : useAutoFocus();
-    const btnSearch = useRef(null);
-    const resetClick = () => {
-        if (props.onReset) {
-            props.onReset();
-        }
 
-        if (!props.isCustomReset) {
-            if (form) {
-                form.setFieldValue('extendResetTick', Number(new Date()));
-            }
+    // Refs
+    const inputRef = ignoreAutoFocus ? useRef(null) : useAutoFocus();
+    const btnSearchRef = useRef(null);
+
+    // Watch values
+    const isShowAdvanceSearch = Form.useWatch('isShowAdvanceSearch', form);
+
+    // Memoized values
+    const responsiveSpan = useResponsiveSpan(span);
+    const searchPlaceholder = useMemo(() =>
+            t(`searchTextPlaceholder.${placeHolder || 'common'}`),
+        [t, placeHolder]
+    );
+    const filterLabel = useMemo(() =>
+            labelFilter ?? t("filterSearch"),
+        [labelFilter, t]
+    );
+
+    // Calculate button width
+    const advanceButtonWidth = useMemo(() => {
+        if (!hasAdvanceSearchBtn) return 40;
+        return isHiddenAdvanceSearchBtnText ? 100 : 215;
+    }, [hasAdvanceSearchBtn, isHiddenAdvanceSearchBtnText]);
+
+    // Event handlers
+    const handleReset = useCallback(() => {
+        onReset?.();
+
+        if (!isCustomReset && form) {
+            const currentValue = form.getFieldValue(['extendUI', 'onResetSearchParameter']) || 0;
+            form.setFieldValue(['extendUI', 'onResetSearchParameter'], currentValue + 1);
         }
-    }
-    const submitClick = () => {
-        if (props.onSubmit) {
-            props.onSubmit();
-        }
-    }
+    }, [onReset, isCustomReset, form]);
+
+    const handleSubmit = useCallback(() => {
+        onSubmit?.();
+    }, [onSubmit]);
+
+    const handleAdvanceSearchToggle = useCallback(() => {
+        form.setFieldValue('isShowAdvanceSearch', !isShowAdvanceSearch);
+    }, [form, isShowAdvanceSearch]);
+
+    // Debounced handlers
+    const debouncedReset = useMemo(
+        () => debounce(handleReset, 250),
+        [handleReset]
+    );
+
+    const debouncedSubmit = useMemo(
+        () => debounce(handleSubmit, 250),
+        [handleSubmit]
+    );
+
+    // Hotkeys
+    const hotkeyScope = useMemo(() =>
+            form.getFieldValue('hotKeyScopeId') || HotKeyScope.crudPageBase,
+        [form]
+    );
+
     useHotkeys('F3', (event) => {
         // @ts-ignore
-        inputSearch.current.focus();
-        if (btnSearch.current && inputSearch.current) {
-            // @ts-ignore
-            btnSearch.current.click();
-        }
+        inputRef.current?.focus();
+        // @ts-ignore
+        btnSearchRef.current?.click();
         event.preventDefault();
-    }, {scopes: [form.getFieldValue('hotKeyScopeId') || HotKeyScope.crudPageBase], enableOnFormTags: true});
+    }, {
+        scopes: [hotkeyScope],
+        enableOnFormTags: true
+    });
 
-    const onShowAdvanceSearch = () => {
-        form.setFieldValue('isShowAdvanceSearch', !!!isShowAdvanceSearch_w);
-    }
-    const isShowAdvanceSearch_w = Form.useWatch('isShowAdvanceSearch', form);
-    return (<>
-        <Col {...rest} {...useResponsiveSpan(props?.span || 6)}>
-            <Row gutter={9}>
-                <Col flex="1 1 150px">
-                    <FloatLabel label={props.labelFilter ?? t("filterSearch")}>
+    // Render advance search button content
+    const renderAdvanceButtonContent = useCallback(() => {
+        if (isHiddenAdvanceSearchBtnText) {
+            return isShowAdvanceSearch ? <ZoomOutOutlined/> : <ZoomInOutlined/>;
+        }
+        return isShowAdvanceSearch ? t('hiddenSearchAdvance') : t('showSearchAdvance');
+    }, [isHiddenAdvanceSearchBtnText, isShowAdvanceSearch, t]);
 
-                        <Space.Compact style={{width: '100%'}}>
-                            <Form.Item name='filter' className='flex-auto'>
-                                <Input prefix={<IconlyLightSearch/>}
-                                       placeholder={t("searchTextPlaceholder." + (placeHolder || 'common'))}
-                                       allowClear
-                                    // autoFocus
-                                       ref={inputSearch}/>
-                            </Form.Item>
+    const advanceButtonTitle = useMemo(() => {
+        if (!isHiddenAdvanceSearchBtnText) return "";
+        return isShowAdvanceSearch ? t('hiddenSearchAdvance') : t('showSearchAdvance');
+    }, [isHiddenAdvanceSearchBtnText, isShowAdvanceSearch, t]);
 
-                            <Tooltip placement="top" title={t('refreshDataTable')}>
-                                <Button className={'btn-other'} type='default' style={{width: 44, height: 39}}
-                                        icon={<IconlyLight width={22} type={'Reload.svg'}/>}
-                                        onClick={debounce(resetClick, 250)}>
-                                </Button>
+    // Render search icon
+    const searchIcon = useMemo(() =>
+            iconSearchCustom || <IconlyLight width={22} type="Search.svg"/>,
+        [iconSearchCustom]
+    );
+
+    return (
+        <>
+            <Col {...rest} {...responsiveSpan}>
+                <Row gutter={9}>
+                    <Col flex="1 1 150px">
+                        <FloatLabel label={filterLabel}>
+                            <Space.Compact style={{width: '100%'}}>
+                                <Form.Item name="filter" className="flex-auto">
+                                    <Input ref={inputRef}
+                                           prefix={<IconlyLightSearch/>}
+                                           placeholder={searchPlaceholder}
+                                           allowClear
+                                    />
+                                </Form.Item>
+
+                                <Tooltip placement="top" title={t('refreshDataTable')}>
+                                    <Button
+                                        className="btn-other"
+                                        type="default"
+                                        style={{width: 44, height: 39}}
+                                        icon={<IconlyLight width={22} type="Reload.svg"/>}
+                                        onClick={debouncedReset}
+                                    />
+                                </Tooltip>
+                            </Space.Compact>
+                        </FloatLabel>
+                    </Col>
+
+                    <Col flex={`0 1 ${advanceButtonWidth}px`}>
+                        <Space>
+                            <Tooltip placement="top" title={t('search')}>
+                                <Button
+                                    ref={btnSearchRef}
+                                    type="primary"
+                                    htmlType={onSubmit ? 'button' : 'submit'}
+                                    className="search-btn"
+                                    onClick={debouncedSubmit}
+                                    icon={searchIcon}
+                                />
                             </Tooltip>
-                        </Space.Compact>
-                    </FloatLabel>
 
-                </Col>
-                <Col flex={'0 1 ' + (hasAdvanceSearchBtn ? (isHiddenAdvanceSearchBtnText ? 100 : 215) : 40) + 'px'}>
-                    <Space>
-                        <Tooltip placement="top" title={t('search')}>
-                            <Button type='primary' htmlType={props.onSubmit ? 'button' : 'submit'}
-                                    className={'search-btn'} ref={btnSearch}
-                                    onClick={debounce(submitClick, 250)}
-                                    icon={!!iconSearchCustom ? iconSearchCustom : <>
-                                        <IconlyLight width={22} type={'Search.svg'}/>
-                                    </>}>
-                            </Button>
-                        </Tooltip>
+                            {hasAdvanceSearchBtn && (
+                                <Button
+                                    style={{
+                                        width: isHiddenAdvanceSearchBtnText ? 40 : 156
+                                    }}
+                                    className="btn-other"
+                                    type="default"
+                                    title={advanceButtonTitle}
+                                    onClick={handleAdvanceSearchToggle}
+                                >
+                                    {renderAdvanceButtonContent()}
+                                </Button>
+                            )}
+                        </Space>
+                    </Col>
+                </Row>
+            </Col>
 
-                        {
-                            hasAdvanceSearchBtn &&
-                            <Button style={{width: isHiddenAdvanceSearchBtnText ? 40 : 156}} className={'btn-other'}
-                                    type='default'
-                                    title={isHiddenAdvanceSearchBtnText ? isShowAdvanceSearch_w ? t('hiddenSearchAdvance') : t('showSearchAdvance') : ""}
-                                    onClick={onShowAdvanceSearch}>
-                                {isShowAdvanceSearch_w ? (isHiddenAdvanceSearchBtnText ?
-                                    <ZoomOutOutlined/> : t('hiddenSearchAdvance')) : (isHiddenAdvanceSearchBtnText ?
-                                    <ZoomInOutlined/> : t("showSearchAdvance"))}
-                            </Button>
-                        }
-                    </Space>
-                </Col>
-            </Row>
-        </Col>
-        <div hidden>
-            <Form.Item noStyle name='extendResetTick'></Form.Item>
-            <Form.Item noStyle name='isShowAdvanceSearch' initialValue={false}></Form.Item>
-        </div>
-    </>);
-}
+            {/* Hidden form fields */}
+            <Form.Item noStyle name="isShowAdvanceSearch" initialValue={false} hidden/>
+        </>
+    );
+};

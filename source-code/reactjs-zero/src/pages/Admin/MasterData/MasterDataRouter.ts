@@ -8,5 +8,10 @@ export const MasterDataRouter: OrdRouterItem[] = [
         path: "master-data/country",
         lazyComponent: lazy(() => import("@pages/Admin/MasterData/Country")),
         permission: PERMISSION_APP.masterData.country,
+    },
+    {
+        path: "master-data/country/import",
+        lazyComponent: lazy(() => import("@pages/Admin/MasterData/Country/import-excel")),
+        permission: PERMISSION_APP.masterData.country,
     }
 ];

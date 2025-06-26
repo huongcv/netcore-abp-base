@@ -1,55 +1,99 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {Form, FormInstance, FormProps, Row} from 'antd';
-import {useWatch} from "antd/es/form/Form";
-import {debounce} from "lodash";
+import {debounce} from 'lodash';
+import type {TableStoredState} from '@ord-components/paged-table/hooks/useTableStoreFactory';
+import type {StoreApi, UseBoundStore} from 'zustand';
 
-export interface Props extends FormProps {
-    tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
+export interface TableSearchFormProps extends FormProps {
+    tableStore: UseBoundStore<StoreApi<TableStoredState>>;
     children: React.ReactNode;
     form?: FormInstance;
 }
 
-export const TableSearchForm: React.FC<Props> = ({
-                                                     form,
-                                                     tableStore,
-                                                     children,
-                                                     ...restProps // phần còn lại của FormProps như onValuesChange, onFieldsChange,...
-                                                 }) => {
+export const TableSearchForm: React.FC<TableSearchFormProps> = ({
+                                                                    form,
+                                                                    tableStore,
+                                                                    children,
+                                                                    ...restProps
+                                                                }) => {
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
-    const {setSearchParams} = tableStore();
+    const {setSearchParams, onLoadData, setReloadStatusCounter} = tableStore();
 
-    useEffect(() => {
-        onSearch().then();
-    }, []);
-    const onFinishFormSearch = () => {
-        onSearch().then();
-    }
-    const onSearch = async () => {
+    // Memoize search function để tránh re-create
+    const onSearch = useCallback(async () => {
         const values = usedForm.getFieldsValue();
         setSearchParams({...values});
-    };
-    const extendResetTick_w = useWatch('extendResetTick', usedForm);
+    }, [usedForm, setSearchParams]);
+
+    // Memoize debounced finish handler
+    const debouncedFinish = useMemo(
+        () => debounce(() => {
+            onSearch();
+        }, 250),
+        [onSearch]
+    );
+
+    // Initial load
     useEffect(() => {
-        if (extendResetTick_w) {
+        onSearch();
+    }, [onSearch]);
+
+    // Signal listeners với Form.useWatch
+    const resetSearchParameter = Form.useWatch(['extendUI', 'onResetSearchParameter'], usedForm);
+    const reloadTableData = Form.useWatch(['extendUI', 'onLoadDataTable'], usedForm);
+    const reloadStatusCounter = Form.useWatch(['extendUI', 'reloadStatusCounter'], usedForm);
+
+    // Handle reset signal
+    useEffect(() => {
+        if (resetSearchParameter > 0) {
             usedForm.resetFields();
             usedForm.submit();
         }
-    }, [extendResetTick_w]);
+    }, [resetSearchParameter, usedForm]);
+
+    // Handle reload table data signal
+    useEffect(() => {
+        if (reloadTableData > 0) {
+            onLoadData();
+        }
+    }, [reloadTableData, onLoadData]);
+
+    // Handle reload status counter signal
+    useEffect(() => {
+        if (reloadStatusCounter > 0) {
+            setReloadStatusCounter();
+        }
+    }, [reloadStatusCounter, setReloadStatusCounter]);
+
+    // Cleanup debounced function
+    useEffect(() => {
+        return () => {
+            debouncedFinish.cancel();
+        };
+    }, [debouncedFinish]);
+
+    const className = useMemo(() =>
+            `crud-search-box ${restProps.className || ''}`.trim(),
+        [restProps.className]
+    );
+
     return (
         <Form
             form={usedForm}
             layout="vertical"
-            onFinish={debounce((d) => {
-                onFinishFormSearch()
-            }, 250)}
+            onFinish={debouncedFinish}
             {...restProps}
-            className={`crud-search-box ${restProps.className || ''}`}
+            className={className}
         >
             <Row gutter={[16, 8]}>
                 {children}
             </Row>
-            <Form.Item hidden name={'extendResetTick'} noStyle/>
+
+            {/* Signal fields */}
+            <Form.Item noStyle name={['extendUI', 'onResetSearchParameter']} initialValue={0}/>
+            <Form.Item noStyle name={['extendUI', 'onLoadDataTable']} initialValue={0}/>
+            <Form.Item noStyle name={['extendUI', 'reloadStatusCounter']} initialValue={0}/>
         </Form>
     );
 };

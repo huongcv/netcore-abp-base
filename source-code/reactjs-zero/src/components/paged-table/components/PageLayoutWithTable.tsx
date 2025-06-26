@@ -53,6 +53,7 @@ export const PageLayoutWithTable = ({
                         tableStore={tableStore}>
                         {searchFields}
                         <Form.Item hidden name={'hotKeyScopeId'} initialValue={hotKeyScopeId} noStyle/>
+
                     </TableSearchForm>
                 </div>
                 <div className={'ord-container-box ord-crud-list'}>

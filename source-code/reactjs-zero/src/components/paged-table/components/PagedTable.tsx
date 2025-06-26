@@ -4,8 +4,9 @@ import {useTranslation} from "react-i18next";
 import {useDebounce} from "@ord-core/hooks/useDebounce";
 import {UseBoundStore} from "zustand/react";
 import {StoreApi} from "zustand/vanilla";
-import {ModalFormState} from "@ord-components/paged-table/hooks/useModalStoreFactory";
 import {TableStoredState} from '../hooks/useTableStoreFactory';
+import './styles/enhanced-table.css';
+import './styles/stick-header.css';
 
 export interface PagedTableProps<T> extends TableProps<T> {
     tableStore: UseBoundStore<StoreApi<TableStoredState>>,
@@ -54,12 +55,15 @@ export const PagedTable = <T extends object>({
 
     return (
         <>
-            <div>
-                <Table  {...tableProps}
-                        dataSource={data}
-                        loading={loading}
-                        pagination={false}
-                        rowKey={tableProps.rowKey || 'view_id'}/>
+            <div className={'enhanced-table'}>
+                <Table
+                    scroll={{x: 'max-content'}}
+                    sticky={{offsetHeader: 1}}
+                    {...tableProps}
+                    dataSource={data}
+                    loading={loading}
+                    pagination={false}
+                    rowKey={tableProps.rowKey || 'view_id'}/>
                 <div className={'custom-pagination mt-3 flex flex-wrap items-center justify-between'}>
                     <div>
                     </div>
