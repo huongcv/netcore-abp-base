@@ -1,5 +1,6 @@
 import React from 'react';
 import {CellEllipsisType} from "rc-table/lib/interface";
+import {ColumnType} from "antd/es/table/interface";
 
 export type ColorType = 'success' | 'error' | 'warning' | 'primary' | 'secondary' | 'info' | 'default';
 
@@ -18,13 +19,12 @@ export interface BaseColumnConfig {
     // Custom styling
     customStyle?: (value: any, record?: any) => React.CSSProperties;
     className?: string | ((value: any, record?: any) => string);
-    ellipsis?: CellEllipsisType;
     // Copyable for all types
     copyable?: boolean;
 }
 
 // Enhanced column config
-export interface EnhancedColumnConfig<T = any> {
+export interface EnhancedColumnConfig<T = any> extends ColumnType {
     title?: string;
     dataIndex?: keyof T;
     key?: string;
@@ -33,6 +33,8 @@ export interface EnhancedColumnConfig<T = any> {
     sortable?: boolean;
     filterable?: boolean;
     align?: 'left' | 'center' | 'right';
+    ellipsis?: CellEllipsisType;
+    minWidth?: number;
     // Custom render function
     render?: (value: any, record: T, index: number) => React.ReactNode;
 }

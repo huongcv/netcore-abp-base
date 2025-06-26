@@ -33,18 +33,21 @@ export const getCountryColumns = () => {
             width: 120,
             copyable: true,
         })
-        .addCustom({
+        .addText({
             title: 'ten_quoc_gia',
             dataIndex: 'name',
-            width: 200,
-            ellipsis: {
-                showTitle: true
-            },
+            minWidth: 200,
+            maxLength: 50
         })
         .addText({
             title: 'currency_code',
             dataIndex: 'currencyCode',
-
+            width: 120,
+        })
+        .addText({
+            title: 'phone_code',
+            dataIndex: 'phoneCode',
+            width: 120,
         })
         .addDate(ColumnPresets.creationTime())
         .addCustom(IsActivedColumn())

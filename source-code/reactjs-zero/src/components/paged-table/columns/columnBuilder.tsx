@@ -114,7 +114,7 @@ export class ColumnBuilder<T = any> {
                 );
 
                 return (
-                    <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+                    <div style={{display: 'flex', gap: 8, justifyContent: 'center'}}>
                         {visibleActions.map(action => (
                             <button
                                 key={action.key}
@@ -184,7 +184,7 @@ export class ColumnBuilder<T = any> {
     updateByKey(key: string, updates: Partial<ColumnType<T>>): this {
         const index = this.columns.findIndex(col => col.key === key);
         if (index !== -1) {
-            this.columns[index] = { ...this.columns[index], ...updates };
+            this.columns[index] = {...this.columns[index], ...updates};
         }
         return this;
     }
@@ -219,7 +219,9 @@ export class ColumnBuilder<T = any> {
             key: config.key || String(config.dataIndex),
             width: config.width,
             fixed: config.fixed,
-            sorter: config.sortable,
+            sorter: config?.sortable,
+            ellipsis: config?.ellipsis,
+            minWidth: config.width,
             // Add other common properties here if needed
         };
     }
