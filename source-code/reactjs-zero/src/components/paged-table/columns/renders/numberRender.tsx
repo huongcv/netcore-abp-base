@@ -6,16 +6,13 @@ import {NumberColumnOptions} from "@ord-components/paged-table/columns";
 
 export class NumberRender {
     static render(value: any, record: any, config: NumberColumnOptions): React.ReactNode {
-        // Handle empty values at render level
-        if (value === null || value === undefined || value === '') {
-            return StyleWrapper.wrapWithStyle('', value, record, config);
+        let num = typeof value === 'string' ? parseFloat(value) : value;
+        if (config?.valueRender) {
+            num = config.valueRender(record);
         }
-
-        const num = typeof value === 'string' ? parseFloat(value) : value;
         if (isNaN(num)) {
             return StyleWrapper.wrapWithStyle('', value, record, config);
         }
-
         if (config.hideZero && num === 0) {
             return StyleWrapper.wrapWithStyle('', value, record, config);
         }

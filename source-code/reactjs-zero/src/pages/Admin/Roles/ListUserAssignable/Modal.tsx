@@ -3,7 +3,6 @@ import {GenericModalForm} from "@ord-components/paged-table/components/GenericMo
 import {SearchablePagedTable} from "@ord-components/paged-table/components/SearchablePagedTable";
 import React, {useEffect, useMemo} from "react";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
-import {RoleService} from "@api/base/RoleService";
 import {RolePagedDto} from "@api/base/index.defs";
 import {useTranslation} from "react-i18next";
 import TableUtil from "@ord-core/utils/table.util";

@@ -31,6 +31,12 @@ export const getRoleColumns = () => {
                 <UserOutlined/>
             </a>
         </>
+    }).addNumber({
+        title: 'demo',
+        dataIndex: 'demo',
+        valueRender: () => {
+            return 1000000;
+        }
     }).addText({
         title: 'description',
         dataIndex: 'description',

@@ -30,6 +30,7 @@ export interface NumberColumnOptions extends BaseColumnConfig {
     suffix?: string;
     hideZero?: boolean;
     currency?: boolean;
+    valueRender?: (record: any) => number | null;
 }
 
 export interface DateColumnOptions extends BaseColumnConfig {
