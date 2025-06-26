@@ -1,7 +1,6 @@
 import React from "react";
 import {RoleDto} from "@api/index.defs";
 import TableUtil from "@ord-core/utils/table.util";
-import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 import {useRoleLogic} from "@pages/Admin/Roles/useRoleLogic";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
@@ -11,10 +10,9 @@ import {createNotificationTransform} from "@ord-components/paged-table/utils/not
 import {RoleService} from "@api/base/RoleService";
 import RoleEntityForm from "@pages/Admin/Roles/EntityForm";
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
-import {roleUserListModalStore, UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
+import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
 import {UserListAssignableRoleModal} from "@pages/Admin/Roles/ListUserAssignable/Modal";
-import {UserOutlined} from "@ant-design/icons";
-import {l} from "@ord-core/language/lang.utils";
+import {getRoleColumns} from "@pages/Admin/Roles/Columns";
 
 const Roles: React.FC = () => {
     const {
@@ -24,37 +22,9 @@ const Roles: React.FC = () => {
         crudActions,
         tableActions
     } = useRoleLogic();
-    const columns = TableUtil.getColumns<RoleDto>([
-        {
-            title: 'code',
-            dataIndex: 'code',
-            width: 100,
-        },
-        {
-            title: 'name',
-            dataIndex: 'name',
-            width: 200,
-        }, {
-            title: 'user_assigned_role_count',
-            dataIndex: 'userAssignedCount',
-            width: 150,
-            align: 'right',
-            render: (value, dto) => <>
-                <a onClick={() => {
-                    roleUserListModalStore.getInitialState().openModal(dto);
-                }} title={l.transCommon("view_list_detail")}>
-                    <span className={'me-2'}>{value}</span>
-                    <UserOutlined/>
-                </a>
-            </>
-        }, {
-            title: 'description',
-            dataIndex: 'description'
-        },
-        IsActivedColumn()
-    ], {
+    const columns = TableUtil.getColumns<RoleDto>(getRoleColumns(), {
         actions: tableActions
-    })
+    });
     return (
         <>
             <PageLayoutWithTable
