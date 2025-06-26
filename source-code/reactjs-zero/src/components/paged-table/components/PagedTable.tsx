@@ -57,8 +57,6 @@ export const PagedTable = <T extends object>({
         <>
             <div className={'enhanced-table'}>
                 <Table
-                    scroll={{x: 'max-content'}}
-                    sticky={{offsetHeader: 1}}
                     {...tableProps}
                     dataSource={data}
                     loading={loading}

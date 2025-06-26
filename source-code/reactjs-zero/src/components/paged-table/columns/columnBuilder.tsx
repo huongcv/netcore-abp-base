@@ -1,6 +1,5 @@
 import {ColumnType} from 'antd/es/table/interface';
 import {
-    BaseColumnConfig,
     BooleanColumnOptions,
     DateColumnOptions,
     EnhancedColumnConfig,
@@ -53,7 +52,7 @@ export class ColumnBuilder<T = any> {
             ...this.createBaseColumn(config),
             align: config.align || 'left',
             render: config.render || ((value: any, record: T, index: number) =>
-                    TextRender.render(value, record, fullConfig, config.width)
+                    TextRender.render(value, record, fullConfig)
             )
         });
         return this;
@@ -83,59 +82,6 @@ export class ColumnBuilder<T = any> {
             render: config.render || ((value: any, record: T, index: number) =>
                     ImageRender.render(value, record, fullConfig)
             )
-        });
-        return this;
-    }
-
-    // Add action column
-    addActions(config: {
-        title?: string;
-        width?: number;
-        fixed?: boolean | 'left' | 'right';
-        actions: Array<{
-            key: string;
-            label: string;
-            icon?: React.ReactNode;
-            onClick: (record: T) => void;
-            visible?: (record: T) => boolean;
-            disabled?: (record: T) => boolean;
-            danger?: boolean;
-        }>;
-    }): this {
-        this.columns.push({
-            title: config.title || 'Thao tác',
-            key: 'actions',
-            width: config.width || 120,
-            fixed: config.fixed,
-            align: 'center',
-            render: (_, record: T) => {
-                const visibleActions = config.actions.filter(action =>
-                    !action.visible || action.visible(record)
-                );
-
-                return (
-                    <div style={{display: 'flex', gap: 8, justifyContent: 'center'}}>
-                        {visibleActions.map(action => (
-                            <button
-                                key={action.key}
-                                onClick={() => action.onClick(record)}
-                                disabled={action.disabled?.(record)}
-                                style={{
-                                    border: 'none',
-                                    background: 'transparent',
-                                    cursor: action.disabled?.(record) ? 'not-allowed' : 'pointer',
-                                    color: action.danger ? '#ff4d4f' : '#1890ff',
-                                    padding: '4px 8px',
-                                    borderRadius: 4,
-                                    fontSize: 12
-                                }}
-                            >
-                                {action.icon} {action.label}
-                            </button>
-                        ))}
-                    </div>
-                );
-            }
         });
         return this;
     }
