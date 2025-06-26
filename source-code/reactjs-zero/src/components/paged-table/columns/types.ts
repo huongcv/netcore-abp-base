@@ -31,6 +31,10 @@ export interface NumberColumnOptions extends BaseColumnConfig {
     hideZero?: boolean;
     currency?: boolean;
     valueRender?: (record: any) => number | null;
+    colorScheme?: 'default' | 'positive-negative' | 'traffic-light';
+    // Tooltip
+    showTooltip?: boolean;
+    tooltipContent?: string | React.ReactNode;
 }
 
 export interface DateColumnOptions extends BaseColumnConfig {

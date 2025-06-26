@@ -28,8 +28,9 @@ export class NumberRender {
                 suffix={config.suffix}
                 currency={config.currency}
                 hideZero={config.hideZero}
-                colorScheme="positive-negative" // Apply color scheme
-                showTooltip={false} // We handle tooltip in CopyableWrapper
+                colorScheme={config.colorScheme} // Apply color scheme
+                showTooltip={config.showTooltip}
+                tooltipContent={config.tooltipContent}
             />
         );
 
