@@ -1,14 +1,14 @@
 import React from 'react';
-import {TextColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
 import {EllipsisText} from "@ord-components/common/display/EllipsisText";
+import {TextColumnOptions} from "@ord-components/paged-table/columns";
 
 export class TextRender {
     static render(
         value: any,
         record: any,
-        config: TextColumnConfig
+        config: TextColumnOptions
     ): React.ReactNode {
         if (value === null || value === undefined) {
             return StyleWrapper.wrapWithStyle('', value, record, config);
@@ -18,8 +18,7 @@ export class TextRender {
         const {maxLines = 2} = config;
 
 
-        const textContent = <EllipsisText text={text}
-                                          maxLines={maxLines}/>
+        const textContent = <EllipsisText text={text}  maxLines={maxLines}/>
 
         const content = (
             <CopyableWrapper

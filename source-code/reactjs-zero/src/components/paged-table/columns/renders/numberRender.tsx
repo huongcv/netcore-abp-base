@@ -1,11 +1,11 @@
 import React from 'react';
-import {NumberColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
 import {NumberDisplay} from "@ord-components/common/display/NumberDisplay";
+import {NumberColumnOptions} from "@ord-components/paged-table/columns";
 
 export class NumberRender {
-    static render(value: any, record: any, config: NumberColumnConfig): React.ReactNode {
+    static render(value: any, record: any, config: NumberColumnOptions): React.ReactNode {
         // Handle empty values at render level
         if (value === null || value === undefined || value === '') {
             return StyleWrapper.wrapWithStyle('', value, record, config);

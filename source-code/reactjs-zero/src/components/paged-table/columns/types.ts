@@ -10,31 +10,15 @@ export interface ColorCondition {
     fontWeight?: 'normal' | 'bold' | 'bolder' | number;
 }
 
-export interface BaseColumnConfig {
+export interface BaseColumnConfig<T = any> extends ColumnType<T> {
     // Color styling
     color?: ColorType | ColorCondition[];
     backgroundColor?: ColorType;
     fontWeight?: 'normal' | 'bold' | 'bolder' | number;
     // Custom styling
     customStyle?: (value: any, record?: any) => React.CSSProperties;
-    className?: string | ((value: any, record?: any) => string);
     // Copyable for all types
     copyable?: boolean;
-}
-
-// Enhanced column config
-export interface EnhancedColumnConfig<T = any> extends ColumnType {
-    title?: string;
-    dataIndex?: keyof T;
-    key?: string;
-    width?: number;
-    fixed?: boolean | 'left' | 'right';
-    sortable?: boolean;
-    filterable?: boolean;
-    align?: 'left' | 'center' | 'right';
-    minWidth?: number;
-    // Custom render function
-    render?: (value: any, record: T, index: number) => React.ReactNode;
 }
 
 // Specific options for each type
@@ -73,31 +57,3 @@ export interface ImageColumnOptions extends BaseColumnConfig {
     imageHeight?: number;
     fallbackSrc?: string;
 }
-
-// Internal types with type field for formatter
-export interface NumberColumnConfig extends NumberColumnOptions {
-    type: 'number';
-}
-
-export interface DateColumnConfig extends DateColumnOptions {
-    type: 'date';
-}
-
-export interface TextColumnConfig extends TextColumnOptions {
-    type: 'text';
-}
-
-export interface BooleanColumnConfig extends BooleanColumnOptions {
-    type: 'boolean';
-}
-
-export interface ImageColumnConfig extends ImageColumnOptions {
-    type: 'image';
-}
-
-export type ColumnConfig =
-    NumberColumnConfig
-    | DateColumnConfig
-    | TextColumnConfig
-    | BooleanColumnConfig
-    | ImageColumnConfig;

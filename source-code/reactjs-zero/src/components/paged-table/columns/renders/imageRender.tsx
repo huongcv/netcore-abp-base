@@ -1,10 +1,10 @@
 import React from 'react';
-import {ImageColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
+import {ImageColumnOptions} from "@ord-components/paged-table/columns";
 
 export class ImageRender {
-    static render(value: any, record: any, config: ImageColumnConfig): React.ReactNode {
+    static render(value: any, record: any, config: ImageColumnOptions): React.ReactNode {
         if (!value) {
             return StyleWrapper.wrapWithStyle('', value, record, config);
         }

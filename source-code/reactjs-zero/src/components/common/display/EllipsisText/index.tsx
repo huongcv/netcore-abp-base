@@ -2,12 +2,13 @@ import React from 'react';
 import {Tooltip} from 'antd';
 import type {TooltipProps} from 'antd';
 import './index.css';
+import {Property} from "csstype";
 
 interface EllipsisTextProps {
     text: string;
     maxLines?: number;
     width?: string;
-    fontSize?: string;
+    minWidth?: string;
     className?: string;
     // Ant Design Tooltip props
     tooltipProps?: Omit<TooltipProps, 'title' | 'children'>;
@@ -20,7 +21,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
                                                               text,
                                                               maxLines = 2,
                                                               width = '100%',
-                                                              fontSize = '14px',
+                                                              minWidth = '100px',
                                                               className = '',
                                                               tooltipProps = {},
                                                               disabled = false,
@@ -58,8 +59,8 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
             className={`ellipsis-text ${isOverflowing ? 'overflow' : 'no-overflow'} ${className}`}
             style={{
                 width: width,
-                fontSize: fontSize,
                 WebkitLineClamp: maxLines,
+                minWidth: minWidth
             }}
         >
             {text}

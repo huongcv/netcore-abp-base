@@ -1,21 +1,4 @@
-// src/components/paged-table/columns/utils/columnPresets.ts
-import {
-    BooleanColumnOptions,
-    DateColumnOptions,
-    EnhancedColumnConfig,
-    ImageColumnOptions,
-    NumberColumnOptions
-} from '../types';
-
-// Base preset interface
-interface BasePreset {
-    title?: string;
-    dataIndex?: string;
-    width?: number;
-    fixed?: boolean | 'left' | 'right';
-    sortable?: boolean;
-    copyable?: boolean;
-}
+import {BooleanColumnOptions, DateColumnOptions, ImageColumnOptions, NumberColumnOptions} from '../types';
 
 // Column preset configurations
 export class ColumnPresets {
@@ -23,7 +6,7 @@ export class ColumnPresets {
     // ======================== DATE PRESETS ========================
 
     // Standard datetime with seconds
-    static creationTime<T>(overrides?: Partial<BasePreset & DateColumnOptions>): EnhancedColumnConfig<T> & DateColumnOptions {
+    static creationTime<T>(overrides?: Partial<DateColumnOptions>): DateColumnOptions {
         return {
             title: 'creation_time',
             dataIndex: 'creationTime',
@@ -31,11 +14,11 @@ export class ColumnPresets {
             width: 150,
             showTime: true,
             ...overrides
-        } as EnhancedColumnConfig<T> & DateColumnOptions;
+        } as DateColumnOptions;
     }
 
     // Date only (no time)
-    static dateOnly<T>(overrides?: Partial<BasePreset & DateColumnOptions>): EnhancedColumnConfig<T> & DateColumnOptions {
+    static dateOnly<T>(overrides?: Partial<DateColumnOptions>): DateColumnOptions {
         return {
             format: 'DD/MM/YYYY',
             width: 120,
@@ -43,11 +26,11 @@ export class ColumnPresets {
             copyable: true,
             sortable: true,
             ...overrides
-        } as EnhancedColumnConfig<T> & DateColumnOptions;
+        } as DateColumnOptions;
     }
 
     // Birth date
-    static birthDate<T>(overrides?: Partial<BasePreset & DateColumnOptions>): EnhancedColumnConfig<T> & DateColumnOptions {
+    static birthDate<T>(overrides?: Partial<DateColumnOptions>): DateColumnOptions {
         return {
             title: 'birth_date',
             dataIndex: 'birthDate',
@@ -57,13 +40,13 @@ export class ColumnPresets {
             copyable: true,
             sortable: true,
             ...overrides
-        } as EnhancedColumnConfig<T> & DateColumnOptions;
+        } as DateColumnOptions;
     }
 
     // ======================== NUMBER PRESETS ========================
 
     // Currency (VND)
-    static currency<T>(overrides?: Partial<BasePreset & NumberColumnOptions>): EnhancedColumnConfig<T> & NumberColumnOptions {
+    static currency<T>(overrides?: Partial<NumberColumnOptions>): NumberColumnOptions {
         return {
             width: 150,
             currency: true,
@@ -84,11 +67,11 @@ export class ColumnPresets {
                 }
             ],
             ...overrides
-        } as EnhancedColumnConfig<T> & NumberColumnOptions;
+        } as NumberColumnOptions;
     }
 
     // Percentage
-    static percentage<T>(overrides?: Partial<BasePreset & NumberColumnOptions>): EnhancedColumnConfig<T> & NumberColumnOptions {
+    static percentage<T>(overrides?: Partial<NumberColumnOptions>): NumberColumnOptions {
         return {
             width: 100,
             decimalPlaces: 2,
@@ -111,11 +94,11 @@ export class ColumnPresets {
                 }
             ],
             ...overrides
-        } as EnhancedColumnConfig<T> & NumberColumnOptions;
+        } as NumberColumnOptions;
     }
 
     // Quantity/Count
-    static quantity<T>(overrides?: Partial<BasePreset & NumberColumnOptions>): EnhancedColumnConfig<T> & NumberColumnOptions {
+    static quantity<T>(overrides?: Partial<NumberColumnOptions>): NumberColumnOptions {
         return {
             width: 100,
             decimalPlaces: 0,
@@ -133,11 +116,11 @@ export class ColumnPresets {
                 }
             ],
             ...overrides
-        } as EnhancedColumnConfig<T> & NumberColumnOptions;
+        } as NumberColumnOptions;
     }
 
     // Order/Index
-    static order<T>(overrides?: Partial<BasePreset & NumberColumnOptions>): EnhancedColumnConfig<T> & NumberColumnOptions {
+    static order<T>(overrides?: Partial<NumberColumnOptions>): NumberColumnOptions {
         return {
             title: 'order',
             dataIndex: 'order',
@@ -147,13 +130,13 @@ export class ColumnPresets {
             sortable: true,
             color: 'secondary',
             ...overrides
-        } as EnhancedColumnConfig<T> & NumberColumnOptions;
+        } as NumberColumnOptions;
     }
 
     // ======================== BOOLEAN PRESETS ========================
 
     // Active status
-    static isActive<T>(overrides?: Partial<BasePreset & BooleanColumnOptions>): EnhancedColumnConfig<T> & BooleanColumnOptions {
+    static isActive<T>(overrides?: Partial<BooleanColumnOptions>): BooleanColumnOptions {
         return {
             title: 'status',
             dataIndex: 'isActive',
@@ -164,11 +147,11 @@ export class ColumnPresets {
             copyable: true,
             sortable: true,
             ...overrides
-        } as EnhancedColumnConfig<T> & BooleanColumnOptions;
+        } as BooleanColumnOptions;
     }
 
     // Published status
-    static isPublished<T>(overrides?: Partial<BasePreset & BooleanColumnOptions>): EnhancedColumnConfig<T> & BooleanColumnOptions {
+    static isPublished<T>(overrides?: Partial<BooleanColumnOptions>): BooleanColumnOptions {
         return {
             title: 'published',
             dataIndex: 'isPublished',
@@ -179,11 +162,11 @@ export class ColumnPresets {
             copyable: true,
             sortable: true,
             ...overrides
-        } as EnhancedColumnConfig<T> & BooleanColumnOptions;
+        } as BooleanColumnOptions;
     }
 
     // Featured status
-    static isFeatured<T>(overrides?: Partial<BasePreset & BooleanColumnOptions>): EnhancedColumnConfig<T> & BooleanColumnOptions {
+    static isFeatured<T>(overrides?: Partial<BooleanColumnOptions>): BooleanColumnOptions {
         return {
             title: 'featured',
             dataIndex: 'isFeatured',
@@ -201,13 +184,13 @@ export class ColumnPresets {
                 }
             ],
             ...overrides
-        } as EnhancedColumnConfig<T> & BooleanColumnOptions;
+        } as BooleanColumnOptions;
     }
 
     // ======================== IMAGE PRESETS ========================
 
     // Avatar
-    static avatar<T>(overrides?: Partial<BasePreset & ImageColumnOptions>): EnhancedColumnConfig<T> & ImageColumnOptions {
+    static avatar<T>(overrides?: Partial<ImageColumnOptions>): ImageColumnOptions {
         return {
             title: 'avatar',
             dataIndex: 'avatarUrl',
@@ -217,11 +200,11 @@ export class ColumnPresets {
             copyable: true,
             fallbackSrc: '/default-avatar.png',
             ...overrides
-        } as EnhancedColumnConfig<T> & ImageColumnOptions;
+        } as ImageColumnOptions;
     }
 
     // Thumbnail
-    static thumbnail<T>(overrides?: Partial<BasePreset & ImageColumnOptions>): EnhancedColumnConfig<T> & ImageColumnOptions {
+    static thumbnail<T>(overrides?: Partial<ImageColumnOptions>): ImageColumnOptions {
         return {
             title: 'thumbnail',
             dataIndex: 'thumbnailUrl',
@@ -231,6 +214,6 @@ export class ColumnPresets {
             copyable: true,
             fallbackSrc: '/default-thumbnail.png',
             ...overrides
-        } as EnhancedColumnConfig<T> & ImageColumnOptions;
+        } as ImageColumnOptions;
     }
 }

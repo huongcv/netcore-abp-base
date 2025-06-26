@@ -1,10 +1,10 @@
 import React from 'react';
-import {BooleanColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
+import {BooleanColumnOptions} from "@ord-components/paged-table/columns";
 
 export class BooleanRender {
-    static render(value: any, record: any, config: BooleanColumnConfig): React.ReactNode {
+    static render(value: any, record: any, config: BooleanColumnOptions): React.ReactNode {
         const {
             trueText = 'Có',
             falseText = 'Không',

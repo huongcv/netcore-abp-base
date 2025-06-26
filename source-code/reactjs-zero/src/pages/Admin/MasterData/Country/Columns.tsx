@@ -31,6 +31,8 @@ export const getCountryColumns = () => {
             title: 'ma_quoc_gia',
             dataIndex: 'code',
             width: 120,
+            color: 'success',
+            fontWeight: 'bold',
             copyable: true,
         })
         .addText({
@@ -42,7 +44,7 @@ export const getCountryColumns = () => {
         .addText({
             title: 'currency_code',
             dataIndex: 'currencyCode',
-            width: 120,
+            width: 120
         })
         .addText({
             title: 'phone_code',
@@ -51,13 +53,5 @@ export const getCountryColumns = () => {
         })
         .addDate(ColumnPresets.creationTime())
         .addCustom(IsActivedColumn())
-        // .addBoolean({
-        //     title: 'status',
-        //     dataIndex: 'isActived',
-        //     width: 100,
-        //     trueText: 'Hoạt động',
-        //     falseText: 'Tạm dừng',
-        //     showIcon: true
-        // })
         .build();
 };

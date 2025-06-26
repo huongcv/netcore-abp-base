@@ -1,11 +1,11 @@
 import React from 'react';
-import {DateColumnConfig} from '../types';
 import {CopyableWrapper} from '../utils/copyableWrapper';
 import {StyleWrapper} from '../utils/styleWrapper';
 import {DateDisplay} from "@ord-components/common/display/DateDisplay";
+import {DateColumnOptions} from "@ord-components/paged-table/columns";
 
 export class DateRender {
-    static render(value: any, record: any, config: DateColumnConfig): React.ReactNode {
+    static render(value: any, record: any, config: DateColumnOptions): React.ReactNode {
         const {
             showTooltip = true,
             tooltipFormat = "dddd, DD MMMM YYYY HH:mm:ss",

@@ -57,18 +57,10 @@ export class StyleWrapper {
 
         // Handle custom style
         if (config.customStyle) {
-            style = { ...style, ...config.customStyle(value, record) };
+            style = {...style, ...config.customStyle(value, record)};
         }
 
         return style;
-    }
-
-    // Get CSS class name
-    static getClassName(value: any, record: any, config: BaseColumnConfig): string {
-        if (typeof config.className === 'function') {
-            return config.className(value, record);
-        }
-        return config.className || '';
     }
 
     // Wrap content with styling
@@ -79,16 +71,15 @@ export class StyleWrapper {
         config: BaseColumnConfig
     ): React.ReactNode {
         const style = this.getColorStyle(value, record, config);
-        const className = this.getClassName(value, record, config);
 
-        if (Object.keys(style).length === 0 && !className) {
+        if (Object.keys(style).length === 0) {
             return content;
         }
 
         return (
-            <span style={style} className={className}>
-        {content}
-      </span>
+            <div style={style}>
+                {content}
+            </div>
         );
     }
 }

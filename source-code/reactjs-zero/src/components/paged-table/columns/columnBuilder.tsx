@@ -2,7 +2,6 @@ import {ColumnType} from 'antd/es/table/interface';
 import {
     BooleanColumnOptions,
     DateColumnOptions,
-    EnhancedColumnConfig,
     ImageColumnOptions,
     NumberColumnOptions,
     TextColumnOptions
@@ -17,11 +16,11 @@ export class ColumnBuilder<T = any> {
     private columns: ColumnType<T>[] = [];
 
     // Add number column with copyable support
-    addNumber(config: EnhancedColumnConfig<T> & NumberColumnOptions): this {
-        const fullConfig = {...config, type: 'number' as const};
+    addNumber(config: NumberColumnOptions): this {
+        const fullConfig = {...config};
 
         this.columns.push({
-            ...this.createBaseColumn(config),
+            ...fullConfig,
             align: config.align || 'right',
             render: config.render || ((value: any, record: T, index: number) =>
                     NumberRender.render(value, record, fullConfig)
@@ -31,11 +30,11 @@ export class ColumnBuilder<T = any> {
     }
 
     // Add date column with copyable support
-    addDate(config: EnhancedColumnConfig<T> & DateColumnOptions): this {
-        const fullConfig = {...config, type: 'date' as const};
+    addDate(config: DateColumnOptions): this {
+        const fullConfig = {...config};
 
         this.columns.push({
-            ...this.createBaseColumn(config),
+            ...fullConfig,
             align: config.align || 'center',
             render: config.render || ((value: any, record: T, index: number) =>
                     DateRender.render(value, record, fullConfig)
@@ -45,11 +44,11 @@ export class ColumnBuilder<T = any> {
     }
 
     // Add text column with copyable support
-    addText(config: EnhancedColumnConfig<T> & TextColumnOptions): this {
-        const fullConfig = {...config, type: 'text' as const};
+    addText(config: TextColumnOptions): this {
+        const fullConfig = {...config};
 
         this.columns.push({
-            ...this.createBaseColumn(config),
+            ...fullConfig,
             align: config.align || 'left',
             render: config.render || ((value: any, record: T, index: number) =>
                     TextRender.render(value, record, fullConfig)
@@ -59,11 +58,11 @@ export class ColumnBuilder<T = any> {
     }
 
     // Add boolean column with copyable support
-    addBoolean(config: EnhancedColumnConfig<T> & BooleanColumnOptions): this {
-        const fullConfig = {...config, type: 'boolean' as const};
+    addBoolean(config: BooleanColumnOptions): this {
+        const fullConfig = {...config};
 
         this.columns.push({
-            ...this.createBaseColumn(config),
+            ...fullConfig,
             align: config.align || 'center',
             render: config.render || ((value: any, record: T, index: number) =>
                     BooleanRender.render(value, record, fullConfig)
@@ -73,11 +72,11 @@ export class ColumnBuilder<T = any> {
     }
 
     // Add image column with copyable support (copy URL)
-    addImage(config: EnhancedColumnConfig<T> & ImageColumnOptions): this {
-        const fullConfig = {...config, type: 'image' as const};
+    addImage(config: ImageColumnOptions): this {
+        const fullConfig = {...config};
 
         this.columns.push({
-            ...this.createBaseColumn(config),
+            ...fullConfig,
             align: config.align || 'center',
             render: config.render || ((value: any, record: T, index: number) =>
                     ImageRender.render(value, record, fullConfig)
@@ -152,23 +151,5 @@ export class ColumnBuilder<T = any> {
         const newBuilder = new ColumnBuilder<T>();
         newBuilder.columns = [...this.columns];
         return newBuilder;
-    }
-
-    /**
-     * Private method to create base column configuration
-     * Reduces code duplication across all add methods
-     */
-    private createBaseColumn(config: EnhancedColumnConfig<T>): ColumnType<T> {
-        return {
-            title: config.title,
-            dataIndex: config.dataIndex as string,
-            key: config.key || String(config.dataIndex),
-            width: config.width,
-            fixed: config.fixed,
-            sorter: config?.sortable,
-            ellipsis: config?.ellipsis,
-            minWidth: config.width,
-            // Add other common properties here if needed
-        };
     }
 }
