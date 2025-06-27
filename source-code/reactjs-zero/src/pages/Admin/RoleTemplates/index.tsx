@@ -1,20 +1,17 @@
 import React from "react";
 import {RoleDto} from "@api/index.defs";
 import TableUtil from "@ord-core/utils/table.util";
-import {useRoleLogic} from "@pages/Admin/Roles/useRoleLogic";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {PagedTable} from "@ord-components/paged-table";
 import {ModifyModalForm} from "@ord-components/paged-table/components/ModifyModalForm";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
-import {RoleService} from "@api/base/RoleService";
-import RoleEntityForm from "@pages/Admin/Roles/EntityForm";
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
 import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
 import {UserListAssignableRoleModal} from "@pages/Admin/Roles/ListUserAssignable/Modal";
-import {getRoleColumns} from "@pages/Admin/Roles/Columns";
 import {useRoleTemplateLogic} from "@pages/Admin/RoleTemplates/useRoleLogic";
-import {RoleTemplateService} from "@api/base/RoleTemplateService";
+import {getRoleTemplateColumns} from "@pages/Admin/RoleTemplates/Columns";
+import {RoleTemplateEntityForm} from "@pages/Admin/RoleTemplates/EntityForm";
 
 const Roles: React.FC = () => {
     const {
@@ -25,7 +22,7 @@ const Roles: React.FC = () => {
         tableActions,
         counterFetcher
     } = useRoleTemplateLogic();
-    const columns = TableUtil.getColumns<RoleDto>(getRoleColumns(), {
+    const columns = TableUtil.getColumns<RoleDto>(getRoleTemplateColumns(), {
         actions: tableActions
     });
     return (
@@ -43,7 +40,7 @@ const Roles: React.FC = () => {
                 modalStore={modalStore}
                 tableStore={tableStore}
                 entityTranslationNs="role"
-                formFields={<RoleEntityForm/>}
+                formFields={<RoleTemplateEntityForm/>}
                 transformNotificationParameter={createNotificationTransform.fromMapping({
                     name: 'name'
                 })}
