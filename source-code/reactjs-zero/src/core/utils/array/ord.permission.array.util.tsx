@@ -1,22 +1,25 @@
-import {OrdPermissionTreeDataNode} from "@ord-core/config/permissions/tree-data/permission.tree.data";
 import {l} from "@ord-core/language/lang.utils";
 import React from "react";
 import {TreeDataNode} from "antd";
 import ArrayUtil from "@ord-core/utils/array/array.util";
 import {AppBootstrapDto} from "@ord-core/service-proxies/session/dto";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";
-import {HOST_PERMISSION_TREE} from "@ord-core/config/permissions/tree-data/host-user";
-import {getFullPermissionTreeData} from "@ord-core/config/permissions/tree-data";
+import {OrdPermissionTreeDataNode, PERMISSION_TREE_TYPE} from "@ord-core/config/permissions/types";
 
 class OrdPermissionArrayUtil {
     private listPermissionBase: string[] = [];
     private _root: TreeDataNode[] | undefined;
-    private _session: AppBootstrapDto | undefined;
+    private _session: AppBootstrapDto | null = null;
 
-    getTreeDataRoot(session: AppBootstrapDto, roleCode: any, forUpsertRoleTenant?: boolean): TreeDataNode[] {
-        let permissionsTreeData = getFullPermissionTreeData(session);
-        this.listPermissionBase = [];
+    /**
+     * Set session để check permissions
+     */
+    setSession(session: AppBootstrapDto | null): void {
         this._session = session;
+    }
+
+    getTreeDataRoot(permissionsTreeData: PERMISSION_TREE_TYPE[]): TreeDataNode[] {
+        this.listPermissionBase = [];
 
         this._root = [
             {

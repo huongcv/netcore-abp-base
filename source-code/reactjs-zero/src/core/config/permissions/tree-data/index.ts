@@ -3,7 +3,7 @@ import {PERMISSION_TREE_TYPE} from "@ord-core/config/permissions/types";
 import {TENANT_PERMISSION_TREE} from "@ord-core/config/permissions/tree-data/tenant-user";
 import {HOST_PERMISSION_TREE} from "@ord-core/config/permissions/tree-data/host-user";
 
-export const getFullPermissionTreeData = (session?: AppBootstrapDto | null): PERMISSION_TREE_TYPE[] => {
+export const getFullPermissionTreeDataForUser = (session?: AppBootstrapDto | null): PERMISSION_TREE_TYPE[] => {
     if (!session) {
         return [];
     }

@@ -1,10 +1,9 @@
 import {observer} from "mobx-react-lite";
 import {Form, Tree, TreeDataNode, TreeProps} from "antd";
 import React, {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import OrdArrayUtil from "@ord-core/utils/array/ord.permission.array.util";
 import OrdPermissionArrayUtil from "@ord-core/utils/array/ord.permission.array.util";
 import {useStore} from "@ord-store/index";
+import {getFullPermissionTreeDataForUser} from "@ord-core/config/permissions/tree-data";
 
 
 const ListPermissionInput = (props: {
@@ -15,17 +14,19 @@ const ListPermissionInput = (props: {
 }) => {
     const {value, onChange, forUpsertRoleTenant} = props;
     const {sessionStore} = useStore();
-    const {t} = useTranslation('permission');
     const [granted, setGranted] = useState<string[]>([]);
     const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
     const [defaultExpandedKeys, setDefaultExpandedKeys] = useState<string[]>([]);
     const form = Form.useFormInstance();
     const formCode_w = Form.useWatch('code', form);
     useEffect(() => {
-        setTreeData(OrdArrayUtil.getTreeDataRoot(sessionStore.appSession, formCode_w, forUpsertRoleTenant));
+        OrdPermissionArrayUtil.setSession(sessionStore.appSession);
+        const permissionsTreeData = getFullPermissionTreeDataForUser(sessionStore.appSession);
+        const treeDataNode = OrdPermissionArrayUtil.getTreeDataRoot(permissionsTreeData);
+        setTreeData(treeDataNode);
         setDefaultExpandedKeys(['root']);
         setGranted(OrdPermissionArrayUtil.ignorePermissionBaseWhenSetGranted(value || []));
-    }, [formCode_w]);
+    }, [formCode_w, sessionStore]);
 
     useEffect(() => {
         // @ts-ignore
