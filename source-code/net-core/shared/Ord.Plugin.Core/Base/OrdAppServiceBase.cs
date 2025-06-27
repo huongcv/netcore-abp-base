@@ -60,6 +60,8 @@ namespace Ord.Plugin.Core.Base
                 CrudOperationType.GetDetail => $"{baseName}.GetDetail",
                 CrudOperationType.Update => $"{baseName}.Update",
                 CrudOperationType.Delete => $"{baseName}.Delete",
+                CrudOperationType.Import => $"{baseName}.Import",
+                CrudOperationType.Export => $"{baseName}.Export",
                 _ => baseName
             };
         }

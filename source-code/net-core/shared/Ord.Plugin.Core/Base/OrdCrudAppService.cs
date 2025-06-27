@@ -71,6 +71,8 @@ namespace Ord.Plugin.Core.Services
         GetPaged,
         GetDetail,
         Update,
-        Delete
+        Delete,
+        Import,
+        Export
     }
 }
