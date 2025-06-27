@@ -67,7 +67,7 @@ namespace Ord.Plugin.Core.Services
         public virtual async Task<CommonResultDto<bool>> RemoveAsync(EncodedIdDto input)
         {
             await CheckPermissionForOperation(CrudOperationType.Delete);
-
+            await OnBeforeDeleteAsync(input.EncodedId);
             var result = await CrudRepository.DeleteByEncodedIdAsync(input.EncodedId);
             if (!result)
             {
@@ -128,13 +128,19 @@ namespace Ord.Plugin.Core.Services
         }
 
         /// <summary>
+        /// Hook method trước khi xóa thành công
+        /// </summary>
+        protected virtual Task OnBeforeDeleteAsync(string encodedId)
+        {
+            return Task.CompletedTask;
+        }
+        /// <summary>
         /// Hook method sau khi xóa thành công
         /// </summary>
         protected virtual Task OnAfterDeleteAsync(string encodedId)
         {
             return Task.CompletedTask;
         }
-
         #endregion
     }
 }

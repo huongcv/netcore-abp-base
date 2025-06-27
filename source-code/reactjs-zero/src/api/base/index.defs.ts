@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
+import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**
@@ -2133,6 +2133,9 @@ export interface RoleDetailDto {
   creationTime?: Date;
 
   /**  */
+  userAssignedCount?: number;
+
+  /**  */
   permissionNames?: string[];
 }
 
@@ -2157,6 +2160,9 @@ export interface RolePagedDto {
 
   /**  */
   creationTime?: Date;
+
+  /**  */
+  userAssignedCount?: number;
 }
 
 export interface RolePagedInput {

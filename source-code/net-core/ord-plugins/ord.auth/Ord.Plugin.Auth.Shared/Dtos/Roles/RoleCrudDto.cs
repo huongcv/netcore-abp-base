@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Base;
+﻿using System.Text.Json.Serialization;
+using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.Validation.Attributes;
 using Volo.Abp.Application.Dtos;
@@ -28,6 +29,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     }
     public class RolePagedInput : OrdPagedRequestDto
     {
+        [JsonIgnore]
+        public bool? IsTemplate { get; set; }
     }
     public class RoleDetailDto : RolePagedDto
     {
@@ -35,6 +38,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     }
     public class CreateRoleDto : RoleCrudBase
     {
+        [JsonIgnore]
+        public bool? IsTemplate { get; set; }
         public List<string>? PermissionNames { get; set; }
     }
 
@@ -43,6 +48,8 @@ namespace Ord.Plugin.Auth.Shared.Dtos
     {
         [OrdValidateRequired]
         public string? EncodedId { get; set; }
+        [JsonIgnore]
+        public bool? IsTemplate { get; set; }
         public List<string>? PermissionNames { get; set; }
     }
     #region User Management DTOs

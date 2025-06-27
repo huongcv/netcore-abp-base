@@ -15,8 +15,8 @@ export const AdminRouter: OrdRouterItem[] = [
         permission: PERMISSION_NAME_APP.admin.role
     },
     {
-        path: 'role-template',
-        lazyComponent: lazy(() => import('@pages/Admin/TenantTemplateRole')),
+        path: 'role-templates',
+        lazyComponent: lazy(() => import('@pages/Admin/RoleTemplates')),
         permission: PERMISSION_NAME_APP.admin.role
     },
     {

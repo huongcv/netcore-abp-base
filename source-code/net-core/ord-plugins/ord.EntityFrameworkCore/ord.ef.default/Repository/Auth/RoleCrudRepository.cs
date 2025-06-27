@@ -1,6 +1,4 @@
-﻿using StackExchange.Redis;
-
-namespace Ord.Plugin.Auth.Repositories
+﻿namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository(IAppFactory factory)
         : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
@@ -16,7 +14,12 @@ namespace Ord.Plugin.Auth.Repositories
 
         protected override async Task<IQueryable<RoleEntity>> GetPagedQueryableAsync(IQueryable<RoleEntity> queryable, RolePagedInput input)
         {
+            if (!input.IsTemplate.HasValue)
+            {
+                input.IsTemplate = false;
+            }
             queryable = queryable.WhereLikeText(input.TextSearch, x => new { x.Name, x.Code })
+                .Where(x => x.IsTemplate == input.IsTemplate)
                                  .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
             return queryable;
         }

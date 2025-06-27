@@ -1,4 +1,8 @@
 import {
+  RolePagedInput,
+  CommonResultDtoOfPagedResultDtoOfRolePagedDto,
+  PagedResultDtoOfRolePagedDto,
+  RolePagedDto,
   AssignPermissionsToRoleDto,
   CommonResultDtoOfBoolean,
   EncodedIdDto,
@@ -12,15 +16,11 @@ import {
   UserInRoleDto,
   GetUsersAssignableToRoleInput,
   UsersToRoleDto,
-  RolePagedInput,
   CreateRoleDto,
   CommonResultDtoOfRoleDetailDto,
   RoleDetailDto,
   UpdateRoleDto,
   SetActiveStatusDto,
-  CommonResultDtoOfPagedResultDtoOfRolePagedDto,
-  PagedResultDtoOfRolePagedDto,
-  RolePagedDto,
   CommonResultDtoOfListOfCounterByStatusItemDto,
   CounterByStatusItemDto,
   IList,
@@ -38,11 +38,33 @@ import {
   basePath
 } from './index.defs';
 
-export class RoleService {
+export class RoleTemplateService {
   /** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
 
+  /**
+   *
+   */
+  static getPaged(
+    params: {
+      /** requestBody */
+      body?: RolePagedInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfPagedResultDtoOfRolePagedDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/role-template/get-paged';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
   /**
    *
    */
@@ -54,7 +76,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/assign-permissions';
+      let url = basePath + '/api/auth/role-template/assign-permissions';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -76,7 +98,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfListOfString> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-role-permissions';
+      let url = basePath + '/api/auth/role-template/get-role-permissions';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -98,7 +120,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfListOfComboOptionDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-combo-options';
+      let url = basePath + '/api/auth/role-template/get-combo-options';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -120,7 +142,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfPagedResultDtoOfUserInRoleDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-users-in-role';
+      let url = basePath + '/api/auth/role-template/get-users-in-role';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -142,7 +164,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfPagedResultDtoOfUserInRoleDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-users-assignable-to-role';
+      let url = basePath + '/api/auth/role-template/get-users-assignable-to-role';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -164,7 +186,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/add-users-to-role';
+      let url = basePath + '/api/auth/role-template/add-users-to-role';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -186,7 +208,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/remove-users-from-role';
+      let url = basePath + '/api/auth/role-template/remove-users-from-role';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -208,7 +230,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/export-to-excel';
+      let url = basePath + '/api/auth/role-template/export-to-excel';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -230,7 +252,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfRoleDetailDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/create';
+      let url = basePath + '/api/auth/role-template/create';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -252,7 +274,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfRoleDetailDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/update';
+      let url = basePath + '/api/auth/role-template/update';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -274,7 +296,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/remove';
+      let url = basePath + '/api/auth/role-template/remove';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -296,29 +318,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/set-active-status';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
-
-      let data = params.body;
-
-      configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static getPaged(
-    params: {
-      /** requestBody */
-      body?: RolePagedInput;
-    } = {} as any,
-    options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfPagedResultDtoOfRolePagedDto> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-paged';
+      let url = basePath + '/api/auth/role-template/set-active-status';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -340,7 +340,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-count-by-active';
+      let url = basePath + '/api/auth/role-template/get-count-by-active';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -362,7 +362,7 @@ export class RoleService {
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfRoleDetailDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role/get-by-id';
+      let url = basePath + '/api/auth/role-template/get-by-id';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

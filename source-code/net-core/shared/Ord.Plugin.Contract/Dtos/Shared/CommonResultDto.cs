@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using System.Text.Json.Serialization;
+using Ord.Plugin.Contract.Factories;
 using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Contract.Dtos
@@ -89,6 +90,27 @@ namespace Ord.Plugin.Contract.Dtos
             {
                 Code = CommonResultCode.BadRequest,
                 Message = invalidEx?.Message
+            };
+        }
+        public static CommonResultDto<T> ValidationFailure(AbpValidationException invalidEx, IAppFactory appFactory)
+        {
+            if (invalidEx?.ValidationErrors?.Any() == true)
+            {
+                foreach (var error in invalidEx.ValidationErrors)
+                {
+                    error.ErrorMessage = appFactory.GetLocalizedMessage(error.ErrorMessage ?? "");
+                }
+                return new CommonResultDto<T>()
+                {
+                    Code = CommonResultCode.BadRequest,
+                    Message = invalidEx?.ValidationErrors?.FirstOrDefault()?.ErrorMessage,
+                    Extend = invalidEx?.ValidationErrors
+                };
+            }
+            return new CommonResultDto<T>()
+            {
+                Code = CommonResultCode.BadRequest,
+                Message = appFactory.GetLocalizedMessage(invalidEx?.Message ?? "")
             };
         }
         public static CommonResultDto<T> ValidationFailure(string message) => new()

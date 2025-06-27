@@ -26,7 +26,7 @@ namespace Ord.Plugin.HostBase.Filters
             var result = context.Exception switch
             {
                 AbpValidationException validationEx => HandleValidationException(validationEx),
-                
+
                 BusinessException businessEx => HandleBusinessException(businessEx),
                 IdDecodeException idDecodeEx => HandleIdDecodeException(idDecodeEx),
                 OrdCommonException commonEx => HandleOrdCommonException(commonEx),
@@ -40,7 +40,7 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleValidationException(AbpValidationException ex)
         {
             _logger.LogWarning(ex, "Validation error occurred");
-            return CommonResultDto<object>.ValidationFailure(ex);
+            return CommonResultDto<object>.ValidationFailure(ex, _appFactory);
         }
         private CommonResultDto<object> HandleIdDecodeException(IdDecodeException ex)
         {
@@ -54,8 +54,13 @@ namespace Ord.Plugin.HostBase.Filters
         private CommonResultDto<object> HandleBusinessException(BusinessException ex)
         {
             _logger.LogWarning(ex, "Business logic error occurred");
+            var message = _appFactory.GetLocalizedMessage(ex.Message);
+            if (!string.IsNullOrEmpty(ex.Code))
+            {
+                message = _appFactory.GetLocalizedMessage(ex.Code);
+            }
             return CommonResultDto<object>.Failed(
-                ex.Message,
+                message,
                 errorCode: "422"
             );
         }

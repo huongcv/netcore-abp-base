@@ -67,9 +67,9 @@ export default [
         title: "menu.role",
       },
       {
-        path: "role-template",
+        path: "role-templates",
         title: "menu.templateRole",
-        permission: PERMISSION_NAME_APP.admin.role,
+        permission: PERMISSION_NAME_APP.admin.roleTemplate,
       },
       {
         path: "setting",
