@@ -1,9 +1,9 @@
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";
 import {useStore} from "@ord-store/index";
-import AddNewEntity from "@ord-components/btn-action/AddNewEntity";
+import AddNewEntity from "@ord-components/crud/btn-action/AddNewEntity";
 import {Space} from "antd";
-import ExportExcelBtn from "@ord-components/btn-action/ExportExcelBtn";
+import ExportExcelBtn from "@ord-components/crud/btn-action/ExportExcelBtn";
 import {useHotkeys} from "react-hotkeys-hook";
 import {HotKeyScope} from "@ord-core/AppConst";
 
