@@ -1,4 +1,4 @@
-import {ExcelReaderBase} from "@ord-components/import-excel/ExcelReaderBase";
+import {ExcelReaderBase} from "@ord-components/excel/import-excel/ExcelReaderBase";
 import {CountryImportDto} from "@api/base/index.defs";
 
 export class CountryExcelReader extends ExcelReaderBase<CountryImportDto> {

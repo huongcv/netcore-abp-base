@@ -1,5 +1,5 @@
 import Utils from "@ord-core/utils/utils";
-import {IExcelReader} from "@ord-components/import-excel/types";
+import {IExcelReader} from "@ord-components/excel/import-excel/types";
 import {l} from "@ord-core/language/lang.utils";
 import * as XLSX from "xlsx";
 import XlsxUtil from "@ord-core/utils/xlsx.util";

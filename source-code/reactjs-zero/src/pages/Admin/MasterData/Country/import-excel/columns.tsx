@@ -1,6 +1,6 @@
 import {ColumnType} from "antd/es/table/interface";
 import {CountryImportDto} from "@api/base/index.defs";
-import {ImportErrorCell} from "@ord-components/import-excel/ErrorCell";
+import {ImportErrorCell} from "@ord-components/excel/import-excel/ErrorCell";
 import TableUtil from "@ord-core/utils/table.util";
 
 

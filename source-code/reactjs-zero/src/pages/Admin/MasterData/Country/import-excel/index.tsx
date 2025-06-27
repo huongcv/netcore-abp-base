@@ -1,13 +1,13 @@
 import React from "react";
 import {ProductGroupImportDto} from "@api/index.defs";
-import {GenericExcelImport} from "@ord-components/import-excel/ImportExcel";
-import {createExcelImportStore} from "@ord-components/import-excel/useExcelImportStore";
+import {GenericExcelImport} from "@ord-components/excel/import-excel/ImportExcel";
+import {createExcelImportStore} from "@ord-components/excel/import-excel/useExcelImportStore";
 import {CountryImportService} from "@api/base/CountryImportService";
 import {CountryExcelReader} from "@pages/Admin/MasterData/Country/import-excel/reader";
 import {getProductGroupColumns} from "@pages/Admin/MasterData/Country/import-excel/columns";
-import {IExcelImportConfig} from "@ord-components/import-excel/types";
+import {IExcelImportConfig} from "@ord-components/excel/import-excel/types";
 import {CountryImportDto} from "@api/base/index.defs";
-import {ImportPageTitle} from "@ord-components/import-excel/ImportPageTitle";
+import {ImportPageTitle} from "@ord-components/excel/import-excel/ImportPageTitle";
 
 // Create store instance
 const useProductGroupImportStore = createExcelImportStore<ProductGroupImportDto>(CountryImportService);

@@ -7,7 +7,7 @@ import {
     IExcelImportConfig,
     IExcelReader,
     IImportApiService
-} from "@ord-components/import-excel/types";
+} from "@ord-components/excel/import-excel/types";
 import {IRequestOptions} from "@api/index.defs";
 
 export const createExcelImportStore = <T>(apiService: IImportApiService<T>) => create<ExcelImportState<T>>()(

@@ -3,8 +3,8 @@ import {Badge, Card, Col, Row, Tabs} from "antd";
 import {useTranslation} from "react-i18next";
 import {IItemRoute} from "@ord-components/common/page/PageBreadcrumb";
 import {ImportExcelButton} from "@ord-components/excel/ImportExcelButton";
-import {ExcelImportState, IExcelImportConfig} from "@ord-components/import-excel/types";
-import {GenericExcelDataTable} from "@ord-components/import-excel/GenericExcelDataTable";
+import {ExcelImportState, IExcelImportConfig} from "@ord-components/excel/import-excel/types";
+import {GenericExcelDataTable} from "@ord-components/excel/import-excel/GenericExcelDataTable";
 
 interface IGenericExcelImportProps<T> {
     config: IExcelImportConfig<T>;

@@ -4,6 +4,7 @@ import {useTableStore} from "@ord-components/paged-table/hooks/useTableStore";
 import {useCrudModalStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
+import ExcelDropdown from "@ord-components/excel/ExcelDropdown";
 
 export const COUNTRY_CONFIG = {
     // Page config
@@ -27,9 +28,10 @@ export const useCountryLogic = () => {
     // Top actions
     const topActions: IActionBtn[] = useMemo(() => [
         {
-            title: 'exportExcel',
             permission: COUNTRY_CONFIG.permission.getPaged,
-            onClick: () => onExportExcel()
+            content: <>
+                <ExcelDropdown onExport={onExportExcel} importRoute={'import'}/>
+            </>
         },
         {
             title: 'addNew',
