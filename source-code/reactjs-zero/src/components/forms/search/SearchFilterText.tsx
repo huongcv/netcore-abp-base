@@ -25,19 +25,20 @@ export interface ISearchFilterTextProps extends ISearchProp {
     iconSearchCustom?: React.ReactNode;
 }
 
-export const SearchFilterText: React.FC<ISearchFilterTextProps> = ({
-                                                                      hasAdvanceSearchBtn,
-                                                                      isHiddenAdvanceSearchBtnText,
-                                                                      placeHolder,
-                                                                      iconSearchCustom,
-                                                                      onReset,
-                                                                      onSubmit,
-                                                                      ignoreAutoFocus = false,
-                                                                      labelFilter,
-                                                                      isCustomReset = false,
-                                                                      span = 6,
-                                                                      ...rest
-                                                                  }) => {
+export const SearchFilterText: React.FC<ISearchFilterTextProps> = (props) => {
+    const {
+        hasAdvanceSearchBtn,
+        isHiddenAdvanceSearchBtnText,
+        placeHolder,
+        iconSearchCustom,
+        onReset,
+        onSubmit,
+        ignoreAutoFocus = false,
+        labelFilter,
+        isCustomReset = false,
+        span = 6,
+        ...rest
+    } = props;
     const {t} = useTranslation('form');
     const form = Form.useFormInstance();
 
