@@ -13,7 +13,7 @@ import {IconlyLight} from "@ord-components/icon/IconlyLight";
 import {IconlyLightSearch} from "@ord-components/icon/IconlyLightSearch";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 
-interface SearchFilterTextProps extends ISearchProp {
+export interface ISearchFilterTextProps extends ISearchProp {
     onReset?: () => void;
     onSubmit?: () => void;
     hasAdvanceSearchBtn?: boolean;
@@ -25,7 +25,7 @@ interface SearchFilterTextProps extends ISearchProp {
     iconSearchCustom?: React.ReactNode;
 }
 
-export const SearchFilterText: React.FC<SearchFilterTextProps> = ({
+export const SearchFilterText: React.FC<ISearchFilterTextProps> = ({
                                                                       hasAdvanceSearchBtn,
                                                                       isHiddenAdvanceSearchBtnText,
                                                                       placeHolder,

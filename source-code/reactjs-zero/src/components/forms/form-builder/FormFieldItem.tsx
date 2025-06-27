@@ -1,15 +1,10 @@
 import React from 'react';
 import {Col, Input} from 'antd';
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
-import OrdSelect from "@ord-components/forms/select/OrdSelect";
-import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
-import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import {ValidationRules} from "@ord-components/forms/form-builder/utils";
-import {FormFieldConfig, InputFieldConfig} from './types';
-import OrdDateRangeInput from "@ord-components/forms/OrdDateRangeInput";
-
-const {TextArea} = Input;
+import {FormFieldConfig} from './types';
+import {useFormFieldComponent} from './useFormFieldComponent';
 
 interface FormFieldItemProps {
     field: FormFieldConfig;
@@ -27,13 +22,8 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({field, disableResponsiveCo
         formItemProps,
         hidden,
         disabled,
-        initialValue,
-        autoFocus,
-        componentProps
+        initialValue
     } = field;
-
-    const focusRef = useAutoFocus();
-
     if (hidden) return null;
 
     const finalRules = required && !rules.some(rule => 'required' in rule && rule.required)
@@ -50,59 +40,25 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({field, disableResponsiveCo
         ...formItemProps,
     };
 
-    const componentFieldProps = {
-        ...componentProps,
-        disabled,
-        ref: autoFocus ? focusRef : undefined,
-        autoFocus
-    };
 
-    const renderInput = () => {
-        const inputOptions = field as InputFieldConfig;
-        const inputTextProps = {
-            ...componentFieldProps,
-            maxLength: inputOptions.maxLength
-        };
-        switch (type) {
-            case 'textarea':
-                return <TextArea
-                    autoSize={{minRows: 3, maxRows: 5}}
-                    {...inputTextProps}
-                />;
-            case 'password':
-                return <Input.Password {...inputTextProps} />;
-            default:
-                return <Input {...inputTextProps} />;
-        }
-    };
-
+    const fieldComponent = useFormFieldComponent(field);
     const renderComponent = () => {
-        switch (type) {
-            case 'input':
-            case 'textarea':
-            case 'password':
-                return <OrdFormField {...commonFieldProps}>{renderInput()}</OrdFormField>;
-            case 'select':
-                return <OrdFormField {...commonFieldProps}>
-                    <OrdSelect {...componentFieldProps} />
-                </OrdFormField>;
-            case 'date':
-                return <OrdFormField {...commonFieldProps}>
-                    <OrdDateInput {...componentFieldProps} />
-                </OrdFormField>;
-            case 'date-range':
-                return <OrdFormField {...commonFieldProps}>
-                    <OrdDateRangeInput {...componentFieldProps} />
-                </OrdFormField>;
-            case 'checkbox':
-                return <OrdFormField {...commonFieldProps} isCheckbox={true}>
-                </OrdFormField>;
-            case 'custom':
-                const customConfig = field as any;
-                return customConfig.render();
-            default:
-                return null;
+        if (!type) {
+            return null;
         }
+        if (type === 'custom' && typeof (field as any).render === 'function') {
+            const customConfig = field as any;
+            return customConfig.render();
+        }
+        if (type === 'checkbox') {
+            return <OrdFormField {...commonFieldProps} isCheckbox={true}>
+            </OrdFormField>;
+        }
+        if (!fieldComponent) return null;
+        if (type === 'search-input') {
+            return fieldComponent;
+        }
+        return <OrdFormField {...commonFieldProps}>{fieldComponent}</OrdFormField>;
     };
 
     return (

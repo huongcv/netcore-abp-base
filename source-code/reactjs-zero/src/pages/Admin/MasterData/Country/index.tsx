@@ -9,6 +9,7 @@ import {CountryEntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
 import {getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
 import {CountryPagedDto} from "@api/base/index.defs";
 import {useCountryLogic} from "./useCountryLogic";
+import {CountrySearchForm} from "@pages/Admin/MasterData/Country/SearchForm";
 
 const Country: React.FC = () => {
     const {
@@ -29,7 +30,7 @@ const Country: React.FC = () => {
         <>
             <PageLayoutWithTable
                 topActions={topActions}
-                searchFields={<SearchFilterText span={12}/>}
+                searchFields={<CountrySearchForm/>}
                 tableStore={tableStore}>
                 <OrdCounterByStatusSegmented tableStore={tableStore}
                                              statusFieldName={'isActived'}

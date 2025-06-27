@@ -5,7 +5,7 @@ import {
     DateFieldConfig, DateRangeFieldConfig,
     FormBuilderConfig,
     FormFieldConfig,
-    InputFieldConfig,
+    InputFieldConfig, SearchInputFieldConfig,
     SelectFieldConfig, TextareaFieldConfig
 } from "@ord-components/forms/form-builder/types";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder/index";
@@ -87,6 +87,15 @@ export class FormBuilder {
         return this;
     }
 
+    addSearchInput(options: SearchInputFieldConfig) {
+        this.fields.push({
+            name: '',
+            type: 'search-input',
+            ...options
+        });
+        return this;
+    }
+
     // Conditional field adding
     addIf(condition: boolean, callback: (builder: FormBuilder) => FormBuilder): FormBuilder {
         if (condition) {
@@ -107,4 +116,5 @@ export class FormBuilder {
         const config = this.build();
         return () => <OrdFormBuilder config={config}/>;
     }
+
 }

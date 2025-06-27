@@ -6,19 +6,30 @@ import FormFieldItem from "@ord-components/forms/form-builder/FormFieldItem";
 interface FormBuilderComponentProps {
     config: FormBuilderConfig;
     disableResponsiveCol?: boolean;
+    ignoreRowWrapper?: boolean;
 }
 
-export const OrdFormBuilder: React.FC<FormBuilderComponentProps> = ({config, disableResponsiveCol}) => {
+export const OrdFormBuilder: React.FC<FormBuilderComponentProps> = ({
+                                                                        config,
+                                                                        disableResponsiveCol,
+                                                                        ignoreRowWrapper
+                                                                    }) => {
     const visibleFields = useMemo(() => config.fields.filter(field => !field.hidden), [config.fields]);
+    const FormContent = <>
+        {visibleFields.map((field, index) => (
+            <FormFieldItem
+                key={field.name || `field-${index}`}
+                field={field}
+                disableResponsiveCol={disableResponsiveCol}
+            />
+        ))}
+    </>;
+    if (ignoreRowWrapper) {
+        return FormContent
+    }
     return (
         <Row gutter={18}>
-            {visibleFields.map((field, index) => (
-                <FormFieldItem
-                    key={field.name || `field-${index}`}
-                    field={field}
-                    disableResponsiveCol={disableResponsiveCol}
-                />
-            ))}
+            {FormContent}
         </Row>
     );
 };

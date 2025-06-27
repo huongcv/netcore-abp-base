@@ -5,10 +5,12 @@ import {IOrdSelectProp} from "@ord-components/forms/select/OrdSelect";
 import {IOrdDateInputProp} from "@ord-components/forms/model/DateProp";
 import {TextAreaProps} from "antd/es/input";
 import {IOrdDateRangeInputProp} from "@ord-components/forms/OrdDateRangeInput";
+import {ISearchFilterTextProps} from "@ord-components/forms/search/SearchFilterText";
 
 export type FormFieldType =
     | 'input'
     | 'textarea'
+    | 'search-input'
     | 'number'
     | 'password'
     | 'select'
@@ -57,6 +59,10 @@ export interface DateFieldConfig extends BaseFormFieldConfig<IOrdDateInputProp> 
 
 export interface DateRangeFieldConfig extends BaseFormFieldConfig<IOrdDateRangeInputProp> {
 }
+
+export interface SearchInputFieldConfig extends Partial<BaseFormFieldConfig<ISearchFilterTextProps>> {
+}
+
 
 export interface CustomFieldConfig extends BaseFormFieldConfig {
     render: () => React.ReactNode;
