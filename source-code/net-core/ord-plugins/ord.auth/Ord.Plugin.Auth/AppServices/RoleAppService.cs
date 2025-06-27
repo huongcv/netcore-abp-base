@@ -4,8 +4,12 @@ using Ord.Plugin.Auth.Shared.Dtos.Roles;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
+using Ord.Plugin.Contract;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.DataExporting.EpplusExporting;
+using Ord.Plugin.Contract.Features.DataExporting.FlexCelExporting;
+using Ord.Plugin.Core.Factories.Extensions;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.Core.Utils;
 using Volo.Abp.Application.Dtos;
@@ -58,7 +62,45 @@ namespace Ord.Plugin.Auth.AppServices
 
             return AppFactory.CreateSuccessResult(true, AppFactory.GetLocalizedMessage("auth.role.assign_permissions_success"));
         }
+        #region Export excel
 
+        protected override async Task ConfigureExportAsync(EpplusExportingConfigurationBuilder config, List<RolePagedDto> dataItems, RolePagedInput input)
+        {
+            var columnBuilder = new Action<OrdExcelColumnBuilder<RolePagedDto>>(columns => columns
+                .AddRowIndex()
+                .AddColumn(c => c.WithProperty(x => x.Code, 30)
+                    .WithBoldFont()
+                    .WithWrapText())
+                .AddColumn(c => c.WithProperty(x => x.Name, 30, "Name"))
+                .AddColumn(c => c.WithProperty(x => x.Description, 50))
+                .AddColumn(c => c.WithProperty(x => x.CreationTime, 26).WithDateTimeFormat())
+                .AddColumn(c => c.WithStatusSwitchCase(x => x.IsActived))
+            );
+            config.WithWorksheetName(AppFactory.GetLocalizedMessage(GetExportFileSetting().SheetName))
+                .WithTitle(EpplusExportingConfigurationUtils.MainTitle(AppFactory.GetLocalizedMessage(GetExportFileSetting().Title),
+                    2))
+                .WithTitle(EpplusExportingConfigurationUtils.SubTitle("Ngày " + DateTime.Now.ToString("dd/MM/yyyy"),
+                    3))
+                .WithDataTable<RolePagedDto>(dt => dt
+                    .WithRowIndexStart(5)
+                    .WithHeaderStyle(EpplusExportingConfigurationUtils.DefaultHeaderStyle())
+                    .WithDataStyle(EpplusExportingConfigurationUtils.DefaultDataStyle())
+                    .WithColumns(columnBuilder, AppFactory)
+                )
+                .WithLandscapeOrientation();
+        }
+
+        protected override string GetExportFileName(RolePagedInput input)
+        {
+            return FileNameHelper.GenerateFileNameExcelWithTimestamp(GetExportFileSetting().FileName);
+        }
+
+        protected virtual ExportEpplusFileSetting GetExportFileSetting()
+        {
+            return AppFactory.GetExportFileName("list-role");
+        }
+
+        #endregion
 
         #region Read Operations
         [HttpPost]

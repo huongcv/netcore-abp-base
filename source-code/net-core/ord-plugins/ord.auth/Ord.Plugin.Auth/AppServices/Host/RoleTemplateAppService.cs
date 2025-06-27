@@ -1,14 +1,15 @@
 ﻿using Ord.Domain.Consts;
 using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Contract;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Core.Factories.Extensions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.AppServices.Host
 {
     [OrdAuth]
-    public class RoleTemplateAppService:RoleAppService
+    public class RoleTemplateAppService : RoleAppService
     {
         protected override string GetBasePermissionName()
         {
@@ -47,6 +48,10 @@ namespace Ord.Plugin.Auth.AppServices.Host
             {
                 throw new BusinessException(AppFactory.GetLocalizedMessage("message.role_template.not_static_role_tenant"));
             }
+        }
+        protected override ExportEpplusFileSetting GetExportFileSetting()
+        {
+            return AppFactory.GetExportFileName("list-role-template");
         }
     }
 }

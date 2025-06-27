@@ -47,8 +47,8 @@ namespace Ord.Plugin.Auth.AppServices
                 .AddColumn(c => c.WithProperty(x => x.CreationTime, 26).WithDateTimeFormat())
                 .AddColumn(c => c.WithStatusSwitchCase(x => x.IsActived))
             );
-            config.WithWorksheetName(AppFactory.GetLocalizedMessage("auth.user.list-user"))
-                .WithTitle(EpplusExportingConfigurationUtils.MainTitle(AppFactory.GetLocalizedMessage("auth.user.list-user"),
+            config.WithWorksheetName(AppFactory.GetLocalizedMessage("excel.list-user.sheet-name"))
+                .WithTitle(EpplusExportingConfigurationUtils.MainTitle(AppFactory.GetLocalizedMessage("excel.list-user.title"),
                     2))
                 .WithTitle(EpplusExportingConfigurationUtils.SubTitle("Ngày " + DateTime.Now.ToString("dd/MM/yyyy"),
                     3))
@@ -64,7 +64,7 @@ namespace Ord.Plugin.Auth.AppServices
 
         protected override string GetExportFileName(UserPagedInput input)
         {
-            return FileNameHelper.GenerateFileNameExcelWithTimestamp("DanhSachNguoiDung");
+            return FileNameHelper.GenerateFileNameExcelWithTimestamp(AppFactory.GetLocalizedMessage("excel.list-user.file-name"));
         }
 
         protected override async Task<byte[]> GenerateExcelFileAsync(PagedResultDto<UserPagedDto> pagedResult, UserPagedInput input)

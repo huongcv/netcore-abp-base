@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Factories;
+﻿using Ord.Plugin.Contract;
+using Ord.Plugin.Contract.Factories;
 
 namespace Ord.Plugin.Core.Factories.Extensions
 {
@@ -18,5 +19,16 @@ namespace Ord.Plugin.Core.Factories.Extensions
             return factory.GetLocalizedMessage(nullMessage);
 
         }
+        public static ExportEpplusFileSetting GetExportFileName(this IAppFactory factory, string name)
+        {
+            var baseExcel = "excel." + name;
+            return new ExportEpplusFileSetting()
+            {
+                FileName = factory.GetLocalizedMessage(baseExcel + ".file-name"),
+                Title = factory.GetLocalizedMessage(baseExcel + ".title"),
+                SheetName = factory.GetLocalizedMessage(baseExcel + ".sheet-name"),
+            };
+        }
+
     }
 }

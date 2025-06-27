@@ -1,0 +1,17 @@
+﻿{
+  "list-user": {
+    "sheet-name": "Danh sách người dùng",
+    "title": "Danh sách người dùng",
+    "file-name": "danh-sach-nguoi-dung"
+  },
+  "list-role": {
+    "sheet-name": "Danh sách vai trò",
+    "title": "Danh sách vai trò",
+    "file-name": "danh-sach-vai-tro"
+  },
+  "list-role-template": {
+    "sheet-name": "Danh sách vai trò mẫu",
+    "title": "Danh sách vai trò mẫu",
+    "file-name": "danh-sach-vai-tro-mau"
+  }
+}
