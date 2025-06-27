@@ -11,12 +11,12 @@ export const getRoleColumns = () => {
     builder.addText({
         title: 'code',
         dataIndex: 'code',
-        width: 100,
+        width: 200,
         copyable: true,
     }).addText({
         title: 'name',
         dataIndex: 'name',
-        width: 200,
+        width: 250,
     }).addCustom({
         title: 'user_assigned_role_count',
         dataIndex: 'userAssignedCount',
