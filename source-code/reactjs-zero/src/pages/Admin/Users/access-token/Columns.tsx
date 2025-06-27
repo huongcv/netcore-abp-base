@@ -1,13 +1,12 @@
-import {TableColumnsType} from "antd";
+import {TableColumnsType, Tag, Tooltip} from "antd";
 import {UserAccessTokenDto} from "@api/base/index.defs";
 import DateUtil from "@ord-core/utils/date.util";
-import {Tag, Badge, Tooltip} from 'antd';
 import {
     CheckCircleOutlined,
+    ClockCircleOutlined,
     CloseCircleOutlined,
     ExclamationCircleOutlined,
-    StopOutlined,
-    ClockCircleOutlined
+    StopOutlined
 } from '@ant-design/icons';
 // Status constants
 const TOKEN_STATUS = {

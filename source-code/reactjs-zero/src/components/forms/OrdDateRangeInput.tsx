@@ -2,23 +2,21 @@ import {DateRangeDto} from "@api/index.defs";
 import React, {useEffect, useState} from "react";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import {Button, Col, Dropdown, MenuProps, Row, Space} from "antd";
-import {ArrowRightOutlined, FilterOutlined} from "@ant-design/icons";
 import DateUtil from "@ord-core/utils/date.util";
-import {l} from "@ord-core/language/lang.utils";
 import {ICommonInputProp} from "@ord-components/forms/model/ICommonInputProp";
 import {useTranslation} from "react-i18next";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import {Filter3Icon} from "@ord-components/icon/Filter3Icon";
 import dayjs, {Dayjs} from 'dayjs';
 
-interface Prop extends ICommonInputProp<DateRangeDto> {
+export interface IOrdDateRangeInputProp extends ICommonInputProp<DateRangeDto> {
     allowEq?: boolean;
     labelMode?: 'icon' | 'fromToLabel',
-    notAllowFuture?: boolean, 
-    onlyThreeMonths?: boolean, 
+    notAllowFuture?: boolean,
+    onlyThreeMonths?: boolean,
 }
 
-export const OrdDateRangeInput = (props: Prop) => {
+export const OrdDateRangeInput = (props: IOrdDateRangeInputProp) => {
     const {id, labelMode, value = {}, onChange} = props;
     const [startDate, setStartDate] = useState<any>();
     const [endDate, setEndDate] = useState<any>();
@@ -35,7 +33,7 @@ export const OrdDateRangeInput = (props: Prop) => {
         setEndDate(props?.value?.endDate || null);
     }, [value?.endDate]);
     const disabledStartDate = (curr: Dayjs) => {
-        if (props.notAllowFuture){
+        if (props.notAllowFuture) {
             return DateUtil.disableAfterAndAfterNow(curr, endDate);
         }
 
@@ -44,18 +42,18 @@ export const OrdDateRangeInput = (props: Prop) => {
         }
 
         if (props.onlyThreeMonths && endDate) {
-           const startMoment = dayjs(endDate)
-           const beforeThreeMonths = startMoment.subtract(3, 'months').startOf('day')
-           const afterThreeMonths =  startMoment.add(3, 'months').startOf('day');
-           return curr.isAfter(afterThreeMonths) || curr.isBefore(beforeThreeMonths) || curr.isAfter(endDate);
+            const startMoment = dayjs(endDate)
+            const beforeThreeMonths = startMoment.subtract(3, 'months').startOf('day')
+            const afterThreeMonths = startMoment.add(3, 'months').startOf('day');
+            return curr.isAfter(afterThreeMonths) || curr.isBefore(beforeThreeMonths) || curr.isAfter(endDate);
         }
         return DateUtil.disableAfterOrSame(curr, endDate);
     }
     const disabledEndDate = (curr: Dayjs) => {
-        if (props.notAllowFuture){
+        if (props.notAllowFuture) {
             return DateUtil.disableBeforeAndAfterNow(curr, startDate);
         }
-        
+
         if (props.allowEq) {
             return DateUtil.disableBefore(curr, startDate);
         }
@@ -63,9 +61,9 @@ export const OrdDateRangeInput = (props: Prop) => {
         if (props.onlyThreeMonths && startDate) {
             const endMoment = dayjs(startDate)
             const beforeThreeMonths = endMoment.subtract(3, 'months').startOf('day')
-            const afterThreeMonths =  endMoment.add(3, 'months').startOf('day');
+            const afterThreeMonths = endMoment.add(3, 'months').startOf('day');
             return curr.isAfter(afterThreeMonths) || curr.isBefore(beforeThreeMonths) || curr.isBefore(startDate);
-         }
+        }
         return DateUtil.disableBeforeOrSame(curr, startDate);
     }
 
@@ -79,20 +77,20 @@ export const OrdDateRangeInput = (props: Prop) => {
     }
     useEffect(() => {
         const baseOptions = ['hom_nay', 'hom_qua', '7_ngay_truoc', '30_ngay_truoc', 'thang_nay', 'thang_truoc'];
-    
-        const extraOptions = props.onlyThreeMonths 
-            ? [] 
+
+        const extraOptions = props.onlyThreeMonths
+            ? []
             : ['nam_nay', 'nam_truoc', ...[1, 2, 3, 4].flatMap(it => [`quy_${it}_nam_nay`, `quy_${it}_nam_truoc`])];
-    
+
         const items: MenuProps['items'] = [...baseOptions, ...extraOptions].map(opt => ({
             label: t('dateRangeOption.' + opt),
             key: opt,
             onClick: () => setDateRange(opt)
         }));
-    
-        setDateRangeItems({ items });
-    }, [props.onlyThreeMonths]); 
-    
+
+        setDateRangeItems({items});
+    }, [props.onlyThreeMonths]);
+
     const setDateRange = (opt: string) => {
         const {startDate, endDate} = DateUtil.getDateRange(opt);
         changeStartDate(startDate);

@@ -1,8 +1,7 @@
 import React from 'react';
-import {Tooltip} from 'antd';
 import type {TooltipProps} from 'antd';
+import {Tooltip} from 'antd';
 import './index.css';
-import {Property} from "csstype";
 
 interface EllipsisTextProps {
     text: string;

@@ -1,8 +1,7 @@
 // components/forms/FormField.tsx
 import React from "react";
-import {Form, Input, Checkbox} from "antd";
-import {FloatFieldLabel} from "@ord-components/forms/FloatLabel";
-import {FieldLabel} from "@ord-components/forms/FloatLabel";
+import {Checkbox, Form, Input} from "antd";
+import {FieldLabel, FloatFieldLabel} from "@ord-components/forms/FloatLabel";
 import {Rule} from "antd/es/form";
 
 export interface FormFieldProps {

@@ -1,9 +1,6 @@
 import {withDataTableFetching} from "@ord-core/hoc/withDataTableFetching";
-import {Button, Pagination, Popconfirm, Segmented, Space, Table} from "antd";
+import {Pagination, Table} from "antd";
 import React, {useEffect, useState} from "react";
-import {l} from "@ord-core/language/lang.utils";
-import {RedoOutlined} from "@ant-design/icons";
-import {PageBreadcrumb} from "@ord-components/common/page/PageBreadcrumb";
 import {useTranslation} from "react-i18next";
 
 const DataTable = (props: any) => {

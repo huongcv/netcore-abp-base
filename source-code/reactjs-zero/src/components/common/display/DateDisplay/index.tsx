@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tooltip, Skeleton} from 'antd';
+import {Skeleton, Tooltip} from 'antd';
 import {CalendarOutlined, ClockCircleOutlined} from '@ant-design/icons';
 import {DateDisplayProps} from './types';
 import {DateFormatUtils} from './utils';

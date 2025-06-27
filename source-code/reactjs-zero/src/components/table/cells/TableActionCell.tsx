@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {Button, Dropdown, MenuProps, Space} from "antd";
 import React from "react";
-import {DeleteOutlined, DownOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
 import {useStore} from "@ord-store/index";
 import {observer} from "mobx-react-lite";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";

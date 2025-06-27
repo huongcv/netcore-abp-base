@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tooltip, Skeleton} from 'antd';
+import {Skeleton, Tooltip} from 'antd';
 import {NumberDisplayProps, NumberFormatUtils} from './types';
 
 export const NumberDisplay: React.FC<NumberDisplayProps> = ({

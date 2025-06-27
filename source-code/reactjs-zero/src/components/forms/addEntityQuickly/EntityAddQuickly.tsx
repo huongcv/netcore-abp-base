@@ -1,12 +1,11 @@
 import {observer} from "mobx-react-lite";
 import React from "react";
 import {Button, Form, Tooltip} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
 import {useStore} from "@ord-store/index";
 import ServiceProxyUtils from "@ord-core/utils/service-proxy.utils";
-import { CommonResultDto } from "@ord-core/service-proxies/dto";
-import { PlusIconCustom } from "@ord-core/theme/icon.config";
+import {CommonResultDto} from "@ord-core/service-proxies/dto";
+import {PlusIconCustom} from "@ord-core/theme/icon.config";
 
 interface EntityAddQuicklyProps<T> {
     onSavedSuccess: (newEntity: T) => void;

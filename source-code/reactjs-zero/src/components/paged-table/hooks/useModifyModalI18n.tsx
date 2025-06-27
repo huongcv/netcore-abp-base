@@ -1,4 +1,4 @@
-import {Trans, useTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next";
 import React from "react";
 import {OrdTransConfirm} from "@ord-components/common/translation/OrdTransConfirm";
 

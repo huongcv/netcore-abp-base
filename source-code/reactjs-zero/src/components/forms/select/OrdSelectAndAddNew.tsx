@@ -8,7 +8,6 @@ import {useStore} from "@ord-store/index";
 import {CommonResultDto} from "@ord-core/service-proxies/dto";
 import {HotkeysProvider} from "react-hotkeys-hook";
 import {HotKeyScope} from "@ord-core/AppConst";
-import {DeserializeCardService} from "@api/DeserializeCardService";
 
 interface ModalSetting {
     width?: string | number;

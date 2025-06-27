@@ -1,8 +1,6 @@
 import {ActionLazy} from "@ord-components/table/cells/ActionLazy";
 import React, {ReactNode} from "react";
 import {LoginOutlined} from "@ant-design/icons";
-import JwtUtils from "@ord-core/utils/jwt.utils";
-import paths from "@ord-core/config/paths";
 
 class LoginWithAccount extends ActionLazy {
     icon(): ReactNode {

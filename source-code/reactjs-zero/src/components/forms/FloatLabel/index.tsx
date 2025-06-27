@@ -1,9 +1,8 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import './index.scss'
 import {Space} from "antd";
 import {useTranslation} from "react-i18next";
-import {returnTrue} from "react-number-format/types/utils";
 
 interface PropType {
     label?: React.ReactNode;

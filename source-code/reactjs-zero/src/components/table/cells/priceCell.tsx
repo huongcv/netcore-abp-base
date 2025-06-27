@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format";
+import React, {useEffect, useState} from "react";
+import {NumericFormat} from "react-number-format";
 import Utils from "@ord-core/utils/utils";
 
 export const PriceCell = (props: {

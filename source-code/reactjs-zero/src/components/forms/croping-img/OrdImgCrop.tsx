@@ -1,13 +1,13 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import ReactCrop, {Crop, PixelCrop} from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { Modal } from "antd";
-import { UploadImgBtn } from "@ord-components/common/img/UploadImgBtn";
+import {Modal} from "antd";
+import {UploadImgBtn} from "@ord-components/common/img/UploadImgBtn";
 import ImgWithDeleteAction from "@ord-components/common/img/ImgWithDeleteAction";
 import "./img-crop.scss";
-import { GetFileUrl } from "@ord-core/service-proxies/axios.base";
-import { l } from "@ord-core/language/lang.utils";
-import { UploadFileService } from "@api/UploadFileService";
+import {GetFileUrl} from "@ord-core/service-proxies/axios.base";
+import {l} from "@ord-core/language/lang.utils";
+import {UploadFileService} from "@api/UploadFileService";
 
 export const OrdImgCrop = ({
   aspect,

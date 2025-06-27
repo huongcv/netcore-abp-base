@@ -3,7 +3,6 @@ import {Input, Spin} from "antd";
 import {InputProps} from "antd/es/input/Input";
 import {debounce} from "lodash";
 import {DeserializeCardService} from "@api/DeserializeCardService";
-import {QrcodeOutlined} from "@ant-design/icons";
 import {CitizenIdentityCardDto} from "@api/index.defs";
 import {QrSimpleIcon} from "@ord-components/icon/QrSimplecon";
 import RegexUtil from "@ord-core/utils/regex.util";

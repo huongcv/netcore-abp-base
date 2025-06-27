@@ -1,4 +1,4 @@
-import {LoadingOutlined, UploadOutlined} from "@ant-design/icons";
+import {UploadOutlined} from "@ant-design/icons";
 import React from "react";
 import {useTranslation} from "react-i18next";
 

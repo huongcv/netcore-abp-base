@@ -1,8 +1,8 @@
-import { Input, Form, message } from "antd";
-import { debounce } from "lodash";
-import { useCallback } from "react";
+import {Input} from "antd";
+import {debounce} from "lodash";
+import {useCallback} from "react";
 import UiUtils from "@ord-core/utils/ui.utils";
-import { l } from "@ord-core/language/lang.utils";
+import {l} from "@ord-core/language/lang.utils";
 
 const OrdInputTextMaxLenght = (props: {
   maxLength: number;

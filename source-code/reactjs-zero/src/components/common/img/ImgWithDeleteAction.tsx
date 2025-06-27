@@ -1,8 +1,7 @@
-import {Button, Modal, Image} from "antd";
+import {Button, Image} from "antd";
 import {DeleteIcon} from "@ord-components/icon/DeleteIcon";
-import React, { useEffect, useState } from "react";
-import { EyeOutlined } from "@ant-design/icons";
-import {GetFileUrl} from "@ord-core/service-proxies/axios.base";
+import React, {useState} from "react";
+import {EyeOutlined} from "@ant-design/icons";
 import "../../../pages/ProductManagement/Product/detail/detail.scss"
 
 interface Props {

@@ -1,17 +1,14 @@
-import { Button, Space } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import React, {useEffect, useState} from "react";
-import { useStore } from "@ord-store/index";
+import {Button, Space} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import React, {useState} from "react";
+import {useStore} from "@ord-store/index";
 import OrdCreateOrUpdateModal from "@ord-components/crud/OrdCreateOrUpdateModal";
-import { useSelectProductGroup } from "@ord-components/forms/select/selectDataSource/useSelectProductGroup";
-import OrdSelect, {
-  IOrdSelectOption,
-} from "@ord-components/forms/select/OrdSelect";
-import { ProductGroupDto } from "@api/index.defs";
+import {useSelectProductGroup} from "@ord-components/forms/select/selectDataSource/useSelectProductGroup";
+import OrdSelect, {IOrdSelectOption,} from "@ord-components/forms/select/OrdSelect";
+import {ProductGroupDto} from "@api/index.defs";
 import Utils from "@ord-core/utils/utils";
-import { useTranslation } from "react-i18next";
-import { ProductGroupCreateOrUpdateForm } from "@pages/ProductManagement/ProductGroup/forms/CreateOrUpdateForm";
-import { ProductGroupService } from "@api/ProductGroupService";
+import {ProductGroupCreateOrUpdateForm} from "@pages/ProductManagement/ProductGroup/forms/CreateOrUpdateForm";
+import {ProductGroupService} from "@api/ProductGroupService";
 
 export const SelectAddNewProductGroup = (props: {
   onChange?: (data: any) => void;

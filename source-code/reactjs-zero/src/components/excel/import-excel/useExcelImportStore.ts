@@ -2,12 +2,7 @@ import {create} from 'zustand';
 import {devtools} from 'zustand/middleware';
 import UiUtils from "@ord-core/utils/ui.utils";
 import FileSaver from "file-saver";
-import {
-    ExcelImportState,
-    IExcelImportConfig,
-    IExcelReader,
-    IImportApiService
-} from "@ord-components/excel/import-excel/types";
+import {ExcelImportState, IExcelImportConfig, IImportApiService} from "@ord-components/excel/import-excel/types";
 import {IRequestOptions} from "@api/index.defs";
 
 export const createExcelImportStore = <T>(apiService: IImportApiService<T>) => create<ExcelImportState<T>>()(

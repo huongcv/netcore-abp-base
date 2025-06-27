@@ -1,11 +1,13 @@
-import { ProductSearchWithUnitDto } from "@api/index.defs";
+import {ProductSearchWithUnitDto} from "@api/index.defs";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
-import { useSearchProductSaleServerSide } from "@pages/StockManagement/Shared/Upsert/grid-product/SearchProduct/server/useSearchProductSaleServerSide";
-import { Select } from "antd";
-import { SelectProps } from "antd/lib";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDebounce } from "use-debounce";
+import {
+    useSearchProductSaleServerSide
+} from "@pages/StockManagement/Shared/Upsert/grid-product/SearchProduct/server/useSearchProductSaleServerSide";
+import {Select} from "antd";
+import {SelectProps} from "antd/lib";
+import React, {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useDebounce} from "use-debounce";
 
 
 interface Props extends SelectProps {

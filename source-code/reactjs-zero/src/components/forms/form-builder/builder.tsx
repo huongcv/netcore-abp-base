@@ -2,11 +2,11 @@ import React from "react";
 import {
     CheckboxFieldConfig,
     CustomFieldConfig,
-    DateFieldConfig,
+    DateFieldConfig, DateRangeFieldConfig,
     FormBuilderConfig,
     FormFieldConfig,
     InputFieldConfig,
-    SelectFieldConfig
+    SelectFieldConfig, TextareaFieldConfig
 } from "@ord-components/forms/form-builder/types";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder/index";
 
@@ -17,7 +17,22 @@ export class FormBuilder {
     addText(options: InputFieldConfig): FormBuilder {
         this.fields.push({
             type: "input",
-            span: 24,
+            ...options,
+        });
+        return this;
+    }
+
+    addTextArea(options: TextareaFieldConfig): FormBuilder {
+        this.fields.push({
+            type: "textarea",
+            ...options,
+        });
+        return this;
+    }
+
+    addPassword(options: TextareaFieldConfig): FormBuilder {
+        this.fields.push({
+            type: "password",
             ...options,
         });
         return this;
@@ -28,7 +43,6 @@ export class FormBuilder {
     addSelect(options: SelectFieldConfig): FormBuilder {
         this.fields.push({
             type: 'select',
-            span: 24,
             ...options,
         });
         return this;
@@ -38,7 +52,14 @@ export class FormBuilder {
     addDate(options: DateFieldConfig): FormBuilder {
         this.fields.push({
             type: 'date',
-            span: 24,
+            ...options,
+        });
+        return this;
+    }
+
+    addDateRange(options: DateRangeFieldConfig): FormBuilder {
+        this.fields.push({
+            type: 'date-range',
             ...options,
         });
         return this;
@@ -48,7 +69,6 @@ export class FormBuilder {
     addCheckbox(options: CheckboxFieldConfig): FormBuilder {
         this.fields.push({
             type: 'checkbox',
-            span: 24,
             ...options,
             label: options?.checkboxText || options?.label
         });
@@ -62,7 +82,6 @@ export class FormBuilder {
         } as CustomFieldConfig;
         this.fields.push({
             type: 'custom',
-            span: 24,
             ...customOptions
         });
         return this;

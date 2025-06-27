@@ -1,8 +1,8 @@
-import { confirmable, ConfirmDialog } from "react-confirm";
+import {confirmable, ConfirmDialog} from "react-confirm";
 import React from "react";
-import { Button, Col, Modal, Row } from "antd";
-import { l } from "@ord-core/language/lang.utils";
-import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import {Button, Col, Modal, Row} from "antd";
+import {l} from "@ord-core/language/lang.utils";
+import {DeleteOutlined, InfoCircleOutlined} from "@ant-design/icons";
 
 export interface OrdConfirmProps {
   title?: React.ReactNode;

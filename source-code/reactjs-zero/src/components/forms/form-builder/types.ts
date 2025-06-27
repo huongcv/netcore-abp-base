@@ -3,6 +3,8 @@ import {Rule} from 'antd/es/form';
 import React from 'react';
 import {IOrdSelectProp} from "@ord-components/forms/select/OrdSelect";
 import {IOrdDateInputProp} from "@ord-components/forms/model/DateProp";
+import {TextAreaProps} from "antd/es/input";
+import {IOrdDateRangeInputProp} from "@ord-components/forms/OrdDateRangeInput";
 
 export type FormFieldType =
     | 'input'
@@ -12,13 +14,14 @@ export type FormFieldType =
     | 'select'
     | 'checkbox'
     | 'date'
+    | 'date-range'
     | 'dateTime'
     | 'time'
     | 'switch'
     | 'radio'
     | 'custom';
 
-export interface BaseFormFieldConfig {
+export interface BaseFormFieldConfig<IComponentProps = any> {
     name: string;
     type?: FormFieldType;
     label?: React.ReactNode;
@@ -31,25 +34,28 @@ export interface BaseFormFieldConfig {
     disabled?: boolean;
     initialValue?: any;
     autoFocus?: boolean;
-    componentProps?: any;
+    componentProps?: IComponentProps;
 }
 
-export interface InputFieldConfig extends BaseFormFieldConfig {
+export interface InputFieldConfig extends BaseFormFieldConfig<InputProps> {
     maxLength: number;
-    componentProps?: InputProps;
 }
 
-export interface SelectFieldConfig extends BaseFormFieldConfig {
-    componentProps: IOrdSelectProp;
+export interface TextareaFieldConfig extends BaseFormFieldConfig<TextAreaProps> {
+    maxLength: number;
 }
 
-export interface CheckboxFieldConfig extends BaseFormFieldConfig {
-    componentProps?: CheckboxProps;
+export interface SelectFieldConfig extends BaseFormFieldConfig<IOrdSelectProp> {
+}
+
+export interface CheckboxFieldConfig extends BaseFormFieldConfig<CheckboxProps> {
     checkboxText?: string;
 }
 
-export interface DateFieldConfig extends BaseFormFieldConfig {
-    componentProps: IOrdDateInputProp;
+export interface DateFieldConfig extends BaseFormFieldConfig<IOrdDateInputProp> {
+}
+
+export interface DateRangeFieldConfig extends BaseFormFieldConfig<IOrdDateRangeInputProp> {
 }
 
 export interface CustomFieldConfig extends BaseFormFieldConfig {
@@ -60,7 +66,4 @@ export type FormFieldConfig = BaseFormFieldConfig;
 
 export interface FormBuilderConfig {
     fields: BaseFormFieldConfig[];
-    gutter?: [number, number];
-    layout?: 'horizontal' | 'vertical' | 'inline';
-    autoFocusFirst?: boolean;
 }

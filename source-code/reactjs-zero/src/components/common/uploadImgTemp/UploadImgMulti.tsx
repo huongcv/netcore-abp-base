@@ -2,11 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {message, Upload, UploadProps} from "antd";
 import {UploadFileService} from "@api/UploadFileService";
 import {UploadImgBtn} from "@ord-components/common/img/UploadImgBtn";
-
-import {FileUploadDto} from "@api/index.defs";
 import {UploadFile} from "antd/es/upload/interface";
-import {UploadProgressEvent, UploadRequestError, UploadRequestFile} from "rc-upload/lib/interface";
-import {set} from "lodash";
+import {UploadProgressEvent, UploadRequestFile} from "rc-upload/lib/interface";
 
 const UploadImgMulti = (props: {
     isValueJson?: boolean

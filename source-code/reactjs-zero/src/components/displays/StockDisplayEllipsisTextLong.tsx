@@ -1,4 +1,4 @@
-import { Tooltip } from "antd";
+import {Tooltip} from "antd";
 
 interface EllipsisTextProps {
   text: string; // text value

@@ -2,7 +2,6 @@ import {create} from 'zustand';
 import UiUtils from "@ord-core/utils/ui.utils";
 import {ICommonResultDtoApi, IModifyApiService} from "@ord-components/paged-table/types";
 import {useMemo} from "react";
-import {createRowSelectionHook} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 
 export type ModalMode = 'create' | 'edit' | 'viewDetail';
 

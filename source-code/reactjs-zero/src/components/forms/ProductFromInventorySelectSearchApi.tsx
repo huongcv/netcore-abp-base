@@ -6,9 +6,6 @@ import {useTranslation} from "react-i18next";
 import {ProductSearchWithUnitDto} from "@api/index.defs";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import {
-    useSearchProductInDbClient
-} from "@pages/StockManagement/Shared/Upsert/grid-product/SearchProduct/select/useSearchProductInDbClient";
-import {
     useSearchProductFromInventoryInDbClient
 } from "@pages/StockManagement/Shared/Upsert/grid-product/SearchProduct/select/useSearchProductFromInventoryInDbClient";
 

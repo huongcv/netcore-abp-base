@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {message, UploadProps} from 'antd';
-import {Upload} from 'antd';
-import ImgCrop from 'antd-img-crop';
+import {message, Upload, UploadProps} from 'antd';
 import {UploadImgUtil} from "@ord-core/utils/img.util";
 import './product-img-upload.scss';
 import {useTranslation} from "react-i18next";

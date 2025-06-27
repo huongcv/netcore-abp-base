@@ -1,6 +1,6 @@
 import React, {ImgHTMLAttributes, useEffect, useState} from "react";
 import {GetFileUrl} from "@ord-core/service-proxies/axios.base";
-import { Image } from "antd";
+import {Image} from "antd";
 
 interface Prop extends ImgHTMLAttributes<any> {
     fileId: string | null | undefined,

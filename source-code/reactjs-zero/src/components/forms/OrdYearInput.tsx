@@ -1,9 +1,9 @@
-import { DatePicker } from "antd";
+import {DatePicker} from "antd";
 import * as React from "react";
-import { useEffect, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { IOrdDateInputProp } from "@ord-components/forms/model/DateProp";
-import { DateIcon } from "@ord-components/icon/DateIcon";
+import {useEffect, useState} from "react";
+import dayjs, {Dayjs} from "dayjs";
+import {IOrdDateInputProp} from "@ord-components/forms/model/DateProp";
+import {DateIcon} from "@ord-components/icon/DateIcon";
 
 const OrdYearInput = (props: IOrdDateInputProp) => {
     const [valueYear, setValueYear] = useState();

@@ -1,10 +1,8 @@
-import {DatePicker, TimePicker} from "antd";
+import {TimePicker} from "antd";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {IOrdDateInputProp} from "@ord-components/forms/model/DateProp";
 import {DateIcon} from "@ord-components/icon/DateIcon";
-import {ICommonInputProp} from "@ord-components/forms/model/ICommonInputProp";
 import DateUtil from "@ord-core/utils/date.util";
 import Utils from "@ord-core/utils/utils";
 

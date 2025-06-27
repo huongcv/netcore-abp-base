@@ -1,5 +1,5 @@
 import {AppBootstrapDto} from "@ord-core/service-proxies/session/dto";
-import complexMenuSuperAdmin from "../../Router/complexMenuSuperAdmin";
+import complexMenuSuperAdmin from "../../Router/menus/complexMenuSuperAdmin";
 
 import {SideNavInterface} from "@ord-core/model/side-nav.type";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";

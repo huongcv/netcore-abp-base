@@ -1,4 +1,4 @@
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {IconlyLight} from "@ord-components/icon/IconlyLight";
 import MenuUtils from "@ord-core/layout/menu.utils";
@@ -7,7 +7,6 @@ import {SideNavInterface} from "@ord-core/model/side-nav.type";
 import {Space} from "antd";
 import {useStore} from "@ord-store/index";
 import {HomeIcon} from "@ord-components/icon/HomeIcon";
-import {DefaultAppPrefixUrl} from "@ord-core/AppConst";
 import Utils from "@ord-core/utils/utils";
 
 export interface IItemRoute {

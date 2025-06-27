@@ -6,7 +6,8 @@ import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import {ValidationRules} from "@ord-components/forms/form-builder/utils";
-import {FormFieldConfig} from './types';
+import {FormFieldConfig, InputFieldConfig} from './types';
+import OrdDateRangeInput from "@ord-components/forms/OrdDateRangeInput";
 
 const {TextArea} = Input;
 
@@ -53,19 +54,25 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({field, disableResponsiveCo
         ...componentProps,
         disabled,
         ref: autoFocus ? focusRef : undefined,
-        autoFocus,
+        autoFocus
     };
 
     const renderInput = () => {
+        const inputOptions = field as InputFieldConfig;
+        const inputTextProps = {
+            ...componentFieldProps,
+            maxLength: inputOptions.maxLength
+        };
         switch (type) {
-            case 'input':
-                return <Input {...componentFieldProps} />;
             case 'textarea':
-                return <TextArea {...componentFieldProps} />;
+                return <TextArea
+                    autoSize={{minRows: 3, maxRows: 5}}
+                    {...inputTextProps}
+                />;
             case 'password':
-                return <Input.Password {...componentFieldProps} />;
+                return <Input.Password {...inputTextProps} />;
             default:
-                return <Input {...componentFieldProps} />;
+                return <Input {...inputTextProps} />;
         }
     };
 
@@ -76,9 +83,17 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({field, disableResponsiveCo
             case 'password':
                 return <OrdFormField {...commonFieldProps}>{renderInput()}</OrdFormField>;
             case 'select':
-                return <OrdFormField {...commonFieldProps}><OrdSelect {...componentFieldProps} /></OrdFormField>;
+                return <OrdFormField {...commonFieldProps}>
+                    <OrdSelect {...componentFieldProps} />
+                </OrdFormField>;
             case 'date':
-                return <OrdFormField {...commonFieldProps}><OrdDateInput {...componentFieldProps} /></OrdFormField>;
+                return <OrdFormField {...commonFieldProps}>
+                    <OrdDateInput {...componentFieldProps} />
+                </OrdFormField>;
+            case 'date-range':
+                return <OrdFormField {...commonFieldProps}>
+                    <OrdDateRangeInput {...componentFieldProps} />
+                </OrdFormField>;
             case 'checkbox':
                 return <OrdFormField {...commonFieldProps} isCheckbox={true}>
                 </OrdFormField>;
