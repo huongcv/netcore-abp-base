@@ -1,4 +1,7 @@
-﻿namespace Ord.Plugin.Auth.Repositories
+﻿using Ord.Domain.Consts;
+using Volo.Abp;
+
+namespace Ord.Plugin.Auth.Repositories
 {
     public partial class RoleCrudRepository(IAppFactory factory)
         : OrdDefaultCrudRepository<RoleEntity, Guid, RolePagedInput, RolePagedDto, RoleDetailDto, CreateRoleDto, UpdateRoleDto>(factory),
@@ -53,6 +56,10 @@
         protected override async Task ValidateBeforeUpdateAsync(UpdateRoleDto updateInput, RoleEntity entityUpdate)
         {
             var isCodeUnique = await IsCodeUniqueAsync(updateInput.Code, entityUpdate.Id);
+            if (entityUpdate.IsTemplate && CheckStaticRoleForTenant(entityUpdate.Code))
+            {
+                updateInput.Code = entityUpdate.Code;
+            }
             if (!isCodeUnique)
             {
                 ThrowValidationEx("role_code_already_exists", updateInput.Code);
@@ -62,6 +69,10 @@
         protected override async Task ValidateBeforeDeleteAsync(RoleEntity entityDelete)
         {
             var isInUse = await IsRoleInUseAsync(entityDelete.Id);
+            if (entityDelete.IsTemplate && CheckStaticRoleForTenant(entityDelete.Code))
+            {
+                throw new BusinessException(AppFactory.GetLocalizedMessage("message.role_template.not_static_role_tenant"));
+            }
             if (isInUse)
             {
                 ThrowValidationEx("role_is_in_use", entityDelete.Name);
@@ -284,6 +295,10 @@
 
         #endregion
 
-
+        protected bool CheckStaticRoleForTenant(string code)
+        {
+            return string.Equals(code, RoleCodeTemplateConst.TenantAdmin, StringComparison.CurrentCultureIgnoreCase)
+                   || string.Equals(code, RoleCodeTemplateConst.TenantUser, StringComparison.CurrentCultureIgnoreCase);
+        }
     }
 }
