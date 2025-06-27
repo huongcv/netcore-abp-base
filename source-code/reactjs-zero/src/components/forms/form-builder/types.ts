@@ -6,9 +6,12 @@ import {IOrdDateInputProp} from "@ord-components/forms/model/DateProp";
 import {TextAreaProps} from "antd/es/input";
 import {IOrdDateRangeInputProp} from "@ord-components/forms/OrdDateRangeInput";
 import {ISearchFilterTextProps} from "@ord-components/forms/search/SearchFilterText";
+import {IOrdInputRegexTextProp} from "@ord-components/forms/OrdInputRegexText";
+import {InputNumberProps} from "rc-input-number/es/InputNumber";
 
 export type FormFieldType =
     | 'input'
+    | 'input-regex'
     | 'textarea'
     | 'search-input'
     | 'number'
@@ -43,7 +46,15 @@ export interface InputFieldConfig extends BaseFormFieldConfig<InputProps> {
     maxLength: number;
 }
 
+export interface InputRegexFieldConfig extends BaseFormFieldConfig<IOrdInputRegexTextProp> {
+    maxLength: number;
+}
+
 export interface TextareaFieldConfig extends BaseFormFieldConfig<TextAreaProps> {
+    maxLength: number;
+}
+
+export interface NumberFieldConfig extends BaseFormFieldConfig<InputNumberProps> {
     maxLength: number;
 }
 
@@ -64,8 +75,9 @@ export interface SearchInputFieldConfig extends Partial<BaseFormFieldConfig<ISea
 }
 
 
-export interface CustomFieldConfig extends BaseFormFieldConfig {
+export interface CustomFieldConfig {
     render: () => React.ReactNode;
+    span?: number;
 }
 
 export type FormFieldConfig = BaseFormFieldConfig;

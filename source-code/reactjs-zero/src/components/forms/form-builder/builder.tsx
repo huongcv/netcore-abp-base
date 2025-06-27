@@ -2,119 +2,86 @@ import React from "react";
 import {
     CheckboxFieldConfig,
     CustomFieldConfig,
-    DateFieldConfig, DateRangeFieldConfig,
+    DateFieldConfig,
+    DateRangeFieldConfig,
     FormBuilderConfig,
     FormFieldConfig,
-    InputFieldConfig, SearchInputFieldConfig,
-    SelectFieldConfig, TextareaFieldConfig
+    InputFieldConfig,
+    InputRegexFieldConfig,
+    NumberFieldConfig,
+    SearchInputFieldConfig,
+    SelectFieldConfig,
+    TextareaFieldConfig
 } from "@ord-components/forms/form-builder/types";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder/index";
 
 export class FormBuilder {
     private fields: FormFieldConfig[] = [];
 
-    // Text Input
-    addText(options: InputFieldConfig): FormBuilder {
-        this.fields.push({
-            type: "input",
-            ...options,
-        });
+    private addField<T extends FormFieldConfig>(type: FormFieldConfig["type"], options: Omit<T, "type">): FormBuilder {
+        this.fields.push({type, ...options} as FormFieldConfig);
         return this;
     }
 
-    addTextArea(options: TextareaFieldConfig): FormBuilder {
-        this.fields.push({
-            type: "textarea",
-            ...options,
-        });
-        return this;
+    addText(options: InputFieldConfig) {
+        return this.addField("input", options);
     }
 
-    addPassword(options: TextareaFieldConfig): FormBuilder {
-        this.fields.push({
-            type: "password",
-            ...options,
-        });
-        return this;
+    addRegexText(options: InputRegexFieldConfig) {
+        return this.addField("input-regex", options);
     }
 
-
-    // Select Dropdown
-    addSelect(options: SelectFieldConfig): FormBuilder {
-        this.fields.push({
-            type: 'select',
-            ...options,
-        });
-        return this;
+    addTextArea(options: TextareaFieldConfig) {
+        return this.addField("textarea", options);
     }
 
-    // Date Picker
-    addDate(options: DateFieldConfig): FormBuilder {
-        this.fields.push({
-            type: 'date',
-            ...options,
-        });
-        return this;
+    addPassword(options: TextareaFieldConfig) {
+        return this.addField("password", options);
     }
 
-    addDateRange(options: DateRangeFieldConfig): FormBuilder {
-        this.fields.push({
-            type: 'date-range',
-            ...options,
-        });
-        return this;
+    addNumber(options: NumberFieldConfig) {
+        return this.addField("number", options);
     }
 
-    // Checkbox
-    addCheckbox(options: CheckboxFieldConfig): FormBuilder {
-        this.fields.push({
-            type: 'checkbox',
-            ...options,
-            label: options?.checkboxText || options?.label
-        });
-        return this;
+    addSelect(options: SelectFieldConfig) {
+        return this.addField("select", options);
     }
 
-    // Custom Field
-    addCustom(render: () => React.ReactNode): FormBuilder {
-        const customOptions = {
-            render: render
-        } as CustomFieldConfig;
-        this.fields.push({
-            type: 'custom',
-            ...customOptions
+    addDate(options: DateFieldConfig) {
+        return this.addField("date", options);
+    }
+
+    addDateRange(options: DateRangeFieldConfig) {
+        return this.addField("date-range", options);
+    }
+
+    addCheckbox(options: CheckboxFieldConfig) {
+        return this.addField("checkbox", {
+            ...options,
+            label: options.checkboxText || options.label
         });
-        return this;
+    }
+
+    addCustom(options: CustomFieldConfig) {
+        // @ts-ignore
+        return this.addField("custom", options);
     }
 
     addSearchInput(options: SearchInputFieldConfig) {
-        this.fields.push({
-            name: '',
-            type: 'search-input',
-            ...options
-        });
-        return this;
+        // @ts-ignore
+        return this.addField("search-input", options);
     }
 
-    // Conditional field adding
-    addIf(condition: boolean, callback: (builder: FormBuilder) => FormBuilder): FormBuilder {
-        if (condition) {
-            return callback(this);
-        }
-        return this;
+    addIf(condition: boolean, callback: (builder: FormBuilder) => FormBuilder) {
+        return condition ? callback(this) : this;
     }
 
-    // Build final config
     build(): FormBuilderConfig {
-        return {
-            fields: this.fields
-        };
+        return {fields: this.fields};
     }
 
-    // Build and return React component
     buildComponent(): React.FC {
         const config = this.build();
         return () => <OrdFormBuilder config={config}/>;
     }
-
 }

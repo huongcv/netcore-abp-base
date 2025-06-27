@@ -9,9 +9,9 @@ import {createNotificationTransform} from "@ord-components/paged-table/utils/not
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
 import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
 import {UserListAssignableRoleModal} from "@pages/Admin/Roles/ListUserAssignable/Modal";
-import {useRoleTemplateLogic} from "@pages/Admin/RoleTemplates/useRoleLogic";
 import {getRoleTemplateColumns} from "@pages/Admin/RoleTemplates/Columns";
 import {RoleTemplateEntityForm} from "@pages/Admin/RoleTemplates/EntityForm";
+import {useRoleTemplateLogic} from "@pages/Admin/RoleTemplates/useLogic";
 
 const Roles: React.FC = () => {
     const {
@@ -40,7 +40,7 @@ const Roles: React.FC = () => {
                 modalStore={modalStore}
                 tableStore={tableStore}
                 entityTranslationNs="role"
-                formFields={<RoleTemplateEntityForm/>}
+                formFields={<RoleTemplateEntityForm modalStore={modalStore}/>}
                 transformNotificationParameter={createNotificationTransform.fromMapping({
                     name: 'name'
                 })}

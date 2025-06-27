@@ -7,7 +7,7 @@ export const getRoleTemplateColumns = () => {
     builder.addText({
         title: 'code',
         dataIndex: 'code',
-        width: 200,
+        width: 250,
         copyable: true,
     }).addText({
         title: 'name',

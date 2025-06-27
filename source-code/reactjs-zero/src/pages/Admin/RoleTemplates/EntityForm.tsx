@@ -1,47 +1,56 @@
 import {Col, Form, Input, Row, Tabs, TabsProps} from "antd";
-import React from "react";
+import React, {useMemo} from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
-import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
 import regexUtil from "@ord-core/utils/regex.util";
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import {useTranslation} from "react-i18next";
-import {useRoleLogic} from "@pages/Admin/Roles/useRoleLogic";
+import {FormBuilder} from "@ord-components/forms/form-builder/builder";
+import {UseBoundStore} from "zustand/react";
+import {StoreApi} from "zustand/vanilla";
+import {ModalFormState} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
+import {OrdFormBuilder} from "@ord-components/forms/form-builder";
 
-export const RoleTemplateEntityForm = () => {
+interface IProps {
+    modalStore: UseBoundStore<StoreApi<ModalFormState<any>>>;
+}
+
+export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
     const {t} = useTranslation('common');
-    const focusRef = useAutoFocus();
-    const {modalStore} = useRoleLogic();
+    const {modalStore} = props;
     const {mode} = modalStore();
+    const config = useMemo(() => {
+        return new FormBuilder()
+            .addText({
+                span: 12,
+                name: 'code',
+                maxLength: 100,
+                required: true,
+                disabled: mode === 'edit'
+            })
+            .addText({
+                span: 12,
+                name: 'name',
+                maxLength: 200,
+                required: true
+            }).addTextArea({
+                span: 24,
+                name: 'description',
+                maxLength: 500
+            }).addCheckbox({
+                name: 'isActived',
+                initialValue: true
+            })
+            .build();
+    }, [mode]);
 
     const items: TabsProps['items'] = [{
         key: '1',
         label: t('detailInformation'),
-        children: (<Row gutter={18}>
-            <Col span={12}>
-                <OrdFormField label={'code'} name={'code'} required
-                              rules={[ValidateUtils.required, ValidateUtils.maxLength(100)]}>
-                    <OrdInputRegexText regex={regexUtil.CodeRegex} ref={focusRef}/>
-                </OrdFormField>
-            </Col>
-
-            <Col span={12}>
-                <OrdFormField label={'name'} name={'name'} required
-                              rules={[ValidateUtils.required, ValidateUtils.maxLength(200)]}>
-                    <Input maxLength={200}/>
-                </OrdFormField>
-            </Col>
-            <Col span={24}>
-                <OrdFormField label={'description'} name={'description'}
-                              rules={[ValidateUtils.maxLength(500)]}>
-                    <Input maxLength={500}/>
-                </OrdFormField>
-            </Col>
-            <Col span={24}>
-                <OrdFormField label='dang_hoat_dong' name='isActived' isCheckbox initialValue={true}/>
-            </Col>
-        </Row>)
+        children: (<>
+            <OrdFormBuilder config={config}/>
+        </>)
     }, {
         key: '2',
         label: t('tabPermissions'),

@@ -10,15 +10,13 @@ const ListPermissionInput = (props: {
     value?: any;
     onChange?: (value: any) => void;
     disabled?: boolean;
-    forUpsertRoleTenant?: boolean;
 }) => {
-    const {value, onChange, forUpsertRoleTenant} = props;
+    const {value, onChange} = props;
     const {sessionStore} = useStore();
     const [granted, setGranted] = useState<string[]>([]);
     const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
     const [defaultExpandedKeys, setDefaultExpandedKeys] = useState<string[]>([]);
     const form = Form.useFormInstance();
-    const formCode_w = Form.useWatch('code', form);
     useEffect(() => {
         OrdPermissionArrayUtil.setSession(sessionStore.appSession);
         const permissionsTreeData = getFullPermissionTreeDataForUser(sessionStore.appSession);
@@ -26,7 +24,7 @@ const ListPermissionInput = (props: {
         setTreeData(treeDataNode);
         setDefaultExpandedKeys(['root']);
         setGranted(OrdPermissionArrayUtil.ignorePermissionBaseWhenSetGranted(value || []));
-    }, [formCode_w, sessionStore]);
+    }, [sessionStore]);
 
     useEffect(() => {
         // @ts-ignore

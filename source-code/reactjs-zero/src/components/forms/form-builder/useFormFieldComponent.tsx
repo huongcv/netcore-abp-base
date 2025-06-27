@@ -1,11 +1,12 @@
 import React from 'react';
-import {Input} from 'antd';
+import {Input, InputNumber} from 'antd';
 import {FormFieldConfig, FormFieldType, InputFieldConfig} from './types';
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
 import OrdDateRangeInput from "@ord-components/forms/OrdDateRangeInput";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
+import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
 
 const {TextArea} = Input;
 
@@ -53,13 +54,14 @@ export const useFormFieldComponent = (
         date: <OrdDateInput {...baseProps} />,
         'date-range': <OrdDateRangeInput {...baseProps} />,
         'search-input': <SearchFilterText {...baseProps} span={24}/>,
-        number: undefined,
+        number: <InputNumber {...baseProps} />,
         checkbox: undefined,
         dateTime: undefined,
         time: undefined,
         switch: undefined,
         radio: undefined,
-        custom: undefined
+        custom: undefined,
+        'input-regex': <OrdInputRegexText {...baseProps} />
     };
 
     return map[type] ?? null;
