@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Ord.Domain.Entities.MasterData;
+using Ord.Domain.Consts;
 using Ord.EfCore.Default.MigrateDb.Base;
 using Ord.EfCore.Default.MigrateDb.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ord.Domain.Consts;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ord.EfCore.Default.MigrateDb.Services
 {
@@ -34,15 +31,16 @@ namespace Ord.EfCore.Default.MigrateDb.Services
         {
             if (!await dbContext.Roles.AnyAsync(r => r.Code == code))
             {
-                await dbContext.Roles.AddAsync(new RoleEntity
+                var roleEnt = new RoleEntity()
                 {
                     Code = code,
                     Name = name,
                     IsActived = true,
                     IsTemplate = true,
                     IsDeleted = false
-                });
-
+                };
+                roleEnt.SetId();
+                await dbContext.Roles.AddAsync(roleEnt);
                 await dbContext.SaveChangesAsync();
                 Logger.LogInformation($"Added role template: {code} - {name}");
             }

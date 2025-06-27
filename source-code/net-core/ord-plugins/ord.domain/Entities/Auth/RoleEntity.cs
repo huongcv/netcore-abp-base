@@ -31,5 +31,10 @@ namespace Ord.Plugin.Auth.Shared.Entities
         /// Template Role sẽ có TenantId = null và IsTemplate = true
         /// </summary>
         public bool IsTemplate { get; set; } = false;
+
+        public void SetId()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
