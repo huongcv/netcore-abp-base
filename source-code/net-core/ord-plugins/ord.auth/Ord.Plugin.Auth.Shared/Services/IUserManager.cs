@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Domain.Services;
+﻿using Ord.Plugin.Auth.Shared.Dtos.Tenants;
+using Volo.Abp.Domain.Services;
 
 namespace Ord.Plugin.Auth.Shared.Services
 {
@@ -9,5 +10,6 @@ namespace Ord.Plugin.Auth.Shared.Services
         Task<string> GenerateRandomPassword(Guid userId);
         Task Unlock(Guid userId);
         Task AssignRoles(Guid userId, List<Guid> assignedRoleIds, List<string>? submittedPermissions);
+        Task CreateDefaultTenantAdmin(TenantDetailDto tenantDto, string userName, string? password);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Ord.Contract.Entities;
 using Ord.Plugin.Auth.Base;
+using Ord.Plugin.Auth.Shared.Dtos;
+using Ord.Plugin.Auth.Shared.Dtos.Tenants;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
@@ -90,6 +92,31 @@ namespace Ord.Plugin.Auth.Services
             permissionEntities.AddRange(revokedRolePermissions);
             await userPermissionRepository.InsertMany(permissionEntities);
         }
+
+        public async Task CreateDefaultTenantAdmin(TenantDetailDto tenantDto, string userName, string? password)
+        {
+            using (CurrentTenant.Change(tenantDto.Id))
+            {
+                if (string.IsNullOrEmpty(userName))
+                {
+                    userName = tenantDto.Code + "_" + "admin";
+                }
+                var adminAccount = await userCrudRepository.CreateAsync(new CreateUserDto()
+                {
+                    Name = "Administrator",
+                    UserName = userName,
+                    Password = password,
+                    Email = tenantDto.Email,
+                    PhoneNumber = tenantDto.PhoneNumber,
+                    IsLockoutEnabled = true,
+                    MustChangePassword = true,
+                    IsActived = true
+                }, true);
+                var roleManager = AppFactory.GetServiceDependency<IRoleManager>();
+                await roleManager.AssignRoleAdminTenant(adminAccount.Id);
+            }
+        }
+
         protected async Task<UserEntity> GetById(Guid userId)
         {
             var userEnt = await userCrudRepository.GetByIdAsync(userId);

@@ -7,5 +7,6 @@ namespace Ord.Plugin.Auth.Shared.Services
     {
         Task AssignPermissionsToRoleAsync(Guid roleId, IEnumerable<string> listOfPermissions);
         Task<IEnumerable<RoleDetailDto>> GetAssignableRolesAsync(Guid userId);
+        Task AssignRoleAdminTenant(Guid userId);
     }
 }

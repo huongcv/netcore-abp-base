@@ -24,6 +24,7 @@ namespace Ord.Plugin.Auth.Shared.Repositories
         #region Role template
 
         Task<RoleEntity> CreateTemplateRoleAsync(CreateTemplateRoleDto input);
+        Task<RoleEntity> GetRoleTemplateByCode(string code);
 
         #endregion
 

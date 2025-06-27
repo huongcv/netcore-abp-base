@@ -17,5 +17,14 @@ namespace Ord.Plugin.Auth.Repositories
             }
            
         }
+
+        public async Task<RoleEntity> GetRoleTemplateByCode(string code)
+        {
+            using (CurrentTenant.Change(null))
+            {
+                var q = await GetQueryableAsNoTracking();
+                return await q.Where(x => x.IsTemplate && x.Code == code).FirstOrDefaultAsync();
+            }
+        }
     }
 }

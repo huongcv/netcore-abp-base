@@ -48,7 +48,6 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Tenants
         [OrdValidatePassword]
         public string? AdminPassword { get; set; }
         public string? AdminUsername { get; set; }
-        public bool CreateDefaultAdmin { get; set; }
     }
 
     public class UpdateTenantDto : TenantCrudBase, IHasEncodedId

@@ -2,6 +2,7 @@
 using Ord.Plugin.Auth.Shared.Dtos.Tenants;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
@@ -9,13 +10,15 @@ using Ord.Plugin.Core.Services;
 namespace Ord.Plugin.Auth.AppServices
 {
     [OrdAuth]
-    public class TenantAppService: OrdCrudAppService<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto, UpdateTenantDto>
+    public class TenantAppService : OrdCrudAppService<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto, UpdateTenantDto>
     {
         private ITenantCrudRepository TenantCrudRepository => AppFactory.GetServiceDependency<ITenantCrudRepository>();
         protected override
             IOrdCrudRepository<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto,
                 UpdateTenantDto> CrudRepository
             => TenantCrudRepository;
+
+        protected IUserManager UserManager => AppFactory.GetServiceDependency<IUserManager>();
         protected override string GetBasePermissionName()
         {
             AppFactory.CheckHostUser();
@@ -44,5 +47,17 @@ namespace Ord.Plugin.Auth.AppServices
             return AppFactory.CreateSuccessResult(options);
         }
         #endregion
+
+        public override async Task<CommonResultDto<TenantDetailDto>> CreateAsync(CreateTenantDto input)
+        {
+            var commonResult = await base.CreateAsync(input);
+            if (commonResult.IsSuccessful)
+            {
+                var tenantDto = commonResult.Data;
+                await UserManager.CreateDefaultTenantAdmin(tenantDto, input.AdminUsername, input.AdminPassword);
+            }
+
+            return commonResult;
+        }
     }
 }

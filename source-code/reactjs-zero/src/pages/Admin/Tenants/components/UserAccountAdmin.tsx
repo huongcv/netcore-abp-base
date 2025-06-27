@@ -10,7 +10,7 @@ export const UserAccountAdmin: React.FC = () => {
     return <>
         <Col span={12}>
             <FloatLabel label={t('userNameAdminTenant')} required>
-                <Form.Item name='userNameAdminTenant'
+                <Form.Item name='adminUsername'
                            rules={[ValidateUtils.required, ValidateUtils.userName]}
                            initialValue={'admin'}
                 >
@@ -20,7 +20,7 @@ export const UserAccountAdmin: React.FC = () => {
         </Col>
         <Col span={12}>
             <FloatLabel label={t('passwordAdminTenant')} required>
-                <Form.Item name='passwordAdminTenant'
+                <Form.Item name='adminPassword'
                            rules={[ValidateUtils.required, ValidateUtils.password]}>
                     <Input maxLength={200}/>
                 </Form.Item>

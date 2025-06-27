@@ -1,11 +1,10 @@
-﻿using Ord.Plugin.Auth.Base;
+﻿using Ord.Domain.Consts;
+using Ord.Plugin.Auth.Base;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
 using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Services;
-using Ord.Plugin.Core.Utils;
-using Volo.Abp.Validation;
 
 namespace Ord.Plugin.Auth.Services
 {
@@ -54,6 +53,16 @@ namespace Ord.Plugin.Auth.Services
             }
 
             return listRoleAvailable;
+        }
+
+        public async Task AssignRoleAdminTenant(Guid userId)
+        {
+            var roleAdmin = await roleCrudRepository.GetRoleTemplateByCode(RoleCodeTemplateConst.TenantAdmin);
+            if (roleAdmin != null)
+            {
+                var userRole = AppFactory.GetServiceDependency<IUserRoleRepository>();
+                await userRole.AddUserToRoleAsync(userId, roleAdmin.Id);
+            }
         }
     }
 }
