@@ -6,7 +6,7 @@ import {Trans, useTranslation} from "react-i18next";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import TableUtil from "@ord-core/utils/table.util";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {ShopDto, TenantDto} from "@api/index.defs";
 import FloatLabel from "@ord-components/forms/FloatLabel";
 import {observer} from "mobx-react-lite";
@@ -234,14 +234,14 @@ const Shop = (props: {
     const topActions: IActionBtn[] = [
         {
             title: 'exportExcel',
-            permission: PERMISSION_APP.masterData.shop,
+            permission: PERMISSION_NAME_APP.masterData.shop,
             onClick: () => {
                 mainStore.exportExcelPagedResult().then();
             }
         },
         {
             title: 'addNew',
-            permission: PERMISSION_APP.masterData.shop + '.Create',
+            permission: PERMISSION_NAME_APP.masterData.shop + '.Create',
             onClick: () => {
                 mainStore.openCreateModal();
             }

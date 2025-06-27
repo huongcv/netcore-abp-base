@@ -2,9 +2,14 @@ class PermissionUtil {
     crudPermission(baseEntityPermission: string) {
         return {
             base: baseEntityPermission,
-            create: baseEntityPermission + '.Create', 
+            getPaged: baseEntityPermission + '.GetPaged',
+            getDetail: baseEntityPermission + '.GetDetail',
+            create: baseEntityPermission + '.Create',
             edit: baseEntityPermission + '.Update',
-            remove: baseEntityPermission + '.Remove',
+            remove: baseEntityPermission + '.Delete',
+            delete: baseEntityPermission + '.Delete',
+            import: baseEntityPermission + '.Import',
+            export: baseEntityPermission + '.Export',
         }
     }
 }

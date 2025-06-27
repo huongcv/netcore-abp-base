@@ -2,44 +2,67 @@ import React from 'react';
 import {Navigate, useLocation} from 'react-router-dom';
 
 import {useStore} from "@ord-store/index";
-import {checkPermissionUser} from "@ord-core/utils/auth.utils";
 import {observer} from "mobx-react-lite";
 import {AppExtendCode} from "@ord-core/AppConst";
+import {usePermission} from "@ord-core/hooks/auth/usePermission";
 
 interface IProtectedRouteProp {
-    children: any,
-    permission?: string
+    permission?: string | string[];
+    children: React.ReactNode;
+    /** Có kiểm tra cả GetPaged permission không (default: true) */
+    checkGetPaged?: boolean;
+    /** Custom fallback route khi không có quyền (default: "/not-permission") */
+    fallbackRoute?: string;
+    /** Có redirect về login nếu chưa login không (default: true) */
+    requireAuth?: boolean;
 }
 
 function isInAppExtendCode(key: string): key is keyof typeof AppExtendCode {
     return key in AppExtendCode;
 }
 
-// Hàm lấy systemCode từ URL
-function getSystemCodeFromPath(pathname: string): string | null {
-    const parts = pathname.split('/').filter(Boolean); // ["app", "golf", "booking"]
-    return parts.length >= 2 ? parts[1] : null; // parts[1] là "golf"
-}
-
-const ProtectedRoute = (prop: IProtectedRouteProp) => {
+const ProtectedRoute = (props: IProtectedRouteProp) => {
     const {sessionStore} = useStore();
+    const {
+        permission,
+        children,
+        checkGetPaged = true,
+        fallbackRoute = "/not-permission",
+        requireAuth = true
+    } = props;
+    const {checkAnyPermission} = usePermission();
+    const location = useLocation();
     // useCheckVersion();
-    if (sessionStore.appSession?.isLogined !== true) {
+    // Kiểm tra đăng nhập
+    if (requireAuth && sessionStore.appSession?.isLogined !== true) {
         return <Navigate to="/auth/login"/>;
     }
-    const location = useLocation();
-    const systemCodeInPath = getSystemCodeFromPath(location.pathname);
-
-    // Nếu systemCodeInPath tồn tại và hợp lệ
-    if (systemCodeInPath && isInAppExtendCode(systemCodeInPath)) {
-        // Nếu systemCodeInPath khác với quyền user đang có (sessionStore.systemCode)
-        if (systemCodeInPath !== sessionStore.systemCode) {
-            return <Navigate to="/not-permission" replace/>;
-        }
+    // Nếu không có permission thì cho phép truy cập
+    if (!permission) {
+        return <>{children}</>;
     }
 
-    return checkPermissionUser(sessionStore.appSession, prop.permission) ? prop.children :
-        <Navigate to="/not-permission"/>;
+    // Tạo danh sách permissions cần check
+    // Bổ sung thêm check .GetPaged có trong list quyền hay không?
+    const permissionsToCheck = React.useMemo(() => {
+        console.log('permission', permission);
+        const basePermissions = Array.isArray(permission) ? permission : [permission];
+        const allPermissions = [...basePermissions];
+        const perm = allPermissions[0];
+        // Thêm GetPaged permissions nếu checkGetPaged = true
+        if (checkGetPaged && perm) {
+            allPermissions.push(`${perm}.GetPaged`);
+        }
+        return allPermissions;
+    }, [permission, checkGetPaged]);
+
+    // Kiểm tra quyền với hook
+    const hasPermission = checkAnyPermission(permissionsToCheck);
+    return hasPermission ? (
+        <>{children}</>
+    ) : (
+        <Navigate to={fallbackRoute} replace/>
+    );
 }
 
 export default observer(ProtectedRoute);

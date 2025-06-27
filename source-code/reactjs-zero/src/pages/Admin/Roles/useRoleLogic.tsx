@@ -4,7 +4,7 @@ import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {UserDetailDto} from "@api/base/index.defs";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {RoleService} from "@api/base/RoleService";
 import {CheckCircleOutlined, UserOutlined} from "@ant-design/icons";
 import React from "react";
@@ -18,7 +18,7 @@ const modalStore = createModalFormStore(RoleService, {});
 export const useRoleLogic = () => {
     const {onExportExcel} = tableStore();
     const {openView, openCreate, openEdit, openDelete, mode} = modalStore();
-    const policies = PermissionUtil.crudPermission(PERMISSION_APP.admin.role);
+    const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.role);
     const isCreateNew = mode === 'create';
     // Top actions
     const topActions: IActionBtn[] = [

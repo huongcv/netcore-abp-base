@@ -20,6 +20,10 @@
     "Create": "Thêm mới",
     "Update": "Sửa",
     "Remove": "Xóa",
+    "Delete": "Xóa",
+    "GetDetail": "Xem chi tiết",
+    "Export": "Xuất excel",
+    "Import": "Nhập excel",
     "CreateOrUpdate": "Thêm/sửa",
     "SetPermission": "Gán quyền cho vai trò",
     "ResetPassword": "Đổi mật khẩu người dùng",
@@ -109,13 +113,11 @@
   "ReportShop.EndOfDay.Product": "Hàng hóa",
   "ReportShop.EndOfDay.Income": "Thu chi",
   "ReportShop.EndOfDay.ShiftRevenue": "Ca bán hàng",
-
   "ReportShop.Sell": "Báo cáo Bán hàng",
   "ReportShop.Sell.Revenue": "Doanh thu",
   "ReportShop.Sell.RevenueDetail": "Doanh thu chi tiết",
   "ReportShop.Sell.Product": "Hàng hóa",
   "ReportShop.Sell.Income": "Thu chi",
-
   "ReportShop.Sell.Profit": "Lợi nhuận",
   "ReportShop.Customer": "Báo cáo Khách hàng",
   "ReportShop.Customer.Revenue": "Doanh thu",
@@ -160,14 +162,14 @@
   "ReportShop.Doctor.Product": "Hàng bán theo bác sĩ",
   "ReportShop.Tax": "Báo cáo thuế",
   "ReportShop.Tax.TaxDeclration": "Báo cáo thuế",
-  "ReportShop.BusinessHouseHold": "Báo cáo Hộ Kinh Doanh", 
-  "ReportShop.BusinessHouseHold.ProductRevenueBook": "S1-HKD: Sổ chi tiết doanh thu bán hàng hóa, dịch vụ", 
-  "ReportShop.BusinessHouseHold.ProductBook": "S2-HKD: Sổ chi tiết vật liệu, dụng cụ, sản phẩm, hàng hóa", 
-  "ReportShop.BusinessHouseHold.ProductionBusinessCostBook": "S3-HKD: Sổ chi phí sản xuất, kinh doanh", 
-  "ReportShop.BusinessHouseHold.TaxLiabilityBook": "S4-HKD: Sổ theo dõi tình hình thực hiện nghĩa vụ thuế với NSNN", 
-  "ReportShop.BusinessHouseHold.EmployeeSalaryPaymentBook": "S5-HKD: Sổ theo dõi tình hình thanh toán tiền lương và các khoản nộp theo lương của người lao động", 
-  "ReportShop.BusinessHouseHold.CashBook": "S6-HKD: Sổ quỹ tiền mặt", 
-  "ReportShop.BusinessHouseHold.BankBook": "S7-HKD: Sổ tiền gửi ngân hàng", 
+  "ReportShop.BusinessHouseHold": "Báo cáo Hộ Kinh Doanh",
+  "ReportShop.BusinessHouseHold.ProductRevenueBook": "S1-HKD: Sổ chi tiết doanh thu bán hàng hóa, dịch vụ",
+  "ReportShop.BusinessHouseHold.ProductBook": "S2-HKD: Sổ chi tiết vật liệu, dụng cụ, sản phẩm, hàng hóa",
+  "ReportShop.BusinessHouseHold.ProductionBusinessCostBook": "S3-HKD: Sổ chi phí sản xuất, kinh doanh",
+  "ReportShop.BusinessHouseHold.TaxLiabilityBook": "S4-HKD: Sổ theo dõi tình hình thực hiện nghĩa vụ thuế với NSNN",
+  "ReportShop.BusinessHouseHold.EmployeeSalaryPaymentBook": "S5-HKD: Sổ theo dõi tình hình thanh toán tiền lương và các khoản nộp theo lương của người lao động",
+  "ReportShop.BusinessHouseHold.CashBook": "S6-HKD: Sổ quỹ tiền mặt",
+  "ReportShop.BusinessHouseHold.BankBook": "S7-HKD: Sổ tiền gửi ngân hàng",
   "MasterData.Channel": "Kênh bán hàng",
   "Partner.Doctor": "Bác sĩ",
   "Golf": {
@@ -179,10 +181,9 @@
     "Category.teeTime": "TeeTime",
     "Category.accessCard": "Thẻ thành viên",
     "Category.reason": "Lý do"
-
   },
   "Restaurant": {
     "Order": "Gọi món",
-    "Reservation":"Đặt lịch"
+    "Reservation": "Đặt lịch"
   }
 }

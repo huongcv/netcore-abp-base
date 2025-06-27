@@ -1,7 +1,7 @@
 import {ShopOutlined, WindowsOutlined} from "@ant-design/icons";
 import {SideNavInterface} from "@ord-core/model/side-nav.type";
 import React from "react";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {SettingIcon} from "@ord-components/icon/menu/SettingIcon";
 
 export default [
@@ -13,7 +13,7 @@ export default [
   {
     icon: <ShopOutlined />,
     path: "tenant",
-    permission: PERMISSION_APP.admin.tenant,
+    permission: PERMISSION_NAME_APP.admin.tenant,
     title: "menu.tenant",
   },
   {
@@ -22,27 +22,27 @@ export default [
     children: [
       {
         path: "master-data/country",
-        permission: PERMISSION_APP.masterData.country,
+        permission: PERMISSION_NAME_APP.masterData.country,
         title: "menu.country",
       },
       {
         path: "master-data/country-state",
-        permission: PERMISSION_APP.masterData.country_state,
+        permission: PERMISSION_NAME_APP.masterData.country_state,
         title: "menu.countryState",
       },
       {
         path: "master-data/district",
-        permission: PERMISSION_APP.masterData.district,
+        permission: PERMISSION_NAME_APP.masterData.district,
         title: "menu.district",
       },
       {
         path: "master-data/ward",
-        permission: PERMISSION_APP.masterData.ward,
+        permission: PERMISSION_NAME_APP.masterData.ward,
         title: "menu.ward",
       },
       {
         path: "master-data/package",
-        permission: PERMISSION_APP.masterData.package,
+        permission: PERMISSION_NAME_APP.masterData.package,
         title: "menu.package",
       },
       {
@@ -58,29 +58,29 @@ export default [
     children: [
       {
         path: "users",
-        permission: PERMISSION_APP.admin.user,
+        permission: PERMISSION_NAME_APP.admin.user,
         title: "menu.user",
       },
       {
         path: "roles",
-        permission: PERMISSION_APP.admin.role,
+        permission: PERMISSION_NAME_APP.admin.role,
         title: "menu.role",
       },
       {
         path: "role-template",
         title: "menu.templateRole",
-        permission: PERMISSION_APP.admin.role,
+        permission: PERMISSION_NAME_APP.admin.role,
       },
       {
         path: "setting",
-        permission: PERMISSION_APP.admin.setting,
+        permission: PERMISSION_NAME_APP.admin.setting,
         title: "menu.setting",
       },
 
       {
         path: "template-printer",
         title: "menu.templatePrinter",
-        permission: PERMISSION_APP.admin.templatePrinterHost,
+        permission: PERMISSION_NAME_APP.admin.templatePrinterHost,
       },
     ],
   },

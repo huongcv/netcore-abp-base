@@ -9,7 +9,7 @@ import {SaleIcon} from "@ord-components/icon/menu/SaleIcon";
 import {SettingIcon} from "@ord-components/icon/menu/SettingIcon";
 import {StockIcon} from "@ord-components/icon/menu/StockIcon";
 import {AppExtendCode, ROLE_PHARMACY} from "@ord-core/AppConst";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {SideNavInterface} from "@ord-core/model/side-nav.type";
 
 export default [
@@ -23,13 +23,13 @@ export default [
         icon: <SaleIcon style={{width: 20}}/>,
         title: "menu.sell",
         path: "/sales-invoice/sell",
-        permission: PERMISSION_APP.saleInvoice.sell,
+        permission: PERMISSION_NAME_APP.saleInvoice.sell,
     },
     {
         icon: <InvoiceIcon/>,
         title: "menu.saleInvoice",
         path: AppExtendCode.proShop + "/sales-invoice/invoice",
-        permission: PERMISSION_APP.saleInvoice.invoice,
+        permission: PERMISSION_NAME_APP.saleInvoice.invoice,
     },
     // {
     //     icon: <SolutionOutlined style={{fontSize: "20px"}}/>,
@@ -41,13 +41,13 @@ export default [
         icon: <SolutionOutlined style={{fontSize: "20px"}}/>,
         title: "menu.order",
         path: AppExtendCode.proShop + "/sale/order",
-       permission: PERMISSION_APP.orderStock.order + " and " + ROLE_PHARMACY,
+       permission: PERMISSION_NAME_APP.orderStock.order + " and " + ROLE_PHARMACY,
     },
     {
         icon: <UserSwitchOutlined style={{fontSize: "20px"}}/>,
         title: "menu.customer",
         path: AppExtendCode.proShop + "/partner/customer",
-        permission: PERMISSION_APP.customer.viewCustomerList,
+        permission: PERMISSION_NAME_APP.customer.viewCustomerList,
     },
     {
         icon: <StockIcon/>,
@@ -56,47 +56,47 @@ export default [
             {
                 path: AppExtendCode.proShop + "/order/supplier",
                 title: "menu.orderSupplier",
-                permission: PERMISSION_APP.orderStock.order + " and " + ROLE_PHARMACY,
+                permission: PERMISSION_NAME_APP.orderStock.order + " and " + ROLE_PHARMACY,
             },
             {
                 path: AppExtendCode.proShop + "/stock/import",
-                permission: PERMISSION_APP.stock.importStock,
+                permission: PERMISSION_NAME_APP.stock.importStock,
                 // icon: <ImportIcon/>,
                 title: "menu.importStock",
             },
             {
                 path: AppExtendCode.proShop + "/stock/export-supplier",
-                permission: PERMISSION_APP.stock.exportSupplier,
+                permission: PERMISSION_NAME_APP.stock.exportSupplier,
                 // icon: <ExportIcon/>,
                 title: "menu.exportSupplier",
             },
             {
                 path: AppExtendCode.proShop + "/stock/export-cancel",
-                permission: PERMISSION_APP.stock.exportCancel,
+                permission: PERMISSION_NAME_APP.stock.exportCancel,
                 // icon: <ExportIcon/>,
                 title: "menu.exportCancel",
             },
             {
                 path: AppExtendCode.proShop + "/stock/transfer",
-                permission: PERMISSION_APP.stock.transferStock,
+                permission: PERMISSION_NAME_APP.stock.transferStock,
                 // icon: <TransferIcon/>,
                 title: "menu.transferStock",
             },
             {
                 path: AppExtendCode.proShop + "/stock/check",
-                permission: PERMISSION_APP.stock.checkStock,
+                permission: PERMISSION_NAME_APP.stock.checkStock,
                 // icon: <CheckIcon />,
                 title: "menu.checkStock",
             },
             {
                 path: AppExtendCode.proShop + "/stock/inventory",
-                permission: PERMISSION_APP.stock.inventory,
+                permission: PERMISSION_NAME_APP.stock.inventory,
                 // icon: <CheckIcon />,
                 title: "menu.inventory",
             },
             {
                 path: AppExtendCode.proShop + "/partner/customer-supplier",
-                permission: PERMISSION_APP.stock.supplier,
+                permission: PERMISSION_NAME_APP.stock.supplier,
                 title: "menu.customerSupplier",
             },
         ],
@@ -114,7 +114,7 @@ export default [
         path: AppExtendCode.proShop + "/accountant/cashbook/dashboard",
         icon: <AccountantIcon/>,
         title: "menu.cashbook",
-        permission: PERMISSION_APP.accountant.cashbook,
+        permission: PERMISSION_NAME_APP.accountant.cashbook,
     },
     {
         icon: <ProductIcon/>,
@@ -122,13 +122,13 @@ export default [
         children: [
             {
                 path: AppExtendCode.proShop + "/product",
-                permission: PERMISSION_APP.product.product,
+                permission: PERMISSION_NAME_APP.product.product,
                 title: "menu.product",
             },
             {
                 path: AppExtendCode.proShop + "/product/price-list",
                 title: "menu.productPriceList",
-                permission: PERMISSION_APP.product.productPriceList,
+                permission: PERMISSION_NAME_APP.product.productPriceList,
             },
             // {
             //      path: "/product/discount",
@@ -150,32 +150,32 @@ export default [
             {
                 path: AppExtendCode.proShop + "/human-resource/employee",
                 title: "menu.employee",
-                permission: PERMISSION_APP.human.employee + ".GetPaged",
+                permission: PERMISSION_NAME_APP.human.employee + ".GetPaged",
             },
             {
                 path: AppExtendCode.proShop + "/human-resource/work-calendar",
                 title: "menu.workCalendar",
-                permission: PERMISSION_APP.human.workCalendar,
+                permission: PERMISSION_NAME_APP.human.workCalendar,
             },
             {
                 path: AppExtendCode.proShop + "/human-resource/allowance",
                 title: "menu.allowance",
-                permission: PERMISSION_APP.human.allowance,
+                permission: PERMISSION_NAME_APP.human.allowance,
             },
             {
                 path: AppExtendCode.proShop + "/human-resource/timekeeping",
                 title: "menu.timekeeping",
-                permission: PERMISSION_APP.human.employeeTimekeeping,
+                permission: PERMISSION_NAME_APP.human.employeeTimekeeping,
             },
             {
                 path: AppExtendCode.proShop + "/human-resource/timesheet",
                 title: "menu.timesheet",
-                permission: PERMISSION_APP.human.timesheet,
+                permission: PERMISSION_NAME_APP.human.timesheet,
             },
             {
                 path: AppExtendCode.proShop + "/human-resource/payroll",
                 title: "menu.payroll",
-                permission: PERMISSION_APP.human.employeePayroll,
+                permission: PERMISSION_NAME_APP.human.employeePayroll,
             },
         ],
     },
@@ -194,16 +194,16 @@ export default [
             {
                 path: AppExtendCode.proShop + "/system/user",
                 title: "menu.userEmployee",
-                permission: PERMISSION_APP.system.user,
+                permission: PERMISSION_NAME_APP.system.user,
             },
             {
                 path: AppExtendCode.proShop + "/system/roles",
-                permission: PERMISSION_APP.system.role,
+                permission: PERMISSION_NAME_APP.system.role,
                 title: "menu.role",
             },
             {
                 path: AppExtendCode.proShop + "/partner/doctor",
-                permission: PERMISSION_APP.system.doctor + " and " + ROLE_PHARMACY,
+                permission: PERMISSION_NAME_APP.system.doctor + " and " + ROLE_PHARMACY,
                 title: "menu.partnerDoctor",
             },
             // {
@@ -214,18 +214,18 @@ export default [
             {
                 path: AppExtendCode.proShop + "/template-printer",
                 title: "menu.templatePrinterTenant",
-                permission: PERMISSION_APP.admin.templatePrinterTenant,
+                permission: PERMISSION_NAME_APP.admin.templatePrinterTenant,
             },
             {
                 path: AppExtendCode.proShop + "/system/transfer-national-pharmacy",
                 title: "menu.transferNationalPharmacy",
-                permission: PERMISSION_APP.system.transferNationalPharmacy,
+                permission: PERMISSION_NAME_APP.system.transferNationalPharmacy,
                 keyCheck: 999
             },
             {
                 path: AppExtendCode.proShop + "/system/shop-setting",
                 title: "menu.shopSetting",
-                permission: PERMISSION_APP.system.shopSetting,
+                permission: PERMISSION_NAME_APP.system.shopSetting,
             },
 
             // {

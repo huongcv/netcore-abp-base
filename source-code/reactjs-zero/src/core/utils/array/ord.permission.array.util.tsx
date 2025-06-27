@@ -2,11 +2,11 @@ import {OrdPermissionTreeDataNode} from "@ord-core/config/permissions/tree-data/
 import {l} from "@ord-core/language/lang.utils";
 import React from "react";
 import {TreeDataNode} from "antd";
-import {PERMISSION_TREE} from "@ord-core/config/permissions/tree-data";
 import ArrayUtil from "@ord-core/utils/array/array.util";
 import {AppBootstrapDto} from "@ord-core/service-proxies/session/dto";
 import {checkPermissionUser} from "@ord-core/utils/auth.utils";
-import {HOST_PERMISSION_TREE} from "@ord-core/config/permissions/host-tree-data";
+import {HOST_PERMISSION_TREE} from "@ord-core/config/permissions/tree-data/host-user";
+import {getFullPermissionTreeData} from "@ord-core/config/permissions/tree-data";
 
 class OrdPermissionArrayUtil {
     private listPermissionBase: string[] = [];
@@ -14,14 +14,7 @@ class OrdPermissionArrayUtil {
     private _session: AppBootstrapDto | undefined;
 
     getTreeDataRoot(session: AppBootstrapDto, roleCode: any, forUpsertRoleTenant?: boolean): TreeDataNode[] {
-
-        // @ts-ignore
-        const isTenantAccount = session.user && session.user?.tenantId && session.user?.tenantDto;
-
-        let permissionsTreeData = (isTenantAccount || forUpsertRoleTenant == true) ? PERMISSION_TREE : HOST_PERMISSION_TREE;
-        if (roleCode && roleCode == 'ADMIN_TENANT' && !isTenantAccount) {
-            permissionsTreeData = PERMISSION_TREE;
-        }
+        let permissionsTreeData = getFullPermissionTreeData(session);
         this.listPermissionBase = [];
         this._session = session;
 
@@ -50,7 +43,7 @@ class OrdPermissionArrayUtil {
                             title: 'ignore'
                         };
                     }
-                    
+
                     const nodes = this.getNodes(it.items || []);
                     if (nodes.length > 0) {
                         const treePermission = ArrayUtil.arrToTreeNode(nodes, {
@@ -115,8 +108,8 @@ class OrdPermissionArrayUtil {
 
         function flatten(items: any, parentName: any) {
             for (const item of items) {
-                const { children, ...rest } = item;
-                result.push({ ...rest, parentName });
+                const {children, ...rest} = item;
+                result.push({...rest, parentName});
                 if (children) {
                     flatten(children, rest.name);
                 }

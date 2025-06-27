@@ -3,7 +3,7 @@ import OrdCrudPage, {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {useStore} from "@ord-store/index";
 import {RoleDto} from "@api/index.defs";
 import {useTranslation} from "react-i18next";
-import {PERMISSION_APP} from "@ord-core/config/permissions";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {RoleNS} from "@pages/Admin/Roles/role.util";
 import TableUtil from "@ord-core/utils/table.util";
@@ -15,7 +15,7 @@ import {RoleHostService} from "@api/RoleHostService";
 const Roles: React.FC = () => {
     const {tenantRoleTemplateListStore: mainStore, entityModalStore} = useStore();
     const {t} = useTranslation(RoleNS);
-    const policies = PermissionUtil.crudPermission(PERMISSION_APP.admin.role);
+    const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.role);
     const columns = TableUtil.getColumns<RoleDto>([
         {
             title: 'code',
