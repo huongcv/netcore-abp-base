@@ -24,6 +24,7 @@ export type FormFieldType =
     | 'time'
     | 'switch'
     | 'radio'
+    | 'custom-field-content'
     | 'custom';
 
 export interface BaseFormFieldConfig<IComponentProps = any> {
@@ -74,6 +75,9 @@ export interface DateRangeFieldConfig extends BaseFormFieldConfig<IOrdDateRangeI
 export interface SearchInputFieldConfig extends Partial<BaseFormFieldConfig<ISearchFilterTextProps>> {
 }
 
+export interface CustomContentFieldConfig extends BaseFormFieldConfig {
+    content: React.ReactNode;
+}
 
 export interface CustomFieldConfig {
     render: () => React.ReactNode;

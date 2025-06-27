@@ -61,7 +61,8 @@ export const useFormFieldComponent = (
         switch: undefined,
         radio: undefined,
         custom: undefined,
-        'input-regex': <OrdInputRegexText {...baseProps} />
+        'input-regex': <OrdInputRegexText {...baseProps} />,
+        'custom-field-content': undefined
     };
 
     return map[type] ?? null;

@@ -3,7 +3,7 @@ import {Col} from 'antd';
 import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import {ValidationRules} from "@ord-components/forms/form-builder/utils";
-import {CustomFieldConfig, FormFieldConfig} from './types';
+import {CustomContentFieldConfig, CustomFieldConfig, FormFieldConfig} from './types';
 import {useFormFieldComponent} from './useFormFieldComponent';
 
 interface FormFieldItemProps {
@@ -105,7 +105,6 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
             const customConfig = field as CustomFieldConfig;
             return customConfig.render();
         }
-
         // Checkbox field
         if (type === 'checkbox') {
             return (
@@ -113,12 +112,18 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
                 <OrdFormField {...commonFieldProps} isCheckbox={true}/>
             );
         }
-
+        if (type === 'custom-field-content') {
+            const customConfig = field as CustomContentFieldConfig;
+            return (
+                <OrdFormField {...commonFieldProps}>
+                    {customConfig.content}
+                </OrdFormField>
+            );
+        }
         // No field component
         if (!fieldComponent) {
             return null;
         }
-
         // Search input field (special case)
         if (type === 'search-input') {
             return fieldComponent;
@@ -141,11 +146,22 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
     const componentContent = useMemo(() => {
         return renderComponent();
     }, [renderComponent]);
+    if (fieldConfig.type == 'custom') {
+        return (
+            <>
+                {componentContent}
+            </>
+
+        );
+    }
 
     return (
-        <Col key={fieldConfig.name || 'field'} {...responsiveSpan}>
-            {componentContent}
-        </Col>
+        <>
+            <Col key={fieldConfig.name || 'field'} {...responsiveSpan}>
+                {componentContent}
+            </Col>
+        </>
+
     );
 };
 

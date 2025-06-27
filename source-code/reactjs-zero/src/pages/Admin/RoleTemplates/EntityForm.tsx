@@ -1,16 +1,13 @@
-import {Col, Form, Input, Row, Tabs, TabsProps} from "antd";
+import {Form, Tabs, TabsProps} from "antd";
 import React, {useMemo} from "react";
-import ValidateUtils from "@ord-core/utils/validate.utils";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
-import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
-import regexUtil from "@ord-core/utils/regex.util";
-import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import {useTranslation} from "react-i18next";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {UseBoundStore} from "zustand/react";
 import {StoreApi} from "zustand/vanilla";
 import {ModalFormState} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
+import {useUserTypeFromRoleCode} from "@pages/Admin/RoleTemplates/hook/useUserTypeFromRoleCode";
 
 interface IProps {
     modalStore: UseBoundStore<StoreApi<ModalFormState<any>>>;
@@ -20,6 +17,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
     const {t} = useTranslation('common');
     const {modalStore} = props;
     const {mode} = modalStore();
+    const form = Form.useFormInstance();
     const config = useMemo(() => {
         return new FormBuilder()
             .addText({
@@ -44,6 +42,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
             })
             .build();
     }, [mode]);
+    const userType = useUserTypeFromRoleCode(Form.useWatch('code', form));
 
     const items: TabsProps['items'] = [{
         key: '1',
@@ -55,7 +54,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
         key: '2',
         label: t('tabPermissions'),
         children: (<Form.Item noStyle name='permissionNames'>
-            <ListPermissionInput disabled={mode === 'viewDetail'}/>
+            <ListPermissionInput disabled={mode === 'viewDetail'} userType={userType}/>
         </Form.Item>),
         forceRender: true
     }];

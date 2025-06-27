@@ -1,30 +1,43 @@
 import {observer} from "mobx-react-lite";
 import {Form, Tree, TreeDataNode, TreeProps} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import OrdPermissionArrayUtil from "@ord-core/utils/array/ord.permission.array.util";
 import {useStore} from "@ord-store/index";
-import {getFullPermissionTreeDataForUser} from "@ord-core/config/permissions/tree-data";
+import {
+    getFullPermissionByUserType,
+    getFullPermissionTreeDataForUser,
+    IUserLevelType
+} from "@ord-core/config/permissions/tree-data";
 
-
-const ListPermissionInput = (props: {
+interface IProps {
     value?: any;
     onChange?: (value: any) => void;
     disabled?: boolean;
-}) => {
-    const {value, onChange} = props;
+    userType?: IUserLevelType | null;
+}
+
+const ListPermissionInput: React.FC<IProps> = (props) => {
+    const {value, onChange, userType} = props;
     const {sessionStore} = useStore();
     const [granted, setGranted] = useState<string[]>([]);
     const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
     const [defaultExpandedKeys, setDefaultExpandedKeys] = useState<string[]>([]);
     const form = Form.useFormInstance();
+
+    const permissionsTreeData = useMemo(() => {
+        if (!!userType) {
+            return getFullPermissionByUserType(userType);
+        }
+        return getFullPermissionTreeDataForUser(sessionStore.appSession);
+    }, [sessionStore, userType]);
+
     useEffect(() => {
         OrdPermissionArrayUtil.setSession(sessionStore.appSession);
-        const permissionsTreeData = getFullPermissionTreeDataForUser(sessionStore.appSession);
         const treeDataNode = OrdPermissionArrayUtil.getTreeDataRoot(permissionsTreeData);
         setTreeData(treeDataNode);
         setDefaultExpandedKeys(['root']);
         setGranted(OrdPermissionArrayUtil.ignorePermissionBaseWhenSetGranted(value || []));
-    }, [sessionStore]);
+    }, [sessionStore, userType]);
 
     useEffect(() => {
         // @ts-ignore

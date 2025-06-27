@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    CheckboxFieldConfig,
+    CheckboxFieldConfig, CustomContentFieldConfig,
     CustomFieldConfig,
     DateFieldConfig,
     DateRangeFieldConfig,
@@ -65,6 +65,11 @@ export class FormBuilder {
     addCustom(options: CustomFieldConfig) {
         // @ts-ignore
         return this.addField("custom", options);
+    }
+
+    addCustomFieldContent(options: CustomContentFieldConfig) {
+        // @ts-ignore
+        return this.addField("custom-field-content", options);
     }
 
     addSearchInput(options: SearchInputFieldConfig) {

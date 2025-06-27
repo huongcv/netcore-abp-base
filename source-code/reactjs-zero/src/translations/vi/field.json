@@ -16,9 +16,11 @@
   "description": "Mô tả",
   "user_name": "Tên đăng nhập",
   "phone_number": "Điện thoại",
+  "phoneNumber": "Điện thoại",
   "email": "Email",
   "access_token_id": "Token id",
   "access_token_expires_at": "Thời gian hết hạn",
   "creation_time": "Ngày tạo",
-  "user_assigned_role_count": "Số người dùng"
+  "user_assigned_role_count": "Số người dùng",
+  "address": "Địa chỉ"
 }

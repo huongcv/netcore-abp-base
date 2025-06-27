@@ -1,8 +1,6 @@
 import React from "react";
 import {ShopInfoDto} from "@api/index.defs";
-import {l} from "@ord-core/language/lang.utils";
 import TableUtil from "@ord-core/utils/table.util";
-import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 import {useTenantLogic} from "@pages/Admin/Tenants/useTenantLogic";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
@@ -12,6 +10,7 @@ import {createNotificationTransform} from "@ord-components/paged-table/utils/not
 import {TenantService} from "@api/base/TenantService";
 import {TenantEntityForm} from "@pages/Admin/Tenants/EntityForm";
 import {TenantSearchForm} from "@pages/Admin/Tenants/SearchForm";
+import {getTenantColumns} from "@pages/Admin/Tenants/Columns";
 
 const Tenants: React.FC = () => {
     const {
@@ -22,36 +21,11 @@ const Tenants: React.FC = () => {
         tableActions
     } = useTenantLogic();
     const {mode} = modalStore();
-    const columns = TableUtil.getColumns<ShopInfoDto>([
+    const columns = TableUtil.getColumns<ShopInfoDto>(
+        getTenantColumns(),
         {
-            title: 'tenant_code',
-            dataIndex: 'tenantCode',
-            width: 100,
-        },
-        {
-            title: 'tenant_name',
-            dataIndex: 'name',
-            width: 200,
-        },
-        {
-            title: l.transCommon('PhoneNumber'),
-            dataIndex: 'phoneNumber',
-            width: 160
-
-        }, {
-            title: l.transCommon('Email'),
-            dataIndex: 'email',
-            width: 100
-        },
-        {
-            title: l.transCommon('Address'),
-            dataIndex: 'address',
-            width: 200
-        },
-        IsActivedColumn()
-    ], {
-        actions: tableActions
-    });
+            actions: tableActions
+        });
     return (
         <>
             <PageLayoutWithTable
