@@ -64,17 +64,9 @@ const HeaderNotifications = (props: NotificationProps) => {
     }, []);
 
     const loadData = () => {
-        // notificationStore.apiService().getPaged({
-        //     body: {
-        //         skipCount: 0,
-        //         maxResultCount: 5
-        //     }
-        // }, {}).then(res => {
-        //     setDataSource(res.items ?? []);
-        //     setCount((res as NotificationUserPageListOutputDto).totalNotRead ?? 0)
-        // })
+
     }
-    const navigate = useNavigate();
+   // const navigate = useNavigate();
     const contentPop = (
         <ConfigProvider renderEmpty={(data) => {
             return <div style={{textAlign: 'center'}}>

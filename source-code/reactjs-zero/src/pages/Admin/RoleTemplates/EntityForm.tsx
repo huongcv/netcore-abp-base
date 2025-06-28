@@ -25,7 +25,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
                 name: 'code',
                 maxLength: 100,
                 required: true,
-                disabled: mode === 'edit'
+                disabled: mode === 'edit' || mode === 'viewDetail'
             })
             .addText({
                 span: 12,
