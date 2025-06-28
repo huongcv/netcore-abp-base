@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {Tag} from "antd";
+import {useTranslation} from "react-i18next";
 
 interface StatusDisplayProps {
     value?: boolean | null;
@@ -20,8 +21,8 @@ export interface StatusConfig {
 const DEFAULT_STATUS_CONFIG: StatusConfig = {
     activeClass: 'bg-green-100 text-green-800',
     inactiveClass: 'bg-red-100 text-red-800',
-    activeText: 'Hoạt động',
-    inactiveText: 'Không hoạt động',
+    activeText: 'dang_hoat_dong',
+    inactiveText: 'ngung_hoat_dong',
     activeColor: 'green',
     inactiveColor: 'red'
 };
@@ -37,10 +38,15 @@ export const getStatusColor = (value: boolean, config?: Partial<StatusConfig>) =
 };
 
 export const getStatusTag = (value: boolean, config?: Partial<StatusConfig>) => {
+    const {t} = useTranslation('common');
     const finalConfig = getFinalConfig(config);
+    const displayText = useMemo(() => {
+        const finalConfig = getFinalConfig(config);
+        return value ? t(finalConfig.activeText) : t(finalConfig.inactiveText);
+    }, [value, config]);
     return (
         <Tag color={value ? finalConfig.activeColor : finalConfig.inactiveColor}>
-            {value ? finalConfig.activeText : finalConfig.inactiveText}
+            {displayText}
         </Tag>
     );
 };
@@ -51,8 +57,11 @@ export const IsActiveStatusDisplay: React.FC<StatusDisplayProps> = ({
                                                                         config,
                                                                         className = ''
                                                                     }) => {
-    const finalConfig = getFinalConfig(config);
-    const displayText = value ? finalConfig.activeText : finalConfig.inactiveText;
+    const {t} = useTranslation('common');
+    const displayText = useMemo(() => {
+        const finalConfig = getFinalConfig(config);
+        return value ? t(finalConfig.activeText) : t(finalConfig.inactiveText);
+    }, [value, config]);
 
     if (type === 'tag') {
         return getStatusTag(value == true, config);
