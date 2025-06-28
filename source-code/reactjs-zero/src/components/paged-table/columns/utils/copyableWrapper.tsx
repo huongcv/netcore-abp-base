@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {message, Tooltip} from 'antd';
-import {CheckOutlined, CopyOutlined} from '@ant-design/icons';
-import classNames from 'classnames';
-import {BaseColumnConfig} from '../types';
+import React from 'react';
+import {Tooltip} from 'antd';
+import {Copyable} from "@ord-components/common/display/Copyable";
 
 interface CopyableWrapperProps {
     content: React.ReactNode;
     copyText: string;
-    config: BaseColumnConfig;
+    config: {
+        copyable?: boolean;
+    };
     showTooltip?: boolean;
     tooltipTitle?: string;
     tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
@@ -21,43 +21,19 @@ export const CopyableWrapper: React.FC<CopyableWrapperProps> = ({
                                                                     tooltipTitle,
                                                                     tooltipPlacement = 'top',
                                                                 }) => {
-    const [copied, setCopied] = useState(false);
-
-    const handleCopy = async (e: React.MouseEvent) => {
-        e.stopPropagation();
-        try {
-            await navigator.clipboard.writeText(copyText);
-            setCopied(true);
-            message.success('Đã sao chép!');
-            setTimeout(() => setCopied(false), 2000);
-        } catch {
-            message.error('Không thể sao chép');
-        }
-    };
-
-    const contentNode = (
-        <div
-            className={classNames('copyable-wrapper', {
-                'is-copyable': config.copyable,
-            })}
-            onClick={config.copyable ? handleCopy : undefined}
-        >
-            <div className="copyable-text">{content}</div>
-            {config.copyable && (
-                <span
-                    className={classNames('copy-icon', {copied})}
-                >
-          {copied ? <CheckOutlined/> : <CopyOutlined/>}
-        </span>
-            )}
-        </div>
+    const wrappedContent = config.copyable ? (
+        <Copyable textToCopy={copyText}>
+            {content}
+        </Copyable>
+    ) : (
+        <div className="copyable-text">{content}</div>
     );
 
     return showTooltip && tooltipTitle ? (
         <Tooltip title={tooltipTitle} placement={tooltipPlacement}>
-            {contentNode}
+            {wrappedContent}
         </Tooltip>
     ) : (
-        contentNode
+        wrappedContent
     );
 };

@@ -32,10 +32,8 @@ export const TenantInformation: React.FC<{
 
                 <div className="flex items-start space-x-3">
                     <Mail className="h-5 w-5 text-gray-400 mt-1"/>
-                    <div>
-                        <p className="text-sm font-medium text-gray-500">Email</p>
-                        <p className="text-gray-900">{tenantData?.email}</p>
-                    </div>
+                    <p className="text-sm font-medium text-gray-500">Email</p>
+                    <p className="text-gray-900">{tenantData?.email}</p>
                 </div>
             </div>
 
