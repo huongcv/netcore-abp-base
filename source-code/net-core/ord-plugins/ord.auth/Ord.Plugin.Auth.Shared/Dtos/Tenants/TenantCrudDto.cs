@@ -56,7 +56,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Tenants
         public string? EncodedId { get; set; }
     }
 
-    public class TenantUserPagedInput : OrdPagedRequestDto, IHasEncodedId
+    public class TenantUserPagedInput : UserPagedInput, IHasEncodedId
     {
         [OrdValidateRequired]
         public string? EncodedId { get; set; }

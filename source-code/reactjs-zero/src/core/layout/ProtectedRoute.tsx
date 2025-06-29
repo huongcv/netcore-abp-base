@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navigate, useLocation} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 import {useStore} from "@ord-store/index";
 import {observer} from "mobx-react-lite";
@@ -31,8 +31,6 @@ const ProtectedRoute = (props: IProtectedRouteProp) => {
         requireAuth = true
     } = props;
     const {checkAnyPermission} = usePermission();
-    const location = useLocation();
-    // useCheckVersion();
     // Kiểm tra đăng nhập
     if (requireAuth && sessionStore.appSession?.isLogined !== true) {
         return <Navigate to="/auth/login"/>;
@@ -45,7 +43,6 @@ const ProtectedRoute = (props: IProtectedRouteProp) => {
     // Tạo danh sách permissions cần check
     // Bổ sung thêm check .GetPaged có trong list quyền hay không?
     const permissionsToCheck = React.useMemo(() => {
-        console.log('permission', permission);
         const basePermissions = Array.isArray(permission) ? permission : [permission];
         const allPermissions = [...basePermissions];
         const perm = allPermissions[0];

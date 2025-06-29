@@ -26,9 +26,6 @@ interface IAppProp {
 }
 
 const App = (props: IAppProp) => {
-    useEffect(() => {
-        console.log("ApppIOnit")
-    }, []);
     const {sessionStore, uiStore, entityModalStore} = useStore();
     sessionStore!.setSession(props.boostrapResultDto);
     const [antLocale, setAntLocale] = useState(vi_VN);
@@ -63,7 +60,6 @@ const App = (props: IAppProp) => {
 
     return (
         <ConfigProvider
-
             theme={ThemeUtil.getTheme()} locale={antLocale}
             {...OrdComponentConfig}
         >

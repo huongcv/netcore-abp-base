@@ -2,11 +2,15 @@ import {
   GetComboOptionInputDto,
   CommonResultDtoOfListOfComboOptionDto,
   ComboOptionDto,
-  TenantPagedInput,
   CreateTenantDto,
   CommonResultDtoOfTenantDetailDto,
   TenantDetailDto,
   TenantUserDto,
+  TenantUserPagedInput,
+  CommonResultDtoOfPagedResultDtoOfUserPagedDto,
+  PagedResultDtoOfUserPagedDto,
+  UserPagedDto,
+  TenantPagedInput,
   UpdateTenantDto,
   EncodedIdDto,
   CommonResultDtoOfBoolean,
@@ -61,15 +65,15 @@ export class TenantService {
   /**
    *
    */
-  static exportToExcel(
+  static create(
     params: {
       /** requestBody */
-      body?: TenantPagedInput;
+      body?: CreateTenantDto;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<any> {
+  ): Promise<CommonResultDtoOfTenantDetailDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/tenant/export-to-excel';
+      let url = basePath + '/api/auth/tenant/create';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -83,15 +87,37 @@ export class TenantService {
   /**
    *
    */
-  static create(
+  static getUserPaged(
     params: {
       /** requestBody */
-      body?: CreateTenantDto;
+      body?: TenantUserPagedInput;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfTenantDetailDto> {
+  ): Promise<CommonResultDtoOfPagedResultDtoOfUserPagedDto> {
     return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/tenant/create';
+      let url = basePath + '/api/auth/tenant/get-user-paged';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static exportToExcel(
+    params: {
+      /** requestBody */
+      body?: TenantPagedInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/tenant/export-to-excel';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

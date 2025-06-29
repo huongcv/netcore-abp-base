@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Dtos.Tenants;
 using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Auth.Shared.Repositories;
@@ -6,6 +7,7 @@ using Ord.Plugin.Auth.Shared.Services;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -59,5 +61,28 @@ namespace Ord.Plugin.Auth.AppServices
 
             return commonResult;
         }
+
+
+        #region User management 
+        [HttpPost]
+        [ActionName("GetUserPaged")]
+        public virtual async Task<CommonResultDto<PagedResultDto<UserPagedDto>>> GetUserPaged(TenantUserPagedInput input)
+        {
+            if (IdEncoderService.TryDecodeId(input.EncodedId, out var id))
+            {
+                using (CurrentTenant.Change(id))
+                {
+                    var userAppService = AppFactory.GetServiceDependency<UserAppService>();
+                    var userPaged = AppFactory.ObjectMap<TenantUserPagedInput, UserPagedInput>(input);
+                    var result = await userAppService.GetPaged(userPaged);
+                    return result;
+                }
+            }
+
+            return new CommonResultDto<PagedResultDto<UserPagedDto>>();
+        }
+
+
+        #endregion
     }
 }

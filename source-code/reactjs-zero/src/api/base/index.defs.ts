@@ -1105,9 +1105,6 @@ export interface CreateTenantDto {
 
   /**  */
   adminUsername?: string;
-
-  /**  */
-  createDefaultAdmin?: boolean;
 }
 
 export interface CreateUserDto {
@@ -2324,6 +2321,26 @@ export interface TenantUserDto {
 
   /**  */
   creationTime?: Date;
+}
+
+export interface TenantUserPagedInput {
+  /**  */
+  maxResultCount?: number;
+
+  /**  */
+  skipCount?: number;
+
+  /**  */
+  sorting?: string;
+
+  /**  */
+  filter?: string;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  encodedId?: string;
 }
 
 export interface TimeZone {

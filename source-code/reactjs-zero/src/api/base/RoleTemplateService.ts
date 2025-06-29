@@ -3,6 +3,12 @@ import {
   CommonResultDtoOfPagedResultDtoOfRolePagedDto,
   PagedResultDtoOfRolePagedDto,
   RolePagedDto,
+  CommonResultDtoOfListOfCounterByStatusItemDto,
+  CounterByStatusItemDto,
+  CreateRoleDto,
+  CommonResultDtoOfRoleDetailDto,
+  RoleDetailDto,
+  UpdateRoleDto,
   AssignPermissionsToRoleDto,
   CommonResultDtoOfBoolean,
   EncodedIdDto,
@@ -16,13 +22,7 @@ import {
   UserInRoleDto,
   GetUsersAssignableToRoleInput,
   UsersToRoleDto,
-  CreateRoleDto,
-  CommonResultDtoOfRoleDetailDto,
-  RoleDetailDto,
-  UpdateRoleDto,
   SetActiveStatusDto,
-  CommonResultDtoOfListOfCounterByStatusItemDto,
-  CounterByStatusItemDto,
   IList,
   List,
   IListResult,
@@ -55,6 +55,72 @@ export class RoleTemplateService {
   ): Promise<CommonResultDtoOfPagedResultDtoOfRolePagedDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/role-template/get-paged';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getCountByActive(
+    params: {
+      /** requestBody */
+      body?: RolePagedInput;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/role-template/get-count-by-active';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static create(
+    params: {
+      /** requestBody */
+      body?: CreateRoleDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfRoleDetailDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/role-template/create';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static update(
+    params: {
+      /** requestBody */
+      body?: UpdateRoleDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfRoleDetailDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/role-template/update';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -244,50 +310,6 @@ export class RoleTemplateService {
   /**
    *
    */
-  static create(
-    params: {
-      /** requestBody */
-      body?: CreateRoleDto;
-    } = {} as any,
-    options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfRoleDetailDto> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role-template/create';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
-
-      let data = params.body;
-
-      configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static update(
-    params: {
-      /** requestBody */
-      body?: UpdateRoleDto;
-    } = {} as any,
-    options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfRoleDetailDto> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role-template/update';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
-
-      let data = params.body;
-
-      configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
   static remove(
     params: {
       /** requestBody */
@@ -319,28 +341,6 @@ export class RoleTemplateService {
   ): Promise<CommonResultDtoOfBoolean> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/role-template/set-active-status';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
-
-      let data = params.body;
-
-      configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static getCountByActive(
-    params: {
-      /** requestBody */
-      body?: RolePagedInput;
-    } = {} as any,
-    options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/role-template/get-count-by-active';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

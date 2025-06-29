@@ -21,11 +21,13 @@ const Tenants: React.FC = () => {
         tableActions
     } = useTenantLogic();
     const {mode} = modalStore();
+   // const navigate = useNavigate();
     const columns = TableUtil.getColumns<ShopInfoDto>(
         getTenantColumns(),
         {
             actions: tableActions
         });
+
     return (
         <>
             <PageLayoutWithTable
