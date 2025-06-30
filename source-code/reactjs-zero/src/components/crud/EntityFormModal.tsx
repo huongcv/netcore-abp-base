@@ -93,10 +93,6 @@ const EntityFormModal = (props: {
                     destroyOnClose
                     maskClosable={false}
                     modalRender={(dom) => {
-                        if (props?.modal?.ignoreFormEntity === true) {
-                            <h1>Viet2</h1>
-                            return (<>{dom}</>);
-                        }
                         return (
                             <Form
                                 layout="vertical"
@@ -108,7 +104,6 @@ const EntityFormModal = (props: {
                                 onFinishFailed={() => UiUtils.showCommonValidateForm()}
                             >
                                 {dom}
-                                <h1>Viet</h1>
                                 <div hidden>
                                     <Form.Item name={'disableHostKeyScopeForm'} initialValue={false}></Form.Item>
                                 </div>

@@ -85,6 +85,29 @@ namespace Ord.Plugin.Auth.AppServices
 
             return new CommonResultDto<PagedResultDto<UserPagedDto>>();
         }
+        [HttpPost]
+        [ActionName("AdminChangeTenantUserPassword")]
+        [OrdAuth(TenantBasePermissionName)]
+        public virtual async Task<CommonResultDto<bool>> AdminChangeTenantUserPassword(TenantUserChangePassword input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.Update);
+            if (IdEncoderService.TryDecodeId(input.TenantIdEncodedId, out var id))
+            {
+                using (CurrentTenant.Change(id))
+                {
+                    var userAppService = AppFactory.GetServiceDependency<UserAppService>();
+                    var resetPass = new ResetPasswordUserDto()
+                    {
+                        EncodedId = input.UserEncodedId,
+                        MustChangePassword = input.MustChangePassword,
+                        NewPassword = input.NewPassword
+                    };
+                    return await userAppService.ResetPassword(resetPass);
+                }
+            }
+
+            return CommonResultDto<bool>.Failed("not_found_tenant");
+        }
 
 
         #endregion

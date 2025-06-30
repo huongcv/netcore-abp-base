@@ -29,11 +29,8 @@ export const SearchablePagedTable = <T extends object>({
                                                            ...tableProps
                                                        }: Props<T>) => {
     const tableStore = useTableStore(apiService);
-    const {onLoadData, setReloadStatusCounter} = tableStore();
     const [internalForm] = Form.useForm();
     const usedForm = searchForm || internalForm;
-
-
 
 
     return (

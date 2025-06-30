@@ -26,8 +26,8 @@ export const OrdModalFooter: React.FC<ModalFooterProps> = ({left, right, style, 
                 {left}
             </Space>
             <Space>
-                {right}
                 <OrdModalCloseButton onClick={onClose}/>
+                {right}
             </Space>
         </div>
     );

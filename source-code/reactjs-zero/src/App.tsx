@@ -18,6 +18,7 @@ import {PdfPrintWindow} from "@ord-components/common/PdfPrintWindow";
 import {requestForToken} from "./firebase";
 import ThemeUtil from "@ord-core/theme/ord-theme.config";
 import OrdComponentConfig from "@ord-core/theme/ord-Component.config";
+import {GlobalModalManager} from "@ord-components/modal/GlobalModalManager";
 
 declare var ord: any;
 
@@ -71,6 +72,7 @@ const App = (props: IAppProp) => {
             <Loader/>
             {/*modal dùng chung cho sửa thông tin */}
             <AppCommonEntityFormModal/>
+            <GlobalModalManager/>
             <PdfPrintWindow/>
         </ConfigProvider>
     );

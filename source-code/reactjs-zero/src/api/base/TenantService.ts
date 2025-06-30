@@ -1,22 +1,39 @@
 import {
-    axios,
-    basePath,
-    CommonResultDtoOfBoolean,
-    CommonResultDtoOfListOfComboOptionDto,
-    CommonResultDtoOfListOfCounterByStatusItemDto,
-    CommonResultDtoOfPagedResultDtoOfTenantPagedDto,
-    CommonResultDtoOfPagedResultDtoOfUserPagedDto,
-    CommonResultDtoOfTenantDetailDto,
-    CreateTenantDto,
-    EncodedIdDto,
-    GetComboOptionInputDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    SetActiveStatusDto,
-    TenantPagedInput,
-    TenantUserPagedInput,
-    UpdateTenantDto
+  GetComboOptionInputDto,
+  CommonResultDtoOfListOfComboOptionDto,
+  ComboOptionDto,
+  CreateTenantDto,
+  CommonResultDtoOfTenantDetailDto,
+  TenantDetailDto,
+  TenantUserDto,
+  TenantUserPagedInput,
+  CommonResultDtoOfPagedResultDtoOfUserPagedDto,
+  PagedResultDtoOfUserPagedDto,
+  UserPagedDto,
+  TenantUserChangePassword,
+  CommonResultDtoOfBoolean,
+  TenantPagedInput,
+  UpdateTenantDto,
+  EncodedIdDto,
+  SetActiveStatusDto,
+  CommonResultDtoOfPagedResultDtoOfTenantPagedDto,
+  PagedResultDtoOfTenantPagedDto,
+  TenantPagedDto,
+  CommonResultDtoOfListOfCounterByStatusItemDto,
+  CounterByStatusItemDto,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class TenantService {
@@ -80,6 +97,28 @@ export class TenantService {
   ): Promise<CommonResultDtoOfPagedResultDtoOfUserPagedDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/tenant/get-user-paged';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static adminChangeTenantUserPassword(
+    params: {
+      /** requestBody */
+      body?: TenantUserChangePassword;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfBoolean> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/tenant/admin-change-tenant-user-password';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

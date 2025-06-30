@@ -2,6 +2,7 @@
 using Ord.Plugin.Contract.Dtos;
 using System.ComponentModel;
 using Ord.Plugin.Contract.Dtos.Auth;
+using Ord.Plugin.Contract.Features.Validation.Attributes;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Auth.Shared.Dtos
@@ -53,6 +54,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos
 
     public class ResetPasswordUserDto : EncodedIdDto
     {
+        [OrdValidatePassword]
         public string? NewPassword { get; set; }
         public bool MustChangePassword { get; set; }
     }

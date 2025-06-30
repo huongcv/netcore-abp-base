@@ -73,4 +73,15 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Tenants
         public bool IsAdminAccount { get; set; }
         public DateTime CreationTime { get; set; }
     }
+
+    public class TenantUserChangePassword
+    {
+        [OrdValidateRequired]
+        public string? TenantIdEncodedId { get; set; }
+        [OrdValidateRequired]
+        public string? UserEncodedId { get; set; }
+        [OrdValidatePassword]
+        public string? NewPassword { get; set; }
+        public bool MustChangePassword { get; set; }
+    }
 }

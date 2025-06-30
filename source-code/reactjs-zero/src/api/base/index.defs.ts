@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
+import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**
@@ -2292,6 +2292,20 @@ export interface TenantSharedDto {
 
   /**  */
   address?: string;
+}
+
+export interface TenantUserChangePassword {
+  /**  */
+  tenantIdEncodedId?: string;
+
+  /**  */
+  userEncodedId?: string;
+
+  /**  */
+  newPassword?: string;
+
+  /**  */
+  mustChangePassword?: boolean;
 }
 
 export interface TenantUserDto {

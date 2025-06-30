@@ -8,10 +8,10 @@ import {UserDto} from "@api/index.defs";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
 import {TenantService} from "@api/base/TenantService";
 import {SearchIsActived} from "@ord-components/forms/search/SearchIsActived";
-import {ChangePasswordUserModal, changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
 import {UndoOutlined} from "@ant-design/icons";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
+import {useChangePasswordTenantUserModal} from "@pages/Admin/Tenants/Details/useChangePasswordTenantUserModal";
 
 interface IProps {
     tenantDto?: TenantPagedDto | null;
@@ -19,6 +19,7 @@ interface IProps {
 
 export const TenantUserList: React.FC<IProps> = ({tenantDto}) => {
     const [searchForm] = Form.useForm();
+    const userTenantChangePasswordModal = useChangePasswordTenantUserModal();
     const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.tenant);
     const apiService = useMemo(() => ({
         getPaged: (params: any, options?: any) => {
@@ -44,7 +45,7 @@ export const TenantUserList: React.FC<IProps> = ({tenantDto}) => {
                 permission: policies.edit,
                 icon: <UndoOutlined/>,
                 onClick: (user) => {
-                    changePasswordUserModalStore.getInitialState().openModal(user);
+                    userTenantChangePasswordModal.open(user, tenantDto || {});
                 }
             },
         ]
@@ -54,9 +55,8 @@ export const TenantUserList: React.FC<IProps> = ({tenantDto}) => {
         <SearchablePagedTable searchForm={searchForm}
                               searchFields={SearchFormFields}
                               apiService={apiService}
-                              rowKey={'userId'}
+                              rowKey={'encodedId'}
                               columns={columns}
         />
-        <ChangePasswordUserModal/>
     </>);
 }
