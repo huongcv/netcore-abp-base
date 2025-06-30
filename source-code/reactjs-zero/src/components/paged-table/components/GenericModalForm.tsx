@@ -104,8 +104,6 @@ export const GenericModalForm = <T extends object>({
     const defaultFooter = (
         <FooterCrudModal
             hasAddNewContinue={false}
-            isAddNewContinue={isAddNewContinue}
-            isAddNewContinueChange={setIsAddNewContinue}
             onOk={onOkModal}
             onCancel={closeModal}
             hiddenOk={hiddenOk}

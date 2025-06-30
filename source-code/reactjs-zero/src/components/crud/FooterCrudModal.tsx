@@ -1,9 +1,9 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useMemo} from "react";
 import {useTranslation} from "react-i18next";
-import {Button, Checkbox, CheckboxProps, Space} from "antd";
-import {CloseOutlined, SaveOutlined} from "@ant-design/icons";
-import {debounce} from "lodash";
+import {Checkbox, CheckboxProps} from "antd";
 import {l} from "@ord-core/language/lang.utils";
+import {OrdModalSaveButton} from "@ord-components/modal/footer/buttons/OrdModalSaveButton";
+import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 
 interface IProp {
     hasAddNewContinue?: boolean,
@@ -19,6 +19,7 @@ interface IProp {
 
 export const FooterCrudModal = (props: IProp) => {
     const {t} = useTranslation('action');
+    const {hasAddNewContinue, hiddenOk, onCancel} = props;
     const onChange: CheckboxProps['onChange'] = (e) => {
         if (props.isAddNewContinueChange) {
             props.isAddNewContinueChange(e.target.checked);
@@ -27,42 +28,26 @@ export const FooterCrudModal = (props: IProp) => {
     const onOkClick = () => {
         props.onOk();
     }
-    const debouncedClick = debounce(onOkClick, 250);
+    const renderLeftFooter = useMemo(() => {
+        if (hasAddNewContinue == true) {
+            return <Checkbox checked={props.isAddNewContinue}
+                             onChange={onChange}>
+                {l.transCommon('addNewContinue')}
+            </Checkbox>
+        }
+        return null;
+    }, [hasAddNewContinue]);
+    const renderRightFooter = useMemo(() => {
+        if (hiddenOk == true) {
+            return null;
+        }
+        return <OrdModalSaveButton onSubmit={onOkClick}/>;
+    }, [hiddenOk]);
     return (
-        <div
-            className="flex flex-wrap items-center justify-between  max-sm:flex-col">
-            <div>
-                {
-                    props?.hasAddNewContinue &&
-                    <Checkbox checked={props.isAddNewContinue}
-                              onChange={onChange}>
-                        {l.transCommon('addNewContinue')}
-                    </Checkbox>
-                }
-            </div>
-
-
-            <div className="flex items-center crud-modal-footer-btn-group">
-                <Button className='me-2' onClick={props.onCancel}>
-                    {
-                        props?.cancelBtn || (
-                            <Space.Compact><Space><CloseOutlined className="me-1"/></Space>{t('modal.cancel')} (F10)
-                            </Space.Compact>)
-                    }
-
-                </Button>
-                {
-                    props?.hiddenOk !== true && <Button type='primary' onClick={debouncedClick}>
-                        {
-                            props?.okBtn || (
-                                <Space.Compact> <Space><SaveOutlined
-                                    className="me-1"/></Space>{t('modal.save')} (F8)</Space.Compact>)
-                        }
-
-                    </Button>
-                }
-                {props?.otherBtn}
-            </div>
-        </div>
+        <>
+            <OrdModalFooter onClose={onCancel} left={renderLeftFooter}
+                            right={renderRightFooter}
+            ></OrdModalFooter>
+        </>
     );
 }

@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Form, Modal} from 'antd';
 import {ModalConfig, useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/modalStore";
 import UiUtils from "@ord-core/utils/ui.utils";
+import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 
 const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
     const {
@@ -81,14 +82,16 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         if (rest.footer) {
             return rest.footer;
         }
-        return [
-            <Button key="cancel" onClick={handleCancel}>
-                Hủy
-            </Button>,
-            <Button key="save" type="primary" onClick={() => form.submit()} loading={saving}>
-                Lưu
-            </Button>,
-        ];
+        return (
+            <OrdModalFooter onClose={handleCancel} right={[
+                <Button key="cancel" onClick={handleCancel}>
+                    Hủy
+                </Button>,
+                <Button key="save" type="primary" onClick={() => form.submit()} loading={saving}>
+                    Lưu
+                </Button>,
+            ]}></OrdModalFooter>
+        )
     }, [handleCancel, form, saving]);
 
     return (

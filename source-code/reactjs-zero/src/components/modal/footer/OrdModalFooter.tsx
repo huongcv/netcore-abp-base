@@ -1,16 +1,17 @@
 import React from 'react';
 import {Space} from 'antd';
-import {OrdModalCloseButton} from "@ord-components/modal/footer/OrdModalCloseButton";
+import {OrdModalCloseButton} from "@ord-components/modal/footer/buttons/OrdModalCloseButton";
 
 export interface ModalFooterProps {
     left?: React.ReactNode;
+    leftClose?: React.ReactNode;
     right?: React.ReactNode;
     style?: React.CSSProperties;
     className?: string;
     onClose: () => void;
 }
 
-export const OrdModalFooter: React.FC<ModalFooterProps> = ({left, right, style, className, onClose}) => {
+export const OrdModalFooter: React.FC<ModalFooterProps> = ({left, leftClose, right, style, className, onClose}) => {
     const hasLeft = !!left;
     return (
         <div
@@ -26,6 +27,7 @@ export const OrdModalFooter: React.FC<ModalFooterProps> = ({left, right, style, 
                 {left}
             </Space>
             <Space>
+                {leftClose}
                 <OrdModalCloseButton onClick={onClose}/>
                 {right}
             </Space>

@@ -7,7 +7,6 @@ import {useTranslation} from "react-i18next";
 export interface CloseButtonProps {
     onClick?: () => void;
     size?: SizeType;
-    tooltip?: string;
     style?: React.CSSProperties;
     className?: string;
 }
@@ -15,7 +14,6 @@ export interface CloseButtonProps {
 export const OrdModalCloseButton: React.FC<CloseButtonProps> = ({
                                                                     onClick,
                                                                     size,
-                                                                    tooltip,
                                                                     style,
                                                                     className,
                                                                 }) => {
@@ -25,9 +23,9 @@ export const OrdModalCloseButton: React.FC<CloseButtonProps> = ({
             icon={<CloseOutlined/>}
             onClick={onClick}
             size={size}
-            title={tooltip}
             style={style}
-            className={className}>
+            className={className}
+        >
             {t('modal.cancel')} (F10)
         </Button>
     );
