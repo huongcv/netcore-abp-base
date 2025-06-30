@@ -4,7 +4,6 @@ import {PagedTable} from "@ord-components/paged-table";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {ModifyModalForm} from "@ord-components/paged-table/components/ModifyModalForm";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
-import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import {CountryEntityForm} from "@pages/Admin/MasterData/Country/EntityForm";
 import {getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
 import {CountryPagedDto} from "@api/base/index.defs";
