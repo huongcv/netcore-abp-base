@@ -8,7 +8,7 @@ export const ModalFooterRenderer: React.FC<{
     onSubmit?: any;
     handleCancel: () => void;
     renderSaveButton: () => React.ReactNode;
-    mapButtons: (buttons?: any[]) => React.ReactNode[];
+    mapButtons: (buttons?: any[]) => React.ReactNode;
 }> = React.memo(({
                      modalProps,
                      footerButtons,
