@@ -27,7 +27,8 @@ export const CountryEntityForm = () => {
             maxLength: 50
         }).addCheckbox({
             name: 'isActived',
-            label: 'dang_hoat_dong'
+            label: 'dang_hoat_dong',
+            initialValue: true
         })
         .build();
     return (<>

@@ -1,4 +1,4 @@
-import {useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/modalStore";
+import {useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/hook/useGlobalModalStore";
 import {TenantPagedDto, TenantUserChangePassword, UserPagedDto} from "@api/base/index.defs";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
