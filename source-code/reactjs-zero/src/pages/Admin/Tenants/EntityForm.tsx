@@ -1,8 +1,7 @@
-import {Col, Form, Row} from "antd";
+import {Form} from "antd";
 import React, {useMemo} from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
-import {OrdFormField} from "@ord-components/forms/FloatLabel/FormField";
 import {useTenantLogic} from "@pages/Admin/Tenants/useTenantLogic";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {UserAccountAdmin} from "@pages/Admin/Tenants/components/UserAccountAdmin";

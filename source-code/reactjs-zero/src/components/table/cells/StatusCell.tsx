@@ -1,6 +1,5 @@
 import {useTranslation} from "react-i18next";
 import './StatusCell.scss';
-import {Tag} from "antd";
 import {IsActiveStatusDisplay} from "@ord-components/common/display/Status/IsActiveStatusDisplay";
 
 export const StatusCell = (prop: {

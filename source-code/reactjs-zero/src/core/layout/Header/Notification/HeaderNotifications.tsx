@@ -6,7 +6,6 @@ import UiUtils from "@ord-core/utils/ui.utils";
 import {useStore} from "@ord-store/index";
 import {NotificationUserDto} from "@api/index.defs";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router";
 import "../HeaderRight.scss"
 import {CloseOutlined, DollarCircleOutlined, MailOutlined} from "@ant-design/icons";
 import dateUtil from "@ord-core/utils/date.util";

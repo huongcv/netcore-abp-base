@@ -1,11 +1,10 @@
 import React, {useMemo} from "react";
 import {CountryService} from "@api/base/CountryService";
 import {useTableStore} from "@ord-components/paged-table/hooks/useTableStore";
-import {useCrudModalStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
-import {createNotificationTransform} from "@ord-components/paged-table/utils/notificationUtils";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import ExcelDropdown from "@ord-components/excel/ExcelDropdown";
 import {usePermissionStrings, useResourcePermission} from "@ord-core/hooks/auth/useResourcePermission";
+import {useCountryModifyModal} from "@pages/Admin/MasterData/Country/useCountryModifyModal";
 
 export const COUNTRY_CONFIG = {
     // Page config
@@ -23,11 +22,13 @@ export const useCountryLogic = () => {
     } = usePermissionStrings(COUNTRY_CONFIG.permission.base);
     // Stores
     const tableStore = useTableStore(CountryService);
-    const modalStore = useCrudModalStore(CountryService);
-
+    const {onExportExcel, onLoadData, setReloadStatusCounter} = tableStore();
     // Modal actions
-    const {openView, openCreate, openEdit, openDelete} = modalStore();
-    const {onExportExcel} = tableStore();
+    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useCountryModifyModal(() => {
+        onLoadData();
+        setReloadStatusCounter();
+    });
+
 
     // Top actions với resource permission
     const topActions: IActionBtn[] = useMemo(() => {
@@ -51,7 +52,7 @@ export const useCountryLogic = () => {
         if (countryPermissions.canCreate) {
             actions.push({
                 title: 'addNew',
-                onClick: () => openCreate()
+                onClick: () => openCreateModal()
             });
         }
 
@@ -59,7 +60,7 @@ export const useCountryLogic = () => {
     }, [
         countryPermissions,
         onExportExcel,
-        openCreate
+        openCreateModal
     ]);
 
     // Table actions
@@ -67,35 +68,25 @@ export const useCountryLogic = () => {
     const tableActions = useMemo(() => [
         {
             title: 'view',
-            onClick: openView,
+            onClick: openViewModal,
             permission: permissions.getDetail
         },
         {
             title: 'edit',
             permission: permissions.update,
-            onClick: openEdit
+            onClick: openEditModal
         },
         {
             title: 'remove',
             permission: permissions.delete,
-            onClick: openDelete
+            onClick: openDeleteConfirm
         }
-    ], [openView, openEdit, openDelete]);
+    ], [openViewModal, openEditModal, openDeleteConfirm]);
 
     return {
-        // Stores
         tableStore,
-        modalStore,
-
-        // Actions
         topActions,
         tableActions,
-
-        // Utils
-        entityTranslationNs: COUNTRY_CONFIG.entityName,
-        transformNotification: createNotificationTransform.fromField('name'),
-
-        // Services
         counterService: CountryService.getCountByActive
     };
 };

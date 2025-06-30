@@ -1,6 +1,6 @@
-import {ModalProps} from 'antd/es/modal';
 import {create} from 'zustand';
 import {v4 as uuidv4} from "uuid";
+import type {FormInstance, ModalProps} from 'antd';
 
 export interface ModalData {
     id?: string;
@@ -19,6 +19,7 @@ export interface IFooterButtonProps {
 
 export interface ModalConfig extends ModalProps {
     viewId: string;
+    form?: FormInstance;
     modalData?: ModalData | null;
     formRender?: (modalData?: ModalData | null) => React.ReactNode;
     modalContentRender?: (modalData?: ModalData | null) => React.ReactNode;

@@ -24,7 +24,7 @@ export const CountryEntityForm = () => {
             span: 12,
             name: 'currencyCode',
             label: 'currency_code',
-            maxLength: 50,
+            maxLength: 50
         }).addCheckbox({
             name: 'isActived',
             label: 'dang_hoat_dong',

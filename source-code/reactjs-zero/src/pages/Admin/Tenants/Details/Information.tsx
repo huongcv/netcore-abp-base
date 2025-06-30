@@ -1,6 +1,6 @@
 import React from "react";
 import {TenantDetailDto} from "@api/base/index.defs";
-import {Building2, Mail, Phone, MapPin, Activity, Calendar} from "lucide-react";
+import {Activity, Building2, Calendar, Mail, MapPin, Phone} from "lucide-react";
 import {DateDisplay} from "@ord-components/common/display/DateDisplay";
 import {Tag} from "antd";
 import {IsActiveStatusDisplay} from "@ord-components/common/display/Status/IsActiveStatusDisplay";

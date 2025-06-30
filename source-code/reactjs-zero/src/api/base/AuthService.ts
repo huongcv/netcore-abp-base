@@ -1,21 +1,11 @@
 import {
-  LoginInputDto,
-  FireBaseDto,
-  CommonResultDtoOfJwtDto,
-  JwtDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfJwtDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    LoginInputDto
 } from './index.defs';
 
 export class AuthService {

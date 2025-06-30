@@ -16,22 +16,24 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         mustLoadingPageWhenSaving = true,
         footerButtons,
         ignoreHotKeys,
+        form,
         ...rest
     } = modal;
     const {closeModal, setLoading, topModalId} = useGlobalModalStore();
-    const [form] = Form.useForm();
+    const [internalForm] = Form.useForm();
+    const usedForm = form || internalForm;
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         if (modalData) {
-            form.setFieldsValue(modalData);
+            usedForm.setFieldsValue(modalData);
         }
-    }, [modalData, form]);
+    }, [modalData, usedForm]);
 
     const handleCancel = useCallback(() => {
         closeModal(viewId);
-        form.resetFields();
-    }, [closeModal, form, viewId]);
+        usedForm.resetFields();
+    }, [closeModal, usedForm, viewId]);
 
     const handleFinish = useCallback(async () => {
         if (saving) return;
@@ -40,14 +42,14 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             UiUtils.setBusy();
         }
         try {
-            const values = await form.validateFields();
+            const values = await usedForm.validateFields();
             setLoading(viewId, true);
 
             if (onSubmit) {
                 const shouldClose = await onSubmit(values, modalData, viewId);
                 if (shouldClose) {
                     closeModal(viewId);
-                    form.resetFields();
+                    usedForm.resetFields();
                 }
             }
         } catch {
@@ -57,13 +59,13 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             UiUtils.clearBusy();
             setSaving(false);
         }
-    }, [saving, form, onSubmit, modalData, viewId, closeModal, setLoading, mustLoadingPageWhenSaving]);
+    }, [saving, usedForm, onSubmit, modalData, viewId, closeModal, setLoading, mustLoadingPageWhenSaving]);
 
     const renderContent = useMemo(() => {
         if (modalContentRender) {
             return <>
                 <Form
-                    form={form}
+                    form={usedForm}
                     layout="vertical"
                     autoComplete="off"
                     onFinish={handleFinish}
@@ -75,7 +77,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
 
         return (
             <Form
-                form={form}
+                form={usedForm}
                 layout="vertical"
                 autoComplete="off"
                 onFinish={handleFinish}
@@ -88,18 +90,18 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
                 {formRender?.(modalData)}
             </Form>
         );
-    }, [modalContentRender, modalData, form, handleFinish, formRender]);
+    }, [modalContentRender, modalData, usedForm, handleFinish, formRender]);
     const renderSaveButton = useCallback(() => (
         <OrdModalSaveButton
             loading={saving}
             onSubmit={() => {
                 if (!saving) {
                     setSaving(true);
-                    form.submit();
+                    usedForm.submit();
                 }
             }}
         />
-    ), [saving, form]);
+    ), [saving, usedForm]);
     const mapButtons = useCallback((buttons?: (React.ReactNode | 'save')[]) =>
             buttons?.map(btn => btn === 'save' ? renderSaveButton() : btn),
         [renderSaveButton]);
@@ -119,18 +121,32 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
                 />
             );
         }
+        if (onSubmit) {
+            return (
+                <OrdModalFooter onClose={handleCancel} right={[
+                    renderSaveButton()
+                ]}/>
+            )
+        }
         return (
-            <OrdModalFooter onClose={handleCancel} right={[
-                renderSaveButton()
-            ]}/>
+            <OrdModalFooter onClose={handleCancel}/>
         )
-    }, [handleCancel, form, saving]);
+
+    }, [handleCancel, usedForm, saving]);
+
+    const ignoreHotKeyFinal = useMemo(() => {
+        const ignoreKeys = ignoreHotKeys || [];
+        if (!onSubmit) {
+            return ['F8', ...ignoreKeys];
+        }
+        return [...ignoreKeys];
+    }, [onSubmit, ignoreHotKeys]);
 
     useModalHotkeys({
         modalId: viewId,
-        ignoreHotKeys,
+        ignoreHotKeys: ignoreHotKeyFinal,
         onOkModal: () => {
-            form.submit();
+            usedForm.submit();
         }, onClose: () => {
             handleCancel();
         }

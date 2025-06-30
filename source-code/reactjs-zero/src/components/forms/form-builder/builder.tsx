@@ -1,6 +1,7 @@
 import React from "react";
 import {
-    CheckboxFieldConfig, CustomContentFieldConfig,
+    CheckboxFieldConfig,
+    CustomContentFieldConfig,
     CustomFieldConfig,
     DateFieldConfig,
     DateRangeFieldConfig,
