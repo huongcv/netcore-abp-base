@@ -1,30 +1,26 @@
 import React from "react";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
+import {useSelectCountry} from "@ord-components/forms/select/selectDataSource/useSelectCountry";
 
 export const ProvinceEntityForm = () => {
     const config = new FormBuilder()
         .addText({
-            span: 12,
             name: 'code',
             required: true,
             maxLength: 10,
             autoFocus: true,
         }).addText({
-            span: 12,
             name: 'name',
             required: true,
             maxLength: 100,
-        }).addText({
-            span: 12,
-            name: 'phoneCode',
-            label: 'phone_code',
-            maxLength: 50,
-        }).addText({
-            span: 12,
-            name: 'currencyCode',
-            label: 'currency_code',
-            maxLength: 50
+        }).addSelect({
+            name: 'countryCode',
+            label: 'quoc_gia',
+            initialValue: 'VN',
+            componentProps: {
+                datasource: useSelectCountry()
+            }
         }).addCheckbox({
             name: 'isActived',
             label: 'dang_hoat_dong',

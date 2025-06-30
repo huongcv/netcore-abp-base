@@ -8,8 +8,7 @@ export const useResponsiveSpan = (
     return useMemo(() => {
         if (disableResponsive) {
             return {
-                span: width,
-                sm: 24,
+                span: width
             };
         }
 

@@ -22,5 +22,8 @@
   "access_token_expires_at": "Thời gian hết hạn",
   "creation_time": "Ngày tạo",
   "user_assigned_role_count": "Số người dùng",
-  "address": "Địa chỉ"
+  "address": "Địa chỉ",
+  "ma_tinh": "Mã tỉnh",
+  "ten_tinh": "Tên tỉnh",
+  "quoc_gia": "Quốc gia"
 }

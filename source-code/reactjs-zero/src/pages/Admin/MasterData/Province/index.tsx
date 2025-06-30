@@ -4,9 +4,10 @@ import {PagedTable} from "@ord-components/paged-table";
 import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLayoutWithTable";
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
-import {CountryPagedDto} from "@api/base/index.defs";
+import {CountryPagedDto, ProvincePagedDto} from "@api/base/index.defs";
 import {CountrySearchForm} from "@pages/Admin/MasterData/Country/SearchForm";
 import {useProvinceLogic} from "@pages/Admin/MasterData/Province/useLogic";
+import {getProvinceColumns} from "@pages/Admin/MasterData/Province/Columns";
 
 const Province: React.FC = () => {
     const {
@@ -15,8 +16,8 @@ const Province: React.FC = () => {
         tableActions,
         counterService
     } = useProvinceLogic();
-    const columns = TableUtil.getColumns<CountryPagedDto>([
-        ...getCountryColumns()
+    const columns = TableUtil.getColumns<ProvincePagedDto>([
+        ...getProvinceColumns()
     ], {
         actions: tableActions
     });
