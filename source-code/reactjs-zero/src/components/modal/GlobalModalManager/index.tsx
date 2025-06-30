@@ -17,6 +17,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         footerButtons,
         ignoreHotKeys,
         form,
+        formReadOnly,
         ...rest
     } = modal;
     const {closeModal, setLoading, topModalId} = useGlobalModalStore();
@@ -46,7 +47,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             setLoading(viewId, true);
 
             if (onSubmit) {
-                const shouldClose = await onSubmit(values, modalData, viewId);
+                const shouldClose = await onSubmit(values, modalData, usedForm, viewId);
                 if (shouldClose) {
                     closeModal(viewId);
                     usedForm.resetFields();
@@ -66,6 +67,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             return <>
                 <Form
                     form={usedForm}
+                    disabled={formReadOnly}
                     layout="vertical"
                     autoComplete="off"
                     onFinish={handleFinish}
@@ -78,6 +80,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         return (
             <Form
                 form={usedForm}
+                disabled={formReadOnly}
                 layout="vertical"
                 autoComplete="off"
                 onFinish={handleFinish}
@@ -90,7 +93,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
                 {formRender?.(modalData)}
             </Form>
         );
-    }, [modalContentRender, modalData, usedForm, handleFinish, formRender]);
+    }, [modalContentRender, modalData, usedForm, handleFinish, formRender, formReadOnly]);
     const renderSaveButton = useCallback(() => (
         <OrdModalSaveButton
             loading={saving}

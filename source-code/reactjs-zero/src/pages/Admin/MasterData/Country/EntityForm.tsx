@@ -1,6 +1,7 @@
 import React from "react";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
+import {useSelectIsActived} from "@ord-components/forms/select/selectDataSource/useSelectIsActived";
 
 export const CountryEntityForm = () => {
     const config = new FormBuilder()
@@ -27,8 +28,7 @@ export const CountryEntityForm = () => {
             maxLength: 50
         }).addCheckbox({
             name: 'isActived',
-            label: 'dang_hoat_dong',
-            initialValue: true
+            label: 'dang_hoat_dong'
         })
         .build();
     return (<>

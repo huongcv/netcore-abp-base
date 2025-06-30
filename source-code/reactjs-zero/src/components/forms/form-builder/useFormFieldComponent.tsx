@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, InputNumber} from 'antd';
+import {Checkbox, Input, InputNumber} from 'antd';
 import {FormFieldConfig, FormFieldType, InputFieldConfig} from './types';
 import OrdSelect from "@ord-components/forms/select/OrdSelect";
 import OrdDateInput from "@ord-components/forms/OrdDateInput";
@@ -7,6 +7,7 @@ import OrdDateRangeInput from "@ord-components/forms/OrdDateRangeInput";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import useAutoFocus from "@ord-core/hooks/useAutoFocus";
 import OrdInputRegexText from "@ord-components/forms/OrdInputRegexText";
+import {FieldLabel} from "@ord-components/forms/FloatLabel";
 
 const {TextArea} = Input;
 
@@ -55,7 +56,7 @@ export const useFormFieldComponent = (
         'date-range': <OrdDateRangeInput {...baseProps} />,
         'search-input': <SearchFilterText {...baseProps} span={24}/>,
         number: <InputNumber {...baseProps} />,
-        checkbox: undefined,
+        checkbox: <Checkbox {...baseProps} ><FieldLabel label={'check_box.'}/></Checkbox>,
         dateTime: undefined,
         time: undefined,
         switch: undefined,
@@ -64,6 +65,5 @@ export const useFormFieldComponent = (
         'input-regex': <OrdInputRegexText {...baseProps} />,
         'custom-field-content': undefined
     };
-
     return map[type] ?? null;
 };

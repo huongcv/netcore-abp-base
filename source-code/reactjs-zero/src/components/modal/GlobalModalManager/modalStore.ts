@@ -23,10 +23,11 @@ export interface ModalConfig extends ModalProps {
     modalData?: ModalData | null;
     formRender?: (modalData?: ModalData | null) => React.ReactNode;
     modalContentRender?: (modalData?: ModalData | null) => React.ReactNode;
-    onSubmit?: (formValues: any, modalData?: ModalData | null, modalId?: string) => Promise<boolean> | boolean;
+    onSubmit?: (formValues: any, modalData?: ModalData | null, form?: FormInstance, modalId?: string) => Promise<boolean> | boolean;
     mustLoadingPageWhenSaving?: boolean;
     footerButtons?: IFooterButtonProps;
     ignoreHotKeys?: string[];
+    formReadOnly?: boolean;
 }
 
 interface ModalStore {

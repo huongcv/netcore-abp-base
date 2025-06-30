@@ -28,7 +28,7 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
             span = 24,
             formItemProps = {},
             hidden = false,
-            disabled = false,
+            disabled,
             initialValue
         } = field;
 
@@ -76,8 +76,8 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
         rules: finalRules,
         required: fieldConfig.required,
         initialValue: fieldConfig.initialValue,
-        disabled: fieldConfig.disabled,
         ...fieldConfig.formItemProps,
+        disabled: fieldConfig.disabled,
     }), [
         fieldConfig.label,
         fieldConfig.name,
@@ -164,112 +164,8 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
 
     );
 };
-
-/**
- * Custom comparison function cho React.memo
- * Tối ưu hơn JSON.stringify
- */
-const arePropsEqual = (
-    prevProps: FormFieldItemProps,
-    nextProps: FormFieldItemProps
-): boolean => {
-    // Fast check cho disableResponsiveCol
-    if (prevProps.disableResponsiveCol !== nextProps.disableResponsiveCol) {
-        return false;
-    }
-
-    const prevField = prevProps.field;
-    const nextField = nextProps.field;
-
-    // Fast reference check
-    if (prevField === nextField) {
-        return true;
-    }
-
-    // Deep comparison cho field properties
-    const fieldsToCompare = [
-        'name', 'label', 'type', 'required', 'span',
-        'hidden', 'disabled', 'initialValue'
-    ] as const;
-
-    for (const key of fieldsToCompare) {
-        if (prevField[key] !== nextField[key]) {
-            return false;
-        }
-    }
-
-    // Special comparison cho rules array
-    if (!areRulesEqual(prevField.rules, nextField.rules)) {
-        return false;
-    }
-
-    // Special comparison cho formItemProps object
-    if (!areObjectsEqual(prevField.formItemProps, nextField.formItemProps)) {
-        return false;
-    }
-
-    return true;
-};
-
-/**
- * Helper function để compare validation rules
- */
-const areRulesEqual = (
-    prevRules: FormFieldConfig['rules'] = [],
-    nextRules: FormFieldConfig['rules'] = []
-): boolean => {
-    if (prevRules.length !== nextRules.length) {
-        return false;
-    }
-
-    return prevRules.every((prevRule, index) => {
-        const nextRule = nextRules[index];
-
-        // Reference equality check
-        if (prevRule === nextRule) {
-            return true;
-        }
-
-        // Type check
-        if (typeof prevRule !== typeof nextRule) {
-            return false;
-        }
-
-        // Function comparison (assumed equal if both are functions)
-        if (typeof prevRule === 'function' && typeof nextRule === 'function') {
-            return prevRule.toString() === nextRule.toString();
-        }
-
-        // Object comparison
-        if (typeof prevRule === 'object' && typeof nextRule === 'object') {
-            return JSON.stringify(prevRule) === JSON.stringify(nextRule);
-        }
-
-        return prevRule === nextRule;
-    });
-};
-
-/**
- * Helper function để compare objects (shallow)
- */
-const areObjectsEqual = (
-    prevObj: Record<string, any> = {},
-    nextObj: Record<string, any> = {}
-): boolean => {
-    const prevKeys = Object.keys(prevObj);
-    const nextKeys = Object.keys(nextObj);
-
-    if (prevKeys.length !== nextKeys.length) {
-        return false;
-    }
-
-    return prevKeys.every(key => {
-        return prevObj[key] === nextObj[key];
-    });
-};
-
-// Export component với memo optimization
-export default React.memo(FormFieldItem, arePropsEqual);
-
-// Export named version cho testing
-export {FormFieldItem};
+// ✅ Memo hóa
+export default React.memo(FormFieldItem, (prevProps, nextProps) => {
+    return JSON.stringify(prevProps.field) === JSON.stringify(nextProps.field)
+        && prevProps.disableResponsiveCol === nextProps.disableResponsiveCol;
+});

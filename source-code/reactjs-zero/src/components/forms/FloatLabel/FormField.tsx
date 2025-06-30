@@ -35,7 +35,7 @@ export const OrdFormField = ({
     if (isCheckbox) {
         return (
             <Form.Item name={name} valuePropName={valuePropName || "checked"} initialValue={initialValue}>
-                <Checkbox disabled={disabled}><FieldLabel label={'check_box.' + label}/></Checkbox>
+                {children || <Checkbox disabled={disabled}><FieldLabel label={'check_box.' + label}/></Checkbox>}
             </Form.Item>
         );
     }

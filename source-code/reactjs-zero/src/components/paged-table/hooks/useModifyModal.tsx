@@ -189,7 +189,7 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
                 );
             },
 
-            onSubmit: async (formValues, modalData, modalId) => {
+            onSubmit: async (formValues, modalData, form) => {
                 try {
                     const result = await handleSubmit(formValues, 'create');
                     if (!result) {
@@ -223,8 +223,7 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
             },
             footerButtons: {
                 left: [renderCheckBoxAddNew],
-                right: ['save'],
-
+                right: ['save']
             }
         });
 
@@ -319,7 +318,8 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
                         {formFields}
                     </>
                 );
-            }
+            },
+            formReadOnly: true
         });
 
         return modalId;
