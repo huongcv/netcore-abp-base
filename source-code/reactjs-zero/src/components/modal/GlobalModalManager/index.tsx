@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Button, Form, Modal} from 'antd';
+import {Form, Modal} from 'antd';
 import {ModalConfig, useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/modalStore";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
+import {OrdModalSaveButton} from "@ord-components/modal/footer/buttons/OrdModalSaveButton";
 
 const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
     const {
@@ -12,6 +13,7 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         onSubmit,
         modalContentRender,
         mustLoadingPageWhenSaving = true,
+        footerButtons,
         ...rest
     } = modal;
     const {closeModal, setLoading} = useGlobalModalStore();
@@ -77,20 +79,40 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             </Form>
         );
     }, [modalContentRender, modalData, form, handleFinish, formRender]);
+    const renderSaveButton = useCallback(() => (
+        <OrdModalSaveButton
+            loading={saving}
+            onSubmit={() => {
+                if (!saving) {
+                    setSaving(true);
+                    form.submit();
+                }
+            }}
+        />
+    ), [saving, form]);
+    const mapButtons = useCallback((buttons?: (React.ReactNode | 'save')[]) =>
+            buttons?.map(btn => btn === 'save' ? renderSaveButton() : btn),
+        [renderSaveButton]);
 
     const renderFooter = useMemo(() => {
         if (rest.footer) {
             return rest.footer;
         }
+        if (footerButtons) {
+            const {right, left, leftClose} = footerButtons;
+            return (
+                <OrdModalFooter
+                    onClose={handleCancel}
+                    left={mapButtons(left)}
+                    leftClose={mapButtons(leftClose)}
+                    right={mapButtons(right)}
+                />
+            );
+        }
         return (
             <OrdModalFooter onClose={handleCancel} right={[
-                <Button key="cancel" onClick={handleCancel}>
-                    Hủy
-                </Button>,
-                <Button key="save" type="primary" onClick={() => form.submit()} loading={saving}>
-                    Lưu
-                </Button>,
-            ]}></OrdModalFooter>
+                renderSaveButton()
+            ]}/>
         )
     }, [handleCancel, form, saving]);
 

@@ -1,12 +1,22 @@
 import {ModalProps} from 'antd/es/modal';
 import {create} from 'zustand';
 import {v4 as uuidv4} from "uuid";
+import {IButtonModal} from "@ord-components/modal/footer/buttons/useButtonRender";
 
 export interface ModalData {
     id?: string;
     encodedId?: string;
 
     [key: string]: any;
+}
+
+
+export type IButtonModal = 'save' | React.ReactNode;
+
+export interface IFooterButtonProps {
+    left?: IButtonModal[];
+    right?: IButtonModal[];
+    leftClose?: IButtonModal[];
 }
 
 export interface ModalConfig extends ModalProps {
@@ -16,6 +26,7 @@ export interface ModalConfig extends ModalProps {
     modalContentRender?: (modalData?: ModalData | null) => React.ReactNode;
     onSubmit?: (formValues: any, modalData?: ModalData | null, modalId?: string) => Promise<boolean> | boolean;
     mustLoadingPageWhenSaving?: boolean;
+    footerButtons?: IFooterButtonProps;
 }
 
 interface ModalStore {
