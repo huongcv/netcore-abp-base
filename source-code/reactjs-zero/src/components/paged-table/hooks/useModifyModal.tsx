@@ -1,11 +1,10 @@
 import {useCallback} from 'react';
-import {Checkbox, CheckboxProps, Form, ModalProps} from 'antd';
+import {ModalProps} from 'antd';
 import {useGlobalModalStore} from '@ord-components/modal/GlobalModalManager/modalStore';
 import {ICommonResultDtoApi, IModifyApiService} from '@ord-components/paged-table/types';
 import {ModifyModalI18nConfig, useModifyModalI18n} from '@ord-components/paged-table/hooks/useModifyModalI18n';
 import uiUtils from '@ord-core/utils/ui.utils';
 import UiUtils from '@ord-core/utils/ui.utils';
-import {l} from "@ord-core/language/lang.utils";
 
 export type ModifyModalMode = 'create' | 'edit' | 'viewDetail';
 
@@ -164,27 +163,16 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
     }, [apiService, getConfirmContent, getConfirmTitle, transformNotificationParameter, getDeleteSuccessMessage, onSaved]);
 
     const openCreateModal = useCallback((customInitialValues?: Record<string, any>) => {
-        let isAddNewContinue = false;
-        const onChange: CheckboxProps['onChange'] = (e) => {
-            isAddNewContinue = e.target.checked;
-        };
-        const renderCheckBoxAddNew = <Checkbox checked={isAddNewContinue}
-                                               onChange={onChange}>
-            {l.transCommon('addNewContinue')}
-        </Checkbox>;
         const modalId = openModal({
             title: getTitleText('create', {}),
-            width: 680,
             modalData: customInitialValues || initialValues,
             mustLoadingPageWhenSaving: true,
             ignoreHotKeys: [],
-            ...modalProps,
-
+            modalProps,
             formRender: (modalData) => {
                 return (
                     <>
                         {formFields}
-                        <Form.Item name="disableHostKeyScopeForm" initialValue={false} hidden noStyle/>
                     </>
                 );
             },
@@ -195,34 +183,28 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
                     if (!result) {
                         return false;
                     }
-
                     // Handle successful save
                     if (result.isSuccessful) {
                         if (onSaved) {
                             onSaved();
                         }
-
                         const message = getSuccessMessage('create', transformNotificationParameter(result.data));
                         if (message) {
                             uiUtils.showSuccess(message);
                         }
-
-                        if (isAddNewContinue) {
-                            return false; // Don't close modal, reset form instead
-                        }
-                        return true; // Close modal
+                        return true;
                     } else {
                         if (result.message) {
                             uiUtils.showError(result.message);
                         }
-                        return false; // Don't close modal
+                        return false;
                     }
                 } catch (error) {
                     return false;
                 }
             },
             footerButtons: {
-                left: [renderCheckBoxAddNew],
+                left: ['isContinueCheckBox'],
                 right: ['save']
             }
         });
@@ -243,11 +225,10 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
     const openEditModal = useCallback((editingItem: T) => {
         const modalId = openModal({
             title: getTitleText('edit', transformNotificationParameter(editingItem)),
-            width: 680,
             modalData: editingItem,
             mustLoadingPageWhenSaving: true,
             ignoreHotKeys: [],
-            ...modalProps,
+            modalProps,
 
             formRender: (modalData) => {
                 return (
@@ -307,11 +288,10 @@ export const useModifyModal = <T extends object>(config: UseModifyModalConfig<T>
     const openViewModal = useCallback((viewingItem: T) => {
         const modalId = openModal({
             title: getTitleText('viewDetail', transformNotificationParameter(viewingItem)),
-            width: 680,
             modalData: viewingItem,
             mustLoadingPageWhenSaving: false,
             ignoreHotKeys: [],
-            ...modalProps,
+            modalProps,
             formRender: (modalData) => {
                 return (
                     <>

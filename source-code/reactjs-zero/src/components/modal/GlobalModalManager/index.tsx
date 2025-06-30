@@ -2,10 +2,15 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Form, Modal} from 'antd';
 import {ModalConfig, useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/modalStore";
 import UiUtils from "@ord-core/utils/ui.utils";
-import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
-import {OrdModalSaveButton} from "@ord-components/modal/footer/buttons/OrdModalSaveButton";
 import {useModalHotkeys} from "@ord-components/modal/GlobalModalManager/useModalHotkeys";
+import _ from 'lodash';
+import {SaveButton} from "@ord-components/modal/GlobalModalManager/components/SaveButton";
+import {ContinueCheckbox} from "@ord-components/modal/GlobalModalManager/components/ContinueCheckbox";
+import {ButtonMapper} from "@ord-components/modal/GlobalModalManager/components/ButtonMapper";
+import {ModalFooterRenderer} from "@ord-components/modal/GlobalModalManager/components/ModalFooterRenderer";
+import {ModalContent} from "@ord-components/modal/GlobalModalManager/components/ModalContent";
 
+// Main SingleModal Component
 const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
     const {
         viewId,
@@ -18,19 +23,26 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         ignoreHotKeys,
         form,
         formReadOnly,
-        ...rest
+        modalProps
     } = modal;
-    const {closeModal, setLoading, topModalId} = useGlobalModalStore();
+
+    const {closeModal, setLoading} = useGlobalModalStore();
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
     const [saving, setSaving] = useState(false);
+    const [isContinue, setIsContinue] = useState(false);
 
+    // Memoize initial values
+    const initialValues = useMemo(() => modalData || {}, [modalData]);
+
+    // Set form values chỉ khi modalData thay đổi thực sự
     useEffect(() => {
-        if (modalData) {
+        if (modalData && !_.isEqual(usedForm.getFieldsValue(), modalData)) {
             usedForm.setFieldsValue(modalData);
         }
     }, [modalData, usedForm]);
 
+    // Event handlers
     const handleCancel = useCallback(() => {
         closeModal(viewId);
         usedForm.resetFields();
@@ -38,64 +50,44 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
 
     const handleFinish = useCallback(async () => {
         if (saving) return;
+
         setSaving(true);
+
         if (mustLoadingPageWhenSaving) {
             UiUtils.setBusy();
         }
+
         try {
             const values = await usedForm.validateFields();
+            const submitValue = _.omit(values, ['extendUI']);
             setLoading(viewId, true);
 
             if (onSubmit) {
-                const shouldClose = await onSubmit(values, modalData, usedForm, viewId);
-                if (shouldClose) {
-                    closeModal(viewId);
+                const saveSuccess = await onSubmit(submitValue, modalData, usedForm, viewId);
+                if (saveSuccess) {
                     usedForm.resetFields();
+                    if (!isContinue) {
+                        closeModal(viewId);
+                    }
                 }
             }
-        } catch {
-            // Silent catch
+        } catch (error) {
+            console.warn('Form submission failed:', error);
         } finally {
             setLoading(viewId, false);
             UiUtils.clearBusy();
             setSaving(false);
         }
-    }, [saving, usedForm, onSubmit, modalData, viewId, closeModal, setLoading, mustLoadingPageWhenSaving]);
+    }, [saving, usedForm, onSubmit, modalData, viewId, closeModal, setLoading, mustLoadingPageWhenSaving, isContinue]);
 
-    const renderContent = useMemo(() => {
-        if (modalContentRender) {
-            return <>
-                <Form
-                    form={usedForm}
-                    disabled={formReadOnly}
-                    layout="vertical"
-                    autoComplete="off"
-                    onFinish={handleFinish}
-                    initialValues={modalData || {}}>
-                </Form>
-                {modalContentRender(modalData)}
-            </>;
-        }
+    const handleFinishFailed = useCallback(() => {
+        setSaving(false);
+        UiUtils.showCommonValidateForm();
+    }, []);
 
-        return (
-            <Form
-                form={usedForm}
-                disabled={formReadOnly}
-                layout="vertical"
-                autoComplete="off"
-                onFinish={handleFinish}
-                onFinishFailed={() => {
-                    setSaving(false);
-                    UiUtils.showCommonValidateForm();
-                }}
-                initialValues={modalData || {}}
-            >
-                {formRender?.(modalData)}
-            </Form>
-        );
-    }, [modalContentRender, modalData, usedForm, handleFinish, formRender, formReadOnly]);
+    // Render methods cho buttons
     const renderSaveButton = useCallback(() => (
-        <OrdModalSaveButton
+        <SaveButton
             loading={saving}
             onSubmit={() => {
                 if (!saving) {
@@ -105,75 +97,87 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             }}
         />
     ), [saving, usedForm]);
-    const mapButtons = useCallback((buttons?: (React.ReactNode | 'save')[]) =>
-            buttons?.map(btn => btn === 'save' ? renderSaveButton() : btn),
-        [renderSaveButton]);
 
-    const renderFooter = useMemo(() => {
-        if (rest.footer) {
-            return rest.footer;
-        }
-        if (footerButtons) {
-            const {right, left, leftClose} = footerButtons;
-            return (
-                <OrdModalFooter
-                    onClose={handleCancel}
-                    left={mapButtons(left)}
-                    leftClose={mapButtons(leftClose)}
-                    right={mapButtons(right)}
-                />
-            );
-        }
-        if (onSubmit) {
-            return (
-                <OrdModalFooter onClose={handleCancel} right={[
-                    renderSaveButton()
-                ]}/>
-            )
-        }
+    const renderContinueCheckBox = useCallback(() => (
+        <ContinueCheckbox
+            checked={isContinue}
+            onChange={setIsContinue}
+        />
+    ), [isContinue]);
+
+    // Button mapping function
+    const mapButtons = useCallback((buttons?: (React.ReactNode | 'save' | 'isContinueCheckBox')[]) => {
         return (
-            <OrdModalFooter onClose={handleCancel}/>
-        )
+            <ButtonMapper
+                buttons={buttons}
+                renderSaveButton={renderSaveButton}
+                renderContinueCheckBox={renderContinueCheckBox}
+            />
+        );
+    }, [renderSaveButton, renderContinueCheckBox]);
 
-    }, [handleCancel, usedForm, saving]);
+    // Footer rendering
+    const renderFooter = useMemo(() => (
+        <ModalFooterRenderer
+            modalProps={modalProps}
+            footerButtons={footerButtons}
+            onSubmit={onSubmit}
+            handleCancel={handleCancel}
+            renderSaveButton={renderSaveButton}
+            mapButtons={mapButtons}
+        />
+    ), [modalProps, footerButtons, onSubmit, handleCancel, renderSaveButton, mapButtons]);
 
-    const ignoreHotKeyFinal = useMemo(() => {
+    // Hotkey configuration
+    const hotKeyConfig = useMemo(() => {
         const ignoreKeys = ignoreHotKeys || [];
+
         if (!onSubmit) {
             return ['F8', ...ignoreKeys];
         }
-        return [...ignoreKeys];
+
+        return ignoreKeys;
     }, [onSubmit, ignoreHotKeys]);
 
+    // Setup modal hotkeys
     useModalHotkeys({
         modalId: viewId,
-        ignoreHotKeys: ignoreHotKeyFinal,
-        onOkModal: () => {
-            usedForm.submit();
-        }, onClose: () => {
-            handleCancel();
-        }
+        ignoreHotKeys: hotKeyConfig,
+        onOkModal: () => usedForm.submit(),
+        onClose: handleCancel
     });
 
+    // Modal props configuration
+    const modalPropsConfig = useMemo(() => ({
+        style: {top: 30},
+        maskClosable: false,
+        width: 800,
+        destroyOnHidden: true,
+        ...modalProps,
+        title: modal.title,
+        open: true,
+        onCancel: handleCancel,
+        footer: renderFooter
+    }), [modalProps, modal.title, handleCancel, renderFooter]);
+
     return (
-        <Modal
-            style={{
-                top: 30
-            }}
-            maskClosable={false}
-            width={800}
-            destroyOnHidden
-            {...rest}
-            title={modal.title}
-            open={true}
-            onCancel={handleCancel}
-            footer={renderFooter}>
-            {renderContent}
+        <Modal {...modalPropsConfig}>
+            <ModalContent
+                modalData={modalData}
+                formRender={formRender}
+                modalContentRender={modalContentRender}
+                usedForm={usedForm}
+                formReadOnly={formReadOnly}
+                handleFinish={handleFinish}
+                handleFinishFailed={handleFinishFailed}
+                initialValues={initialValues}
+            />
         </Modal>
     );
 };
 
-export const GlobalModalManager: React.FC = () => {
+// Main GlobalModalManager Component
+export const GlobalModalManager: React.FC = React.memo(() => {
     const {modals} = useGlobalModalStore();
 
     return (
@@ -183,4 +187,4 @@ export const GlobalModalManager: React.FC = () => {
             ))}
         </>
     );
-};
+});

@@ -30,34 +30,9 @@ export const AdminRouter: OrdRouterItem[] = [
         permission: PERMISSION_NAME_APP.admin.tenant
     },
     {
-        path: 'shop',
-        lazyComponent: lazy(() => import('../Admin/Shop')),
-        permission: PERMISSION_NAME_APP.masterData.shop
-    },
-    {
-        path: 'shop-detail/:id',
-        lazyComponent: lazy(() => import('../Admin/Shop')),
-        permission: PERMISSION_NAME_APP.masterData.shop
-    },
-    {
         path: 'setting',
         lazyComponent: lazy(() => import('@pages/Admin/Setting')),
         permission: PERMISSION_NAME_APP.admin.setting
     },
-    {
-        path: 'template-printer',
-        lazyComponent: lazy(() => import('@pages/Admin/TemplatePrinter/TemplatePrinterHost')),
-        permission: PERMISSION_NAME_APP.admin.templatePrinterHost,
-    },
-    {
-        path: 'template-printer/create/:enumId/:name',
-        lazyComponent: lazy(() => import('@pages/Admin/TemplatePrinter/CruTemplatePrinterHost')),
-    },
-    {
-        path: 'template-printer/update/:enumId/:id/:name',
-        lazyComponent: lazy(() => import('@pages/Admin/TemplatePrinter/CruTemplatePrinterHost')),
-    },
-
-
     ...MasterDataRouter
 ]

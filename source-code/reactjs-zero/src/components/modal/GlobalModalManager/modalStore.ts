@@ -9,7 +9,7 @@ export interface ModalData {
     [key: string]: any;
 }
 
-export type IButtonModal = 'save' | React.ReactNode;
+export type IButtonModal = 'save' | 'isContinueCheckBox' | React.ReactNode;
 
 export interface IFooterButtonProps {
     left?: IButtonModal[];
@@ -17,8 +17,9 @@ export interface IFooterButtonProps {
     leftClose?: IButtonModal[];
 }
 
-export interface ModalConfig extends ModalProps {
+export interface ModalConfig {
     viewId: string;
+    title?: React.ReactNode;
     form?: FormInstance;
     modalData?: ModalData | null;
     formRender?: (modalData?: ModalData | null) => React.ReactNode;
@@ -28,6 +29,7 @@ export interface ModalConfig extends ModalProps {
     footerButtons?: IFooterButtonProps;
     ignoreHotKeys?: string[];
     formReadOnly?: boolean;
+    modalProps?: ModalProps;
 }
 
 interface ModalStore {
@@ -62,7 +64,7 @@ export const useGlobalModalStore = create<ModalStore>((set, get) => ({
     closeModal: (modalId) => {
         set((state) => {
             const newModals = state.modals.filter((modal) => modal.viewId !== modalId);
-            const lastVisible = [...newModals].reverse().find(modal => modal.visible);
+            const lastVisible = [...newModals][newModals.length - 1];
             return {
                 modals: newModals,
                 topModalId: lastVisible?.viewId || null,
@@ -103,7 +105,7 @@ export const useGlobalModalStore = create<ModalStore>((set, get) => ({
     },
     getTopModalId: () => {
         const modals = get().modals;
-        const lastVisible = [...modals].reverse().find(modal => modal.visible);
+        const lastVisible = [...modals][modals.length - 1];
         return lastVisible?.viewId || null;
     },
 }));

@@ -2,7 +2,6 @@ import {Button, Image} from "antd";
 import {DeleteIcon} from "@ord-components/icon/DeleteIcon";
 import React, {useState} from "react";
 import {EyeOutlined} from "@ant-design/icons";
-import "../../../pages/ProductManagement/Product/detail/detail.scss"
 
 interface Props {
     children: React.ReactNode,
@@ -28,12 +27,12 @@ const ImgWithDeleteAction = (props: Props) => {
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
             >
                 <Image
-                    src={url??""}
+                    src={url ?? ""}
                     className="hidden"
-                    preview={{ visible: previewVisible, onVisibleChange: setPreviewVisible }}
+                    preview={{visible: previewVisible, onVisibleChange: setPreviewVisible}}
                 />
                 <Button
-                    icon={<EyeOutlined />}
+                    icon={<EyeOutlined/>}
                     onClick={() => setPreviewVisible(true)}
                     className="bg-white p-2 rounded-full shadow-md hover:bg-blue-500 hover:text-white transition-colors mr-2"
                 />

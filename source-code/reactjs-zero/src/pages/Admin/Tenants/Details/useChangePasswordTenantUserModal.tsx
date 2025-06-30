@@ -51,8 +51,10 @@ export const useChangePasswordTenantUserModal = () => {
             userName: userDto.userName,
         }
         openModal({
-            width: 600,
             title: t('changePasswordUserModal.title'),
+            modalProps: {
+                width: 680
+            },
             modalData: modalData,
             formRender: (modalData) => <>
                 <OrdFormBuilder config={formConfig}/>
