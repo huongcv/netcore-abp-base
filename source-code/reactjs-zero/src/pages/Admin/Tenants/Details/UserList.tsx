@@ -8,6 +8,10 @@ import {UserDto} from "@api/index.defs";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
 import {TenantService} from "@api/base/TenantService";
 import {SearchIsActived} from "@ord-components/forms/search/SearchIsActived";
+import {ChangePasswordUserModal, changePasswordUserModalStore} from "@pages/Admin/Users/change-password/Modal";
+import {UndoOutlined} from "@ant-design/icons";
+import PermissionUtil from "@ord-core/config/permissions/permission.util";
+import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 
 interface IProps {
     tenantDto?: TenantPagedDto | null;
@@ -15,6 +19,7 @@ interface IProps {
 
 export const TenantUserList: React.FC<IProps> = ({tenantDto}) => {
     const [searchForm] = Form.useForm();
+    const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.tenant);
     const apiService = useMemo(() => ({
         getPaged: (params: any, options?: any) => {
             const body = params?.body;
@@ -33,13 +38,25 @@ export const TenantUserList: React.FC<IProps> = ({tenantDto}) => {
     const columns = TableUtil.getColumns<UserDto>([
         ...UserDataColumns
     ], {
-        actions: []
+        actions: [
+            {
+                title: 'changePassword',
+                permission: policies.edit,
+                icon: <UndoOutlined/>,
+                onClick: (user) => {
+                    changePasswordUserModalStore.getInitialState().openModal(user);
+                }
+            },
+        ]
     });
 
-    return <SearchablePagedTable searchForm={searchForm}
-                                 searchFields={SearchFormFields}
-                                 apiService={apiService}
-                                 rowKey={'userId'}
-                                 columns={columns}
-    />;
+    return (<>
+        <SearchablePagedTable searchForm={searchForm}
+                              searchFields={SearchFormFields}
+                              apiService={apiService}
+                              rowKey={'userId'}
+                              columns={columns}
+        />
+        <ChangePasswordUserModal/>
+    </>);
 }

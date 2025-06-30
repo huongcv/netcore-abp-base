@@ -14,6 +14,7 @@ namespace Ord.Plugin.Auth.AppServices
     [OrdAuth]
     public class TenantAppService : OrdCrudAppService<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto, UpdateTenantDto>
     {
+        public const string TenantBasePermissionName = "AuthPlugin.Tenant";
         private ITenantCrudRepository TenantCrudRepository => AppFactory.GetServiceDependency<ITenantCrudRepository>();
         protected override
             IOrdCrudRepository<TenantEntity, Guid, TenantPagedInput, TenantPagedDto, TenantDetailDto, CreateTenantDto,
@@ -24,7 +25,7 @@ namespace Ord.Plugin.Auth.AppServices
         protected override string GetBasePermissionName()
         {
             AppFactory.CheckHostUser();
-            return "AuthPlugin.Tenant";
+            return TenantBasePermissionName;
         }
         #region Read Operations
         [HttpPost]
@@ -66,8 +67,11 @@ namespace Ord.Plugin.Auth.AppServices
         #region User management 
         [HttpPost]
         [ActionName("GetUserPaged")]
+        [OrdAuth(TenantBasePermissionName)]
         public virtual async Task<CommonResultDto<PagedResultDto<UserPagedDto>>> GetUserPaged(TenantUserPagedInput input)
         {
+            await CheckPermissionForOperation(CrudOperationType.Base);
+            await CheckPermissionForOperation(CrudOperationType.Update);
             if (IdEncoderService.TryDecodeId(input.EncodedId, out var id))
             {
                 using (CurrentTenant.Change(id))

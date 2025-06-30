@@ -2,13 +2,11 @@ import {createTableStore} from "@ord-components/paged-table";
 import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
-import {TenantPagedDto, UserDetailDto} from "@api/base/index.defs";
+import {TenantPagedDto} from "@api/base/index.defs";
 import {TenantService} from "@api/base/TenantService";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {useNavigate} from "react-router";
-import {Navigate} from "react-router-dom";
-import React from "react";
 // Stores
 const tableStore = createTableStore(TenantService);
 const modalStore = createModalFormStore(TenantService, {});
