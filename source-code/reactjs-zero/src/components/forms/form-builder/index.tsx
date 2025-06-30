@@ -12,7 +12,7 @@ interface FormBuilderComponentProps {
 export const OrdFormBuilder: React.FC<FormBuilderComponentProps> = ({
                                                                         config,
                                                                         disableResponsiveCol,
-                                                                        ignoreRowWrapper
+                                                                        ignoreRowWrapper = false,
                                                                     }) => {
     const visibleFields = useMemo(() => config.fields.filter(field => !field.hidden), [config.fields]);
     const FormContent = <>

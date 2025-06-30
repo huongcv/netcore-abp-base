@@ -1,7 +1,6 @@
 import {ModalProps} from 'antd/es/modal';
 import {create} from 'zustand';
 import {v4 as uuidv4} from "uuid";
-import {IButtonModal} from "@ord-components/modal/footer/buttons/useButtonRender";
 
 export interface ModalData {
     id?: string;
@@ -9,7 +8,6 @@ export interface ModalData {
 
     [key: string]: any;
 }
-
 
 export type IButtonModal = 'save' | React.ReactNode;
 
@@ -27,21 +25,24 @@ export interface ModalConfig extends ModalProps {
     onSubmit?: (formValues: any, modalData?: ModalData | null, modalId?: string) => Promise<boolean> | boolean;
     mustLoadingPageWhenSaving?: boolean;
     footerButtons?: IFooterButtonProps;
+    ignoreHotKeys?: string[];
 }
 
 interface ModalStore {
     modals: ModalConfig[];
+    topModalId: string | null;
     openModal: (config: Omit<ModalConfig, 'viewId' | 'loading'> & { id?: string }) => string;
     closeModal: (modalId: string) => void;
     closeAllModals: () => void;
     setLoading: (modalId: string, loading: boolean) => void;
     updateModalData: (modalId: string, data: Partial<ModalData>) => void;
     getModal: (modalId: string) => ModalConfig | undefined;
+    getTopModalId: () => string | null;
 }
 
 export const useGlobalModalStore = create<ModalStore>((set, get) => ({
     modals: [],
-
+    topModalId: null,
     openModal: (config) => {
         const modalId = uuidv4();
         const newModal: ModalConfig = {
@@ -51,19 +52,27 @@ export const useGlobalModalStore = create<ModalStore>((set, get) => ({
 
         set((state) => ({
             modals: [...state.modals, newModal],
+            topModalId: modalId,
         }));
-
         return modalId;
     },
 
     closeModal: (modalId) => {
-        set((state) => ({
-            modals: state.modals.filter((modal) => modal.viewId !== modalId),
-        }));
+        set((state) => {
+            const newModals = state.modals.filter((modal) => modal.viewId !== modalId);
+            const lastVisible = [...newModals].reverse().find(modal => modal.visible);
+            return {
+                modals: newModals,
+                topModalId: lastVisible?.viewId || null,
+            };
+        });
     },
 
     closeAllModals: () => {
-        set({modals: []});
+        set({
+            modals: [],
+            topModalId: null,
+        });
     },
 
     setLoading: (modalId, loading) => {
@@ -89,5 +98,10 @@ export const useGlobalModalStore = create<ModalStore>((set, get) => ({
 
     getModal: (modalId) => {
         return get().modals.find((modal) => modal.viewId === modalId);
+    },
+    getTopModalId: () => {
+        const modals = get().modals;
+        const lastVisible = [...modals].reverse().find(modal => modal.visible);
+        return lastVisible?.viewId || null;
     },
 }));

@@ -4,6 +4,7 @@ import {ModalConfig, useGlobalModalStore} from "@ord-components/modal/GlobalModa
 import UiUtils from "@ord-core/utils/ui.utils";
 import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 import {OrdModalSaveButton} from "@ord-components/modal/footer/buttons/OrdModalSaveButton";
+import {useModalHotkeys} from "@ord-components/modal/GlobalModalManager/useModalHotkeys";
 
 const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
     const {
@@ -14,9 +15,10 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         modalContentRender,
         mustLoadingPageWhenSaving = true,
         footerButtons,
+        ignoreHotKeys,
         ...rest
     } = modal;
-    const {closeModal, setLoading} = useGlobalModalStore();
+    const {closeModal, setLoading, topModalId} = useGlobalModalStore();
     const [form] = Form.useForm();
     const [saving, setSaving] = useState(false);
 
@@ -37,7 +39,6 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
         if (mustLoadingPageWhenSaving) {
             UiUtils.setBusy();
         }
-
         try {
             const values = await form.validateFields();
             setLoading(viewId, true);
@@ -60,7 +61,16 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
 
     const renderContent = useMemo(() => {
         if (modalContentRender) {
-            return modalContentRender(modalData);
+            return <>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={handleFinish}
+                    initialValues={modalData || {}}>
+                </Form>
+                {modalContentRender(modalData)}
+            </>;
         }
 
         return (
@@ -115,6 +125,16 @@ const SingleModal: React.FC<{ modal: ModalConfig }> = ({modal}) => {
             ]}/>
         )
     }, [handleCancel, form, saving]);
+
+    useModalHotkeys({
+        modalId: viewId,
+        ignoreHotKeys,
+        onOkModal: () => {
+            form.submit();
+        }, onClose: () => {
+            handleCancel();
+        }
+    });
 
     return (
         <Modal
