@@ -4,7 +4,6 @@
     "maxSizeUploadExcel": "File có dung lượng vuợt quá giới hạn cho phép",
     "maxRowExcelPlaceholder": "Tối đa {{maxRows}} dòng. ",
     "maxSizeExcelPlaceholder": "Dung lượng file không vượt quá {{maxSize}}MB. "
-
   },
   "selectFileExcelPlaceholder": "Chọn file hoặc kéo thả file vào đây để tải lên",
   "infoImportPlaceholder": "Hỗ trợ tải lên tệp định dạng .xls, .xlsx. ",
@@ -21,5 +20,6 @@
   "close": "Đóng",
   "success": "Thành công",
   "failed": "Thất bại",
-  "detailError": "Ghi chú lỗi"
+  "detailError": "Ghi chú lỗi",
+  "file_excel_invalid_format_or_not_data": "File không đúng mẫu import hoặc không có dữ liệu hợp lệ"
 }

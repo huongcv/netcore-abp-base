@@ -59,8 +59,8 @@ export abstract class ExcelReaderBase<T> implements IExcelReader<T> {
         const jsonData = XlsxUtil.readTableData(workbook, 0) as any[][];
         try {
             return this.mapData(jsonData);
-        } catch {
-            throw new Error("Không có dữ liệu hợp lệ");
+        } catch (e) {
+            throw e ?? new Error("Không có dữ liệu hợp lệ");
         }
 
     }
@@ -79,7 +79,7 @@ export abstract class ExcelReaderBase<T> implements IExcelReader<T> {
         for (let i = 0; i < jsonData.length; i++) {
             const row = jsonData[i];
             const normalized = row.map(cell => this.normalize(cell));
-            if (normalized.includes("stt")) {
+            if (this.isHeaderRow(normalized)) {
                 fieldHeaders = row.map(cell => this.mapHeader(this.normalize(cell)) || "");
                 headerRowIndex = i;
                 this.fieldLength = fieldHeaders.filter(h => h).length;
@@ -88,7 +88,7 @@ export abstract class ExcelReaderBase<T> implements IExcelReader<T> {
         }
 
         if (headerRowIndex === -1) {
-            throw new Error(l.transCommon('file_excel_invalid_format_or_not_data'));
+            throw new Error(l.trans('excel.file_excel_invalid_format_or_not_data'));
         }
 
         // Xử lý các dòng data
@@ -116,4 +116,6 @@ export abstract class ExcelReaderBase<T> implements IExcelReader<T> {
      * Tạo entity từ object data (bắt buộc override)
      */
     protected abstract createEntity(data: any): T;
+
+    protected abstract isHeaderRow(normalized: string[]): boolean;
 }

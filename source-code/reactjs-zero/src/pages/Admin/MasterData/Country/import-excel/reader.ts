@@ -22,4 +22,8 @@ export class CountryExcelReader extends ExcelReaderBase<CountryImportDto> {
     protected transformCellValue(header: string, cellValue: any): any {
         return cellValue;
     }
+    // kiểm tra xem có phải dòng header không
+    protected isHeaderRow(normalized: string[]): boolean {
+        return normalized.includes("stt");
+    }
 }
