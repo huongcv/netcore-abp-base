@@ -67,6 +67,7 @@ export const GenericExcelImport = <T extends Record<string, any>>(
                                         children: (
                                             <GenericExcelDataTable
                                                 datasource={store.validList}
+                                                useStore={useStore}
                                                 isValid={true}
                                                 columns={config.getColumns(true)}
                                                 setTabBarExtra={handleSetTabExtra}
@@ -87,6 +88,7 @@ export const GenericExcelImport = <T extends Record<string, any>>(
                                         children: (
                                             <GenericExcelDataTable
                                                 datasource={store.invalidList}
+                                                useStore={useStore}
                                                 isValid={false}
                                                 columns={config.getColumns(false)}
                                                 setMessage={store.setMessage}

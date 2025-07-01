@@ -3,14 +3,14 @@ import {Button, Table} from "antd";
 import {ColumnType} from "antd/es/table/interface";
 import {useTranslation} from "react-i18next";
 import {DownloadOutlined, SaveOutlined} from "@ant-design/icons";
-import {UploadFileService} from "@api/UploadFileService";
-import FileSaver from "file-saver";
 import GroupButtonFileExcel from "@ord-components/excel/GroupButtonFileExcel";
 import {StatusCell} from "@ord-components/table/cells/StatusCell";
 import {l} from "@ord-core/language/lang.utils";
+import {ExcelImportState} from "@ord-components/excel/import-excel/types";
 
 interface IGenericExcelDataTableProps<T> {
     datasource: T[];
+    useStore: () => ExcelImportState<T>;
     isValid: boolean;
     columns: ColumnType<T>[];
     setMessage?: (message: string) => void;
@@ -31,10 +31,12 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
         onImport,
         setMessage,
         fileInfo,
-        isImporting = false
+        isImporting = false,
+        useStore
     } = props;
 
     const {t} = useTranslation();
+    const {downloadErrorResult} = useStore();
     const [hiddenButton, setHiddenButton] = useState(false);
     const [dataExcel, setDataExcel] = useState<T[]>(datasource);
     const [saving, setSaving] = useState(false);
@@ -88,19 +90,7 @@ export const GenericExcelDataTable = <T extends Record<string, any>>(
     };
 
     const handleDownloadError = async () => {
-        if (!fileInfo?.fileId) return;
-
-        setSaving(true);
-        try {
-            const blob = await UploadFileService.getFileFromCache({
-                fileCacheId: fileInfo.fileId,
-            }, {responseType: 'blob'});
-            FileSaver.saveAs(blob, fileInfo.fileName);
-        } catch {
-            setMessage?.(t('actionError'));
-        } finally {
-            setSaving(false);
-        }
+        downloadErrorResult();
     };
 
     const reset = () => {

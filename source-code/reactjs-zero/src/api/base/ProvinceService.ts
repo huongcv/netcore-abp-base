@@ -8,8 +8,8 @@ import {
     CommonResultDtoOfProvinceDetailDto,
     CreateProvinceDto,
     EncodedIdDto,
-    GetComboOptionInputDto,
     getConfigs,
+    GetProvinceComboOptionInputDto,
     IRequestConfig,
     IRequestOptions,
     ProvincePagedInput,
@@ -28,7 +28,7 @@ export class ProvinceService {
   static getComboOptions(
     params: {
       /** requestBody */
-      body?: GetComboOptionInputDto;
+      body?: GetProvinceComboOptionInputDto;
     } = {} as any,
     options: IRequestOptions = {}
   ): Promise<CommonResultDtoOfListOfComboOptionDto> {

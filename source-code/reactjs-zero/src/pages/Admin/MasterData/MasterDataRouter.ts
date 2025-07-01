@@ -19,4 +19,9 @@ export const MasterDataRouter: OrdRouterItem[] = [
         lazyComponent: lazy(() => import("@pages/Admin/MasterData/Province")),
         permission: PERMISSION_NAME_APP.masterData.province,
     },
+    {
+        path: "master-data/province/import",
+        lazyComponent: lazy(() => import("@pages/Admin/MasterData/Province/import-excel")),
+        permission: PERMISSION_NAME_APP.masterData.province,
+    },
 ];

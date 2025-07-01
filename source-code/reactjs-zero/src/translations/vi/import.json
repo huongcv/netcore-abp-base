@@ -1,6 +1,7 @@
 {
   "pageTitle": "Nhập excel",
   "title": {
-    "country": "Nhập danh sách quốc gia từ file excel"
+    "country": "Nhập danh sách quốc gia từ file excel",
+    "province": "Nhập danh sách tỉnh/ thành phố từ file excel"
   }
 }

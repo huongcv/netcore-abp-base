@@ -151,6 +151,35 @@ export const createExcelImportStore = <T>(apiService: IImportApiService<T>) => c
                 }
             },
 
+            downloadErrorResult: async () => {
+                try {
+                    UiUtils.setBusy();
+                    set({isLoading: true});
+                    let options: IRequestOptions = {
+                        responseType: "blob",
+                    }
+                    const {invalidList} = get();
+                    const resultBlob = await apiService.downloadImportResult({
+                        body: {
+                            isSuccessList: false,
+                            items: invalidList || []
+                        }
+                    }, options);
+                    const contentDisposition = sessionStorage.getItem('content-disposition');
+                    let fileName = 'download.xlsx';
+                    const fileNameMatch = contentDisposition?.match(/filename\*=UTF-8''(.+\.xlsx)/);
+                    if (fileNameMatch && fileNameMatch[1]) {
+                        fileName = decodeURIComponent(fileNameMatch[1]);
+                    }
+                    FileSaver.saveAs(resultBlob, fileName);
+                } catch (error) {
+                    set({message: "Lỗi tải template"});
+                } finally {
+                    set({isLoading: false});
+                    UiUtils.clearBusy();
+                }
+            },
+
             reset: () => set({
                 binaryStrExcel: '',
                 validList: [],

@@ -48,7 +48,7 @@ namespace Ord.Plugin.MasterData.AppServices
         private async Task DoHandlerXlsFileAfterBindData(XlsFile xls)
         {
             // xóa cột trạng thái
-            xls.DeleteColumn(5);
+            xls.DeleteColumn(6);
         }
 
 

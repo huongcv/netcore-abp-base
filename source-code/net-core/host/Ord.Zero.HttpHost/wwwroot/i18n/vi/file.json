@@ -1,8 +1,14 @@
 ﻿{
   "ImportSampleTemplate": {
-    "Country": "mau_import_quoc_gia"
+    "Country": "mau_import_quoc_gia",
+    "Province": "mau_import_tinh_thanh"
   },
   "download-name": {
-    "CountryEntity": "danh_sach_quoc_gia"
+    "CountryEntity": "danh_sach_quoc_gia",
+    "ProvinceEntity": "danh_sach_tinh_thanh"
+  },
+  "ImportResultErrors": {
+    "Country": "danh_sach_loi_import_quoc_gia",
+    "Province": "danh_sach_loi_import_tinh_thanh"
   }
 }

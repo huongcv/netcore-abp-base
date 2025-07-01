@@ -10,6 +10,17 @@
         {
             return source == null || source.Count <= 0;
         }
+
+        public static void AddIfNotNull(this ICollection<string> source, string? item)
+        {
+            if (string.IsNullOrEmpty(item))
+            {
+                return;
+            }
+
+            source ??= new List<string>();
+            source.Add(item);
+        }
         public static bool AddIfNotContains<T>(this ICollection<T> source, T item)
         {
             if (source == null)

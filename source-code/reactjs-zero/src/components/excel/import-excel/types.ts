@@ -1,5 +1,5 @@
 import {ColumnType} from "antd/es/table/interface";
-import {IRequestOptions} from "@api/base/index.defs";
+import {DownloadResultFileImportOfProvinceImportDto, IRequestOptions, ProvinceImportDto} from "@api/base/index.defs";
 import {ICommonResultDtoApi} from "@ord-components/paged-table/types";
 
 export interface IImportApiService<T> {
@@ -11,6 +11,13 @@ export interface IImportApiService<T> {
     ): Promise<ICommonResultDtoApi<IImportOutputDtoDto<T>>>;
 
     downloadSampleTemplate(options: IRequestOptions): Promise<any>;
+
+    downloadImportResult(params: {
+        body?: {
+            items?: any[];
+            isSuccessList?: boolean;
+        };
+    }, options?: IRequestOptions): Promise<any>;
 
     import(
         params: {
@@ -72,5 +79,6 @@ export interface ExcelImportState<T> {
     validateData: (config: IExcelImportConfig<T>) => Promise<void>;
     importData: (config: IExcelImportConfig<T>) => Promise<any>;
     downloadTemplate: () => void;
+    downloadErrorResult: () => void;
     reset: () => void;
 }

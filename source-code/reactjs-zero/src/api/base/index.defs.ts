@@ -484,6 +484,23 @@ export interface CommonResultDtoOfImportOutputDtoOfCountryImportDto {
   isSuccessful?: boolean;
 }
 
+export interface CommonResultDtoOfImportOutputDtoOfProvinceImportDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: ImportOutputDtoOfProvinceImportDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
 export interface CommonResultDtoOfInt32 {
   /**  */
   code?: string;
@@ -1349,6 +1366,14 @@ export interface DownloadResultFileImportOfCountryImportDto {
   isSuccessList?: boolean;
 }
 
+export interface DownloadResultFileImportOfProvinceImportDto {
+  /**  */
+  items?: ProvinceImportDto[];
+
+  /**  */
+  isSuccessList?: boolean;
+}
+
 export interface EncodedIdDto {
   /**  */
   encodedId?: string;
@@ -1514,6 +1539,14 @@ export interface GetComboOptionInputDto {
   includeUnActive?: boolean;
 }
 
+export interface GetProvinceComboOptionInputDto {
+  /**  */
+  includeUnActive?: boolean;
+
+  /**  */
+  countryCode?: string;
+}
+
 export interface GetUserAccessTokenPagedInput {
   /**  */
   maxResultCount?: number;
@@ -1628,6 +1661,14 @@ export interface ImportOutputDtoOfCountryImportDto {
 
   /**  */
   successImportList?: CountryImportDto[];
+}
+
+export interface ImportOutputDtoOfProvinceImportDto {
+  /**  */
+  errorImportList?: ProvinceImportDto[];
+
+  /**  */
+  successImportList?: ProvinceImportDto[];
 }
 
 export interface InterfaceMethodApiDescriptionModel {
@@ -1980,6 +2021,32 @@ export interface ProvinceDetailDto {
 
   /**  */
   creationTime?: Date;
+}
+
+export interface ProvinceImportDto {
+  /**  */
+  countryCode?: string;
+
+  /**  */
+  code?: string;
+
+  /**  */
+  name?: string;
+
+  /**  */
+  level?: string;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  encodedId?: string;
+
+  /**  */
+  rowNumber?: number;
+
+  /**  */
+  errorMessages?: string[];
 }
 
 export interface ProvincePagedDto {

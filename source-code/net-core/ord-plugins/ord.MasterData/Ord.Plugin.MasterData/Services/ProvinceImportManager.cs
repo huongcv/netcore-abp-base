@@ -1,4 +1,5 @@
 ﻿using Ord.Plugin.Contract.Features.DataImporting;
+using Ord.Plugin.Contract.Utils;
 using Ord.Plugin.Core.Factories.Extensions;
 using Ord.Plugin.Core.Features.DataImporting;
 using Ord.Plugin.MasterData.Shared.Dtos;
@@ -11,9 +12,15 @@ namespace Ord.Plugin.MasterData.Services
     {
         private IProvinceRepository Repository => AppFactory.GetServiceDependency<IProvinceRepository>();
         private ImportCheckStringDuplicate _codeDuplicateValidate = new();
+        private List<string> _countryCodeList = new List<string>();
         protected override async Task PrepareDataForValidationAsync(List<ProvinceImportDto> rawDataList)
         {
             await _codeDuplicateValidate.SetListValueDbAsync(() => Repository.GetAllCodesAsync());
+            _countryCodeList = await AppFactory.GetServiceDependency<ICountryRepository>().GetAllCodesAsync();
+            if (_countryCodeList?.Any() == true)
+            {
+                _countryCodeList = _countryCodeList.Select(x => x.ToUpper()).ToList();
+            }
         }
 
         protected override async Task<List<string>> ValidateBusinessRulesForRowAsync(ProvinceImportDto importDto)
@@ -21,7 +28,18 @@ namespace Ord.Plugin.MasterData.Services
             var errors = new List<string>();
             var errorCodeDuplicate = _codeDuplicateValidate.Validate(AppFactory, importDto.Code, importDto.RowNumber);
             errors.AddRange(errorCodeDuplicate);
+            errors.AddIfNotNull(CheckCountryCode(importDto));
             return errors;
+        }
+
+        private string CheckCountryCode(ProvinceImportDto importDto)
+        {
+            if (string.IsNullOrEmpty(importDto.CountryCode))
+            {
+                return null;
+            }
+            var countryCode = importDto.CountryCode.ToUpper();
+            return !_countryCodeList.Contains(countryCode) ? "message.validation.not_found_country_code" : null;
         }
 
         protected override string GetFilePathExportResult()
