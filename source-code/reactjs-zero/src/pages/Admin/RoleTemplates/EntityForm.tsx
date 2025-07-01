@@ -3,21 +3,13 @@ import React, {useMemo} from "react";
 import ListPermissionInput from "@ord-components/forms/ListPermissionInput";
 import {useTranslation} from "react-i18next";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
-import {UseBoundStore} from "zustand/react";
-import {StoreApi} from "zustand/vanilla";
-import {ModalFormState} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
 import {useUserTypeFromRoleCode} from "@pages/Admin/RoleTemplates/hook/useUserTypeFromRoleCode";
 
-interface IProps {
-    modalStore: UseBoundStore<StoreApi<ModalFormState<any>>>;
-}
-
-export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
+export const RoleTemplateEntityForm: React.FC = () => {
     const {t} = useTranslation('common');
-    const {modalStore} = props;
-    const {mode} = modalStore();
     const form = Form.useFormInstance();
+    const encodedId = Form.useWatch('encodedId');
     const config = useMemo(() => {
         return new FormBuilder()
             .addText({
@@ -25,7 +17,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
                 name: 'code',
                 maxLength: 100,
                 required: true,
-                disabled: mode === 'edit' || mode === 'viewDetail'
+                disabled: !!encodedId
             })
             .addText({
                 span: 12,
@@ -41,7 +33,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
                 initialValue: true
             })
             .build();
-    }, [mode]);
+    }, [encodedId]);
     const userType = useUserTypeFromRoleCode(Form.useWatch('code', form));
 
     const items: TabsProps['items'] = [{
@@ -54,7 +46,7 @@ export const RoleTemplateEntityForm: React.FC<IProps> = (props) => {
         key: '2',
         label: t('tabPermissions'),
         children: (<Form.Item noStyle name='permissionNames'>
-            <ListPermissionInput disabled={mode === 'viewDetail'} userType={userType}/>
+            <ListPermissionInput disabled={encodedId === 'viewDetail'} userType={userType}/>
         </Form.Item>),
         forceRender: true
     }];

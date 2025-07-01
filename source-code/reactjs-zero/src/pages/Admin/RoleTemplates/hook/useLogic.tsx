@@ -1,5 +1,4 @@
 import {createTableStore} from "@ord-components/paged-table";
-import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {UserDetailDto} from "@api/base/index.defs";
@@ -7,16 +6,17 @@ import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {RoleService} from "@api/base/RoleService";
 import {RoleTemplateService} from "@api/base/RoleTemplateService";
+import {useRoleTemplateModifyModal} from "@pages/Admin/RoleTemplates/hook/useModifyModal";
 // Stores
 const tableStore = createTableStore(RoleTemplateService);
-const modalStore = createModalFormStore(RoleTemplateService, {});
-
-
 export const useRoleTemplateLogic = () => {
-    const {onExportExcel} = tableStore();
-    const {openView, openCreate, openEdit, openDelete, mode} = modalStore();
+    const {onExportExcel, onLoadData, setReloadStatusCounter} = tableStore();
     const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.role);
-    const isCreateNew = mode === 'create';
+    // Modal actions
+    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useRoleTemplateModifyModal(() => {
+        onLoadData();
+        setReloadStatusCounter();
+    });
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -29,7 +29,7 @@ export const useRoleTemplateLogic = () => {
         {
             title: 'addNew',
             permission: policies.create,
-            onClick: openCreate
+            onClick: openCreateModal
         }
     ];
     const tableActions: ITableAction<UserDetailDto>[] = [{
@@ -40,7 +40,7 @@ export const useRoleTemplateLogic = () => {
                     encodedId: d.encodedId
                 }
             });
-            openView(res.data);
+            openViewModal(res.data);
         }
     },
         {
@@ -52,12 +52,12 @@ export const useRoleTemplateLogic = () => {
                         encodedId: d.encodedId
                     }
                 });
-                openEdit(res.data);
+                openEditModal(res.data);
             }
         }, {
             title: 'remove',
             onClick: (d) => {
-                openDelete(d);
+                openDeleteConfirm(d);
             },
             permission: policies.remove
         }
@@ -65,17 +65,8 @@ export const useRoleTemplateLogic = () => {
 
     return {
         tableStore,
-        modalStore,
         topActions,
         tableActions,
-        crudActions: {
-            openView,
-            openCreate,
-            openEdit,
-            openDelete,
-            onExportExcel
-        },
-        counterFetcher: RoleTemplateService.getCountByActive,
-        isCreateNew
+        counterService: RoleTemplateService.getCountByActive
     };
 };
