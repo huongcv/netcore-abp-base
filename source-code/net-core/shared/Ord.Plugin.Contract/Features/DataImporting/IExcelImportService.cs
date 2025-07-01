@@ -1,8 +1,9 @@
 ﻿using FlexCel.XlsAdapter;
+using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Contract.Features.DataImporting
 {
-    public interface IExcelImportService<TImportDto>
+    public interface IExcelImportService<TImportDto> : IScopedDependency
         where TImportDto : class, IImportDto, new()
     {
         Task<ImportOutputDto<TImportDto>> ValidateProcessDataAsync(List<TImportDto> rawDataList);

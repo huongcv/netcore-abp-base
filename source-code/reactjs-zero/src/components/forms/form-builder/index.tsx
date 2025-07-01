@@ -18,7 +18,7 @@ export const OrdFormBuilder: React.FC<FormBuilderComponentProps> = ({
     const FormContent = <>
         {visibleFields.map((field, index) => (
             <FormFieldItem
-                key={field.name || `field-${index}`}
+                key={`field-${field?.name}-${index}`}
                 field={field}
                 disableResponsiveCol={disableResponsiveCol}
             />

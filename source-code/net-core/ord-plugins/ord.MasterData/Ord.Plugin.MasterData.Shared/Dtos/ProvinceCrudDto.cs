@@ -2,6 +2,7 @@
 using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Contract.Features.Validation.Attributes;
 using Volo.Abp.Application.Dtos;
 
@@ -15,6 +16,8 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
             CreateMap<ProvinceDetailDto, ProvinceEntity>().ReverseMap();
             CreateMap<CreateProvinceDto, ProvinceEntity>().ReverseMap();
             CreateMap<UpdateProvinceDto, ProvinceEntity>().ReverseMap();
+            CreateMap<ProvinceImportDto, CreateProvinceDto>().ReverseMap();
+            CreateMap<ProvincePagedDto, ProvinceImportDto>().ReverseMap();
         }
     }
 
@@ -55,5 +58,17 @@ namespace Ord.Plugin.MasterData.Shared.Dtos
 
     public class UpdateProvinceDto : ProvinceCrudBase
     {
+    }
+
+    public class GetProvinceComboOptionInputDto : GetComboOptionInputDto
+    {
+
+        public string? CountryCode { get; set; }
+    }
+
+    public class ProvinceImportDto : CreateProvinceDto, IImportDto
+    {
+        public int? RowNumber { get; set; }
+        public List<string>? ErrorMessages { get; set; }
     }
 }

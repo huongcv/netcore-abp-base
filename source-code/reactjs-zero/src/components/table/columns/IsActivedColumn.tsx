@@ -13,22 +13,3 @@ export const IsActivedColumn = (width = 120) => {
         align: 'center'
     } as ColumnType;
 };
-export const IsActivedColumnWithFilter = (width = 120) => {
-    return {
-        title: l.transCommon('status'),
-        dataIndex: 'isActived',
-        render: (isActived: boolean, record: any) => (<IsActiveStatusDisplay value={!isActived}/>),
-        width: width,
-        // filters: [
-        //     {
-        //         text: l.transCommon('dang_hoat_dong'),
-        //         value: true,
-        //     },
-        //     {
-        //         text: l.transCommon('ngung_hoat_dong'),
-        //         value: false,
-        //     }
-        // ],
-        // filterMultiple: false
-    } as ColumnType;
-};

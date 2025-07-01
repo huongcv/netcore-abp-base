@@ -25,5 +25,6 @@
   "address": "Địa chỉ",
   "ma_tinh": "Mã tỉnh",
   "ten_tinh": "Tên tỉnh",
-  "quoc_gia": "Quốc gia"
+  "quoc_gia": "Quốc gia",
+  "cap": "Cấp"
 }

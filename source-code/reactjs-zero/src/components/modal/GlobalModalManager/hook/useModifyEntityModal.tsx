@@ -69,7 +69,7 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
             onFinish={onFinish}
         >
             {formFields}
-            {!disabled && <Form.Item noStyle name="encodedId"/>}
+            <Form.Item noStyle name="encodedId"/>
         </Form>
     );
 

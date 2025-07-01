@@ -1,4 +1,5 @@
-﻿using Ord.Domain.Entities.MasterData;
+﻿using AutoMapper;
+using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.Contract.Base;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.Validation.Attributes;
@@ -6,6 +7,18 @@ using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.MasterData.Shared.Dtos
 {
+    public class CountryMapProfile : Profile
+    {
+        public CountryMapProfile()
+        {
+            CreateMap<CountryPagedDto, CountryEntity>().ReverseMap();
+            CreateMap<CountryDetailDto, CountryEntity>().ReverseMap();
+            CreateMap<CreateCountryDto, CountryEntity>().ReverseMap();
+            CreateMap<UpdateCountryDto, CountryEntity>().ReverseMap();
+            CreateMap<CountryPagedDto, CountryImportDto>().ReverseMap();
+            CreateMap<CountryImportDto, CreateCountryDto>().ReverseMap();
+        }
+    }
     public class CountryCrudBase : IHasActived, IHasEncodedId
     {
         [OrdMaxLengthString(CountryEntity.MaxLengthCode)]

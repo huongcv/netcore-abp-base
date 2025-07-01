@@ -15,9 +15,10 @@
     }
   },
   "entity": {
-    "country": "quốc gia",
     "user": "người dùng",
     "tenant": "thuê bao",
-    "role": "vai trò"
+    "role": "vai trò",
+    "country": "quốc gia",
+    "province": "tỉnh/ thành phố"
   }
 }

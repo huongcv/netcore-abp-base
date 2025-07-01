@@ -10,6 +10,6 @@ export const StatusCell = (prop: {
     const {t} = useTranslation('common');
     return (<IsActiveStatusDisplay value={prop?.isActived} config={{
         activeText: prop?.trueText || 'dang_hoat_dong',
-        inactiveText: prop?.falseText || 'dang_hoat_dong',
+        inactiveText: prop?.falseText || 'ngung_hoat_dong',
     }}/>);
 }

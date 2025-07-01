@@ -15,7 +15,7 @@ i18n
         interpolation: {
             escapeValue: false, // không nên escape trong React
         },
-        defaultNS: ['common'],
+        defaultNS: ['common', 'field'],
         fallbackNS: ['common', 'menu']
     });
 

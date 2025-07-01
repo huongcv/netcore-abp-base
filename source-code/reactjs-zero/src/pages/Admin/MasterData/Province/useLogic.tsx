@@ -52,7 +52,10 @@ export const useProvinceLogic = () => {
         if (resourcePermissions.canCreate) {
             actions.push({
                 title: 'addNew',
-                onClick: () => openCreateModal()
+                onClick: () => openCreateModal({
+                    // level: 'Tỉnh',
+                    // countryCode: 'VN'
+                })
             });
         }
 

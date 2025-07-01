@@ -33,7 +33,9 @@ namespace Ord.EfCore.Default.Repository.MasterData
                 Code = x.Province.Code,
                 CountryCode = x.Province.CountryCode,
                 CreationTime = x.Province.CreationTime,
-                CountryName = x.Country.Name
+                CountryName = x.Country.Name,
+                IsActived = x.Province.IsActived,
+                Level = x.Province.Level
             });
         }
         // bổ sung thêm CountryName khi lấy detail by id
@@ -120,19 +122,25 @@ namespace Ord.EfCore.Default.Repository.MasterData
             }
         }
 
-        public async Task<IEnumerable<ProvincePagedDto>> GetListComboOptions(bool includeUnActive = false)
+        public async Task<IEnumerable<ProvincePagedDto>> GetListComboOptions(string? countryCode, bool includeUnActive = false)
         {
-            return await GetListAsDtoAsync<ProvincePagedDto>(
-                x => x.IsActived == true || includeUnActive,
-                x => new ProvincePagedDto
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Code = x.Code,
-                    CountryCode = x.CountryCode,
-                    IsActived = x.IsActived,
-                },
-                true);
+            var queryable = await GetQueryableAsNoTracking();
+            queryable = queryable.WhereIfHasValue(countryCode, x => x.CountryCode == countryCode)
+                .WhereIf(includeUnActive != true, x => x.IsActived == true);
+            return await queryable.Select(x => new ProvincePagedDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Code = x.Code,
+                CountryCode = x.CountryCode,
+                IsActived = x.IsActived,
+            }).ToListAsync();
+        }
+
+        public async Task<List<string>> GetAllCodesAsync()
+        {
+            var queryable = await GetQueryableAsNoTracking();
+            return await queryable.Select(x => x.Code).ToListAsync();
         }
 
         /// <summary>

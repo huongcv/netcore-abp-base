@@ -2,9 +2,12 @@
 using Ord.Domain.Entities.MasterData;
 using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
+using Ord.Plugin.Contract.Features.DataImporting;
 using Ord.Plugin.Core.Services;
 using Ord.Plugin.MasterData.Shared.Dtos;
 using Ord.Plugin.MasterData.Shared.Repositories;
+using Ord.Plugin.MasterData.Shared.Services;
+using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.MasterData.AppServices
 {
@@ -24,9 +27,11 @@ namespace Ord.Plugin.MasterData.AppServices
 
         [HttpPost]
         [ActionName("GetComboOptions")]
-        public async Task<CommonResultDto<List<ComboOptionDto>>> GetComboOptions(GetComboOptionInputDto input)
+        public async Task<CommonResultDto<List<ComboOptionDto>>> GetComboOptions(GetProvinceComboOptionInputDto input)
         {
-            var users = await ProvinceRepository.GetListComboOptions(input.IncludeUnActive ?? false);
+            var users = await ProvinceRepository.GetListComboOptions(
+                input.CountryCode,
+                input.IncludeUnActive ?? false);
             var options = users.Select(x => new ComboOptionDto
             {
                 Value = x.Code,
@@ -42,6 +47,14 @@ namespace Ord.Plugin.MasterData.AppServices
                 }
             }).ToList();
             return AppFactory.CreateSuccessResult(options);
+        }
+        protected override async Task<byte[]> GenerateExcelFileAsync(PagedResultDto<ProvincePagedDto> pagedResult, ProvincePagedInput input)
+        {
+            // sử dụng chung file mẫu khi xuất với file mẫu import
+            var dataExport = pagedResult.Items
+                .Select(x => AppFactory.ObjectMap<ProvincePagedDto, ProvinceImportDto>(x)).ToList();
+            var importService = AppFactory.GetServiceDependency<IProvinceImportManager>();
+            return await importService.ExportResultDataAsync(dataExport);
         }
     }
 }
