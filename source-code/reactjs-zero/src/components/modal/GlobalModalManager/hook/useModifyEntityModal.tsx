@@ -1,11 +1,12 @@
 import {useCallback, useRef} from 'react';
-import {Form, ModalProps} from 'antd';
+import {Checkbox, Form, FormInstance, ModalProps} from 'antd';
 import {useGlobalModalStore} from './useGlobalModalStore';
 import {ICommonResultDtoApi, IModifyApiService} from '@ord-components/paged-table/types';
 import {ModifyModalI18nConfig, useModifyModalI18n} from '@ord-components/paged-table/hooks/useModifyModalI18n';
 import {OrdModalFooter} from '@ord-components/modal/footer/OrdModalFooter';
 import {OrdModalSaveButton} from '@ord-components/modal/footer/buttons/OrdModalSaveButton';
 import UiUtils from '@ord-core/utils/ui.utils';
+import {l} from "@ord-core/language/lang.utils";
 
 export interface UseModifyModalConfig<T = any> {
     apiService: IModifyApiService;
@@ -44,7 +45,22 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         getConfirmTitle,
     } = useModifyModalI18n({entityTranslationNs, i18nConfig});
     const isSubmittingRef = useRef(false);
-    const renderFooter = (onClose: () => void, internalForm: any) => (
+    const continueAddRef = useRef(false);
+    const renderFooterAdd = (onClose: () => void, internalForm: any) => (
+        <OrdModalFooter
+            onClose={onClose}
+            left={[
+                <Checkbox
+                    key="continueAdd"
+                    onChange={(e) => (continueAddRef.current = e.target.checked)}
+                >
+                    {l.transCommon('addNewContinue')}
+                </Checkbox>,
+            ]}
+            right={[<OrdModalSaveButton key="save" onSubmit={() => internalForm.submit()}/>]}
+        />
+    );
+    const renderFooterEdit = (onClose: () => void, internalForm: any) => (
         <OrdModalFooter
             onClose={onClose}
             right={[<OrdModalSaveButton key="save" onSubmit={() => internalForm.submit()}/>]}
@@ -55,7 +71,7 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         initialValues: any,
         onFinish: (values: T) => Promise<void>,
         disabled = false
-    ) => (internalForm: any) => (
+    ) => (internalForm: FormInstance) => (
         <Form
             form={internalForm}
             clearOnDestroy
@@ -66,7 +82,10 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
             onFinishFailed={() => {
                 UiUtils.showCommonValidateForm();
             }}
-            onFinish={onFinish}
+            onFinish={(formValues) => {
+                onFinish(formValues).then();
+                internalForm.resetFields();
+            }}
         >
             {formFields}
             <Form.Item noStyle name="encodedId"/>
@@ -90,7 +109,10 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
                         UiUtils.showSuccess(getSuccessMessage('create', transformNotificationParameter(result.data)));
                         onSaved?.();
                         crudSettings?.onSuccess?.(result, 'create');
-                        closeModal(modalId);
+                        // ✅ Kiểm tra nếu chọn "Tiếp tục thêm mới"
+                        if (!continueAddRef.current) {
+                            closeModal(modalId);
+                        }
                     } else result.message && UiUtils.showError(result.message);
                 } catch (err) {
                 } finally {
@@ -98,7 +120,7 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
                     UiUtils.clearBusy();
                 }
             }),
-            renderModalFooter: renderFooter,
+            renderModalFooter: renderFooterAdd,
         }, 'MODAL_ENTITY_' + entityTranslationNs);
         return modalId;
     }, [apiService, crudSettings, onSaved]);
@@ -128,7 +150,7 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
                     UiUtils.clearBusy();
                 }
             }),
-            renderModalFooter: renderFooter,
+            renderModalFooter: renderFooterEdit,
         });
         return modalId;
     }, [apiService, crudSettings, onSaved]);
