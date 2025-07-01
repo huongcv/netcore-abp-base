@@ -82,7 +82,12 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         modalId = openModal({
             title: getTitleText('create', {}),
             modalProps,
-            renderModalContent: renderFormModalContent(customInitialValues, async (values) => {
+            renderModalContent: renderFormModalContent({
+                ...customInitialValues,
+                extendUi: {
+                    modifyMode: 'add'
+                }
+            }, async (values) => {
                 if (isSubmittingRef.current) return;
                 isSubmittingRef.current = true;
                 UiUtils.setBusy();
@@ -115,7 +120,12 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         modalId = openModal({
             title: getTitleText('edit', transformNotificationParameter(editingItem)),
             modalProps,
-            renderModalContent: renderFormModalContent(editingItem, async (values) => {
+            renderModalContent: renderFormModalContent({
+                ...editingItem,
+                extendUi: {
+                    modifyMode: 'edit'
+                }
+            }, async (values) => {
                 if (isSubmittingRef.current) return;
                 isSubmittingRef.current = true;
                 UiUtils.setBusy();
@@ -144,7 +154,12 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         return openModal({
             title: getTitleText('viewDetail', transformNotificationParameter(viewingItem)),
             modalProps,
-            renderModalContent: renderFormModalContent(viewingItem, async () => {
+            renderModalContent: renderFormModalContent({
+                ...viewingItem,
+                extendUi: {
+                    modifyMode: 'view'
+                }
+            }, async () => {
             }, true),
             renderModalFooter: (onClose) => <OrdModalFooter onClose={onClose}/>,
         });

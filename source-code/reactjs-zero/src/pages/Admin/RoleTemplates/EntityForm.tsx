@@ -9,7 +9,14 @@ import {useUserTypeFromRoleCode} from "@pages/Admin/RoleTemplates/hook/useUserTy
 export const RoleTemplateEntityForm: React.FC = () => {
     const {t} = useTranslation('common');
     const form = Form.useFormInstance();
-    const encodedId = Form.useWatch('encodedId');
+    const modifyMode = Form.useWatch(['extendUi', 'modifyMode']);
+    const userType = useUserTypeFromRoleCode(Form.useWatch('code', form));
+    const isReadOnly = useMemo(() => {
+        return modifyMode == 'view'
+    }, [modifyMode]);
+    const isAdd = useMemo(() => {
+        return modifyMode == 'add'
+    }, [modifyMode]);
     const config = useMemo(() => {
         return new FormBuilder()
             .addText({
@@ -17,7 +24,7 @@ export const RoleTemplateEntityForm: React.FC = () => {
                 name: 'code',
                 maxLength: 100,
                 required: true,
-                disabled: !!encodedId
+                disabled: !isAdd
             })
             .addText({
                 span: 12,
@@ -33,8 +40,8 @@ export const RoleTemplateEntityForm: React.FC = () => {
                 initialValue: true
             })
             .build();
-    }, [encodedId]);
-    const userType = useUserTypeFromRoleCode(Form.useWatch('code', form));
+    }, [isAdd]);
+
 
     const items: TabsProps['items'] = [{
         key: '1',
@@ -46,7 +53,7 @@ export const RoleTemplateEntityForm: React.FC = () => {
         key: '2',
         label: t('tabPermissions'),
         children: (<Form.Item noStyle name='permissionNames'>
-            <ListPermissionInput disabled={encodedId === 'viewDetail'} userType={userType}/>
+            <ListPermissionInput disabled={isReadOnly} userType={userType}/>
         </Form.Item>),
         forceRender: true
     }];

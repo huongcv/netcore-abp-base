@@ -32,6 +32,7 @@ export function useRenderFormModalContent<T = any>({
         >
             {formFields}
             <Form.Item noStyle name="encodedId"/>
+            <Form.Item noStyle name={['extendUi', 'modifyMode']}/>
         </Form>
     );
 }
