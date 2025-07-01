@@ -27,9 +27,14 @@ export class ProvinceExcelReader extends ExcelReaderBase<ProvinceImportDto> {
 
 // kiểm tra xem có phải dòng header không
     protected isHeaderRow(normalized: string[]): boolean {
-        const requiredHeaders = ["stt", "ma quoc gia", "cap", "ten", "ma"];
-        // Chuẩn hóa tất cả giá trị về chữ thường để so sánh không phân biệt hoa/thường
-        const normalizedSet = new Set(normalized.map(h => h.toLowerCase().trim()));
-        return requiredHeaders.every(header => normalizedSet.has(header));
+        const requiredHeaders = ["stt", "ma_quoc_gia", "cap", "ten", "ma"];
+        const normalizeHeader = (header: string) =>
+            header.trim().toLowerCase().replace(/\s+/g, "_");
+
+        const normalizedSet = new Set(normalized.map(normalizeHeader));
+
+        return requiredHeaders.every(header =>
+            normalizedSet.has(normalizeHeader(header))
+        );
     }
 }
