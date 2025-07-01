@@ -22,7 +22,7 @@ export const useChangePasswordTenantUserModal = () => {
             disabled: true,
         })
         .addText({
-            name: 'name',
+            name: 'fullName',
             label: 'full_name',
             maxLength: 50,
             disabled: true,
@@ -53,6 +53,7 @@ export const useChangePasswordTenantUserModal = () => {
         const modalData = {
             ...tenantDto,
             userName: userDto.userName,
+            fullName: userDto.name,
         }
         openFormModal(modalData, async (formValues, form, modalData) => {
             const bodyData: TenantUserChangePassword = {
