@@ -1,30 +1,30 @@
 import React, {useMemo} from "react";
+import {CountryService} from "@api/base/CountryService";
 import {useTableStore} from "@ord-components/paged-table/hooks/useTableStore";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import ExcelDropdown from "@ord-components/excel/ExcelDropdown";
 import {usePermissionStrings, useResourcePermission} from "@ord-core/hooks/auth/useResourcePermission";
-import {useCountryModifyModal} from "@pages/Admin/MasterData/Country/useCountryModifyModal";
-import {ProvinceService} from "@api/base/ProvinceService";
-import {useProvinceModifyModal} from "@pages/Admin/MasterData/Province/useEntityModifyModal";
+import {useCountryModifyModal} from "@pages/Admin/MasterData/Country/hook/useModifyModal";
 
-export const PROVINCE_CONFIG = {
+export const COUNTRY_CONFIG = {
     // Page config
-    entityName: 'province',
+    entityName: 'country',
     permission: {
-        base: 'MasterData.Province',
+        base: 'MasterData.Country',
+        // Bỏ các permission cụ thể vì sẽ sử dụng pattern Resource.Action
     }
 } as const;
-export const useProvinceLogic = () => {
+export const useLogic = () => {
     // Resource permissions
-    const resourcePermissions = useResourcePermission(PROVINCE_CONFIG.permission.base);
+    const countryPermissions = useResourcePermission(COUNTRY_CONFIG.permission.base);
     const {
         permissions,           // Object chứa all permission strings
-    } = usePermissionStrings(PROVINCE_CONFIG.permission.base);
+    } = usePermissionStrings(COUNTRY_CONFIG.permission.base);
     // Stores
-    const tableStore = useTableStore(ProvinceService);
+    const tableStore = useTableStore(CountryService);
     const {onExportExcel, onLoadData, setReloadStatusCounter} = tableStore();
     // Modal actions
-    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useProvinceModifyModal(() => {
+    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useCountryModifyModal(() => {
         onLoadData();
         setReloadStatusCounter();
     });
@@ -35,33 +35,30 @@ export const useProvinceLogic = () => {
         const actions: IActionBtn[] = [];
 
         // Excel actions - kiểm tra Import/Export permissions
-        if (resourcePermissions.canImport || resourcePermissions.canExport) {
+        if (countryPermissions.canImport || countryPermissions.canExport) {
             actions.push({
                 content: (
                     <ExcelDropdown
-                        importRoute={resourcePermissions.canImport ? 'import' : undefined}
-                        onExport={resourcePermissions.canExport ? onExportExcel : undefined}
-                        disableImport={!resourcePermissions.canImport}
-                        disableExport={!resourcePermissions.canExport}
+                        importRoute={countryPermissions.canImport ? 'import' : undefined}
+                        onExport={countryPermissions.canExport ? onExportExcel : undefined}
+                        disableImport={!countryPermissions.canImport}
+                        disableExport={!countryPermissions.canExport}
                     />
                 )
             });
         }
 
         // Add new action
-        if (resourcePermissions.canCreate) {
+        if (countryPermissions.canCreate) {
             actions.push({
                 title: 'addNew',
-                onClick: () => openCreateModal({
-                    // level: 'Tỉnh',
-                    // countryCode: 'VN'
-                })
+                onClick: () => openCreateModal()
             });
         }
 
         return actions;
     }, [
-        resourcePermissions,
+        countryPermissions,
         onExportExcel,
         openCreateModal
     ]);
@@ -90,6 +87,6 @@ export const useProvinceLogic = () => {
         tableStore,
         topActions,
         tableActions,
-        counterService: ProvinceService.getCountByActive
+        counterService: CountryService.getCountByActive
     };
 };

@@ -10,6 +10,7 @@ import {TenantDetailDto} from "@api/base/index.defs";
 import {TenantInformation} from "@pages/Admin/Tenants/Details/Information";
 import {TenantUserList} from "@pages/Admin/Tenants/Details/UserList";
 import {TenantOverview} from "@pages/Admin/Tenants/Details/Overview";
+import {DetailEntityPageTitle} from "@ord-components/common/page/page-titles/DetailEntityPageTitle";
 
 const TenantDetailPage = () => {
 
@@ -69,32 +70,26 @@ const TenantDetailPage = () => {
     }
 
     return (
-        <div className="min-h-screen">
-            <div className="max-w-6xl mx-auto">
-                {/* Back Button */}
-                <div className="mb-4">
-                    <Button
-                        icon={<ArrowLeft className="h-4 w-4"/>}
-                        onClick={handleBack}
-                        className="flex items-center"
-                    >
-                        Quay lại
-                    </Button>
-                </div>
-                {
-                    tenantData && <TenantOverview tenantData={tenantData}/>
-                }
-                {/* Tabs */}
-                <div className="bg-white rounded-lg shadow-sm p-6">
-                    <Tabs
-                        defaultActiveKey="overview"
-                        destroyOnHidden
-                        items={tabItems}
-                        size="large"
-                    />
+        <>
+            <DetailEntityPageTitle/>
+            <div className="min-h-screen">
+                <div className="max-w-6xl mx-auto">
+
+                    {
+                        tenantData && <TenantOverview tenantData={tenantData}/>
+                    }
+                    {/* Tabs */}
+                    <div className="bg-white rounded-lg shadow-sm p-6">
+                        <Tabs
+                            defaultActiveKey="overview"
+                            destroyOnHidden
+                            items={tabItems}
+                            size="large"
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        </>)
+        ;
 };
 export default TenantDetailPage;

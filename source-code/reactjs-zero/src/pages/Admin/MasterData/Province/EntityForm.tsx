@@ -2,7 +2,6 @@ import React from "react";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
 import {useSelectCountry} from "@ord-components/forms/select/selectDataSource/useSelectCountry";
-import {useSelectProvince} from "@ord-components/forms/select/selectDataSource/useSelectProvince";
 import {Form} from "antd";
 
 export const ProvinceEntityForm = () => {

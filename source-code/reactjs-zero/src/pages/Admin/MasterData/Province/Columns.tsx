@@ -1,4 +1,4 @@
-import {CountryPagedDto, ProvincePagedDto} from "@api/base/index.defs";
+import {ProvincePagedDto} from "@api/base/index.defs";
 import {ColumnBuilder, ColumnPresets} from "@ord-components/paged-table/columns";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
 

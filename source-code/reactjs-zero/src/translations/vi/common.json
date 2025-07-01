@@ -300,5 +300,6 @@
   "revokeSelected": "Thu hồi {{count}} token đã chọn",
   "revokeRoleUsersSelected": "Thu hồi vai trò của {{count}} người dùng đã chọn",
   "addUsersToRoleSuccess": "Gán thành công vai trò {{roleName}} cho {{count}} người dùng",
-  "view_list_detail": "Xem chi tiết danh sách"
+  "view_list_detail": "Xem chi tiết danh sách",
+  "detail_title_page": "Thông tin chi tiết "
 }

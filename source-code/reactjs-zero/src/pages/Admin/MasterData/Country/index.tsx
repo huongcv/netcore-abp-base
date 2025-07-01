@@ -5,7 +5,7 @@ import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLa
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {getCountryColumns} from "@pages/Admin/MasterData/Country/Columns";
 import {CountryPagedDto} from "@api/base/index.defs";
-import {useCountryLogic} from "./useCountryLogic";
+import {useLogic} from "./hook/useLogic";
 import {CountrySearchForm} from "@pages/Admin/MasterData/Country/SearchForm";
 
 const Country: React.FC = () => {
@@ -14,7 +14,7 @@ const Country: React.FC = () => {
         topActions,
         tableActions,
         counterService
-    } = useCountryLogic();
+    } = useLogic();
     const columns = TableUtil.getColumns<CountryPagedDto>([
         ...getCountryColumns()
     ], {
