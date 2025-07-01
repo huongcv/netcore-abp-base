@@ -1,4 +1,3 @@
-import {useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/hook/useGlobalModalStore";
 import {TenantPagedDto, TenantUserChangePassword, UserPagedDto} from "@api/base/index.defs";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
@@ -6,10 +5,10 @@ import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
 import {TenantService} from "@api/base/TenantService";
 import {ApiActionHandler} from "@ord-core/utils/api/api-action.handler";
+import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 
 export const useChangePasswordTenantUserModal = () => {
     const {t} = useTranslation('modal');
-    const {openModal} = useGlobalModalStore();
     const formConfig = new FormBuilder()
         .addText({
             name: 'code',
@@ -45,36 +44,35 @@ export const useChangePasswordTenantUserModal = () => {
             name: 'mustChangePassword'
         })
         .build();
+
+    const {openFormModal} = useFormModal({
+        title: t('changePasswordUserModal.title'),
+        formFields: <OrdFormBuilder config={formConfig}/>
+    });
     const open = (userDto: UserPagedDto, tenantDto?: TenantPagedDto | null) => {
         const modalData = {
             ...tenantDto,
             userName: userDto.userName,
         }
-        openModal({
-            title: t('changePasswordUserModal.title'),
-            modalProps: {
-                width: 680
-            },
-            modalData: modalData,
-            formRender: (modalData) => <>
-                <OrdFormBuilder config={formConfig}/>
-            </>,
-            onSubmit: async (formValues, modalData) => {
-                const bodyData: TenantUserChangePassword = {
-                    tenantIdEncodedId: tenantDto?.encodedId,
-                    userEncodedId: userDto.encodedId,
-                    newPassword: formValues.newPassword,
-                    mustChangePassword: formValues.mustChangePassword,
-                };
-                return await ApiActionHandler.execute(() => {
-                    return TenantService.adminChangeTenantUserPassword({
-                        body: bodyData
-                    })
-                }, {
-                    successMessage: t('changePasswordUserModal.success', {...userDto}),
-                });
+        openFormModal(modalData, async (formValues, form, modalData) => {
+            const bodyData: TenantUserChangePassword = {
+                tenantIdEncodedId: tenantDto?.encodedId,
+                userEncodedId: userDto.encodedId,
+                newPassword: formValues.newPassword,
+                mustChangePassword: formValues.mustChangePassword,
+            };
+            const result = await ApiActionHandler.execute(() => {
+                return TenantService.adminChangeTenantUserPassword({
+                    body: bodyData
+                })
+            }, {
+                successMessage: 'modal.changePasswordUserModal.success',
+                successMessagePrm: userDto
+            });
+            return {
+                mustCloseModal: true,
             }
-        })
+        });
     };
 
     return {

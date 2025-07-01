@@ -7,6 +7,8 @@ import {OrdModalFooter} from '@ord-components/modal/footer/OrdModalFooter';
 import {OrdModalSaveButton} from '@ord-components/modal/footer/buttons/OrdModalSaveButton';
 import UiUtils from '@ord-core/utils/ui.utils';
 import {l} from "@ord-core/language/lang.utils";
+import {useRenderFormModalContent} from "@ord-components/modal/GlobalModalManager/hook/useRenderFormModalContent";
+import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 
 export interface UseModifyModalConfig<T = any> {
     apiService: IModifyApiService;
@@ -67,30 +69,13 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         />
     );
 
-    const renderFormModalContent = (
-        initialValues: any,
-        onFinish: (values: T) => Promise<void>,
-        disabled = false
-    ) => (internalForm: FormInstance) => (
-        <Form
-            form={internalForm}
-            clearOnDestroy
-            initialValues={initialValues}
-            autoComplete="off"
-            layout="vertical"
-            disabled={disabled}
-            onFinishFailed={() => {
-                UiUtils.showCommonValidateForm();
-            }}
-            onFinish={(formValues) => {
-                onFinish(formValues).then();
-                internalForm.resetFields();
-            }}
-        >
-            {formFields}
-            <Form.Item noStyle name="encodedId"/>
-        </Form>
-    );
+    const renderFormModalContent = (initialValues: any, onFinish: (values: T, form: any) => Promise<void>, disabled = false) =>
+        useRenderFormModalContent({
+            formFields,
+            onFinish,
+            initialValues,
+            disabled,
+        });
 
     const openCreateModal = useCallback((customInitialValues: Record<string, any> = {}) => {
         let modalId: string;
