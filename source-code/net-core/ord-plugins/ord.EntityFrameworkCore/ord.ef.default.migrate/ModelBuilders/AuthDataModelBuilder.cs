@@ -31,7 +31,7 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                 {
                     x.TokenId
                 });
-                b.HasIndex(x => new {  x.ExpiresAt })
+                b.HasIndex(x => new { x.ExpiresAt })
                     .IsDescending(true);
             });
             builder.Entity<RoleEntity>(b =>
@@ -121,6 +121,15 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                 b.HasIndex(x => new
                 {
                     x.TenantId
+                });
+            });
+            builder.Entity<BlacklistedEntity>(b =>
+            {
+                b.ConfigureByConvention();
+                b.HasIndex(x => new
+                {
+                    x.Name,
+                    x.Value
                 });
             });
         }

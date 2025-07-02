@@ -28,6 +28,7 @@ namespace Ord.EfCore.Default.MigrateDb.Data
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
         public virtual DbSet<FileUploadEntity> FileUploads { get; set; }
+        public virtual DbSet<BlacklistedEntity> Blacklisteds { get; set; }
 
         #region MasterData
         public virtual DbSet<CountryEntity> Countries { get; set; }

@@ -25,6 +25,7 @@ namespace Ord.EfCore.Default.EntityFrameworkCore
         public virtual DbSet<UserNotificationEntity> UserNotifications { get; set; }
         public virtual DbSet<UserFirebaseDeviceEntity> UserFirebaseDevices { get; set; }
         public virtual DbSet<FileUploadEntity> FileUploads { get; set; }
+        public virtual DbSet<BlacklistedEntity> BlacklistedPasswords { get; set; }
         #endregion
 
 

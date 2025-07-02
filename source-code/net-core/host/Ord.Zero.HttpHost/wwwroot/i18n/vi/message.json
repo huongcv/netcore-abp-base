@@ -36,7 +36,8 @@
     "AllowedFileExtensions": "Không hỗ trợ loại file {1}",
     "MaxFileSize": "Kích thước file không được vượt quá {1}",
     "file_not_data": "File không có dữ liệu",
-    "not_found_country_code": "Mã quốc gia không tồn tại"
+    "not_found_country_code": "Mã quốc gia không tồn tại",
+    "not_blacklisted_password": "Mật khẩu quá dễ đoán, vui lòng chọn mật khẩu mạnh hơn"
   },
   "RateLimit": {
     "RateLimitExceeded": "Vượt quá giới hạn truy cập",
