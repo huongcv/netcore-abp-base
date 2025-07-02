@@ -9,6 +9,7 @@ import {l} from "@ord-core/language/lang.utils";
 import {BulkRevokeRoleActionToolbar} from "@pages/Admin/Roles/components/BulkRevokeRoleActionToolbar";
 
 export const useListUsersInRoleModal = () => {
+    const {t} = useTranslation('modal');
     const {openTableModal} = useTableSearchModal<UserPagedDto>({
         tableProps: {
             apiService: {
@@ -31,7 +32,7 @@ export const useListUsersInRoleModal = () => {
     });
     const openListUsersInRoleModal = (roleDto: RolePagedDto, callBack: () => void) => {
         openTableModal({
-            title: l.trans('modal.roleListUser.title', roleDto),
+            title: t('roleListUser.title', roleDto),
             modalData: {
                 encodedId: roleDto.encodedId
             },
