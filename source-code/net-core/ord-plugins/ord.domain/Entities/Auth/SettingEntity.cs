@@ -14,7 +14,7 @@ namespace Ord.Plugin.Auth.Shared.Entities
         public Guid? UserId { get; set; }
         [MaxLength(200)]
         public string Name { get; set; }
-        //[MaxLength(1000)]
+        [MaxLength(600)]
         public string? Value { get; set; }
         public bool? MustEncrypt { get; set; }
         public bool IsActived { get; set; }

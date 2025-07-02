@@ -5,8 +5,8 @@ import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import TableUtil from "@ord-core/utils/table.util";
 import {UserDto} from "@api/index.defs";
 import {UserDataColumns} from "@pages/Admin/Users/UserDataColumns";
-import {l} from "@ord-core/language/lang.utils";
 import {BulkRevokeRoleActionToolbar} from "@pages/Admin/Roles/components/BulkRevokeRoleActionToolbar";
+import {useTranslation} from "react-i18next";
 
 export const useListUsersInRoleModal = () => {
     const {t} = useTranslation('modal');
