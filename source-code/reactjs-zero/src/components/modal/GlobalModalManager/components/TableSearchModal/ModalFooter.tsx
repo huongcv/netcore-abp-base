@@ -13,22 +13,20 @@ export const TableSearchModalFooter = (props: {
         renderInput,
         renderBulkActions
     } = props;
-    const {internalForm} = renderInput;
+    const {internalForm, rowSelectionStore} = renderInput;
+    const {
+        rowSelection,
+        selectedRowKeys,
+        selectedRows,
+        clearSelection
+    } = rowSelectionStore;
     const {onClose} = renderInput;
-    const selectedRowKeys = Form.useWatch(['extendUi', 'selectedRowKeys'], internalForm);
-    const selectedRows = Form.useWatch(['extendUi', 'selectedRows'], internalForm);
     const leftBtn = useMemo(() => {
         const nodes = [];
         if (renderBulkActions) {
             nodes.push(renderBulkActions({
                 onCloseModal: onClose,
-                clearSelection: () => {
-                    internalForm.setFieldsValue({
-                        extendUi: {
-                            clearSelection: Number(new Date())
-                        }
-                    })
-                },
+                clearSelection,
                 selectedRowKeys,
                 selectedRows,
                 onReloadTableModal: () => {

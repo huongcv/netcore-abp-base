@@ -59,6 +59,7 @@ export const useTableSearchModal = <T extends object>(config: UseTableSearchModa
             renderModalFooter: (renderInput) => {
                 return <TableSearchModalFooter renderInput={renderInput} renderBulkActions={renderBulkActions}/>;
             },
+            rowSelectionConfig
         });
     };
     return {

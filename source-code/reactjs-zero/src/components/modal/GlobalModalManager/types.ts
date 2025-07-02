@@ -1,4 +1,5 @@
 import type {FormInstance, ModalProps} from 'antd';
+import {RowSelectionConfig, useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 
 export interface ModalData {
     encodedId?: string;
@@ -10,6 +11,7 @@ export interface RenderGlobalContentModalInput<TModalData = any> {
     internalForm: FormInstance;
     modalData?: TModalData | null;
     onClose: () => void;
+    rowSelectionStore: any;
 }
 
 export interface GlobalModalConfig<TModalData = any> {
@@ -19,4 +21,7 @@ export interface GlobalModalConfig<TModalData = any> {
     modalData?: TModalData | null;
     renderModalContent: (inputRender: RenderGlobalContentModalInput) => React.ReactNode;
     renderModalFooter: (inputRender: RenderGlobalContentModalInput) => React.ReactNode;
+
+    // dành riêng cho useTableSearchModal
+    rowSelectionConfig?: RowSelectionConfig;
 }

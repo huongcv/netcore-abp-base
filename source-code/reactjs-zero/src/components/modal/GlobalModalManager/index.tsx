@@ -1,8 +1,10 @@
 import React, {useCallback, useMemo} from 'react';
 import {Form, Modal} from 'antd';
 import {useGlobalModalStore} from "@ord-components/modal/GlobalModalManager/hook/useGlobalModalStore";
-import {GlobalModalConfig} from "@ord-components/modal/GlobalModalManager/types";
+import {GlobalModalConfig, RenderGlobalContentModalInput} from "@ord-components/modal/GlobalModalManager/types";
 import {useModalHotkeys} from "@ord-components/modal/GlobalModalManager/hook/useModalHotkeys";
+import {useTranslation} from 'react-i18next';
+import {useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 
 const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
     const {
@@ -10,7 +12,8 @@ const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
         modalData,
         modalProps,
         renderModalContent,
-        renderModalFooter
+        renderModalFooter,
+        rowSelectionConfig
     } = modal;
 
     const {closeModal} = useGlobalModalStore();
@@ -31,13 +34,15 @@ const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
         open: true,
         onCancel: handleCancel
     }), [modalProps, modal.title, handleCancel]);
+    const rowSelectionStore = useRowSelectionStore(rowSelectionConfig || {});
     const renderInput = useMemo(() => {
         return {
             internalForm,
             modalData,
-            onClose: handleCancel
-        }
-    }, [internalForm, modalData, handleCancel])
+            onClose: handleCancel,
+            rowSelectionStore: rowSelectionStore
+        } as RenderGlobalContentModalInput;
+    }, [internalForm, modalData, handleCancel, rowSelectionStore])
     const modalContent = useMemo(() => {
         return renderModalContent(renderInput);
     }, [renderInput]);
@@ -71,6 +76,7 @@ const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
 // Main GlobalModalManager Component
 export const GlobalModalManager: React.FC = React.memo(() => {
     const {modals} = useGlobalModalStore();
+    const {t} = useTranslation(['modal']);
 
     return (
         <>

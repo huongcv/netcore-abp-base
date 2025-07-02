@@ -21,28 +21,28 @@ export const TableSearchModalContent = (props: {
         rowSelectionConfig,
         isHasSelectionRow
     } = props;
-    const {internalForm} = renderInput;
+    const {internalForm, rowSelectionStore} = renderInput;
     const {
         rowSelection,
         selectedRowKeys,
         selectedRows,
         clearSelection
-    } = useRowSelectionStore(rowSelectionConfig || {});
-    useEffect(() => {
-        internalForm.setFieldsValue({
-            extendUi: {
-                selectedRowKeys,
-                selectedRows
-            }
-        })
-    }, [selectedRowKeys]);
-    const clearSelection_w = Form.useWatch(['extendUi', 'clearSelection'], internalForm);
-    useEffect(() => {
-        if (clearSelection_w > 0) {
-            clearSelection();
-        }
-
-    }, [clearSelection_w]);
+    } = rowSelectionStore;
+    // useEffect(() => {
+    //     internalForm.setFieldsValue({
+    //         extendUi: {
+    //             selectedRowKeys,
+    //             selectedRows
+    //         }
+    //     })
+    // }, [selectedRowKeys]);
+    // const clearSelection_w = Form.useWatch(['extendUi', 'clearSelection'], internalForm);
+    // useEffect(() => {
+    //     if (clearSelection_w > 0) {
+    //         clearSelection();
+    //     }
+    //
+    // }, [clearSelection_w]);
     return <>
         <SearchablePagedTable
             initialSearchParams={modalData}
@@ -50,10 +50,5 @@ export const TableSearchModalContent = (props: {
             searchForm={internalForm}
             rowSelection={isHasSelectionRow ? rowSelection : undefined}
         />
-        <Form form={internalForm}>
-            <Form.Item noStyle name={['extendUi', 'selectedRowKeys']}></Form.Item>
-            <Form.Item noStyle name={['extendUi', 'selectedRows']}></Form.Item>
-            <Form.Item noStyle name={['extendUi', 'clearSelection']} initialValue={0}></Form.Item>
-        </Form>
     </>
 }
