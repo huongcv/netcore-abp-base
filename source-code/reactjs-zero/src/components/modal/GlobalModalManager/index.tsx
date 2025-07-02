@@ -31,12 +31,19 @@ const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
         open: true,
         onCancel: handleCancel
     }), [modalProps, modal.title, handleCancel]);
+    const renderInput = useMemo(() => {
+        return {
+            internalForm,
+            modalData,
+            onClose: handleCancel
+        }
+    }, [internalForm, modalData, handleCancel])
     const modalContent = useMemo(() => {
-        return renderModalContent(internalForm, modalData);
-    }, [internalForm, modalData]);
+        return renderModalContent(renderInput);
+    }, [renderInput]);
     const modalFooter = useMemo(() => {
-        return renderModalFooter(handleCancel, internalForm, modalData);
-    }, [modalData]);
+        return renderModalFooter(renderInput);
+    }, [renderInput]);
     useModalHotkeys({
         modalId: id,
         onHandlerHotKey: {

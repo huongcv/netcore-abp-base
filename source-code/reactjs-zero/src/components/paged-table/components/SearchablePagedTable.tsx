@@ -6,7 +6,7 @@ import {TableSearchForm} from "@ord-components/paged-table/components/TableSearc
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {useTableStore} from "@ord-components/paged-table/hooks/useTableStore";
 
-export interface Props<T> extends TableProps<T> {
+export interface SearchablePagedTableProps<T = any> extends TableProps<T> {
     searchForm?: FormInstance;
     apiService: IGetPagedApiService;
     searchFields?: React.ReactNode;
@@ -27,11 +27,10 @@ export const SearchablePagedTable = <T extends object>({
                                                            bulkActionToolbar,
                                                            initialSearchParams,
                                                            ...tableProps
-                                                       }: Props<T>) => {
+                                                       }: SearchablePagedTableProps<T>) => {
     const tableStore = useTableStore(apiService);
     const [internalForm] = Form.useForm();
     const usedForm = searchForm || internalForm;
-
 
     return (
         <>
@@ -48,7 +47,10 @@ export const SearchablePagedTable = <T extends object>({
                 </div>
             }
             {bulkActionToolbar}
-            <PagedTable tableStore={tableStore} {...tableProps} initialSearchParams={initialSearchParams}/>
+            <PagedTable tableStore={tableStore}
+                        {...tableProps}
+                        initialSearchParams={initialSearchParams}/>
         </>
     );
 };
+

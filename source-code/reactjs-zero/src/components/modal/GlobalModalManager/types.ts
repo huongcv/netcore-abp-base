@@ -6,11 +6,17 @@ export interface ModalData {
     [key: string]: any;
 }
 
+export interface RenderGlobalContentModalInput<TModalData = any> {
+    internalForm: FormInstance;
+    modalData?: TModalData | null;
+    onClose: () => void;
+}
+
 export interface GlobalModalConfig<TModalData = any> {
     id: string;
     title?: React.ReactNode;
     modalProps?: ModalProps;
     modalData?: TModalData | null;
-    renderModalContent: (internalForm: FormInstance, modalData?: TModalData | null) => React.ReactNode;
-    renderModalFooter: (onClose: () => void, internalForm: FormInstance, modalData?: TModalData | null) => React.ReactNode;
+    renderModalContent: (inputRender: RenderGlobalContentModalInput) => React.ReactNode;
+    renderModalFooter: (inputRender: RenderGlobalContentModalInput) => React.ReactNode;
 }

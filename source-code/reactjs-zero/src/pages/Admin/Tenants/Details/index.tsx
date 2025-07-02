@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {ArrowLeft, Users} from 'lucide-react';
+import {Users} from 'lucide-react';
 
 // Import Ant Design components from CDN
-import {Button, Tabs} from 'antd';
+import {Tabs} from 'antd';
 import {useParams} from "react-router-dom";
 import {useApiActionHandler} from "@ord-core/hooks/useApiActionHandler";
 import {TenantService} from "@api/base/TenantService";

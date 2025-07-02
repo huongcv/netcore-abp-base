@@ -1,5 +1,5 @@
 import {useCallback, useRef} from 'react';
-import {Checkbox, Form, FormInstance, ModalProps} from 'antd';
+import {Checkbox, ModalProps} from 'antd';
 import {useGlobalModalStore} from './useGlobalModalStore';
 import {ICommonResultDtoApi, IModifyApiService} from '@ord-components/paged-table/types';
 import {ModifyModalI18nConfig, useModifyModalI18n} from '@ord-components/paged-table/hooks/useModifyModalI18n';
@@ -8,7 +8,6 @@ import {OrdModalSaveButton} from '@ord-components/modal/footer/buttons/OrdModalS
 import UiUtils from '@ord-core/utils/ui.utils';
 import {l} from "@ord-core/language/lang.utils";
 import {useRenderFormModalContent} from "@ord-components/modal/GlobalModalManager/hook/useRenderFormModalContent";
-import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 
 export interface UseModifyModalConfig<T = any> {
     apiService: IModifyApiService;
@@ -82,7 +81,7 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         modalId = openModal({
             title: getTitleText('create', {}),
             modalProps,
-            renderModalContent: renderFormModalContent({
+            renderModalContent: ({internalForm}) => renderFormModalContent({
                 ...customInitialValues,
                 extendUi: {
                     modifyMode: 'add'
@@ -109,8 +108,8 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
                     isSubmittingRef.current = false;
                     UiUtils.clearBusy();
                 }
-            }),
-            renderModalFooter: renderFooterAdd,
+            })(internalForm),
+            renderModalFooter: ({onClose, internalForm}) => renderFooterAdd(onClose, internalForm),
         }, 'MODAL_ENTITY_' + entityTranslationNs);
         return modalId;
     }, [apiService, crudSettings, onSaved]);
@@ -120,32 +119,37 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         modalId = openModal({
             title: getTitleText('edit', transformNotificationParameter(editingItem)),
             modalProps,
-            renderModalContent: renderFormModalContent({
-                ...editingItem,
-                extendUi: {
-                    modifyMode: 'edit'
-                }
-            }, async (values) => {
-                if (isSubmittingRef.current) return;
-                isSubmittingRef.current = true;
-                UiUtils.setBusy();
-                try {
-                    let body = values;
-                    crudSettings?.transformBeforeUpdate?.(body, editingItem);
-                    const result = await apiService.update({body});
-                    if (result.isSuccessful) {
-                        UiUtils.showSuccess(getSuccessMessage('edit', transformNotificationParameter(result.data)));
-                        onSaved?.();
-                        crudSettings?.onSuccess?.(result, 'edit');
-                        closeModal(modalId);
-                    } else result.message && UiUtils.showError(result.message);
-                } catch (err) {
-                } finally {
-                    isSubmittingRef.current = false;
-                    UiUtils.clearBusy();
-                }
-            }),
-            renderModalFooter: renderFooterEdit,
+            renderModalContent: ({onClose, modalData, internalForm}) => {
+                return renderFormModalContent({
+                    ...editingItem,
+                    extendUi: {
+                        modifyMode: 'edit'
+                    }
+                }, async (values) => {
+                    if (isSubmittingRef.current) return;
+                    isSubmittingRef.current = true;
+                    UiUtils.setBusy();
+                    try {
+                        let body = values;
+                        crudSettings?.transformBeforeUpdate?.(body, editingItem);
+                        const result = await apiService.update({body});
+                        if (result.isSuccessful) {
+                            UiUtils.showSuccess(getSuccessMessage('edit', transformNotificationParameter(result.data)));
+                            onSaved?.();
+                            crudSettings?.onSuccess?.(result, 'edit');
+                            closeModal(modalId);
+                        } else result.message && UiUtils.showError(result.message);
+                    } catch (err) {
+                    } finally {
+                        isSubmittingRef.current = false;
+                        UiUtils.clearBusy();
+                    }
+                })(internalForm);
+            },
+            renderModalFooter: (renderInput) => {
+                const {modalData, onClose, internalForm} = renderInput;
+                return renderFooterEdit(onClose, internalForm);
+            },
         });
         return modalId;
     }, [apiService, crudSettings, onSaved]);
@@ -154,14 +158,14 @@ export const useModifyEntityModal = <T extends object>(config: UseModifyModalCon
         return openModal({
             title: getTitleText('viewDetail', transformNotificationParameter(viewingItem)),
             modalProps,
-            renderModalContent: renderFormModalContent({
+            renderModalContent: ({internalForm}) => renderFormModalContent({
                 ...viewingItem,
                 extendUi: {
                     modifyMode: 'view'
                 }
             }, async () => {
-            }, true),
-            renderModalFooter: (onClose) => <OrdModalFooter onClose={onClose}/>,
+            }, true)(internalForm),
+            renderModalFooter: ({onClose}) => <OrdModalFooter onClose={onClose}/>,
         });
     }, []);
 

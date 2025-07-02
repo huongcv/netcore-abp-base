@@ -1,5 +1,4 @@
 import {createTableStore} from "@ord-components/paged-table";
-import {createModalFormStore} from "@ord-components/paged-table/hooks/useModalFormStoreFactory";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {ITableAction} from "@ord-components/table/cells/TableActionCell";
 import {TenantPagedDto} from "@api/base/index.defs";
@@ -7,17 +6,18 @@ import {TenantService} from "@api/base/TenantService";
 import PermissionUtil from "@ord-core/config/permissions/permission.util";
 import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name";
 import {useNavigate} from "react-router";
+import {useTenantModifyModal} from "@pages/Admin/Tenants/hook/useModifyModal";
 // Stores
 const tableStore = createTableStore(TenantService);
-const modalStore = createModalFormStore(TenantService, {});
-
-
 export const useTenantLogic = () => {
-    const {onExportExcel} = tableStore();
-    const {openView, openCreate, openEdit, openDelete, mode} = modalStore();
+    const {onExportExcel, onLoadData, setReloadStatusCounter} = tableStore();
     const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.tenant);
-    const isCreateNew = mode === 'create';
     const navigate = useNavigate();
+    // Modal actions
+    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useTenantModifyModal(() => {
+        onLoadData();
+        setReloadStatusCounter();
+    });
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -30,7 +30,7 @@ export const useTenantLogic = () => {
         {
             title: 'addNew',
             permission: policies.create,
-            onClick: openCreate
+            onClick: openCreateModal
         }
     ];
     const tableActions: ITableAction<TenantPagedDto>[] = [{
@@ -43,22 +43,13 @@ export const useTenantLogic = () => {
             title: 'edit',
             permission: policies.edit,
             onClick: (d) => {
-                openEdit(d);
+                openEditModal(d);
             }
         }];
 
     return {
         tableStore,
-        modalStore,
         topActions,
-        tableActions,
-        crudActions: {
-            openView,
-            openCreate,
-            openEdit,
-            openDelete,
-            onExportExcel
-        },
-        isCreateNew
+        tableActions
     };
 };

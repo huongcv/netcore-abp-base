@@ -5,7 +5,7 @@ import {Space} from "antd";
 import {UnlockOutlined} from "@ant-design/icons";
 import {observer} from "mobx-react-lite";
 import React from "react";
-import {useUserLogic} from "@pages/Admin/Users/useUserLogic";
+import {useUserLogic} from "@pages/Admin/Users/hook/useUserLogic";
 
 const UnlockAction = (props: { user: UserDto }) => {
     const {t} = useTranslation();

@@ -15,15 +15,19 @@ import {changePasswordUserModalStore} from "@pages/Admin/Users/change-password/M
 import {assignRoleUserModalStore} from "@pages/Admin/Users/assign-role/Modal";
 import {UserImpersonationService} from "@api/base/UserImpersonationService";
 import {userAccessTokenListModalStore} from "@pages/Admin/Users/access-token/Modal";
+import {useUserModifyModal} from "@pages/Admin/Users/hook/useModifyModal";
 // Stores
 const tableStore = createTableStore(UserService);
-const modalStore = createModalFormStore(UserService, {});
 
 
 export const useUserLogic = () => {
-    const {onExportExcel} = tableStore();
-    const {openView, openCreate, openEdit, openDelete} = modalStore();
+    const {onExportExcel, onLoadData, setReloadStatusCounter} = tableStore();
     const {sessionStore} = useStore();
+    // Modal actions
+    const {openCreateModal, openEditModal, openDeleteConfirm, openViewModal} = useUserModifyModal(() => {
+        onLoadData();
+        setReloadStatusCounter();
+    });
     // Memoized handlers để tránh re-render
     const handleExportExcel = useCallback(async () => {
         try {
@@ -52,19 +56,19 @@ export const useUserLogic = () => {
         {
             title: 'addNew',
             permission: USER_POLICIES.CREATE,
-            onClick: openCreate
+            onClick: openCreateModal
         }
     ];
     const tableActions: ITableAction<UserDetailDto>[] = [{
         title: 'view',
         onClick: (d) => {
-            openView(d);
+            openViewModal(d);
         }
     },
         {
             title: 'edit',
             onClick: (d) => {
-                openEdit(d);
+                openEditModal(d);
             }
         },
         {
@@ -112,7 +116,7 @@ export const useUserLogic = () => {
         {
             title: 'remove',
             onClick: (d) => {
-                openDelete(d);
+                openDeleteConfirm(d);
             },
             permission: USER_POLICIES.REMOVE,
             hiddenIf: (u: UserDto) => {
@@ -122,15 +126,7 @@ export const useUserLogic = () => {
 
     return {
         tableStore,
-        modalStore,
         topActions,
-        tableActions,
-        crudActions: {
-            openView,
-            openCreate,
-            openEdit,
-            openDelete,
-            onExportExcel
-        }
+        tableActions
     };
 };

@@ -3,11 +3,13 @@ import {RolePagedDto} from "@api/base/index.defs";
 import {l} from "@ord-core/language/lang.utils";
 import {UserOutlined} from "@ant-design/icons";
 import React from "react";
-import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
 import {IsActivedColumn} from "@ord-components/table/columns/IsActivedColumn";
+import {useListUsersInRoleModal} from "@pages/Admin/Roles/hook/useListUsersInRoleModal";
 
-export const getRoleColumns = () => {
+export const getRoleColumns = (callBack: () => void) => {
+    const {openListUsersInRoleModal} = useListUsersInRoleModal();
     const builder = new ColumnBuilder<RolePagedDto>();
+
     builder.addText({
         title: 'code',
         dataIndex: 'code',
@@ -25,7 +27,9 @@ export const getRoleColumns = () => {
         align: 'right',
         render: (value, dto) => <>
             <a onClick={() => {
-                roleUserListModalStore.getInitialState().openModal(dto);
+                openListUsersInRoleModal(dto, () => {
+                    callBack();
+                });
             }} title={l.transCommon("view_list_detail")}>
                 <span className={'me-2'}>{value}</span>
                 <UserOutlined/>

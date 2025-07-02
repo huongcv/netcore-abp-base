@@ -5,8 +5,6 @@ import {PageLayoutWithTable} from "@ord-components/paged-table/components/PageLa
 import {OrdCounterByStatusSegmented} from "@ord-components/crud/counter-list/OrdCounterByStatusSegmented";
 import {PagedTable} from "@ord-components/paged-table";
 import {RoleSearchForm} from "@pages/Admin/Roles/SearchForm";
-import {UserListModal} from "@pages/Admin/Roles/ListUsers/Modal";
-import {UserListAssignableRoleModal} from "@pages/Admin/Roles/ListUserAssignable/Modal";
 import {getRoleTemplateColumns} from "@pages/Admin/RoleTemplates/Columns";
 import {useRoleTemplateLogic} from "@pages/Admin/RoleTemplates/hook/useLogic";
 
@@ -30,8 +28,6 @@ const Roles: React.FC = () => {
                                              fetcher={counterService}/>
                 <PagedTable columns={columns} tableStore={tableStore}/>
             </PageLayoutWithTable>
-            <UserListModal/>
-            <UserListAssignableRoleModal/>
         </>)
         ;
 }

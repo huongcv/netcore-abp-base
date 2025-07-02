@@ -8,8 +8,8 @@ import {PERMISSION_NAME_APP} from "@ord-core/config/permissions/permission-name"
 import {RoleService} from "@api/base/RoleService";
 import {CheckCircleOutlined, UserOutlined} from "@ant-design/icons";
 import React from "react";
-import {roleUserListModalStore} from "@pages/Admin/Roles/ListUsers/Modal";
-import {userListModalAssignableRoleStore} from "@pages/Admin/Roles/ListUserAssignable/Modal";
+import {useListUserAssignableModal} from "@pages/Admin/Roles/hook/useListUserAssignableModal";
+import {useListUsersInRoleModal} from "@pages/Admin/Roles/hook/useListUsersInRoleModal";
 // Stores
 const tableStore = createTableStore(RoleService);
 const modalStore = createModalFormStore(RoleService, {});
@@ -20,6 +20,8 @@ export const useRoleLogic = () => {
     const {openView, openCreate, openEdit, openDelete, mode} = modalStore();
     const policies = PermissionUtil.crudPermission(PERMISSION_NAME_APP.admin.role);
     const isCreateNew = mode === 'create';
+    const {openListUserAssignableModal} = useListUserAssignableModal();
+    const {openListUsersInRoleModal} = useListUsersInRoleModal();
     // Top actions
     const topActions: IActionBtn[] = [
         {
@@ -43,7 +45,7 @@ export const useRoleLogic = () => {
                     encodedId: d.encodedId
                 }
             });
-            openView(res.data);
+            openView(res.data || {});
         }
     },
         {
@@ -55,7 +57,7 @@ export const useRoleLogic = () => {
                         encodedId: d.encodedId
                     }
                 });
-                openEdit(res.data);
+                openEdit(res.data || {});
             }
         },
         {
@@ -63,23 +65,17 @@ export const useRoleLogic = () => {
             icon: <UserOutlined/>,
             permission: policies.edit,
             onClick: (d) => {
-                roleUserListModalStore.getInitialState().openModal(d, {
-                    onAfterSuccess: () => {
-                        tableStore.getInitialState().onLoadData().then(() => {
-                        });
-                    }
-                });
+                openListUsersInRoleModal(d, () => {
+                    tableStore.getInitialState().onLoadData();
+                })
             },
         }, {
             title: 'AssignableUsersToRole',
             icon: <CheckCircleOutlined/>,
             permission: policies.edit,
             onClick: (d) => {
-                userListModalAssignableRoleStore.getInitialState().openModal(d, {
-                    onAfterSuccess: () => {
-                        tableStore.getInitialState().onLoadData().then(() => {
-                        });
-                    }
+                openListUserAssignableModal(d, () => {
+                    tableStore.getInitialState().onLoadData();
                 });
             },
         }, {

@@ -2,16 +2,21 @@ import {Form} from "antd";
 import React, {useMemo} from "react";
 import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
-import {useTenantLogic} from "@pages/Admin/Tenants/useTenantLogic";
 import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {UserAccountAdmin} from "@pages/Admin/Tenants/components/UserAccountAdmin";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
 
 export const TenantEntityForm = () => {
-    const {isCreateNew} = useTenantLogic();
     const {t} = useTranslation();
     const form = Form.useFormInstance();
     const code_w = Form.useWatch('code', form);
+    const modifyMode = Form.useWatch(['extendUi', 'modifyMode']);
+    const isReadOnly = useMemo(() => {
+        return modifyMode == 'view'
+    }, [modifyMode]);
+    const isAdd = useMemo(() => {
+        return modifyMode == 'add'
+    }, [modifyMode]);
     const config = useMemo(() => {
         return new FormBuilder()
             .addText({
@@ -19,7 +24,8 @@ export const TenantEntityForm = () => {
                 name: 'code',
                 rules: [ValidateUtils.NoSpecialCharacter],
                 maxLength: 50,
-                required: true
+                required: true,
+                autoFocus: true
             })
             .addText({
                 span: 12,
@@ -45,14 +51,14 @@ export const TenantEntityForm = () => {
                 name: 'address',
                 maxLength: 200
             }).addCustom({
-                render: () => isCreateNew ? <UserAccountAdmin/> : null
+                render: () => isAdd ? <UserAccountAdmin/> : null
             })
             .addCheckbox({
                 name: 'isActived',
                 initialValue: true
             })
             .build();
-    }, [isCreateNew]);
+    }, [isAdd]);
 
     return (<>
         <OrdFormBuilder config={config}/>

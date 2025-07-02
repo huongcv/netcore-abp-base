@@ -13,7 +13,7 @@ interface RowSelectionState<T> {
     isSelected: (key: React.Key) => boolean;
 }
 
-interface RowSelectionConfig<T> {
+export interface RowSelectionConfig<T = any> {
     isRowDisabled?: (record: T) => boolean | null | undefined;
     maxSelection?: number;
     onSelectionChange?: (keys: React.Key[], rows: T[]) => void;
@@ -191,6 +191,25 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
             }
         };
     };
+}
+
+export interface RowSelectionStoreResult<T = any> {
+    rowSelection: TableRowSelection<T>;
+    selectedRowKeys: React.Key[];
+    selectedRows: T[];
+    clearSelection: () => void;
+    toggleRow: (key: React.Key, row: T) => void;
+    selectAll: (rows: T[], getKey: (row: T) => React.Key) => void;
+    isSelected: (key: React.Key) => boolean;
+    hasSelection: boolean;
+    selectionCount: number;
+    selectFirst: (rows: T[], getKey: (row: T) => React.Key) => void;
+    selectByCondition: (
+        rows: T[],
+        condition: (row: T) => boolean,
+        getKey: (row: T) => React.Key
+    ) => void;
+    invertSelection: (allRows: T[], getKey: (row: T) => React.Key) => void;
 }
 
 export const useRowSelectionStore = <T extends object>(options?: RowSelectionConfig<T>) => {
