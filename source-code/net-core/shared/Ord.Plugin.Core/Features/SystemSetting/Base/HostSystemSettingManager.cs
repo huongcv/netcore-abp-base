@@ -48,7 +48,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                         entity.MustEncrypt = dto.MustEncrypt;
                         entity.Value = dto.Value;
                         entity.IsActived = dto.IsActived;
-
+                        entity.JObjectValue = dto.JObjectValue;
 
                         await SettingRepository.UpdateAsync(entity, autoSave: false);
                     }
@@ -62,6 +62,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                             MustEncrypt = dto.MustEncrypt,
                             Value = dto.Value,
                             IsActived = dto.IsActived,
+                            JObjectValue = dto.JObjectValue
                             // nếu có các field mặc định khác như TenantId, CreatedTime thì set thêm
                         };
 

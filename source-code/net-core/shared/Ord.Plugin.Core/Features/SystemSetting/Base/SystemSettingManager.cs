@@ -4,9 +4,10 @@ using Ord.Plugin.Auth.Shared.Entities;
 using Ord.Plugin.Contract.Features.SystemSetting.Dto;
 using Ord.Plugin.Contract.Setting;
 using Ord.Plugin.Core.Base;
-using Ord.Plugin.Core.Utils;
 using Volo.Abp.Caching;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Security.Encryption;
 namespace Ord.Plugin.Core.Features.SystemSetting.Base
 {
@@ -55,7 +56,17 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
 
                     }
                 }
-                return ConvertEntitiesToDto(entities);
+                return await ConvertEntitiesToDto(entities);
+            }
+        }
+
+        protected async Task<string?> GetJObjectValue(Guid id)
+        {
+            var dataFilter = AppFactory.GetServiceDependency<IDataFilter>();
+            using (dataFilter.Disable<IMultiTenant>())
+            {
+                var queryable = await SettingRepository.GetQueryableAsync();
+                return await queryable.Where(x => x.Id == id).Select(x => x.JObjectValue).FirstOrDefaultAsync();
             }
         }
 
@@ -83,8 +94,17 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                 IsActived = true
             };
         }
+        protected SystemSettingDto CreateJObjectSetting(string jObjectValue)
+        {
+            return new SystemSettingDto
+            {
+                Name = $"{GetPrefixSettingName()}",
+                JObjectValue = jObjectValue,
+                IsActived = true
+            };
+        }
         protected abstract string GetPrefixSettingName();
-        protected abstract TSettingDto ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities);
+        protected abstract Task<TSettingDto> ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities);
         protected abstract IEnumerable<SystemSettingDto> ConvertDtoToEntities(TSettingDto settingDto);
         public abstract TSettingDto GetDefaultValue();
     }

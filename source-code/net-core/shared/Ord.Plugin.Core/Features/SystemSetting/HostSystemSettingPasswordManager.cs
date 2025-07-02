@@ -1,4 +1,5 @@
-﻿using Ord.Plugin.Contract.Features.SystemSetting;
+﻿using Newtonsoft.Json;
+using Ord.Plugin.Contract.Features.SystemSetting;
 using Ord.Plugin.Contract.Features.SystemSetting.Dto;
 using Ord.Plugin.Core.Features.SystemSetting.Base;
 
@@ -11,33 +12,45 @@ namespace Ord.Plugin.Core.Features.SystemSetting
             return "System.PasswordConfig";
         }
 
-        protected override PasswordConfigDto ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities)
+        protected override async Task<PasswordConfigDto> ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities)
         {
-            var dict = settingEntities.ToDictionary(x => x.Name, x => x.Value);
-
-            return new PasswordConfigDto
+            if (settingEntities?.Any() == true)
             {
-                PasswordMinLength = GetInt(dict, "PasswordMinLength", 8),
-                RequireUppercase = GetBool(dict, "RequireUppercase", true),
-                RequireLowercase = GetBool(dict, "RequireLowercase", true),
-                RequireNumbers = GetBool(dict, "RequireNumbers", true),
-                RequireSpecialChars = GetBool(dict, "RequireSpecialChars", false),
-                PasswordExpiry = GetInt(dict, "PasswordExpiry", 90),
-                MaxLoginAttempts = GetInt(dict, "MaxLoginAttempts", 5),
-            };
+                var id = settingEntities.FirstOrDefault().Id;
+                var jObject = await GetJObjectValue(id);
+                try
+                {
+                    return JsonConvert.DeserializeObject<PasswordConfigDto>(jObject);
+                }
+                catch
+                {
+                    return GetDefaultValue();
+                }
+            }
+
+            return GetDefaultValue();
+
+            //var dict = settingEntities.ToDictionary(x => x.Name, x => x.Value);
+
+            //return new PasswordConfigDto
+            //{
+            //    PasswordMinLength = GetInt(dict, "PasswordMinLength", 8),
+            //    RequireUppercase = GetBool(dict, "RequireUppercase", true),
+            //    RequireLowercase = GetBool(dict, "RequireLowercase", true),
+            //    RequireNumbers = GetBool(dict, "RequireNumbers", true),
+            //    RequireSpecialChars = GetBool(dict, "RequireSpecialChars", false),
+            //    PasswordExpiry = GetInt(dict, "PasswordExpiry", 90),
+            //    MaxLoginAttempts = GetInt(dict, "MaxLoginAttempts", 5),
+            //};
         }
 
         protected override IEnumerable<SystemSettingDto> ConvertDtoToEntities(PasswordConfigDto dto)
         {
+
+            var jObject = JsonConvert.SerializeObject(dto);
             return new List<SystemSettingDto>
             {
-                CreateSetting("PasswordMinLength", dto.PasswordMinLength.ToString()),
-                CreateSetting("RequireUppercase", dto.RequireUppercase.ToString()),
-                CreateSetting("RequireLowercase", dto.RequireLowercase.ToString()),
-                CreateSetting("RequireNumbers", dto.RequireNumbers.ToString()),
-                CreateSetting("RequireSpecialChars", dto.RequireSpecialChars.ToString()),
-                CreateSetting("PasswordExpiry", dto.PasswordExpiry.ToString()),
-                CreateSetting("MaxLoginAttempts", dto.MaxLoginAttempts.ToString())
+                CreateJObjectSetting(jObject)
             };
         }
 
