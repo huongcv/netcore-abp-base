@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Ord.Plugin.Contract;
 using Ord.Plugin.Contract.Services.Security;
 using Ord.Plugin.Core.Configurations;
+using Ord.Plugin.Core.Features.SystemSetting.Base;
 using Ord.Plugin.Core.Services.Security;
 using Volo.Abp;
 using Volo.Abp.Autofac;
@@ -32,7 +33,7 @@ namespace Ord.Plugin.Core
             services.AddScoped(typeof(IIdEncoderService<,>), typeof(IdEncoderService<,>));
             services.AddHttpContextAccessor();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(OrdPluginCoreModule).Assembly));
-           
+
             //Sync 24.1.47
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF1cXmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEFjW31XcHBUQmNeVEx2Ww==");
 
@@ -41,6 +42,8 @@ namespace Ord.Plugin.Core
                 var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
                 return loggerFactory.CreateLogger("DefaultLogger");
             });
+
+            SystemSettingConfigServiceUtil.ConfigureServices(context);
         }
     }
 }
