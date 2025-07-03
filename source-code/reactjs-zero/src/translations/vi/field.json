@@ -16,7 +16,8 @@
     "requireNumbers": "Yêu cầu số",
     "requireSpecialChars": "Yêu cầu ký tự đặc biệt",
     "enableSsl": "Yêu cầu SSL",
-    "mustEncrypt": "Mã hóa giá trị"
+    "mustEncrypt": "Mã hóa giá trị",
+    "setting_usingJson": "Sử dụng json"
   },
   "name": "Tên",
   "description": "Mô tả",

@@ -5,6 +5,7 @@ import {useResponsiveSpan} from "@ord-core/hooks/useResponsiveSpan";
 import {ValidationRules} from "@ord-components/forms/form-builder/utils";
 import {CustomContentFieldConfig, CustomFieldConfig, FormFieldConfig} from './types';
 import {useFormFieldComponent} from './useFormFieldComponent';
+import _ from 'lodash';
 
 interface FormFieldItemProps {
     field: FormFieldConfig;
@@ -166,6 +167,6 @@ const FormFieldItem: React.FC<FormFieldItemProps> = (props: FormFieldItemProps) 
 };
 // ✅ Memo hóa
 export default React.memo(FormFieldItem, (prevProps, nextProps) => {
-    return JSON.stringify(prevProps.field) === JSON.stringify(nextProps.field)
+    return _.eq(prevProps.field, nextProps.field)
         && prevProps.disableResponsiveCol === nextProps.disableResponsiveCol;
 });

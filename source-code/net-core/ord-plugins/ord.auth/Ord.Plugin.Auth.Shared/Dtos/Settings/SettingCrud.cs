@@ -18,6 +18,7 @@ namespace Ord.Plugin.Auth.Shared.Dtos.Settings
         [OrdValidateRequired]
         [OrdMaxLengthString(500)]
         public string? Value { get; set; }
+        public bool UsingJson { get; set; }
         public string? JObjectValue { get; set; }
         public bool? MustEncrypt { get; set; }
         public bool IsActived { get; set; }

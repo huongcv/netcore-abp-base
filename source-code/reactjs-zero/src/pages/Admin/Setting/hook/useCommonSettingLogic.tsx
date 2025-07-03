@@ -15,7 +15,9 @@ export const useCommonSettingModifyModal = (onSaved?: () => void) => {
     return useModifyEntityModal<TenantPagedDto>({
         apiService: HostSystemSettingService,
         entityTranslationNs: 'common-setting',
-        transformNotificationParameter: createNotificationTransform.fromField('name'),
+        transformNotificationParameter: createNotificationTransform.fromMapping({
+            name: 'display_name'
+        }),
         modalProps: {
             width: 600,
         },
@@ -54,6 +56,9 @@ export const useCommonSettingLogic = () => {
                 });
                 openEditModal(getByDetail?.data);
             }
+        }, {
+            title: 'remove',
+            onClick: openDeleteConfirm
         }];
 
     return {

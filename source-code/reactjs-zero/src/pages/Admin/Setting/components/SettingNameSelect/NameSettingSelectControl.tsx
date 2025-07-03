@@ -10,7 +10,7 @@ import {
     SETTING_NAME_FOR_TENANT,
     SETTING_NAME_FOR_USER,
     SettingType
-} from "@pages/Admin/Setting/setting-name.const";
+} from "@pages/Admin/Setting/components/SettingNameSelect/setting-name.const";
 import Utils from "@ord-core/utils/utils";
 
 interface Prop extends ICommonSelectInputProp {

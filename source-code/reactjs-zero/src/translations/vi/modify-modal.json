@@ -19,6 +19,7 @@
     "tenant": "thuê bao",
     "role": "vai trò",
     "country": "quốc gia",
-    "province": "tỉnh/ thành phố"
+    "province": "tỉnh/ thành phố",
+    "common-setting": "cấu hình"
   }
 }
