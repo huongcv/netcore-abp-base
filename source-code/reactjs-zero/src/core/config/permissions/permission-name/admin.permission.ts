@@ -3,7 +3,7 @@ export const HOST_ADMIN_PER = {
     role: 'AuthPlugin.HostRole',
     roleTemplate: 'AuthPlugin.HostRoleTemplate',
     tenant: 'System.Tenant',
-    setting: 'System.Setting',
+    setting: 'System.HostSetting',
     employee: 'System.Employee',
     templatePrinterHost: 'System.TemplatePrinterHost',
     templatePrinterTenant: 'System.TemplatePrinterTenant',

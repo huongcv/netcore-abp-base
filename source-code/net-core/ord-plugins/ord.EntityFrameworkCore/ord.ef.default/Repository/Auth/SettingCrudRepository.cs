@@ -17,7 +17,8 @@ namespace Ord.EfCore.Default.Repository.Auth
                     x.Name
                 })
                 .WhereIf(input.Type.HasValue, x => x.Type == input.Type)
-                .WhereIf(input.IsStatic.HasValue, x => x.IsStatic == input.IsStatic)
+                .WhereIf(input.IsStatic == true, x => x.IsStatic == true)
+                .WhereIf(input.IsStatic != true, x => x.IsStatic != true)
                 .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
             return queryable;
         }

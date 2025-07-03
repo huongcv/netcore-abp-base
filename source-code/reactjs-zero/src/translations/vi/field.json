@@ -15,7 +15,8 @@
     "requireLowercase": "Yêu cầu chữ thường",
     "requireNumbers": "Yêu cầu số",
     "requireSpecialChars": "Yêu cầu ký tự đặc biệt",
-    "enableSsl": "Yêu cầu SSL"
+    "enableSsl": "Yêu cầu SSL",
+    "mustEncrypt": "Mã hóa giá trị"
   },
   "name": "Tên",
   "description": "Mô tả",

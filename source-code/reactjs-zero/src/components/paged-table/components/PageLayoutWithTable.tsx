@@ -6,10 +6,13 @@ import {TopAction} from "@ord-components/crud/TopAction";
 import {IActionBtn} from "@ord-components/crud/OrdCrudPage";
 import {Form, FormInstance} from "antd";
 import {TableSearchForm} from "@ord-components/paged-table/components/TableSearchForm";
+import {TitleAndAction} from "@ord-components/common/page/TitleAndAction";
+import AddNewEntity from "@ord-components/crud/btn-action/AddNewEntity";
 
 interface PageLayoutWithTableProps {
     children: React.ReactNode;
     tableStore: ReturnType<typeof import('@ord-components/paged-table/hooks/useTableStoreFactory').createTableStore>;
+    titleHeader?: React.ReactNode;
     topActions?: IActionBtn[],
     topActionContent?: React.ReactNode,
     hiddenTopAction?: boolean;
@@ -21,6 +24,7 @@ interface PageLayoutWithTableProps {
 
 export const PageLayoutWithTable = ({
                                         topActions,
+                                        titleHeader,
                                         topActionContent,
                                         hiddenTopAction,
                                         children,
@@ -32,19 +36,27 @@ export const PageLayoutWithTable = ({
     const hotKeyScopeId = useMemo(() => `crudPageScope-${uuidv4()}`, []);
     const [internalForm] = Form.useForm();
     const usedForm = form || internalForm;
+    const rightActionGroups = <>
+        {topActionContent}
+        <TopAction topActions={topActions} hotkeyScope={hotKeyScopeId}/>
+    </>
+    const renderHeader = useMemo(() => {
+        if (hiddenTopAction) {
+            return null;
+        }
+        if (titleHeader) {
+            return <TitleAndAction title={titleHeader}>
+                {rightActionGroups}
+            </TitleAndAction>
+        }
+        return <PageTopTitleAndAction>
+            {rightActionGroups}
+        </PageTopTitleAndAction>
+    }, [titleHeader, hiddenTopAction, rightActionGroups]);
     return (
         <HotkeysProvider initiallyActiveScopes={[hotKeyScopeId]}>
             <div>
-                {/* Header */}
-                {
-                    hiddenTopAction !== true &&
-                    <PageTopTitleAndAction>
-                        <>
-                            {topActionContent}
-                            <TopAction topActions={topActions} hotkeyScope={hotKeyScopeId}/>
-                        </>
-                    </PageTopTitleAndAction>
-                }
+                {renderHeader}
                 <div className={'ord-container-box'}>
                     <TableSearchForm
                         form={usedForm}

@@ -14,7 +14,7 @@ namespace Ord.Plugin.Auth.AppServices.Host
         protected override string GetBasePermissionName()
         {
             AppFactory.CheckHostUser();
-            return "AuthPlugin.HostSystemSetting";
+            return "System.HostSetting";
         }
 
         protected override SettingType GetSettingType()
