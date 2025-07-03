@@ -27,21 +27,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting
                     return GetDefaultValue();
                 }
             }
-
             return GetDefaultValue();
-
-            //var dict = settingEntities.ToDictionary(x => x.Name, x => x.Value);
-
-            //return new PasswordConfigDto
-            //{
-            //    PasswordMinLength = GetInt(dict, "PasswordMinLength", 8),
-            //    RequireUppercase = GetBool(dict, "RequireUppercase", true),
-            //    RequireLowercase = GetBool(dict, "RequireLowercase", true),
-            //    RequireNumbers = GetBool(dict, "RequireNumbers", true),
-            //    RequireSpecialChars = GetBool(dict, "RequireSpecialChars", false),
-            //    PasswordExpiry = GetInt(dict, "PasswordExpiry", 90),
-            //    MaxLoginAttempts = GetInt(dict, "MaxLoginAttempts", 5),
-            //};
         }
 
         protected override IEnumerable<SystemSettingDto> ConvertDtoToEntities(PasswordConfigDto dto)

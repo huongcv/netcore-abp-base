@@ -1,82 +1,135 @@
-import React from 'react';
-import {Alert, Button, Card, Col, Form, Input, InputNumber, Row, Select, Space, Switch, Typography} from 'antd';
-import {MailOutlined} from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Descriptions, Divider, Input, Select, Space, Tag, Typography} from 'antd';
+import {SmtpMailingDto} from "@api/base/index.defs";
+import {Edit, Mail, Send, Wifi} from 'lucide-react';
+import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
+import {useSmtpConfigModal} from "@pages/Admin/Setting/hook/useSmtpConfigModal";
 
 const {Title, Text} = Typography;
-const {Option} = Select;
-const {TextArea} = Input;
 
 export const SettingSmtpEmail = () => {
+    const [currentData, setCurrentData] = useState<SmtpMailingDto>();
+    const {openSmtpConfigModal} = useSmtpConfigModal();
+    const smtpConfigItems = [
+        {
+            key: 'host',
+            label: 'SMTP Host',
+            type: 'text'
+        },
+        {
+            key: 'port',
+            label: 'SMTP Port',
+            type: 'number'
+        },
+        {
+            key: 'username',
+            label: 'Username',
+            type: 'text'
+        },
+        {
+            key: 'password',
+            label: 'Password',
+            type: 'password'
+        },
+        {
+            key: 'displayName',
+            label: 'Tên người gửi',
+            type: 'text'
+        },
+        {
+            key: 'enableSsl',
+            label: 'Bảo mật SSL',
+            type: 'boolean'
+        }
+    ];
+    const renderValue = (item: any, value: any) => {
+        if (item.type === 'boolean') {
+            return (
+                <Tag color={value ? 'green' : 'red'}>
+                    {value ? 'Bật' : 'Tắt'}
+                </Tag>
+            );
+        }
+        if (item.type === 'password') {
+            return (
+                <Text code>
+                    {value ? '••••••••' : 'Chưa cấu hình'}
+                </Text>
+            );
+        }
+        if (item.type === 'number') {
+            return (
+                <Text strong>
+                    {value}
+                </Text>
+            );
+        }
+        return <Text>{value || 'Chưa cấu hình'}</Text>;
+    };
+    const loadSetting = async () => {
+        const result = await HostSystemSettingService.getMailingSmtp();
+        setCurrentData(result?.data || {});
+    };
+    useEffect(() => {
+        loadSetting();
+    }, []);
+
+    const openEditModal = () => {
+        if (currentData) {
+            openSmtpConfigModal(currentData, () => {
+                loadSetting();
+            });
+        }
+    }
     return <Card>
-        <Title level={4}>
-            <MailOutlined style={{marginRight: 8}}/>
-            Cấu hình SMTP Email
-        </Title>
-        <Alert
-            message="Thiết lập máy chủ email để gửi thông báo và xác thực"
-            type="info"
-            showIcon
-            style={{marginBottom: 16}}
-        />
-        <Row gutter={16}>
-            <Col xs={24} md={12}>
-                <Form.Item
-                    name="smtpHost"
-                    label="SMTP Host"
-                    rules={[{required: true, message: 'Vui lòng nhập SMTP host!'}]}
+        {
+            currentData &&
+            <>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16}}>
+                    <Title level={4} style={{margin: 0}}>
+                        <Mail className={'inline mr-[8px]'} size={20}/>
+                        <span>Cấu hình SMTP Email</span>
+                    </Title>
+                    <Button
+                        icon={<Edit size={16}/>}
+                        onClick={openEditModal}
+                    >
+                        Chỉnh sửa
+                    </Button>
+                </div>
+                <Descriptions
+                    column={{xs: 1, sm: 2, md: 3}}
+                    bordered
+                    size="middle"
                 >
-                    <Input placeholder="smtp.gmail.com"/>
-                </Form.Item>
-            </Col>
-            <Col xs={24} md={12}>
-                <Form.Item
-                    name="smtpPort"
-                    label="SMTP Port"
-                    rules={[{required: true, message: 'Vui lòng nhập SMTP port!'}]}
-                >
-                    <InputNumber min={1} max={65535} defaultValue={587} style={{width: '100%'}}/>
-                </Form.Item>
-            </Col>
-            <Col xs={24} md={12}>
-                <Form.Item
-                    name="smtpUsername"
-                    label="Username"
-                    rules={[{required: true, message: 'Vui lòng nhập username!'}]}
-                >
-                    <Input placeholder="your-email@gmail.com"/>
-                </Form.Item>
-            </Col>
-            <Col xs={24} md={12}>
-                <Form.Item
-                    name="smtpPassword"
-                    label="Password"
-                    rules={[{required: true, message: 'Vui lòng nhập password!'}]}
-                >
-                    <Input.Password placeholder="App Password"/>
-                </Form.Item>
-            </Col>
-            <Col xs={24} md={12}>
-                <Form.Item name="smtpSecurity" label="Bảo mật">
-                    <Select defaultValue="tls">
-                        <Option value="none">Không</Option>
-                        <Option value="tls">TLS</Option>
-                        <Option value="ssl">SSL</Option>
-                    </Select>
-                </Form.Item>
-            </Col>
-            <Col xs={24} md={12}>
-                <Form.Item name="senderName" label="Tên người gửi">
-                    <Input placeholder="Hệ thống ABC"/>
-                </Form.Item>
-            </Col>
-        </Row>
-        <Form.Item name="enableEmailNotification" valuePropName="checked">
-            <Switch defaultChecked/>
-            <Text style={{marginLeft: 8}}>Bật thông báo email</Text>
-        </Form.Item>
-        <Space>
-            <Button type="default">Test kết nối</Button>
-            <Button type="default">Gửi email thử nghiệm</Button>
-        </Space>
+                    {smtpConfigItems.map(item => (
+                        <Descriptions.Item
+                            key={item.key}
+                            label={item.label}
+                        >
+                            {renderValue(item, currentData[item.key])}
+                        </Descriptions.Item>
+                    ))}
+                </Descriptions>
+
+                <Divider/>
+
+                <div style={{textAlign: 'right'}}>
+                    <Space>
+                        <Button
+                            icon={<Wifi size={16}/>}
+                        >
+                            Test kết nối
+                        </Button>
+                        <Button
+                            type="default"
+                            icon={<Send size={16}/>}
+                        >
+                            Gửi email thử nghiệm
+                        </Button>
+                    </Space>
+                </div>
+            </>
+        }
     </Card>
 }

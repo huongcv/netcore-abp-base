@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
+import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**
@@ -833,6 +833,23 @@ export interface CommonResultDtoOfRoleDetailDto {
 
   /**  */
   data?: RoleDetailDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfSmtpMailingDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: SmtpMailingDto;
 
   /**  */
   extend?: any | null;
@@ -2292,6 +2309,26 @@ export interface SetActiveStatusDto {
 
   /**  */
   isActived?: boolean;
+}
+
+export interface SmtpMailingDto {
+  /**  */
+  host?: string;
+
+  /**  */
+  port?: number;
+
+  /**  */
+  username?: string;
+
+  /**  */
+  password?: string;
+
+  /**  */
+  displayName?: string;
+
+  /**  */
+  enableSsl?: boolean;
 }
 
 export interface TenantDetailDto {

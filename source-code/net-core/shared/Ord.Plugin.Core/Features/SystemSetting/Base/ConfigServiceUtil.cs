@@ -11,6 +11,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
         {
             var services = context.Services;
             services.AddScoped<IHostSystemSettingManager<PasswordConfigDto>, PasswordConfigManager>();
+            services.AddScoped<IHostSystemSettingManager<SmtpMailingDto>, HostSystemSmtpManager>();
         }
     }
 }

@@ -14,7 +14,8 @@
     "requireUppercase": "Yêu cầu chữ hoa",
     "requireLowercase": "Yêu cầu chữ thường",
     "requireNumbers": "Yêu cầu số",
-    "requireSpecialChars": "Yêu cầu ký tự đặc biệt"
+    "requireSpecialChars": "Yêu cầu ký tự đặc biệt",
+    "enableSsl": "Yêu cầu SSL"
   },
   "name": "Tên",
   "description": "Mô tả",
@@ -33,5 +34,10 @@
   "cap": "Cấp",
   "passwordMinLength": "Độ dài tối thiểu",
   "passwordExpiry": "Hết hạn sau",
-  "maxLoginAttempts": "Số lần đăng nhập sai tối đa"
+  "maxLoginAttempts": "Số lần đăng nhập sai tối đa",
+  "smtp_displayName": "Tên hiển thị",
+  "smtp_host": "SMTP Host",
+  "smtp_port": "SMTP Port",
+  "smtp_userName": "Username/Email gửi",
+  "smtp_password": "Mật khẩu"
 }

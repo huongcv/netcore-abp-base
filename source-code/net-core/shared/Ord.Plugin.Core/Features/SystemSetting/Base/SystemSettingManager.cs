@@ -78,10 +78,18 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                 : defaultValue;
         }
 
-        protected bool GetBool(Dictionary<string, string> dict, string key, bool defaultValue)
+        protected bool GetBool(Dictionary<string, string> dict, string keySuffix, bool defaultValue)
         {
+            var key = $"{GetPrefixSettingName()}.{keySuffix}";
             return dict.TryGetValue(key, out var val) && bool.TryParse(val, out var result)
                 ? result
+                : defaultValue;
+        }
+        protected string GetString(Dictionary<string, string> dict, string keySuffix, string defaultValue = "")
+        {
+            var key = $"{GetPrefixSettingName()}.{keySuffix}";
+            return dict.TryGetValue(key, out var val)
+                ? val
                 : defaultValue;
         }
         protected SystemSettingDto CreateSetting(string keySuffix, string value, bool mustEncrypt = false)

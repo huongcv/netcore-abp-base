@@ -5,7 +5,7 @@ import {l} from "@ord-core/language/lang.utils";
 export interface ApiActionOptions<T = any> {
     successMessage?: string;
     successMessagePrm?: any;
-    afterSuccess?: (dataSuccess: T) => void;
+    afterSuccess?: (dataSuccess?: T) => void;
     afterError?: (res: ICommonResultDtoApi<T>) => void;
     isMustBusyUi?: boolean;
 }

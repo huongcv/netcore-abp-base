@@ -52,9 +52,7 @@ export const SettingPassword = () => {
             unit: 'lần'
         }
     ];
-    const openEditModal = () => {
-        openPasswordConfigModal(currentData);
-    }
+
     const loadSetting = async () => {
         const result = await HostSystemSettingService.getPasswordConfig();
         setCurrentData(result?.data || {});
@@ -62,6 +60,13 @@ export const SettingPassword = () => {
     useEffect(() => {
         loadSetting();
     }, []);
+    const openEditModal = () => {
+        if (currentData) {
+            openPasswordConfigModal(currentData, () => {
+                loadSetting();
+            });
+        }
+    }
     const renderValue = (item: any, value: any) => {
         if (item.type === 'boolean') {
             return (

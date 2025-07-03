@@ -30,6 +30,23 @@ namespace Ord.Plugin.Auth.AppServices.Host
             await UpdateSettingAsync(input);
             return CommonResultDto<bool>.Ok(true);
         }
+        public async Task<CommonResultDto<SmtpMailingDto>> GetMailingSmtp()
+        {
+            await CheckPermissionForOperation(CrudOperationType.Base);
+            var setting = await GetSettingAsync<SmtpMailingDto>();
+            if (!string.IsNullOrEmpty(setting.Password))
+            {
+                setting.Password = "********";
+            }
+            return CommonResultDto<SmtpMailingDto>.Ok(setting);
+        }
+        [HttpPost]
+        public async Task<CommonResultDto<bool>> UpdateMailingSmtpConfig(SmtpMailingDto input)
+        {
+            await CheckPermissionForOperation(CrudOperationType.Base);
+            await UpdateSettingAsync(input);
+            return CommonResultDto<bool>.Ok(true);
+        }
 
         protected Task<TDto> GetSettingAsync<TDto>()
         where TDto : class

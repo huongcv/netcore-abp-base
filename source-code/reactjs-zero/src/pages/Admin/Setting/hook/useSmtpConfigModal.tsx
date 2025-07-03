@@ -2,61 +2,63 @@ import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {useTranslation} from "react-i18next";
 import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
-import {PasswordConfigDto} from "@api/base/index.defs";
+import {PasswordConfigDto, SmtpMailingDto} from "@api/base/index.defs";
 import {ApiActionHandler} from "@ord-core/utils/api/api-action.handler";
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
 
-export const usePasswordConfigModal = () => {
+export const useSmtpConfigModal = () => {
     const {t} = useTranslation('modal');
     const formConfig = new FormBuilder()
-        .addNumber({
-            name: 'maxLoginAttempts',
-            componentProps: {
-                max: 50,
-                min: 0
-            },
-            required: true
+        .addText({
+            span: 16,
+            label: 'smtp_host',
+            name: 'host',
+            required: true,
+            maxLength: 200
         }).addNumber({
-            name: 'passwordExpiry',
-            componentProps: {
-                max: 365,
-                min: 0
-            },
+            span: 8,
+            label: 'smtp_port',
+            name: 'port',
             required: true
+        }).addText({
+            name: 'username',
+            label: 'smtp_userName',
+            required: true,
+            maxLength: 200
         })
-        .addNumber({
-            name: 'passwordMinLength',
-            componentProps: {
-                max: 50,
-                min: 6
+        .addText({
+            name: 'password',
+            label: 'smtp_password',
+            componentProps:{
+              placeholder:"Để trống nếu không muốn thay đổi"
             },
-            required: true
+            maxLength: 200
+        })
+        .addText({
+            label: 'smtp_displayName',
+            name: 'displayName',
+            maxLength: 200
         })
         .addCheckbox({
-            name: 'requireUppercase',
-        }).addCheckbox({
-            name: 'requireLowercase',
-        }).addCheckbox({
-            name: 'requireNumbers',
-        }).addCheckbox({
-            name: 'requireSpecialChars',
+            name: 'enableSsl',
         })
         .build();
     const {openFormModal} = useFormModal({
-        title: t('hostSetting.passwordConfig.title'),
+        title: t('hostSetting.mailingSmtp.title'),
         formFields: <OrdFormBuilder config={formConfig}/>,
         modalProps: {
             width: 500
         }
     });
-    const openPasswordConfigModal = (setting: PasswordConfigDto, afterSuccess: () => void) => {
+    const openSmtpConfigModal = (setting: SmtpMailingDto, afterSuccess: () => void) => {
         const modalData = {
-            ...setting
+            ...setting,
+            password: null
         }
         openFormModal(modalData, async (formValues, form, modalData) => {
-            const successMessage = t('hostSetting.passwordConfig.success');
+            const successMessage = t('hostSetting.mailingSmtp.success');
             const result = await ApiActionHandler.execute(() => {
-                return HostSystemSettingService.updatePasswordConfig({
+                return HostSystemSettingService.updateMailingSmtpConfig({
                     body: formValues
                 })
             }, {
@@ -71,6 +73,6 @@ export const usePasswordConfigModal = () => {
         });
     }
     return {
-        openPasswordConfigModal
+        openSmtpConfigModal
     }
 }
