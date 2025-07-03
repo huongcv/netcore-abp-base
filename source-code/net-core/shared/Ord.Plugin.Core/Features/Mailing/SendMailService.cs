@@ -1,4 +1,5 @@
-﻿using MailKit.Security;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using Ord.Plugin.Contract.Features.Mailing;
@@ -12,8 +13,9 @@ namespace Ord.Plugin.Core.Features.Mailing
     {
         private readonly ISettingSharedManger _settingSharedManger;
         private readonly ILogger<SendMailService> _logger;
-        private MailSettings _mailSettings;
-        public SendMailService(ISettingSharedManger settingSharedManger,
+
+        public SendMailService(
+            ISettingSharedManger settingSharedManger,
             ILogger<SendMailService> logger)
         {
             _settingSharedManger = settingSharedManger;
@@ -23,71 +25,34 @@ namespace Ord.Plugin.Core.Features.Mailing
         public async Task SendMail(MailContent mailContent)
         {
             var mailSettings = await GetMailSettings();
-            var email = new MimeMessage();
-            email.Sender = new MailboxAddress(mailSettings.DisplayName, mailSettings.Mail);
-            email.From.Add(new MailboxAddress(mailSettings.DisplayName, mailSettings.Mail));
+
+            var email = CreateMimeMessage(mailSettings, mailContent.Subject, mailContent.Body);
             email.To.Add(MailboxAddress.Parse(mailContent.To));
+
             if (mailContent.ListEmailCC?.Any() == true)
             {
-                foreach (var emailCc in mailContent.ListEmailCC)
+                foreach (var emailCc in mailContent.ListEmailCC.Where(StringUtil.IsValidEmail))
                 {
-                    if (StringUtil.IsValidEmail(emailCc))
-                    {
-                        email.Cc.Add(MailboxAddress.Parse(emailCc));
-                    }
+                    email.Cc.Add(MailboxAddress.Parse(emailCc));
                 }
             }
 
-            email.Subject = mailContent.Subject;
-            var builder = new BodyBuilder
-            {
-                HtmlBody = mailContent.Body
-            };
-            email.Body = builder.ToMessageBody();
-            await SendMail(email);
+            await SendAsync(email, mailSettings);
         }
-        public async Task SendMail(Action<MimeMessage> mineFunc, string mailContent = "")
+
+        public async Task SendMail(Action<MimeMessage> configureMessage, string htmlBody = "")
         {
             var mailSettings = await GetMailSettings();
-            var email = new MimeMessage();
-            mineFunc.Invoke(email);
-            email.Sender = new MailboxAddress(mailSettings.DisplayName, mailSettings.Mail);
-            email.From.Add(new MailboxAddress(mailSettings.DisplayName, mailSettings.Mail));
-            if (!string.IsNullOrEmpty(mailContent))
-            {
-                var builder = new BodyBuilder
-                {
-                    HtmlBody = mailContent
-                };
-                email.Body = builder.ToMessageBody();
-            }
-            await SendMail(email);
+
+            var email = CreateMimeMessage(mailSettings, null, htmlBody);
+            configureMessage.Invoke(email);
+
+            await SendAsync(email, mailSettings);
         }
-        protected async Task SendMail(MimeMessage email)
-        {
-            var mailSettings = await GetMailSettings();
-            // dùng SmtpClient của MailKit
-            using var smtp = new MailKit.Net.Smtp.SmtpClient();
-
-            try
-            {
-                await smtp.ConnectAsync(mailSettings.Host, mailSettings.Port, SecureSocketOptions.StartTls);
-                await smtp.AuthenticateAsync(mailSettings.Mail, mailSettings.Password);
-                await smtp.SendAsync(email);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-            }
-            await smtp.DisconnectAsync(true);
-            _logger.LogInformation("send mail to " + email.To);
-        }
-
-
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            await SendMail(new MailContent()
+            await SendMail(new MailContent
             {
                 To = email,
                 Subject = subject,
@@ -95,37 +60,57 @@ namespace Ord.Plugin.Core.Features.Mailing
             });
         }
 
-        public async Task<MailSettings> GetMailSettings()
+        private MimeMessage CreateMimeMessage(MailSettings settings, string? subject, string? htmlBody)
         {
+            var email = new MimeMessage();
+            var mailbox = new MailboxAddress(settings.DisplayName, settings.Mail);
+
+            email.Sender = mailbox;
+            email.From.Add(mailbox);
+            email.Subject = subject ?? string.Empty;
+
+            if (!string.IsNullOrEmpty(htmlBody))
+            {
+                email.Body = new BodyBuilder { HtmlBody = htmlBody }.ToMessageBody();
+            }
+
+            return email;
+        }
+
+        private async Task SendAsync(MimeMessage email, MailSettings settings)
+        {
+            using var smtp = new SmtpClient();
+
             try
             {
-                var prefix = SmtpMailingDto.PrefixName;
-                var Host = await _settingSharedManger.GetForApp(prefix + "Host", "smtp.gmail.com");
-                var Port = await _settingSharedManger.GetForApp(prefix + "Port", 587);
-                var Mail = await _settingSharedManger.GetForApp<string>(prefix + "UserName");
-                var Password = await _settingSharedManger.GetForApp<string>(prefix + "Password");
-                var DisplayName = await _settingSharedManger.GetForApp<string>(prefix + "DisplayName");
+                await smtp.ConnectAsync(settings.Host, settings.Port, SecureSocketOptions.StartTls);
+                await smtp.AuthenticateAsync(settings.Mail, settings.Password);
+                await smtp.SendAsync(email);
 
-                Console.WriteLine($"Password: {Password}, Mail: {Mail}");
-                _mailSettings = new MailSettings
-                {
-                    Host = Host,
-                    Port = Port,
-                    Mail = Mail,
-                    Password = Password,
-                    DisplayName = DisplayName
-                };
-
-                return _mailSettings;
-
+                _logger.LogInformation("Email sent to: {To}", string.Join(", ", email.To.Select(x => x.ToString())));
             }
             catch (Exception ex)
             {
-
-                throw;
+                _logger.LogError(ex, "Failed to send email to: {To}", string.Join(", ", email.To.Select(x => x.ToString())));
             }
+            finally
+            {
+                await smtp.DisconnectAsync(true);
+            }
+        }
 
+        public async Task<MailSettings> GetMailSettings()
+        {
+            var prefix = SmtpMailingDto.PrefixName;
 
+            return new MailSettings
+            {
+                Host = await _settingSharedManger.GetForApp(prefix + "Host", "smtp.gmail.com"),
+                Port = await _settingSharedManger.GetForApp(prefix + "Port", 587),
+                Mail = await _settingSharedManger.GetForApp<string>(prefix + "UserName"),
+                Password = await _settingSharedManger.GetForApp<string>(prefix + "Password"),
+                DisplayName = await _settingSharedManger.GetForApp<string>(prefix + "DisplayName")
+            };
         }
     }
 }
