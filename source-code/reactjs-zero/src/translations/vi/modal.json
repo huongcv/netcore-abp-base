@@ -22,8 +22,8 @@
       "success": "Cấu hình chính sách mật khẩu thành công"
     },
     "mailingSmtp": {
-      "title": "Cấu hình SMTP Email<",
-      "success": "Cấu hình SMTP Email< thành công"
+      "title": "Cấu hình SMTP Email",
+      "success": "Cấu hình SMTP Email thành công"
     }
   }
 }

@@ -55,15 +55,17 @@ export const SettingPassword = () => {
 
     const loadSetting = async () => {
         const result = await HostSystemSettingService.getPasswordConfig();
-        setCurrentData(result?.data || {});
+        setCurrentData({...result.data});
     }
     useEffect(() => {
         loadSetting();
     }, []);
     const openEditModal = () => {
         if (currentData) {
-            openPasswordConfigModal(currentData, () => {
-                loadSetting();
+            openPasswordConfigModal(currentData, (updateValue) => {
+                setCurrentData({
+                    ...updateValue
+                })
             });
         }
     }
@@ -111,20 +113,10 @@ export const SettingPassword = () => {
                 >
                     {passwordPolicyItems.map(item => (
                         <Descriptions.Item
-                            key={item.key}
-                            label={item.label}
-                        >
+                            label={item.label}>
                             {renderValue(item, currentData[item.key])}
                         </Descriptions.Item>
                     ))}
-                    <Descriptions.Item key={'password-weak'}
-                                       label={'Mật khẩu yếu'}>
-                        <div>
-                            <Space>
-
-                            </Space>
-                        </div>
-                    </Descriptions.Item>
                 </Descriptions>
                 <Divider/>
 

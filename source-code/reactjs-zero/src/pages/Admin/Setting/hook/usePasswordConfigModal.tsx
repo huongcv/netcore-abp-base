@@ -49,20 +49,19 @@ export const usePasswordConfigModal = () => {
             width: 500
         }
     });
-    const openPasswordConfigModal = (setting: PasswordConfigDto, afterSuccess: () => void) => {
+    const openPasswordConfigModal = (setting: PasswordConfigDto, afterSuccess: (updateValue: any) => void) => {
         const modalData = {
             ...setting
         }
         openFormModal(modalData, async (formValues, form, modalData) => {
-            const successMessage = t('hostSetting.passwordConfig.success');
             const result = await ApiActionHandler.execute(() => {
                 return HostSystemSettingService.updatePasswordConfig({
                     body: formValues
                 })
             }, {
-                successMessage: successMessage,
+                successMessage: 'modal.hostSetting.passwordConfig.success',
                 afterSuccess: () => {
-                    afterSuccess();
+                    afterSuccess(formValues);
                 }
             });
             return {

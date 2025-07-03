@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Descriptions, Divider, Input, Select, Space, Tag, Typography} from 'antd';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Button, Card, Descriptions, Divider, Space, Tag, Typography} from 'antd';
 import {SmtpMailingDto} from "@api/base/index.defs";
 import {Edit, Mail, Send, Wifi} from 'lucide-react';
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
@@ -42,7 +42,14 @@ export const SettingSmtpEmail = () => {
             type: 'boolean'
         }
     ];
-    const renderValue = (item: any, value: any) => {
+    const renderValue = useCallback((item: {
+        key: string,
+        type: string
+    }) => {
+        if (!currentData) {
+            return null;
+        }
+        const value = currentData[item.key];
         if (item.type === 'boolean') {
             return (
                 <Tag color={value ? 'green' : 'red'}>
@@ -57,18 +64,13 @@ export const SettingSmtpEmail = () => {
                 </Text>
             );
         }
-        if (item.type === 'number') {
-            return (
-                <Text strong>
-                    {value}
-                </Text>
-            );
-        }
         return <Text>{value || 'Chưa cấu hình'}</Text>;
-    };
+    }, [currentData]);
     const loadSetting = async () => {
         const result = await HostSystemSettingService.getMailingSmtp();
-        setCurrentData(result?.data || {});
+        setCurrentData(prevData => ({
+            ...result.data
+        }));
     };
     useEffect(() => {
         loadSetting();
@@ -76,8 +78,8 @@ export const SettingSmtpEmail = () => {
 
     const openEditModal = () => {
         if (currentData) {
-            openSmtpConfigModal(currentData, () => {
-                loadSetting();
+            openSmtpConfigModal(currentData, (updateValue) => {
+                setCurrentData({...updateValue})
             });
         }
     }
@@ -103,11 +105,8 @@ export const SettingSmtpEmail = () => {
                     size="middle"
                 >
                     {smtpConfigItems.map(item => (
-                        <Descriptions.Item
-                            key={item.key}
-                            label={item.label}
-                        >
-                            {renderValue(item, currentData[item.key])}
+                        <Descriptions.Item label={item.label}>
+                            {renderValue(item)}
                         </Descriptions.Item>
                     ))}
                 </Descriptions>

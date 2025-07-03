@@ -2,7 +2,7 @@ import {FormBuilder} from "@ord-components/forms/form-builder/builder";
 import {useTranslation} from "react-i18next";
 import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 import {OrdFormBuilder} from "@ord-components/forms/form-builder";
-import {PasswordConfigDto, SmtpMailingDto} from "@api/base/index.defs";
+import {SmtpMailingDto} from "@api/base/index.defs";
 import {ApiActionHandler} from "@ord-core/utils/api/api-action.handler";
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
 
@@ -29,8 +29,8 @@ export const useSmtpConfigModal = () => {
         .addText({
             name: 'password',
             label: 'smtp_password',
-            componentProps:{
-              placeholder:"Để trống nếu không muốn thay đổi"
+            componentProps: {
+                placeholder: "Để trống nếu không muốn thay đổi"
             },
             maxLength: 200
         })
@@ -50,21 +50,20 @@ export const useSmtpConfigModal = () => {
             width: 500
         }
     });
-    const openSmtpConfigModal = (setting: SmtpMailingDto, afterSuccess: () => void) => {
+    const openSmtpConfigModal = (setting: SmtpMailingDto, afterSuccess: (updateValue: any) => void) => {
         const modalData = {
             ...setting,
             password: null
         }
         openFormModal(modalData, async (formValues, form, modalData) => {
-            const successMessage = t('hostSetting.mailingSmtp.success');
             const result = await ApiActionHandler.execute(() => {
                 return HostSystemSettingService.updateMailingSmtpConfig({
                     body: formValues
                 })
             }, {
-                successMessage: successMessage,
+                successMessage: 'modal.hostSetting.mailingSmtp.success',
                 afterSuccess: () => {
-                    afterSuccess();
+                    afterSuccess(formValues);
                 }
             });
             return {
