@@ -55,7 +55,7 @@ export const useFormFieldComponent = (
         date: <OrdDateInput {...baseProps} />,
         'date-range': <OrdDateRangeInput {...baseProps} />,
         'search-input': <SearchFilterText {...baseProps} span={24}/>,
-        number: <InputNumber {...baseProps} />,
+        number: <InputNumber {...baseProps} className={'w-full'}/>,
         checkbox: <Checkbox {...baseProps} ><FieldLabel label={'check_box.'}/></Checkbox>,
         dateTime: undefined,
         time: undefined,

@@ -17,7 +17,7 @@ export const OrdModalCloseButton: React.FC<CloseButtonProps> = ({
                                                                     style,
                                                                     className,
                                                                 }) => {
-    const {t} = useTranslation('action');
+    const {t} = useTranslation(['action']);
     return (
         <Button
             icon={<CloseOutlined/>}

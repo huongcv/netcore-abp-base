@@ -790,6 +790,23 @@ export interface CommonResultDtoOfPagedResultDtoOfUserPagedDto {
   isSuccessful?: boolean;
 }
 
+export interface CommonResultDtoOfPasswordConfigDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: PasswordConfigDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
 export interface CommonResultDtoOfProvinceDetailDto {
   /**  */
   code?: string;
@@ -1960,6 +1977,29 @@ export interface ParameterApiDescriptionModel {
 
   /**  */
   descriptorName?: string;
+}
+
+export interface PasswordConfigDto {
+  /**  */
+  passwordMinLength?: number;
+
+  /**  */
+  requireUppercase?: boolean;
+
+  /**  */
+  requireLowercase?: boolean;
+
+  /**  */
+  requireNumbers?: boolean;
+
+  /**  */
+  requireSpecialChars?: boolean;
+
+  /**  */
+  passwordExpiry?: number;
+
+  /**  */
+  maxLoginAttempts?: number;
 }
 
 export interface PropertyApiDescriptionModel {

@@ -17,10 +17,11 @@ namespace Ord.Plugin.Auth.AppServices.Host
             return "AuthPlugin.HostSystemSetting";
         }
 
-        public async Task<PasswordConfigDto> GetPasswordConfig()
+        public async Task<CommonResultDto<PasswordConfigDto>> GetPasswordConfig()
         {
             await CheckPermissionForOperation(CrudOperationType.Base);
-            return await GetSettingAsync<PasswordConfigDto>();
+            var setting = await GetSettingAsync<PasswordConfigDto>();
+            return CommonResultDto<PasswordConfigDto>.Ok(setting);
         }
         [HttpPost]
         public async Task<CommonResultDto<bool>> UpdatePasswordConfig(PasswordConfigDto input)

@@ -56,7 +56,7 @@ export interface TextareaFieldConfig extends BaseFormFieldConfig<TextAreaProps> 
 }
 
 export interface NumberFieldConfig extends BaseFormFieldConfig<InputNumberProps> {
-    maxLength: number;
+
 }
 
 export interface SelectFieldConfig extends BaseFormFieldConfig<IOrdSelectProp> {

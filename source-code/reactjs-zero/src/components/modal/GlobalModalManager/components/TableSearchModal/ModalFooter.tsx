@@ -2,7 +2,6 @@ import {RenderGlobalContentModalInput} from "@ord-components/modal/GlobalModalMa
 import {RenderBulkActionInput} from "@ord-components/modal/GlobalModalManager/hook/useTableSearchModal";
 import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 import {useMemo} from "react";
-import {Form} from "antd";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
 
 export const TableSearchModalFooter = (props: {

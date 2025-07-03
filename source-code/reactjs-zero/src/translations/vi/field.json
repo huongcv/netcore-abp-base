@@ -10,7 +10,11 @@
     "dang_hoat_dong": "Hoạt động",
     "isActived": "Hoạt động",
     "isLockoutEnabled": "Khóa tài khoản khi đăng nhập thất bại quá nhiều lần",
-    "mustChangePassword": "Yêu cầu đổi lại mật khẩu khi đăng nhập lần tiếp theo"
+    "mustChangePassword": "Yêu cầu đổi lại mật khẩu khi đăng nhập lần tiếp theo",
+    "requireUppercase": "Yêu cầu chữ hoa",
+    "requireLowercase": "Yêu cầu chữ thường",
+    "requireNumbers": "Yêu cầu số",
+    "requireSpecialChars": "Yêu cầu ký tự đặc biệt"
   },
   "name": "Tên",
   "description": "Mô tả",
@@ -26,5 +30,8 @@
   "ma_tinh": "Mã tỉnh",
   "ten_tinh": "Tên tỉnh",
   "quoc_gia": "Quốc gia",
-  "cap": "Cấp"
+  "cap": "Cấp",
+  "passwordMinLength": "Độ dài tối thiểu",
+  "passwordExpiry": "Hết hạn sau",
+  "maxLoginAttempts": "Số lần đăng nhập sai tối đa"
 }

@@ -15,5 +15,11 @@
   },
   "usersAssignableToRole": {
     "title": "Gán vai trò {{name}} cho người dùng"
+  },
+  "hostSetting": {
+    "passwordConfig": {
+      "title": "Cấu hình chính sách mật khẩu",
+      "success": "Cấu hình chính sách mật khẩu thành công"
+    }
   }
 }
