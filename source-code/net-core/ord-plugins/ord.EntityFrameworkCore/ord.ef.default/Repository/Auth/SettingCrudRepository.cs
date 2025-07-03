@@ -1,4 +1,5 @@
 ﻿using Ord.Plugin.Auth.Shared.Dtos.Settings;
+using Volo.Abp.Security.Encryption;
 
 namespace Ord.EfCore.Default.Repository.Auth
 {
@@ -6,6 +7,8 @@ namespace Ord.EfCore.Default.Repository.Auth
         : OrdDefaultCrudRepository<SettingEntity, Guid, SettingPagedInput, SettingPagedDto, SettingDetailDto, CreateSettingDto, UpdateSettingDto>(factory),
             ISettingCrudRepository
     {
+        private IStringEncryptionService EncryptionService =>
+            AppFactory.GetServiceDependency<IStringEncryptionService>();
         protected override async Task<IQueryable<SettingEntity>> GetPagedQueryableAsync(IQueryable<SettingEntity> queryable, SettingPagedInput input)
         {
             queryable = queryable.AsNoTracking()
@@ -14,6 +17,7 @@ namespace Ord.EfCore.Default.Repository.Auth
                     x.Name
                 })
                 .WhereIf(input.Type.HasValue, x => x.Type == input.Type)
+                .WhereIf(input.IsStatic.HasValue, x => x.IsStatic == input.IsStatic)
                 .WhereIf(input.IsActived.HasValue, x => x.IsActived == input.IsActived);
             return queryable;
         }
@@ -35,6 +39,11 @@ namespace Ord.EfCore.Default.Repository.Auth
             {
                 ThrowValidationEx("setting_name_already_exists", createInput.Name);
             }
+
+            if (createInput.MustEncrypt == true)
+            {
+                createInput.Value = EncryptionService.Encrypt(createInput.Value);
+            }
         }
 
         protected override async Task ValidateBeforeUpdateAsync(UpdateSettingDto updateInput, SettingEntity entityUpdate)
@@ -43,6 +52,10 @@ namespace Ord.EfCore.Default.Repository.Auth
             if (!isCodeUnique)
             {
                 ThrowValidationEx("setting_name_already_exists", updateInput.Name);
+            }
+            if (updateInput.MustEncrypt == true)
+            {
+                updateInput.Value = EncryptionService.Encrypt(updateInput.Value);
             }
         }
 

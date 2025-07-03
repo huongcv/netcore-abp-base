@@ -7,6 +7,7 @@ using Ord.Plugin.Contract.Data;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Core.Services;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Security.Encryption;
 
 namespace Ord.Plugin.Auth.AppServices
 {
@@ -18,6 +19,8 @@ namespace Ord.Plugin.Auth.AppServices
             IOrdCrudRepository<SettingEntity, Guid, SettingPagedInput, SettingPagedDto, SettingDetailDto,
                 CreateSettingDto, UpdateSettingDto> CrudRepository
             => AppFactory.GetServiceDependency<ISettingCrudRepository>();
+        private IStringEncryptionService EncryptionService =>
+            AppFactory.GetServiceDependency<IStringEncryptionService>();
         protected override string GetBasePermissionName()
         {
             return "AuthPlugin.Setting";
@@ -26,7 +29,22 @@ namespace Ord.Plugin.Auth.AppServices
         public override Task<CommonResultDto<PagedResultDto<SettingPagedDto>>> GetPaged(SettingPagedInput input)
         {
             input.Type = GetSettingType();
+            input.IsStatic = false;
             return base.GetPaged(input);
+        }
+
+        public override async Task<CommonResultDto<SettingDetailDto>> GetById(EncodedIdDto input)
+        {
+            var dto = await base.GetById(input);
+            if (dto.IsSuccessful && dto.Data != null)
+            {
+                if (dto.Data.MustEncrypt == true)
+                {
+                    dto.Data.Value = EncryptionService.Decrypt(dto.Data.Value);
+                }
+            }
+
+            return dto;
         }
 
         public override Task<CommonResultDto<SettingDetailDto>> CreateAsync(CreateSettingDto input)
