@@ -28,7 +28,10 @@ export const useSmtpConfigModal = () => {
             }, {
                 successMessage: 'modal.hostSetting.mailingSmtp.success',
                 afterSuccess: () => {
-                    afterSuccess(formValues);
+                    afterSuccess({
+                        ...formValues,
+                        password: "************"
+                    });
                 }
             });
             return {
