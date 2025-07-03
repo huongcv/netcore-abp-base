@@ -9,7 +9,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting
     {
         protected override string GetPrefixSettingName()
         {
-            return "System.PasswordConfig";
+            return PasswordConfigDto.PrefixName;
         }
 
         protected override async Task<PasswordConfigDto> ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities)

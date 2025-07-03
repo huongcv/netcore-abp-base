@@ -7,7 +7,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting
     {
         protected override string GetPrefixSettingName()
         {
-            return "App:Setting:Mailing.Smtp";
+            return SmtpMailingDto.PrefixName;
         }
 
         protected override async Task<SmtpMailingDto> ConvertEntitiesToDto(IEnumerable<SystemSettingDto> settingEntities)

@@ -4,6 +4,7 @@ namespace Ord.Plugin.Contract.Features.SystemSetting.Dto
 {
     public class PasswordConfigDto
     {
+        public const string PrefixName = "System.PasswordConfig";
         /// <summary>
         /// Độ dài tối thiểu của mật khẩu
         /// </summary>

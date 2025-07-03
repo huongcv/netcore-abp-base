@@ -4,6 +4,7 @@ namespace Ord.Plugin.Contract.Features.SystemSetting.Dto
 {
     public class SmtpMailingDto
     {
+        public const string PrefixName = "System:Mailing.Smtp";
         /// <summary>
         /// SMTP Host (ví dụ: smtp.gmail.com)
         /// </summary>
