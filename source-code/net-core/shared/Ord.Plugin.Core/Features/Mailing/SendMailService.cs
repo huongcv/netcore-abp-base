@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using Ord.Plugin.Contract.Features.Mailing;
+using Ord.Plugin.Contract.Features.SystemSetting.Dto;
 using Ord.Plugin.Contract.Setting;
 using Ord.Plugin.Contract.Utils;
 
@@ -98,11 +99,12 @@ namespace Ord.Plugin.Core.Features.Mailing
         {
             try
             {
-                var Host = await _settingSharedManger.GetForApp("App:Setting:Mailing.Smtp.Host", "smtp.gmail.com");
-                var Port = await _settingSharedManger.GetForApp("App:Setting:Mailing.Smtp.Port", 587);
-                var Mail = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.UserName");
-                var Password = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.Password");
-                var DisplayName = await _settingSharedManger.GetForApp<string>("App:Setting:Mailing.Smtp.DisplayName");
+                var prefix = SmtpMailingDto.PrefixName;
+                var Host = await _settingSharedManger.GetForApp(prefix + "Host", "smtp.gmail.com");
+                var Port = await _settingSharedManger.GetForApp(prefix + "Port", 587);
+                var Mail = await _settingSharedManger.GetForApp<string>(prefix + "UserName");
+                var Password = await _settingSharedManger.GetForApp<string>(prefix + "Password");
+                var DisplayName = await _settingSharedManger.GetForApp<string>(prefix + "DisplayName");
 
                 Console.WriteLine($"Password: {Password}, Mail: {Mail}");
                 _mailSettings = new MailSettings

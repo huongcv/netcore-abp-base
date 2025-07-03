@@ -18,7 +18,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting
             {
                 Host = GetString(dict, "Host"),
                 Port = GetInt(dict, "Port", 587),
-                Username = GetString(dict, "Username"),
+                Username = GetString(dict, "UserName"),
                 Password = GetString(dict, "Password"),
                 DisplayName = GetString(dict, "DisplayName"),
                 EnableSsl = GetBool(dict, "EnableSsl", false),
@@ -31,8 +31,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting
             {
                 CreateSetting("Host", dto.Host),
                 CreateSetting("Port", dto.Port.ToString()),
-                CreateSetting("Username", dto.Username),
-
+                CreateSetting("UserName", dto.Username),
                 CreateSetting("DisplayName", dto.DisplayName),
                 CreateSetting("EnableSsl", dto.EnableSsl.ToString())
             };

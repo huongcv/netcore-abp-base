@@ -72,7 +72,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
 
         protected int GetInt(Dictionary<string, string> dict, string keySuffix, int defaultValue)
         {
-            var key = $"{GetPrefixSettingName()}.{keySuffix}";
+            var key = GetNameSetting(keySuffix);
             return dict.TryGetValue(key, out var val) && int.TryParse(val, out var result)
                 ? result
                 : defaultValue;
@@ -80,14 +80,14 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
 
         protected bool GetBool(Dictionary<string, string> dict, string keySuffix, bool defaultValue)
         {
-            var key = $"{GetPrefixSettingName()}.{keySuffix}";
+            var key = GetNameSetting(keySuffix);
             return dict.TryGetValue(key, out var val) && bool.TryParse(val, out var result)
                 ? result
                 : defaultValue;
         }
         protected string GetString(Dictionary<string, string> dict, string keySuffix, string defaultValue = "")
         {
-            var key = $"{GetPrefixSettingName()}.{keySuffix}";
+            var key = GetNameSetting(keySuffix);
             return dict.TryGetValue(key, out var val)
                 ? val
                 : defaultValue;
@@ -96,11 +96,16 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
         {
             return new SystemSettingDto
             {
-                Name = $"{GetPrefixSettingName()}.{keySuffix}",
+                Name = GetNameSetting(keySuffix),
                 Value = value,
                 MustEncrypt = mustEncrypt,
                 IsActived = true
             };
+        }
+
+        private string GetNameSetting(string keySuffix)
+        {
+            return $"{GetPrefixSettingName()}{keySuffix}";
         }
         protected SystemSettingDto CreateJObjectSetting(string jObjectValue)
         {
