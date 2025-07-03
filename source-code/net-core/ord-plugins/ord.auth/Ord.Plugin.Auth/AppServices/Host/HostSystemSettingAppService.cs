@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ord.Domain.Enums;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.SystemSetting;
 using Ord.Plugin.Contract.Features.SystemSetting.Dto;
-using Ord.Plugin.Core.Base;
 using Ord.Plugin.Core.Services;
 
 namespace Ord.Plugin.Auth.AppServices.Host
 {
     [OrdAuth]
-    public class HostSystemSettingAppService : OrdAppServiceBase
+    public class HostSystemSettingAppService : SettingAppService
     {
 
         protected override string GetBasePermissionName()
         {
             AppFactory.CheckHostUser();
             return "AuthPlugin.HostSystemSetting";
+        }
+
+        protected override SettingType GetSettingType()
+        {
+            return SettingType.ForApp;
         }
 
         public async Task<CommonResultDto<PasswordConfigDto>> GetPasswordConfig()

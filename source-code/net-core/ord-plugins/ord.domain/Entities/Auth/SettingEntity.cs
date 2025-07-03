@@ -18,6 +18,8 @@ namespace Ord.Plugin.Auth.Shared.Entities
         public string? Value { get; set; }
         public bool? MustEncrypt { get; set; }
         public bool IsActived { get; set; }
+        // true không cho phép xóa
+        public bool? IsStatic { get; set; }
         public SettingType Type { get; set; }
         [Column(TypeName = "json")]
         public string? JObjectValue { get; set; }

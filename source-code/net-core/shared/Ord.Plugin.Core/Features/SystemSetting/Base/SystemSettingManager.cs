@@ -20,7 +20,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
         protected IDistributedCache<TSettingDto> CacheService => AppFactory.GetServiceDependency<IDistributedCache<TSettingDto>>();
 
 
-        protected virtual async Task<TSettingDto> DoGetSettingAsync(Guid? tenantId)
+        protected virtual async Task<TSettingDto> DoGetSettingAsync(Guid? tenantId, SettingType type)
         {
 
             using (CurrentTenant.Change(tenantId))
@@ -28,7 +28,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                 var queryable = await SettingRepository.GetQueryableAsync();
                 var prefix = GetPrefixSettingName();
                 var entities = await queryable.AsNoTracking()
-                    .Where(x => x.Type == SettingType.ForApp)
+                    .Where(x => x.Type == type)
                     .Where(x => x.Name.StartsWith(prefix))
                     .Select(x => new SystemSettingDto()
                     {

@@ -5,7 +5,7 @@ import ValidateUtils from "@ord-core/utils/validate.utils";
 import {useTranslation} from "react-i18next";
 import {TenantService} from "@api/base/TenantService";
 import {ApiActionHandler} from "@ord-core/utils/api/api-action.handler";
-import {useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
+import {IOnSubmitFormAction, useFormModal} from "@ord-components/modal/GlobalModalManager/hook/useFormModal";
 
 export const useChangePasswordTenantUserModal = () => {
     const {t} = useTranslation('modal');
@@ -55,7 +55,7 @@ export const useChangePasswordTenantUserModal = () => {
             userName: userDto.userName,
             fullName: userDto.name,
         }
-        openFormModal(modalData, async (formValues, form, modalData) => {
+        const onSubmitForm: IOnSubmitFormAction = async (formValues, form, modalData) => {
             const bodyData: TenantUserChangePassword = {
                 tenantIdEncodedId: tenantDto?.encodedId,
                 userEncodedId: userDto.encodedId,
@@ -73,7 +73,8 @@ export const useChangePasswordTenantUserModal = () => {
             return {
                 mustCloseModal: true,
             }
-        });
+        }
+        openFormModal(modalData, onSubmitForm);
     };
 
     return {

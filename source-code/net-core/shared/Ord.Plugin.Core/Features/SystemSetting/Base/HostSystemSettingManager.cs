@@ -14,7 +14,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
         public virtual Task<TSettingDto> GetSettingAsync()
         {
             var keyCache = "HostSystemSetting:" + GetPrefixSettingName();
-            return CacheService.GetOrAddAsync(keyCache, () => DoGetSettingAsync(null));
+            return CacheService.GetOrAddAsync(keyCache, () => DoGetSettingAsync(null, SettingType.ForApp));
 
         }
         public virtual async Task UpdateSettingAsync(TSettingDto setting)
@@ -49,6 +49,7 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                         entity.Value = dto.Value;
                         entity.IsActived = dto.IsActived;
                         entity.JObjectValue = dto.JObjectValue;
+                        entity.IsStatic = true;
 
                         await SettingRepository.UpdateAsync(entity, autoSave: false);
                     }
@@ -62,7 +63,8 @@ namespace Ord.Plugin.Core.Features.SystemSetting.Base
                             MustEncrypt = dto.MustEncrypt,
                             Value = dto.Value,
                             IsActived = dto.IsActived,
-                            JObjectValue = dto.JObjectValue
+                            JObjectValue = dto.JObjectValue,
+                            IsStatic = true
                             // nếu có các field mặc định khác như TenantId, CreatedTime thì set thêm
                         };
 

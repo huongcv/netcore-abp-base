@@ -15,6 +15,12 @@ export interface UseFormModalConfig<T = any> {
     modalProps?: Omit<ModalProps, 'onOk' | 'open' | 'onCancel'>;
 }
 
+export type IOnSubmitFormAction<TData = any> = (
+    formValue: Partial<TData> & Record<string, any>,
+    form: FormInstance,
+    modalData: TData
+) => Promise<{ mustCloseModal: boolean; mustResetForm?: boolean }>
+
 export const useFormModal = <T extends object>(config: UseFormModalConfig<T>) => {
     const {openModal, closeModal} = useGlobalModalStore();
     const isSubmittingRef = useRef(false);
@@ -33,11 +39,7 @@ export const useFormModal = <T extends object>(config: UseFormModalConfig<T>) =>
     // hàm chính để mở modal
     const openFormModal = <TData = any>(
         modalData: TData = {} as TData,
-        onSubmit: (
-            formValue: Partial<TData> & Record<string, any>,
-            form: FormInstance,
-            modalData: TData
-        ) => Promise<{ mustCloseModal: boolean; mustResetForm?: boolean }>,
+        onSubmit: IOnSubmitFormAction,
         customRenderFooter?: (
             onClose: () => void,
             internalForm: FormInstance,

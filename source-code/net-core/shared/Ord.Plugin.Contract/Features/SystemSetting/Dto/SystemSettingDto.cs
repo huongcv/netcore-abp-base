@@ -1,12 +1,17 @@
-﻿using Ord.Domain.Enums;
+﻿using AutoMapper;
+using Ord.Domain.Enums;
+using Ord.Plugin.Auth.Shared.Entities;
+using Ord.Plugin.Contract.Dtos;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Volo.Abp.Application.Dtos;
 
 namespace Ord.Plugin.Contract.Features.SystemSetting.Dto
 {
     // dto của SettingEntity
-    public class SystemSettingDto:EntityDto<Guid>
+    [AutoMap(typeof(SettingEntity), ReverseMap = true)]
+    public class SystemSettingDto : EntityDto<Guid>,IHasEncodedId
     {
         public Guid? TenantId { get; set; }
         public Guid? UserId { get; set; }
@@ -21,5 +26,12 @@ namespace Ord.Plugin.Contract.Features.SystemSetting.Dto
         public string? JObjectValue { get; set; }
 
         public string? DecryptValue { get; set; }
+        public string? EncodedId { get; set; }
+    }
+
+    public class SystemSettingPagedInput : OrdPagedRequestDto
+    {
+        [JsonIgnore]
+        public SettingType? Type { get; set; }
     }
 }

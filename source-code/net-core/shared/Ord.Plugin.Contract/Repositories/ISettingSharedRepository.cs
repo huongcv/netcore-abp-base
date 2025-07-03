@@ -1,5 +1,7 @@
 ﻿using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Contract.Enums;
+using Ord.Plugin.Contract.Features.SystemSetting.Dto;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.DependencyInjection;
 
 namespace Ord.Plugin.Contract.Repositories
@@ -7,5 +9,6 @@ namespace Ord.Plugin.Contract.Repositories
     public interface ISettingSharedRepository : IScopedDependency
     {
         Task<SettingDto?> GetSettingAsync(string name, SettingType type, bool isJsonValue = false);
+        Task<PagedResultDto<SystemSettingDto>> GetPaged(SystemSettingPagedInput input);
     }
 }

@@ -705,6 +705,23 @@ export interface CommonResultDtoOfPagedResultDtoOfRolePagedDto {
   isSuccessful?: boolean;
 }
 
+export interface CommonResultDtoOfPagedResultDtoOfSettingPagedDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: PagedResultDtoOfSettingPagedDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
 export interface CommonResultDtoOfPagedResultDtoOfTenantPagedDto {
   /**  */
   code?: string;
@@ -833,6 +850,23 @@ export interface CommonResultDtoOfRoleDetailDto {
 
   /**  */
   data?: RoleDetailDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfSettingDetailDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: SettingDetailDto;
 
   /**  */
   extend?: any | null;
@@ -1130,6 +1164,23 @@ export interface CreateRoleDto {
 
   /**  */
   permissionNames?: string[];
+}
+
+export interface CreateSettingDto {
+  /**  */
+  name?: string;
+
+  /**  */
+  value?: string;
+
+  /**  */
+  jObjectValue?: string;
+
+  /**  */
+  mustEncrypt?: boolean;
+
+  /**  */
+  isActived?: boolean;
 }
 
 export interface CreateTenantDto {
@@ -1924,6 +1975,14 @@ export interface PagedResultDtoOfRolePagedDto {
   totalCount?: string;
 }
 
+export interface PagedResultDtoOfSettingPagedDto {
+  /**  */
+  items?: SettingPagedDto[];
+
+  /**  */
+  totalCount?: string;
+}
+
 export interface PagedResultDtoOfTenantPagedDto {
   /**  */
   items?: TenantPagedDto[];
@@ -2311,6 +2370,75 @@ export interface SetActiveStatusDto {
   isActived?: boolean;
 }
 
+export interface SettingDetailDto {
+  /**  */
+  name?: string;
+
+  /**  */
+  value?: string;
+
+  /**  */
+  jObjectValue?: string;
+
+  /**  */
+  mustEncrypt?: boolean;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  id?: string;
+
+  /**  */
+  creationTime?: Date;
+
+  /**  */
+  encodedId?: string;
+}
+
+export interface SettingPagedDto {
+  /**  */
+  name?: string;
+
+  /**  */
+  value?: string;
+
+  /**  */
+  jObjectValue?: string;
+
+  /**  */
+  mustEncrypt?: boolean;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  id?: string;
+
+  /**  */
+  creationTime?: Date;
+
+  /**  */
+  encodedId?: string;
+}
+
+export interface SettingPagedInput {
+  /**  */
+  maxResultCount?: number;
+
+  /**  */
+  skipCount?: number;
+
+  /**  */
+  sorting?: string;
+
+  /**  */
+  filter?: string;
+
+  /**  */
+  isActived?: boolean;
+}
+
 export interface SmtpMailingDto {
   /**  */
   host?: string;
@@ -2612,6 +2740,26 @@ export interface UpdateRoleDto {
 
   /**  */
   permissionNames?: string[];
+}
+
+export interface UpdateSettingDto {
+  /**  */
+  name?: string;
+
+  /**  */
+  value?: string;
+
+  /**  */
+  jObjectValue?: string;
+
+  /**  */
+  mustEncrypt?: boolean;
+
+  /**  */
+  isActived?: boolean;
+
+  /**  */
+  encodedId?: string;
 }
 
 export interface UpdateTenantDto {
