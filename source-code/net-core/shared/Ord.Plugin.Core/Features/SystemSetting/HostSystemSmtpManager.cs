@@ -32,13 +32,13 @@ namespace Ord.Plugin.Core.Features.SystemSetting
                 CreateSetting("Host", dto.Host),
                 CreateSetting("Port", dto.Port.ToString()),
                 CreateSetting("Username", dto.Username),
-               
+
                 CreateSetting("DisplayName", dto.DisplayName),
                 CreateSetting("EnableSsl", dto.EnableSsl.ToString())
             };
             if (!string.IsNullOrEmpty(dto.Password))
             {
-                CreateSetting("Password", dto.Password, true);
+                ret.Add(CreateSetting("Password", dto.Password, true));
             }
 
             return ret;

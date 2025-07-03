@@ -30,7 +30,6 @@ namespace Ord.Plugin.Contract.Features.SystemSetting.Dto
         /// <summary>
         /// Tên người gửi hiển thị
         /// </summary>
-        [OrdValidateRequired]
         [OrdMaxLengthString(200)]
         public string? DisplayName { get; set; }
         /// <summary>
