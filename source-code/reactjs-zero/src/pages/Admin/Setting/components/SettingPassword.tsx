@@ -1,16 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Descriptions, Divider, Space, Tag, Typography} from 'antd';
-import {Edit, ShieldCheck} from 'lucide-react';
+import {Edit, ScrollText, ShieldCheck} from 'lucide-react';
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
 import {PasswordConfigDto} from "@api/base/index.defs";
 import {usePasswordConfigModal} from "@pages/Admin/Setting/hook/usePasswordConfigModal";
+import FormTableArray from "@pages/Admin/Setting/components/BlacklistPasswordForm";
+import {usePasswordWeakModal} from "@pages/Admin/Setting/hook/usePasswordWeakModal";
+import {useTranslation} from 'react-i18next';
 
 const {Title, Text} = Typography;
 
 export const SettingPassword = () => {
-    // Dữ liệu hiện tại
+    const {t} = useTranslation(['modal', 'form']);
     const [currentData, setCurrentData] = useState<PasswordConfigDto>();
     const {openPasswordConfigModal} = usePasswordConfigModal();
+    const {openListPasswordWeakModal} = usePasswordWeakModal();
 
     const passwordPolicyItems = [
         {
@@ -98,14 +102,24 @@ export const SettingPassword = () => {
                         <ShieldCheck className={'inline mr-[8px]'} size={20}/>
                         <span>Cấu hình chính sách mật khẩu</span>
                     </Title>
-                    <Button
-                        icon={<Edit size={16}/>}
-                        onClick={openEditModal}
-                    >
-                        Chỉnh sửa
-                    </Button>
-                </div>
+                    <div>
+                        <Space>
+                            <Button
+                                icon={<ScrollText size={16}/>}
+                                onClick={openListPasswordWeakModal}
+                            >
+                                Danh sách mật khẩu yếu
+                            </Button>
+                            <Button
+                                icon={<Edit size={16}/>}
+                                onClick={openEditModal}
+                            >
+                                Chỉnh sửa
+                            </Button>
+                        </Space>
+                    </div>
 
+                </div>
                 <Descriptions
                     column={{xs: 1, sm: 2, md: 3}}
                     bordered

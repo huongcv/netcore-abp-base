@@ -4,15 +4,19 @@ import {
   CommonResultDtoOfBoolean,
   CommonResultDtoOfSmtpMailingDto,
   SmtpMailingDto,
+  OrdPagedRequestDto,
+  CommonResultDtoOfPagedResultDtoOfBlacklistedDto,
+  PagedResultDtoOfBlacklistedDto,
+  BlacklistedDto,
   SettingPagedInput,
   CommonResultDtoOfPagedResultDtoOfSettingPagedDto,
   PagedResultDtoOfSettingPagedDto,
   SettingPagedDto,
-  CreateSettingDto,
+  EncodedIdDto,
   CommonResultDtoOfSettingDetailDto,
   SettingDetailDto,
+  CreateSettingDto,
   UpdateSettingDto,
-  EncodedIdDto,
   SetActiveStatusDto,
   CommonResultDtoOfListOfCounterByStatusItemDto,
   CounterByStatusItemDto,
@@ -107,6 +111,28 @@ export class HostSystemSettingService {
   /**
    *
    */
+  static getPasswordBlacklisted(
+    params: {
+      /** requestBody */
+      body?: OrdPagedRequestDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfPagedResultDtoOfBlacklistedDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/host-system-setting/get-password-blacklisted';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
   static getPaged(
     params: {
       /** requestBody */
@@ -116,6 +142,28 @@ export class HostSystemSettingService {
   ): Promise<CommonResultDtoOfPagedResultDtoOfSettingPagedDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/host-system-setting/get-paged';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static getById(
+    params: {
+      /** requestBody */
+      body?: EncodedIdDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfSettingDetailDto> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/host-system-setting/get-by-id';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 
@@ -248,28 +296,6 @@ export class HostSystemSettingService {
   ): Promise<CommonResultDtoOfListOfCounterByStatusItemDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/api/auth/host-system-setting/get-count-by-active';
-
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
-
-      let data = params.body;
-
-      configs.data = data;
-
-      axios(configs, resolve, reject);
-    });
-  }
-  /**
-   *
-   */
-  static getById(
-    params: {
-      /** requestBody */
-      body?: EncodedIdDto;
-    } = {} as any,
-    options: IRequestOptions = {}
-  ): Promise<CommonResultDtoOfSettingDetailDto> {
-    return new Promise((resolve, reject) => {
-      let url = basePath + '/api/auth/host-system-setting/get-by-id';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
 

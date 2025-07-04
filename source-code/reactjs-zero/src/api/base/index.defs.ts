@@ -307,6 +307,20 @@ export interface AssignRolesToUserDto {
   permissionNames?: string[];
 }
 
+export interface BlacklistedDto {
+  /**  */
+  id?: number;
+
+  /**  */
+  encodedId?: string;
+
+  /**  */
+  name?: string;
+
+  /**  */
+  value?: string;
+}
+
 export interface ChangePasswordUserDto {
   /**  */
   currentPassword?: string;
@@ -629,6 +643,23 @@ export interface CommonResultDtoOfNotificationSummaryDto {
 
   /**  */
   data?: NotificationSummaryDto;
+
+  /**  */
+  extend?: any | null;
+
+  /**  */
+  isSuccessful?: boolean;
+}
+
+export interface CommonResultDtoOfPagedResultDtoOfBlacklistedDto {
+  /**  */
+  code?: string;
+
+  /**  */
+  message?: string;
+
+  /**  */
+  data?: PagedResultDtoOfBlacklistedDto;
 
   /**  */
   extend?: any | null;
@@ -1172,6 +1203,9 @@ export interface CreateSettingDto {
 
   /**  */
   value?: string;
+
+  /**  */
+  usingJson?: boolean;
 
   /**  */
   jObjectValue?: string;
@@ -1893,6 +1927,23 @@ export interface ObjectExtensionsDto {
   enums?: object;
 }
 
+export interface OrdPagedRequestDto {
+  /**  */
+  maxResultCount?: number;
+
+  /**  */
+  skipCount?: number;
+
+  /**  */
+  sorting?: string;
+
+  /**  */
+  filter?: string;
+
+  /**  */
+  isActived?: boolean;
+}
+
 export interface OrdThemeDto {
   /**  */
   themeInfo?: string;
@@ -1941,6 +1992,14 @@ export interface OrdThemeDto {
 
   /**  */
   dashboardSlider5?: string;
+}
+
+export interface PagedResultDtoOfBlacklistedDto {
+  /**  */
+  items?: BlacklistedDto[];
+
+  /**  */
+  totalCount?: string;
 }
 
 export interface PagedResultDtoOfCountryPagedDto {
@@ -2378,6 +2437,9 @@ export interface SettingDetailDto {
   value?: string;
 
   /**  */
+  usingJson?: boolean;
+
+  /**  */
   jObjectValue?: string;
 
   /**  */
@@ -2402,6 +2464,9 @@ export interface SettingPagedDto {
 
   /**  */
   value?: string;
+
+  /**  */
+  usingJson?: boolean;
 
   /**  */
   jObjectValue?: string;
@@ -2437,6 +2502,9 @@ export interface SettingPagedInput {
 
   /**  */
   isActived?: boolean;
+
+  /**  */
+  isStatic?: boolean;
 }
 
 export interface SmtpMailingDto {
@@ -2748,6 +2816,9 @@ export interface UpdateSettingDto {
 
   /**  */
   value?: string;
+
+  /**  */
+  usingJson?: boolean;
 
   /**  */
   jObjectValue?: string;
