@@ -1,20 +1,11 @@
 import {
-  RefreshTokenRequest,
-  CommonResultDtoOfJwtDto,
-  JwtDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfJwtDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    RefreshTokenRequest
 } from './index.defs';
 
 export class RefreshTokenService {

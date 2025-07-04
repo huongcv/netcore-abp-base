@@ -5,12 +5,15 @@ import TableUtil from "@ord-core/utils/table.util";
 import {useTranslation} from "react-i18next";
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
 import {ColumnBuilder} from "@ord-components/paged-table/columns";
+import {
+    BulkActionButtonModal
+} from "@ord-components/modal/GlobalModalManager/components/TableSearchModal/BulkActionButtonModal";
 
 export const usePasswordWeakModal = () => {
     const {t} = useTranslation('modal');
     const builder = new ColumnBuilder();
     builder.addText({
-        title: 'value',
+        title: 'value_password_weak',
         dataIndex: 'value',
         copyable: true,
     })
@@ -39,7 +42,21 @@ export const usePasswordWeakModal = () => {
             title: t('usersAssignableToRole.title'),
             renderBulkActions: (input) => {
                 const {selectedRowKeys, clearSelection, onReloadTableModal} = input;
-                return <></>
+                return <BulkActionButtonModal selectedRowKeys={selectedRowKeys}
+                                              isHiddenIfEmpty
+                                              titleButton={'bulk_remove.blacklisted'}
+                                              buttonProps={{
+                                                  danger: true,
+                                                  type: 'primary'
+                                              }}
+                                              confirm={{
+                                                  titleI18nKey: 'before_remove_title',
+                                                  contentI18nKey: 'removePasswordWeak.description'
+                                              }}
+                                              handlerClick={(selected) => {
+
+                                              }}
+                />
             }
         })
     }

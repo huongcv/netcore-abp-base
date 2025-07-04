@@ -1,19 +1,10 @@
 import {
-  CommonResultDtoOfListOfFileUploadDto,
-  FileUploadDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfListOfFileUploadDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions
 } from './index.defs';
 
 export class FileService {

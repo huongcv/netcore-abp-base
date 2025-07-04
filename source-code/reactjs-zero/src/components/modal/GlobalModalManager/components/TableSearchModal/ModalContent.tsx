@@ -3,9 +3,7 @@ import {
     SearchablePagedTableProps
 } from "@ord-components/paged-table/components/SearchablePagedTable";
 import {RenderGlobalContentModalInput} from "@ord-components/modal/GlobalModalManager/types";
-import {RowSelectionConfig, useRowSelectionStore} from "@ord-components/paged-table/hooks/useRowSelectionStore";
-import {Form} from "antd";
-import {useEffect} from "react";
+import {RowSelectionConfig} from "@ord-components/paged-table/hooks/useRowSelectionStore";
 
 export const TableSearchModalContent = (props: {
     modalData?: any;
@@ -28,21 +26,6 @@ export const TableSearchModalContent = (props: {
         selectedRows,
         clearSelection
     } = rowSelectionStore;
-    // useEffect(() => {
-    //     internalForm.setFieldsValue({
-    //         extendUi: {
-    //             selectedRowKeys,
-    //             selectedRows
-    //         }
-    //     })
-    // }, [selectedRowKeys]);
-    // const clearSelection_w = Form.useWatch(['extendUi', 'clearSelection'], internalForm);
-    // useEffect(() => {
-    //     if (clearSelection_w > 0) {
-    //         clearSelection();
-    //     }
-    //
-    // }, [clearSelection_w]);
     return <>
         <SearchablePagedTable
             initialSearchParams={modalData}

@@ -1,19 +1,11 @@
 import {
-  LoginAsUserInputDto,
-  CommonResultDtoOfBoolean,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfBoolean,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    LoginAsUserInputDto
 } from './index.defs';
 
 export class UserImpersonationService {

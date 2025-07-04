@@ -1,21 +1,12 @@
 import {
-  DownloadResultFileImportOfProvinceImportDto,
-  ProvinceImportDto,
-  CommonResultDtoOfImportOutputDtoOfProvinceImportDto,
-  ImportOutputDtoOfProvinceImportDto,
-  IList,
-  List,
-  IListResult,
-  ListResultDto,
-  IPagedResult,
-  PagedResultDto,
-  Dictionary,
-  IDictionary,
-  IRequestOptions,
-  IRequestConfig,
-  getConfigs,
-  axios,
-  basePath
+    axios,
+    basePath,
+    CommonResultDtoOfImportOutputDtoOfProvinceImportDto,
+    DownloadResultFileImportOfProvinceImportDto,
+    getConfigs,
+    IRequestConfig,
+    IRequestOptions,
+    ProvinceImportDto
 } from './index.defs';
 
 export class ProvinceImportService {

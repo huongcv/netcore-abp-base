@@ -76,8 +76,6 @@ const SingleModal: React.FC<{ modal: GlobalModalConfig }> = ({modal}) => {
 // Main GlobalModalManager Component
 export const GlobalModalManager: React.FC = React.memo(() => {
     const {modals} = useGlobalModalStore();
-    const {t} = useTranslation(['modal', 'action']);
-
     return (
         <>
             {modals.map((modal) => (

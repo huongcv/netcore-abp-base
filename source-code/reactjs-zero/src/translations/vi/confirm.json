@@ -1,6 +1,7 @@
 {
   "okText": "Có",
   "cancelText": "Không",
+  "before_remove_title": "Xác nhận trước khi xóa",
   "remove": {
     "country": "Bạn có muốn xóa quốc gia: <bold>{{name}}</bold> này không"
   },
@@ -16,5 +17,8 @@
     "title": "Xác nhận trước khi thu hồi",
     "description": "Bạn có muốn thu hồi vai trò <bold>{{name}}</bold> của <bold>{{count}} người dùng</bold> đã được chọn không?",
     "success": "Thu hồi thành công vai trò của {{count}} người dùng"
+  },
+  "removePasswordWeak": {
+    "description": "Bạn có muốn xóa <bold>{{count}}</bold> mật khẩu yếu đã được chọn không?"
   }
 }

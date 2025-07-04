@@ -18,14 +18,16 @@ export const OrdModalFooter: React.FC<ModalFooterProps> = ({left, leftClose, rig
             className={className}
             style={{
                 display: 'flex',
-                justifyContent: hasLeft ? 'space-between' : 'flex-end',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 ...style,
             }}
         >
-            <Space>
-                {left}
-            </Space>
+            <div>
+                <Space>
+                    {left}
+                </Space>
+            </div>
             <Space>
                 {leftClose}
                 <OrdModalCloseButton onClick={onClose}/>

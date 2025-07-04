@@ -6,7 +6,7 @@ using Ord.Plugin.Contract.Dtos;
 
 namespace Ord.EfCore.Default.Repository.Auth
 {
-    public class BlacklistedRepository(IAppFactory appFactory) : DefaultBaseRepository<BlacklistedEntity, int>(appFactory), IBlacklistedCrudRepository
+    public class BlacklistedCrudRepository(IAppFactory appFactory) : DefaultBaseRepository<BlacklistedEntity, int>(appFactory), IBlacklistedCrudRepository
     {
         private IIdEncoderService<BlacklistedEntity, int> IdEncoder =>
             AppFactory.GetServiceDependency<IIdEncoderService<BlacklistedEntity, int>>();

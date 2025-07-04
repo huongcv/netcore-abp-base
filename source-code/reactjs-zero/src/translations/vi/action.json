@@ -39,5 +39,8 @@
   "revokeUsersToRole": "Thu hồi vai trò của {{selectedCount}} người dùng đã chọn",
   "bulkUserAssignableToRole": "Gán vai trò cho {{selectedCount}} người dùng đã chọn",
   "AssignableUsersToRole": "Gán vai trò người dùng",
-  "loading": " (Đang xử lý...)"
+  "loading": " (Đang xử lý...)",
+  "bulk_remove": {
+    "blacklisted": "Xóa {{selectedCount}} mật khẩu yếu đã chọn"
+  }
 }

@@ -43,5 +43,6 @@
   "smtp_userName": "Username/Email gửi",
   "smtp_password": "Mật khẩu",
   "setting_name": "Tên cấu hình",
-  "setting_value": "Giá trị cấu hình"
+  "setting_value": "Giá trị cấu hình",
+  "value_password_weak": "Mật khẩu yếu"
 }

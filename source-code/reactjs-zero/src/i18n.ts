@@ -1,22 +1,46 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
-import {LangUtil} from "@ord-core/language/lang.utils";
+import {LangUtil} from '@ord-core/language/lang.utils';
 
-const apiUrl: string = import.meta.env.VITE_API_URL;
+const currentLang = LangUtil.getLang();
+// Tự động import tất cả file json trong thư mục translations
+const modules = import.meta.glob('./translations/**/*.json', {eager: true});
+
+const resources: Record<string, Record<string, any>> = {};
+
+// Duyệt qua từng file đã load
+for (const path in modules) {
+    const match = path.match(/\.\/translations\/(.+?)\/(.+?)\.json$/);
+    if (match) {
+        const lng = match[1]; // ví dụ: 'en', 'vi'
+        if (lng !== currentLang) {
+            continue;
+        }
+        const ns = match[2]; // ví dụ: 'common', 'menu'
+        const module = modules[path] as { default: any };
+
+        if (!resources[lng]) {
+            resources[lng] = {};
+        }
+
+        resources[lng][ns] = module.default;
+    }
+}
 
 i18n
-    .use(initReactI18next) // khai báo sử dụng i18next với react-i18next
-    .use(resourcesToBackend((lng: any, ns: any) => import(`./translations/${lng}/${ns}.json`)))
+    .use(initReactI18next)
     .init({
-        fallbackLng: LangUtil.getLang(),
-        //debug: apiUrl.indexOf('localhost') > -1,
-        debug: false,
+        resources,
+        lng: LangUtil.getLang(), // hoặc 'vi', 'en'
+        fallbackLng: 'vi',
+        ns: Object.values(resources[LangUtil.getLang()] ?? {}).length
+            ? Object.keys(resources[LangUtil.getLang()])
+            : ['common'],
+        defaultNS: 'common',
         interpolation: {
-            escapeValue: false, // không nên escape trong React
+            escapeValue: false,
         },
-        defaultNS: ['common', 'field'],
-        fallbackNS: ['common', 'menu']
+        debug: false,
     });
 
 export default i18n;
