@@ -8,22 +8,43 @@ import {ColumnBuilder} from "@ord-components/paged-table/columns";
 import {
     BulkActionButtonModal
 } from "@ord-components/modal/GlobalModalManager/components/TableSearchModal/BulkActionButtonModal";
+import ServiceProxyUtils from "@ord-core/utils/service-proxy.utils";
+import UiUtils from "@ord-core/utils/ui.utils";
+import {Button, Col, Form} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {usePasswordWeakAddModal} from "@pages/Admin/Setting/hook/usePasswordWeakAddModal";
+
+const SearchFields = () => {
+    const {openPasswordAddModal} = usePasswordWeakAddModal();
+    const form = Form.useFormInstance();
+    return <>
+        <SearchFilterText span={18}/>
+        <Col span={6} className={'text-right'}>
+            <Button type='primary' icon={<PlusOutlined/>} onClick={() => {
+                openPasswordAddModal(form);
+            }}>
+                Thêm mới
+            </Button>
+        </Col>
+    </>;
+}
 
 export const usePasswordWeakModal = () => {
     const {t} = useTranslation('modal');
+    const {openPasswordAddModal} = usePasswordWeakAddModal();
     const builder = new ColumnBuilder();
     builder.addText({
         title: 'value_password_weak',
         dataIndex: 'value',
         copyable: true,
-    })
+    });
     const {openTableModal} = useTableSearchModal<UserPagedDto>({
         tableProps: {
             apiService: {
                 getPaged: HostSystemSettingService.getPasswordBlacklisted
             },
-            searchFields: <SearchFilterText span={12}/>,
-            rowKey: 'userId',
+            searchFields: <SearchFields/>,
+            rowKey: 'encodedId',
             columns: TableUtil.getColumns([
                 ...builder.build()
             ], {
@@ -31,7 +52,7 @@ export const usePasswordWeakModal = () => {
             })
         },
         modalProps: {
-            width: 1200,
+            width: 699,
             style: {
                 top: 10
             }
@@ -39,7 +60,7 @@ export const usePasswordWeakModal = () => {
     });
     const openListPasswordWeakModal = () => {
         openTableModal({
-            title: t('usersAssignableToRole.title'),
+            title: t('hostSetting.passWordWeak.title'),
             renderBulkActions: (input) => {
                 const {selectedRowKeys, clearSelection, onReloadTableModal} = input;
                 return <BulkActionButtonModal selectedRowKeys={selectedRowKeys}
@@ -53,7 +74,16 @@ export const usePasswordWeakModal = () => {
                                                   titleI18nKey: 'before_remove_title',
                                                   contentI18nKey: 'removePasswordWeak.description'
                                               }}
-                                              handlerClick={(selected) => {
+                                              handlerClick={async (selected) => {
+                                                  const apiResult = await HostSystemSettingService.removePasswordBlacklisted({
+                                                      encodedIds: [...selected]
+                                                  });
+                                                  ServiceProxyUtils.notifyErrorResultApi(apiResult);
+                                                  if (apiResult.isSuccessful) {
+                                                      UiUtils.showErrorNs('modal', 'hostSetting.passWordWeak.remove');
+                                                      onReloadTableModal();
+                                                      clearSelection();
+                                                  }
 
                                               }}
                 />

@@ -1,24 +1,41 @@
 import {
-    axios,
-    basePath,
-    CommonResultDtoOfBoolean,
-    CommonResultDtoOfListOfCounterByStatusItemDto,
-    CommonResultDtoOfPagedResultDtoOfBlacklistedDto,
-    CommonResultDtoOfPagedResultDtoOfSettingPagedDto,
-    CommonResultDtoOfPasswordConfigDto,
-    CommonResultDtoOfSettingDetailDto,
-    CommonResultDtoOfSmtpMailingDto,
-    CreateSettingDto,
-    EncodedIdDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions,
-    OrdPagedRequestDto,
-    PasswordConfigDto,
-    SetActiveStatusDto,
-    SettingPagedInput,
-    SmtpMailingDto,
-    UpdateSettingDto
+  CommonResultDtoOfPasswordConfigDto,
+  PasswordConfigDto,
+  CommonResultDtoOfBoolean,
+  CommonResultDtoOfSmtpMailingDto,
+  SmtpMailingDto,
+  OrdPagedRequestDto,
+  CommonResultDtoOfPagedResultDtoOfBlacklistedDto,
+  PagedResultDtoOfBlacklistedDto,
+  BlacklistedDto,
+  CommonResultDtoOfInt32,
+  InsertBulkBlacklistedDto,
+  UpdateBlacklistedDto,
+  SettingPagedInput,
+  CommonResultDtoOfPagedResultDtoOfSettingPagedDto,
+  PagedResultDtoOfSettingPagedDto,
+  SettingPagedDto,
+  EncodedIdDto,
+  CommonResultDtoOfSettingDetailDto,
+  SettingDetailDto,
+  CreateSettingDto,
+  UpdateSettingDto,
+  SetActiveStatusDto,
+  CommonResultDtoOfListOfCounterByStatusItemDto,
+  CounterByStatusItemDto,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class HostSystemSettingService {
@@ -108,6 +125,69 @@ export class HostSystemSettingService {
       let url = basePath + '/api/auth/host-system-setting/get-password-blacklisted';
 
       const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static removePasswordBlacklisted(
+    params: {
+      /**  */
+      encodedIds?: any | null[];
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfInt32> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/host-system-setting/remove-password-blacklisted';
+
+      const configs: IRequestConfig = getConfigs('delete', 'application/json', url, options);
+      configs.params = { EncodedIds: params['encodedIds'] };
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static insertPasswordBlacklisted(
+    params: {
+      /** requestBody */
+      body?: InsertBulkBlacklistedDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfInt32> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/host-system-setting/insert-password-blacklisted';
+
+      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+
+      let data = params.body;
+
+      configs.data = data;
+
+      axios(configs, resolve, reject);
+    });
+  }
+  /**
+   *
+   */
+  static updatePasswordBlacklisted(
+    params: {
+      /** requestBody */
+      body?: UpdateBlacklistedDto;
+    } = {} as any,
+    options: IRequestOptions = {}
+  ): Promise<CommonResultDtoOfBoolean> {
+    return new Promise((resolve, reject) => {
+      let url = basePath + '/api/auth/host-system-setting/update-password-blacklisted';
+
+      const configs: IRequestConfig = getConfigs('put', 'application/json', url, options);
 
       let data = params.body;
 

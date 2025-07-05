@@ -1,10 +1,20 @@
 import {
-    axios,
-    basePath,
-    CommonResultDtoOfListOfFileUploadDto,
-    getConfigs,
-    IRequestConfig,
-    IRequestOptions
+  CommonResultDtoOfListOfFileUploadDto,
+  FileUploadDto,
+  string,
+  IList,
+  List,
+  IListResult,
+  ListResultDto,
+  IPagedResult,
+  PagedResultDto,
+  Dictionary,
+  IDictionary,
+  IRequestOptions,
+  IRequestConfig,
+  getConfigs,
+  axios,
+  basePath
 } from './index.defs';
 
 export class FileService {

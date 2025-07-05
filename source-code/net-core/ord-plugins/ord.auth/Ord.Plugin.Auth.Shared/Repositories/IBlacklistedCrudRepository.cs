@@ -10,5 +10,6 @@ namespace Ord.Plugin.Auth.Shared.Repositories
     public interface IBlacklistedCrudRepository : IBasicRepository<BlacklistedEntity, int>
     {
         Task<PagedResultDto<BlacklistedDto>> GetPaged(string name, OrdPagedRequestDto input);
+        Task InsertBulk(string name,IList<string> values);
     }
 }

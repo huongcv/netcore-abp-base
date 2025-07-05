@@ -24,6 +24,11 @@
     "mailingSmtp": {
       "title": "Cấu hình SMTP Email",
       "success": "Cấu hình SMTP Email thành công"
+    },
+    "passWordWeak": {
+      "title": "Danh sách mật khẩu yếu",
+      "success": "Thêm thành công",
+      "remove": "Xóa thành công"
     }
   }
 }

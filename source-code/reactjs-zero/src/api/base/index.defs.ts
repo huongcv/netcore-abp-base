@@ -1,7 +1,7 @@
 /** Generate by swagger-axios-codegen */
 /* eslint-disable */
 // @ts-nocheck
-import {type AxiosInstance, type AxiosRequestConfig} from 'axios';
+import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface IRequestOptions extends AxiosRequestConfig {
   /**
@@ -102,6 +102,8 @@ export class PagedResultDto<T = any> implements IPagedResult<T> {
 
 // customer definition
 // empty
+
+export interface string {}
 
 export interface ActionApiDescriptionModel {
   /**  */
@@ -1790,6 +1792,11 @@ export interface ImportOutputDtoOfProvinceImportDto {
   successImportList?: ProvinceImportDto[];
 }
 
+export interface InsertBulkBlacklistedDto {
+  /**  */
+  values?: string[];
+}
+
 export interface InterfaceMethodApiDescriptionModel {
   /**  */
   name?: string;
@@ -2728,6 +2735,14 @@ export interface TypeApiDescriptionModel {
 
   /**  */
   properties?: PropertyApiDescriptionModel[];
+}
+
+export interface UpdateBlacklistedDto {
+  /**  */
+  value?: string;
+
+  /**  */
+  encodedId?: string;
 }
 
 export interface UpdateCountryDto {

@@ -30,5 +30,19 @@ namespace Ord.EfCore.Default.Repository.Auth
             }
             return paged;
         }
+
+        public async Task InsertBulk(string name, IList<string> values)
+        {
+            var entities = new List<BlacklistedEntity>();
+            foreach (var item in values)
+            {
+                entities.Add(new BlacklistedEntity()
+                {
+                    Value = item,
+                    Name = name
+                });
+            }
+            await InsertManyAsync(entities);
+        }
     }
 }

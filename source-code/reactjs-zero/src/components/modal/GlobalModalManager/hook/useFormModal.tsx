@@ -31,11 +31,8 @@ export const useFormModal = <T extends object>(config: UseFormModalConfig<T>) =>
         submitIcon,
         submitLabel,
         onSaved,
-        modalProps: rawModalProps,
+        modalProps,
     } = config;
-
-    // Tránh tạo object mới mỗi lần render
-    const modalProps = useMemo(() => rawModalProps || {width: 690}, [rawModalProps]);
     // hàm chính để mở modal
     const openFormModal = <TData = any>(
         modalData: TData = {} as TData,
@@ -73,23 +70,6 @@ export const useFormModal = <T extends object>(config: UseFormModalConfig<T>) =>
                                              initialValues={modalData}
                 />
             },
-            // renderModalContent: ({internalForm}) => renderFormModalContent(modalData, async (values, form) => {
-            //     if (isSubmittingRef.current) return;
-            //     isSubmittingRef.current = true;
-            //     UiUtils.setBusy();
-            //     try {
-            //         const result = await onSubmit(values, form, modalData);
-            //         if (result?.mustCloseModal) {
-            //             closeModal(modalId);
-            //         }
-            //         onSaved?.();
-            //     } catch (error) {
-            //         console.error('[useFormModal] Submit error:', error);
-            //     } finally {
-            //         isSubmittingRef.current = false;
-            //         UiUtils.clearBusy();
-            //     }
-            // })(internalForm),
             renderModalFooter: ({onClose, internalForm}) => {
                 if (customRenderFooter) {
                     return customRenderFooter?.(onClose, internalForm, modalData);

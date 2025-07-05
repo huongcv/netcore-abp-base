@@ -23,12 +23,22 @@ class UiUtils {
     showSuccess = (content?: string) => {
         toast.success(content, this.BASE_TOAST);
     };
+    showSuccessNs = (ns: string, content?: string, prm?: any) => {
+        const message = l.trans(ns + '.' + content, prm);
+        toast.success(message, this.BASE_TOAST);
+    };
     showSuccessWithLCommon = (content?: string) => {
         toast.success(l.transCommon(content || ''), this.BASE_TOAST);
     };
     showError = (content?: string) => {
         if (content) {
             toast.error(content ? l.transCommon(content) : "Error", this.BASE_TOAST);
+        }
+    };
+    showErrorNs = (ns: string, content?: string, prm?: any) => {
+        const message = l.trans(ns + '.' + content, prm);
+        if (message) {
+            toast.error(message ? message : "Error", this.BASE_TOAST);
         }
     };
     showInfo = (content?: ToastContent) => {
