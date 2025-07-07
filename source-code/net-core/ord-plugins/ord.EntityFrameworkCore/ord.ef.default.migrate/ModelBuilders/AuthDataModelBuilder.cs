@@ -130,7 +130,7 @@ namespace Ord.EfCore.Default.MigrateDb.ModelBuilders
                 {
                     x.Name,
                     x.Value
-                });
+                }).IsUnique();
             });
         }
     }

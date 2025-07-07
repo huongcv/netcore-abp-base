@@ -8,6 +8,7 @@ import {useCallback, useMemo} from "react";
 import {HostSystemSettingService} from "@api/base/HostSystemSettingService";
 import UiUtils from "@ord-core/utils/ui.utils";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
+import ServiceProxyUtils from "@ord-core/utils/service-proxy.utils";
 
 const FormFields = () => {
     const form = Form.useFormInstance();
@@ -103,11 +104,17 @@ export const usePasswordWeakAddModal = () => {
     });
     const openPasswordAddModal = (searchForm: FormInstance) => {
         openFormModal({}, async (formValues, form, modalData) => {
+            const {values = []} = formValues;
+            if (values.length === 0) {
+                UiUtils.showError('Vui lòng nhập ít nhất một giá trị');
+                return;
+            }
             const apiResult = await HostSystemSettingService.insertPasswordBlacklisted({
                 body: {
-                    values: [...formValues.values]
+                    values: [...values]
                 }
             });
+            ServiceProxyUtils.notifyErrorResultApi(apiResult);
             if (apiResult.isSuccessful) {
                 UiUtils.showErrorNs('modal', 'hostSetting.passWordWeak.success');
                 formSignalUtils.reloadTableOnly(searchForm);

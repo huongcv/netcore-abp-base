@@ -141,5 +141,6 @@
   "contact_support": "Vui lòng liên hệ hỗ trợ kỹ thuật",
   "access_token_revoked": "Access token đã bị thu hồi",
   "access_token_invalid": "Access token không hợp lệ",
-  "user_unauthorized": "Người dùng chưa đăng nhập"
+  "user_unauthorized": "Người dùng chưa đăng nhập",
+  "black_list_password_duplicate": "Giá trị '{0}' đã tồn tại trong danh sách mật khẩu yếu"
 }
