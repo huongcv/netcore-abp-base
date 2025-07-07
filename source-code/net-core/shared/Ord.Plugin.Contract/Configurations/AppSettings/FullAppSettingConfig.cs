@@ -22,13 +22,21 @@ namespace Ord.Plugin.Contract.Configurations
             }
             return _instance;
         }
-       public AppSettings App { get; set; }
-       public AuthenticationSettings Authentication { get; set; }
+        public AppSettings App { get; set; }
+        public AuthenticationSettings Authentication { get; set; }
     }
     public class AppSettings
     {
         public string Name { get; set; }
         public bool IsMariaDb { get; set; }
+
+        public RecaptchaSetting Recaptcha { get; set; }
+    }
+
+    public class RecaptchaSetting
+    {
+        public string? SiteKey { get; set; }
+        public string? SecretKey { get; set; }
     }
 
     public class AuthenticationSettings

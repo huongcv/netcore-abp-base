@@ -2,6 +2,7 @@
 using Ord.Plugin.Auth.Filters;
 using Ord.Plugin.Auth.Shared.Dtos;
 using Ord.Plugin.Auth.Shared.Services;
+using Ord.Plugin.Contract.Configurations;
 using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Factories;
@@ -17,7 +18,7 @@ namespace Ord.Plugin.Auth.AppServices
         [AutoRefreshJwt]
         public async Task<CommonResultDto<AppBootstrapDto>> GetBootstrap()
         {
-            var appBootstrapDto = new AppBootstrapDto();
+            var appBootstrapDto = await InitAppBootstrapDto();
             if (!appFactory.CurrentUserId.HasValue)
             {
                 return AppFactory.CreateSuccessResult(appBootstrapDto);
@@ -66,6 +67,13 @@ namespace Ord.Plugin.Auth.AppServices
         protected override string GetBasePermissionName()
         {
             return "AuthPlugin.Information";
+        }
+        protected async Task<AppBootstrapDto> InitAppBootstrapDto()
+        {
+            var appBootstrapDto = new AppBootstrapDto();
+            appBootstrapDto.Setting = new();
+            appBootstrapDto.Setting.Add("RecaptchaSiteKey", FullAppSettingConfig.GetInstance().App.Recaptcha?.SiteKey);
+            return appBootstrapDto;
         }
     }
 }

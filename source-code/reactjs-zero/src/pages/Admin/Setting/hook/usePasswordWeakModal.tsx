@@ -73,7 +73,6 @@ const ClearSelected = (props: RenderBulkActionInput) => {
 }
 export const usePasswordWeakModal = () => {
     const {t} = useTranslation('modal');
-    const {openPasswordAddModal} = usePasswordWeakAddModal();
     const builder = new ColumnBuilder();
     builder.addText({
         title: 'value_password_weak',
