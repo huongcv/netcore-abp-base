@@ -57,10 +57,12 @@ namespace Ord.EfCore.Default.Repository.Auth
 
                 if (match.Success)
                 {
-
+                    var nameList = match.Groups[1].Value;
                     var value = match.Groups[2].Value;
-
-                    throw new AbpValidationException(AppFactory.GetLocalizedMessage("exception.black_list_password_duplicate", match.Groups[2].Value));
+                    if (string.Equals(nameList, "WEAK_PASSWORD"))
+                    {
+                        throw new AbpValidationException(AppFactory.GetLocalizedMessage("exception.black_list_password_duplicate", value));
+                    }
                 }
                 throw;
             }
