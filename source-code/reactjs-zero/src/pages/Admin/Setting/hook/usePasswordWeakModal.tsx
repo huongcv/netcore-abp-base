@@ -1,4 +1,7 @@
-import {useTableSearchModal} from "@ord-components/modal/GlobalModalManager/hook/useTableSearchModal";
+import {
+    RenderBulkActionInput,
+    useTableSearchModal
+} from "@ord-components/modal/GlobalModalManager/hook/useTableSearchModal";
 import {UserPagedDto} from "@api/base/index.defs";
 import {SearchFilterText} from "@ord-components/forms/search/SearchFilterText";
 import TableUtil from "@ord-core/utils/table.util";
@@ -28,7 +31,46 @@ const SearchFields = () => {
         </Col>
     </>;
 }
+const RemoveBulkAction = (props: RenderBulkActionInput) => {
+    const {selectedRowKeys, clearSelection, onReloadTableModal} = props;
+    return <BulkActionButtonModal selectedRowKeys={selectedRowKeys}
+                                  isHiddenIfEmpty
+                                  titleButton={'bulk_remove.blacklisted'}
+                                  buttonProps={{
+                                      danger: true,
+                                      type: 'primary'
+                                  }}
+                                  confirm={{
+                                      titleI18nKey: 'before_remove_title',
+                                      contentI18nKey: 'removePasswordWeak.description'
+                                  }}
+                                  handlerClick={async (selected) => {
+                                      const apiResult = await HostSystemSettingService.removePasswordBlacklisted({
+                                          encodedIds: [...selected]
+                                      });
+                                      ServiceProxyUtils.notifyErrorResultApi(apiResult);
+                                      if (apiResult.isSuccessful) {
+                                          UiUtils.showErrorNs('modal', 'hostSetting.passWordWeak.remove');
+                                          onReloadTableModal();
+                                          clearSelection();
+                                      }
 
+                                  }}
+    />;
+}
+const ClearSelected = (props: RenderBulkActionInput) => {
+    const {selectedRowKeys, clearSelection, onReloadTableModal} = props;
+    return <BulkActionButtonModal selectedRowKeys={selectedRowKeys}
+                                  isHiddenIfEmpty
+                                  buttonProps={{
+                                      type: 'default'
+                                  }}
+                                  titleButton={'Bỏ chọn tất cả'}
+                                  handlerClick={async (selected) => {
+                                      clearSelection();
+                                  }}
+    />;
+}
 export const usePasswordWeakModal = () => {
     const {t} = useTranslation('modal');
     const {openPasswordAddModal} = usePasswordWeakAddModal();
@@ -51,6 +93,9 @@ export const usePasswordWeakModal = () => {
                 actions: []
             })
         },
+        rowSelectionConfig: {
+            preserveSelection: true
+        },
         modalProps: {
             width: 699,
             style: {
@@ -58,35 +103,16 @@ export const usePasswordWeakModal = () => {
             }
         }
     });
+
     const openListPasswordWeakModal = () => {
         openTableModal({
             title: t('hostSetting.passWordWeak.title'),
             renderBulkActions: (input) => {
                 const {selectedRowKeys, clearSelection, onReloadTableModal} = input;
-                return <BulkActionButtonModal selectedRowKeys={selectedRowKeys}
-                                              isHiddenIfEmpty
-                                              titleButton={'bulk_remove.blacklisted'}
-                                              buttonProps={{
-                                                  danger: true,
-                                                  type: 'primary'
-                                              }}
-                                              confirm={{
-                                                  titleI18nKey: 'before_remove_title',
-                                                  contentI18nKey: 'removePasswordWeak.description'
-                                              }}
-                                              handlerClick={async (selected) => {
-                                                  const apiResult = await HostSystemSettingService.removePasswordBlacklisted({
-                                                      encodedIds: [...selected]
-                                                  });
-                                                  ServiceProxyUtils.notifyErrorResultApi(apiResult);
-                                                  if (apiResult.isSuccessful) {
-                                                      UiUtils.showErrorNs('modal', 'hostSetting.passWordWeak.remove');
-                                                      onReloadTableModal();
-                                                      clearSelection();
-                                                  }
-
-                                              }}
-                />
+                return [
+                    <RemoveBulkAction {...input}/>,
+                    <ClearSelected {...input}/>
+                ];
             }
         })
     }

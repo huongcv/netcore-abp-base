@@ -12,12 +12,14 @@ export interface PagedTableProps<T> extends TableProps<T> {
     tableStore: UseBoundStore<StoreApi<TableStoredState>>;
     initialSearchParams?: Record<string, any>;
     isHiddenPagination?: boolean;
+    onChangeDataTable?: (valueRowKeys: any[], data: any[], rowKey: string) => void;
 }
 
 export const PagedTable = <T extends object>({
                                                  tableStore,
                                                  initialSearchParams,
                                                  isHiddenPagination = false,
+                                                 onChangeDataTable,
                                                  ...tableProps
                                              }: PagedTableProps<T>) => {
     const {
@@ -86,7 +88,14 @@ export const PagedTable = <T extends object>({
             </div>
         );
     }, [isHiddenPagination, page, pageSize, total, tableProps.pagination, t, setPagination]);
-
+    useEffect(() => {
+        if (onChangeDataTable) {
+            const rowKey = tableProps.rowKey || 'view_id';
+            const valueKeys = data.map(it => it[rowKey]);
+            // @ts-ignore
+            onChangeDataTable(valueKeys, data, rowKey);
+        }
+    }, [data, tableProps.rowKey, onChangeDataTable]);
     return (
         <div className="enhanced-table">
             <Table

@@ -3,6 +3,7 @@ import {RenderBulkActionInput} from "@ord-components/modal/GlobalModalManager/ho
 import {OrdModalFooter} from "@ord-components/modal/footer/OrdModalFooter";
 import {useMemo} from "react";
 import {formSignalUtils} from "@ord-components/paged-table/utils/formSignal.utils";
+import React from "react";
 
 export const TableSearchModalFooter = (props: {
     renderInput: RenderGlobalContentModalInput;
@@ -23,7 +24,7 @@ export const TableSearchModalFooter = (props: {
     const leftBtn = useMemo(() => {
         const nodes = [];
         if (renderBulkActions) {
-            nodes.push(renderBulkActions({
+            const node = renderBulkActions({
                 onCloseModal: onClose,
                 clearSelection,
                 selectedRowKeys,
@@ -31,7 +32,23 @@ export const TableSearchModalFooter = (props: {
                 onReloadTableModal: () => {
                     formSignalUtils.reloadTableOnly(internalForm);
                 }
-            }));
+            });
+            const keyNode = 'bulk-action' + Number(new Date());
+            // Thêm key tại đây, dùng React.cloneElement nếu là phần tử hợp lệ
+            if (node && React.isValidElement(node)) {
+                nodes.push(React.cloneElement(node, {key: keyNode}));
+            } else if (Array.isArray(node)) {
+                // Nếu renderBulkActions trả về một mảng ReactNode
+                node.forEach((child, index) => {
+                    if (React.isValidElement(child)) {
+                        nodes.push(React.cloneElement(child, {key: `${keyNode}-${index}`}));
+                    } else {
+                        nodes.push(child); // vẫn đẩy nếu không thể thêm key
+                    }
+                });
+            } else {
+                nodes.push(node); // fallback nếu không rõ
+            }
         }
         return nodes;
     }, [renderBulkActions, selectedRowKeys, selectedRows]);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Form, FormInstance, TableProps} from 'antd';
 import {IGetPagedApiService, StaticCounterByStatusApiFetcher} from "@ord-components/paged-table/types";
 import {PagedTable} from "@ord-components/paged-table/components/PagedTable";
@@ -17,6 +17,7 @@ export interface SearchablePagedTableProps<T = any> extends TableProps<T> {
         initialValueStatus?: string | number | null | boolean
     },
     bulkActionToolbar?: React.ReactNode;
+    onChangeDataTable?: (valueRowKeys: any[], data: any[]) => void;
 }
 
 export const SearchablePagedTable = <T extends object>({
@@ -31,11 +32,11 @@ export const SearchablePagedTable = <T extends object>({
     const tableStore = useTableStore(apiService);
     const [internalForm] = Form.useForm();
     const usedForm = searchForm || internalForm;
-
     return (
         <>
             <TableSearchForm tableStore={tableStore} form={usedForm} initialValues={initialSearchParams}>
                 {searchFields}
+                <Form.Item noStyle name={['extendUI', 'valueRowKeys']}></Form.Item>
             </TableSearchForm>
             {
                 counterByStatus &&
@@ -49,7 +50,8 @@ export const SearchablePagedTable = <T extends object>({
             {bulkActionToolbar}
             <PagedTable tableStore={tableStore}
                         {...tableProps}
-                        initialSearchParams={initialSearchParams}/>
+                        initialSearchParams={initialSearchParams}
+            />
         </>
     );
 };

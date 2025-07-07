@@ -50,14 +50,14 @@ export const useTableSearchModal = <T extends object>(config: UseTableSearchModa
                 return (
                     <TableSearchModalContent tableProps={tableProps}
                                              modalData={modalData}
-                                             rowSelectionConfig={rowSelectionConfig}
                                              renderInput={inputRender}
                                              isHasSelectionRow={!!renderBulkActions}
                     />
                 );
             },
             renderModalFooter: (renderInput) => {
-                return <TableSearchModalFooter renderInput={renderInput} renderBulkActions={renderBulkActions}/>;
+                return <TableSearchModalFooter renderInput={renderInput}
+                                               renderBulkActions={renderBulkActions}/>;
             },
             rowSelectionConfig
         });

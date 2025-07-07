@@ -6,11 +6,14 @@ import React, {useCallback, useMemo} from 'react';
 interface RowSelectionState<T> {
     selectedRowKeys: React.Key[];
     selectedRows: T[];
-    setSelection: (keys: React.Key[], rows: T[]) => void;
+    currentPageKeys: React.Key[];
+    rowKey: string;
+
+    setSelection: (keys: React.Key[], rows: T[], preserveSelection: boolean) => void;
     clearSelection: () => void;
-    toggleRow: (key: React.Key, row: T) => void;
-    selectAll: (rows: T[], getKey: (row: T) => React.Key) => void;
     isSelected: (key: React.Key) => boolean;
+
+    onChangeTableData: (rowKeys: React.Key[], rows: any[], rowKey: string) => void;
 }
 
 export interface RowSelectionConfig<T = any> {
@@ -26,40 +29,65 @@ const createRowSelectionStore = <T>() =>
         subscribeWithSelector((set, get) => ({
             selectedRowKeys: [],
             selectedRows: [],
+            currentPageKeys: [],
+            rowKey: '',
+            setSelection: (keys, rows, preserveSelection: boolean) => {
+                if (!preserveSelection) {
+                    set({
+                        selectedRowKeys: keys,
+                        selectedRows: rows
+                    });
+                }
+                const {
+                    currentPageKeys,
+                    selectedRows,
+                    selectedRowKeys,
+                    rowKey
+                } = get();
+                // Lấy các selections từ trang khác (không có trong trang hiện tại)
+                const otherPageKeys = selectedRowKeys.filter(key =>
+                    !currentPageKeys.includes(key)
+                );
+                const newAllSelectedKeys = [...otherPageKeys];
+                keys.forEach(key => {
+                    if (!otherPageKeys.includes(key)) {
+                        newAllSelectedKeys.push(key);
+                    }
+                });
 
-            setSelection: (keys, rows) => {
-                set({selectedRowKeys: keys, selectedRows: rows});
+                const newAllSelectedRows: any[] = [];
+                const includedRowKey: any[] = [];
+                [...selectedRows, ...rows].forEach(row => {
+                    // @ts-ignore
+                    const rowKeyValue = row[rowKey] || '';
+                    if (rowKeyValue && newAllSelectedKeys.includes(rowKeyValue)
+                        && !includedRowKey.includes(rowKeyValue)) {
+                        newAllSelectedRows.push(row);
+                        includedRowKey.push(rowKeyValue);
+                    }
+                });
+
+                set({
+                    selectedRowKeys: newAllSelectedKeys,
+                    selectedRows: newAllSelectedRows
+                });
             },
 
             clearSelection: () => {
-                set({selectedRowKeys: [], selectedRows: []});
-            },
-
-            toggleRow: (key, row) => {
-                const {selectedRowKeys, selectedRows} = get();
-                const keyIndex = selectedRowKeys.indexOf(key);
-
-                if (keyIndex >= 0) {
-                    // Remove if exists
-                    const newKeys = selectedRowKeys.filter((_, index) => index !== keyIndex);
-                    const newRows = selectedRows.filter((_, index) => index !== keyIndex);
-                    set({selectedRowKeys: newKeys, selectedRows: newRows});
-                } else {
-                    // Add if not exists
-                    set({
-                        selectedRowKeys: [...selectedRowKeys, key],
-                        selectedRows: [...selectedRows, row]
-                    });
-                }
-            },
-
-            selectAll: (rows, getKey) => {
-                const keys = rows.map(getKey);
-                set({selectedRowKeys: keys, selectedRows: rows});
+                set({
+                    selectedRowKeys: [],
+                    selectedRows: []
+                });
             },
 
             isSelected: (key) => {
                 return get().selectedRowKeys.includes(key);
+            },
+            onChangeTableData: (rowKeys: React.Key[], rows: any[], rowKey: string) => {
+                set({
+                    rowKey,
+                    currentPageKeys: rowKeys
+                });
             }
         }))
     );
@@ -82,9 +110,8 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
             selectedRows,
             setSelection,
             clearSelection,
-            toggleRow,
-            selectAll,
-            isSelected
+            isSelected,
+            onChangeTableData
         } = store();
 
         // Memoized selection handler với validation
@@ -108,10 +135,10 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
                     }
                 });
 
-                setSelection(validKeys, validRows);
+                setSelection(validKeys, validRows, preserveSelection);
                 onSelectionChange?.(validKeys, validRows);
             } else {
-                setSelection(keys, rows);
+                setSelection(keys, rows, preserveSelection);
                 onSelectionChange?.(keys, rows);
             }
         }, [maxSelection, isRowDisabled, setSelection, onSelectionChange]);
@@ -126,15 +153,6 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
                     return;
                 }
             },
-            onSelectAll: (selected, selectedRows, changeRows) => {
-                if (selected) {
-                    const validRows = selectedRows.filter(row => !isRowDisabled?.(row));
-                    const keys = validRows.map((_, index) => index as React.Key);
-                    handleSelectionChange(keys, validRows);
-                } else {
-                    clearSelection();
-                }
-            },
             getCheckboxProps: (record) => ({
                 disabled: isRowDisabled?.(record) ?? false,
                 name: 'row-selection'
@@ -145,6 +163,12 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
             hideSelectAll: maxSelection === 1, // Hide select all nếu chỉ cho phép chọn 1
         }), [selectedRowKeys, handleSelectionChange, isRowDisabled, clearSelection, maxSelection]);
 
+        const handleChangeTableData = useCallback((rowKeys: React.Key[], rows: any[], rowKey: string) => {
+            onChangeTableData(rowKeys, rows, rowKey);
+            if (!preserveSelection) {
+                clearSelection();
+            }
+        }, [onChangeTableData]);
         // Extended API
         return {
             // Core functionality
@@ -152,23 +176,14 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
             selectedRowKeys,
             selectedRows,
             clearSelection,
+            onChangeTableData: handleChangeTableData,
 
             // Extended functionality
-            toggleRow,
-            selectAll,
             isSelected,
             hasSelection: selectedRowKeys.length > 0,
             selectionCount: selectedRowKeys.length,
 
             // Utility methods
-            selectFirst: (rows: T[], getKey: (row: T) => React.Key) => {
-                const firstRow = rows.find(row => !isRowDisabled?.(row));
-                if (firstRow) {
-                    const key = getKey(firstRow);
-                    setSelection([key], [firstRow]);
-                }
-            },
-
             selectByCondition: (rows: T[], condition: (row: T) => boolean, getKey: (row: T) => React.Key) => {
                 const matchingRows = rows.filter(row =>
                     condition(row) && !isRowDisabled?.(row)
@@ -177,39 +192,10 @@ export function createRowSelectionHook<T>(config: RowSelectionConfig<T> = {}) {
                     matchingRows.splice(maxSelection);
                 }
                 const keys = matchingRows.map(getKey);
-                setSelection(keys, matchingRows);
-            },
-
-            // Bulk operations
-            invertSelection: (allRows: T[], getKey: (row: T) => React.Key) => {
-                const allKeys = allRows.map(getKey);
-                const unselectedKeys = allKeys.filter(key => !selectedRowKeys.includes(key));
-                const unselectedRows = allRows.filter((row, index) =>
-                    unselectedKeys.includes(allKeys[index]) && !isRowDisabled?.(row)
-                );
-                setSelection(unselectedKeys, unselectedRows);
+                setSelection(keys, matchingRows, preserveSelection);
             }
         };
     };
-}
-
-export interface RowSelectionStoreResult<T = any> {
-    rowSelection: TableRowSelection<T>;
-    selectedRowKeys: React.Key[];
-    selectedRows: T[];
-    clearSelection: () => void;
-    toggleRow: (key: React.Key, row: T) => void;
-    selectAll: (rows: T[], getKey: (row: T) => React.Key) => void;
-    isSelected: (key: React.Key) => boolean;
-    hasSelection: boolean;
-    selectionCount: number;
-    selectFirst: (rows: T[], getKey: (row: T) => React.Key) => void;
-    selectByCondition: (
-        rows: T[],
-        condition: (row: T) => boolean,
-        getKey: (row: T) => React.Key
-    ) => void;
-    invertSelection: (allRows: T[], getKey: (row: T) => React.Key) => void;
 }
 
 export const useRowSelectionStore = <T extends object>(options?: RowSelectionConfig<T>) => {
