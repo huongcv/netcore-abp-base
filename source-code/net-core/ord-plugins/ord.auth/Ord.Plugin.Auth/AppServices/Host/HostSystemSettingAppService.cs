@@ -3,6 +3,7 @@ using Ord.Domain.Entities.Auth;
 using Ord.Domain.Enums;
 using Ord.Plugin.Auth.Shared.Dtos.Settings;
 using Ord.Plugin.Auth.Shared.Repositories;
+using Ord.Plugin.Contract.Consts;
 using Ord.Plugin.Contract.Dtos;
 using Ord.Plugin.Contract.Features.SystemSetting;
 using Ord.Plugin.Contract.Features.SystemSetting.Dto;
@@ -63,7 +64,7 @@ namespace Ord.Plugin.Auth.AppServices.Host
         public async Task<CommonResultDto<PagedResultDto<BlacklistedDto>>> GetPasswordBlacklisted(OrdPagedRequestDto input)
         {
             var repos = AppFactory.GetServiceDependency<IBlacklistedCrudRepository>();
-            var paged = await repos.GetPaged("WEAK_PASSWORD", input);
+            var paged = await repos.GetPaged(SystemSettingNameConst.WeakPassword, input);
             return CommonResultDto<PagedResultDto<BlacklistedDto>>.Ok(paged);
         }
 
@@ -78,7 +79,7 @@ namespace Ord.Plugin.Auth.AppServices.Host
         public async Task<CommonResultDto<int>> InsertPasswordBlacklisted(InsertBulkBlacklistedDto input)
         {
             var repos = AppFactory.GetServiceDependency<IBlacklistedCrudRepository>();
-            await repos.InsertBulk("WEAK_PASSWORD", input.Values);
+            await repos.InsertBulk(SystemSettingNameConst.WeakPassword, input.Values);
             return CommonResultDto<int>.Ok(input.Values.Count);
         }
         public async Task<CommonResultDto<bool>> UpdatePasswordBlacklisted(UpdateBlacklistedDto input)

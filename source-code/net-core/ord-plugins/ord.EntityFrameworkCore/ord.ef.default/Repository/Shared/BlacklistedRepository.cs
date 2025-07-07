@@ -10,7 +10,7 @@ namespace Ord.EfCore.Default.Repository.Shared
             return QueryFirstOrDefaultAsync<string>(sql, new
             {
                 Value = password,
-                Name = "WEAK_PASSWORD"
+                Name = SystemSettingNameConst.WeakPassword
             });
         }
     }
